@@ -1,0 +1,330 @@
+/**
+ * @ir/tokens — Tailwind v4 theme bridge.
+ *
+ * Hand-authored (not generated). Aliases shadcn's semantic variable names to
+ * the IR semantic tokens, and exposes IR status / chart / role tokens as
+ * Tailwind utilities. Import AFTER tokens.css in your app's global stylesheet:
+ *
+ *   @import "tailwindcss";
+ *   @import "@ir/tokens/tokens.css";
+ *   @import "@ir/tokens/theme.css";
+ *
+ * Toggling `.dark` on <html> re-points every semantic token automatically —
+ * components never branch on theme.
+ */
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  /* ---- shadcn semantic aliases → IR semantic tokens ---- */
+  --color-background: var(--bg-app);
+  --color-foreground: var(--fg-neutral-emphasis);
+
+  --color-card: var(--bg-card);
+  --color-card-foreground: var(--fg-neutral-emphasis);
+
+  --color-popover: var(--bg-overlay);
+  --color-popover-foreground: var(--fg-neutral-emphasis);
+
+  --color-primary: var(--bg-primary-emphasis);
+  --color-primary-foreground: var(--fg-on-primary-emphasis);
+
+  --color-secondary: var(--bg-neutral-subtle);
+  --color-secondary-foreground: var(--fg-neutral-emphasis);
+
+  --color-muted: var(--bg-neutral-subtle);
+  --color-muted-foreground: var(--fg-neutral-muted);
+
+  --color-accent: var(--bg-neutral-subtle-hovered);
+  --color-accent-foreground: var(--fg-neutral-emphasis);
+
+  --color-destructive: var(--bg-danger-emphasis);
+  --color-destructive-foreground: var(--fg-on-danger-emphasis);
+
+  --color-border: var(--border-neutral-muted);
+  --color-input: var(--border-input-default);
+  --color-ring: var(--border-focused);
+
+  /* sidebar chrome */
+  --color-sidebar: var(--bg-sidebar);
+  --color-sidebar-foreground: var(--fg-neutral-muted);
+  --color-sidebar-accent: var(--bg-neutral-subtle-hovered);
+  --color-sidebar-accent-foreground: var(--fg-neutral-emphasis);
+  --color-sidebar-primary: var(--bg-primary-emphasis);
+  --color-sidebar-primary-foreground: var(--fg-on-primary-emphasis);
+  --color-sidebar-border: var(--border-neutral-subtle);
+  --color-sidebar-ring: var(--border-focused);
+
+
+  /* ═══ IR semantics as utilities ═══════════════════════════════════
+     Tailwind v4's --color-* namespace feeds bg-, text- AND border- from
+     one pool, so bg/primary/emphasis, fg/primary/emphasis and
+     border/primary/emphasis would collide on a flat name. Each family
+     therefore gets a word that reads correctly with its own utility:
+
+         bg/*      → surface-*    bg-surface-primary-emphasis-hovered
+         fg/*      → content-*    text-content-neutral-muted
+         border/*  → line-*       border-line-neutral-muted
+
+     Generated from dist/tokens.css — do not hand-edit; re-run the
+     generator if a semantic token is added.
+
+     This exists so component code never needs bg-[var(--...)]. Every
+     semantic has a real utility, which is what makes `no-arbitrary-values`
+     enforceable and gives agents a vocabulary they can complete against. */
+
+  /* bg/* → surface-* (67) */
+  --color-surface-app: var(--bg-app);
+  --color-surface-canvas: var(--bg-canvas);
+  --color-surface-card: var(--bg-card);
+  --color-surface-danger-emphasis: var(--bg-danger-emphasis);
+  --color-surface-danger-emphasis-hovered: var(--bg-danger-emphasis-hovered);
+  --color-surface-danger-emphasis-pressed: var(--bg-danger-emphasis-pressed);
+  --color-surface-danger-muted: var(--bg-danger-muted);
+  --color-surface-danger-subtle: var(--bg-danger-subtle);
+  --color-surface-danger-subtle-hovered: var(--bg-danger-subtle-hovered);
+  --color-surface-danger-subtle-pressed: var(--bg-danger-subtle-pressed);
+  --color-surface-disabled: var(--bg-disabled);
+  --color-surface-info-emphasis: var(--bg-info-emphasis);
+  --color-surface-info-emphasis-hovered: var(--bg-info-emphasis-hovered);
+  --color-surface-info-emphasis-pressed: var(--bg-info-emphasis-pressed);
+  --color-surface-info-muted: var(--bg-info-muted);
+  --color-surface-info-subtle: var(--bg-info-subtle);
+  --color-surface-info-subtle-hovered: var(--bg-info-subtle-hovered);
+  --color-surface-info-subtle-pressed: var(--bg-info-subtle-pressed);
+  --color-surface-input-default: var(--bg-input-default);
+  --color-surface-input-disabled: var(--bg-input-disabled);
+  --color-surface-input-hovered: var(--bg-input-hovered);
+  --color-surface-input-pressed: var(--bg-input-pressed);
+  --color-surface-layer-emphasis: var(--bg-layer-emphasis);
+  --color-surface-layer-muted: var(--bg-layer-muted);
+  --color-surface-layer-on-emphasis-emphasis: var(--bg-layer-on-emphasis-emphasis);
+  --color-surface-layer-on-emphasis-subtle: var(--bg-layer-on-emphasis-subtle);
+  --color-surface-layer-subtle: var(--bg-layer-subtle);
+  --color-surface-neutral-emphasis: var(--bg-neutral-emphasis);
+  --color-surface-neutral-emphasis-hovered: var(--bg-neutral-emphasis-hovered);
+  --color-surface-neutral-emphasis-pressed: var(--bg-neutral-emphasis-pressed);
+  --color-surface-neutral-muted: var(--bg-neutral-muted);
+  --color-surface-neutral-muted-hovered: var(--bg-neutral-muted-hovered);
+  --color-surface-neutral-muted-pressed: var(--bg-neutral-muted-pressed);
+  --color-surface-neutral-subtle: var(--bg-neutral-subtle);
+  --color-surface-neutral-subtle-hovered: var(--bg-neutral-subtle-hovered);
+  --color-surface-neutral-subtle-pressed: var(--bg-neutral-subtle-pressed);
+  --color-surface-overlay: var(--bg-overlay);
+  --color-surface-primary-disabled: var(--bg-primary-disabled);
+  --color-surface-primary-emphasis: var(--bg-primary-emphasis);
+  --color-surface-primary-emphasis-hovered: var(--bg-primary-emphasis-hovered);
+  --color-surface-primary-emphasis-pressed: var(--bg-primary-emphasis-pressed);
+  --color-surface-primary-muted: var(--bg-primary-muted);
+  --color-surface-primary-muted-hovered: var(--bg-primary-muted-hovered);
+  --color-surface-primary-muted-pressed: var(--bg-primary-muted-pressed);
+  --color-surface-primary-subtle: var(--bg-primary-subtle);
+  --color-surface-primary-subtle-hovered: var(--bg-primary-subtle-hovered);
+  --color-surface-primary-subtle-pressed: var(--bg-primary-subtle-pressed);
+  --color-surface-scrim: var(--bg-scrim);
+  --color-surface-selected-emphasis: var(--bg-selected-emphasis);
+  --color-surface-selected-subtle: var(--bg-selected-subtle);
+  --color-surface-selected-subtle-hovered: var(--bg-selected-subtle-hovered);
+  --color-surface-selected-subtle-pressed: var(--bg-selected-subtle-pressed);
+  --color-surface-sidebar: var(--bg-sidebar);
+  --color-surface-success-emphasis: var(--bg-success-emphasis);
+  --color-surface-success-emphasis-hovered: var(--bg-success-emphasis-hovered);
+  --color-surface-success-emphasis-pressed: var(--bg-success-emphasis-pressed);
+  --color-surface-success-muted: var(--bg-success-muted);
+  --color-surface-success-subtle: var(--bg-success-subtle);
+  --color-surface-success-subtle-hovered: var(--bg-success-subtle-hovered);
+  --color-surface-success-subtle-pressed: var(--bg-success-subtle-pressed);
+  --color-surface-warning-emphasis: var(--bg-warning-emphasis);
+  --color-surface-warning-emphasis-hovered: var(--bg-warning-emphasis-hovered);
+  --color-surface-warning-emphasis-pressed: var(--bg-warning-emphasis-pressed);
+  --color-surface-warning-muted: var(--bg-warning-muted);
+  --color-surface-warning-subtle: var(--bg-warning-subtle);
+  --color-surface-warning-subtle-hovered: var(--bg-warning-subtle-hovered);
+  --color-surface-warning-subtle-pressed: var(--bg-warning-subtle-pressed);
+
+  /* fg/* → content-* (31) */
+  --color-content-danger-emphasis: var(--fg-danger-emphasis);
+  --color-content-danger-muted: var(--fg-danger-muted);
+  --color-content-disabled: var(--fg-disabled);
+  --color-content-info-emphasis: var(--fg-info-emphasis);
+  --color-content-info-muted: var(--fg-info-muted);
+  --color-content-inverse: var(--fg-inverse);
+  --color-content-link-default: var(--fg-link-default);
+  --color-content-link-hovered: var(--fg-link-hovered);
+  --color-content-link-pressed: var(--fg-link-pressed);
+  --color-content-link-visited: var(--fg-link-visited);
+  --color-content-neutral-emphasis: var(--fg-neutral-emphasis);
+  --color-content-neutral-muted: var(--fg-neutral-muted);
+  --color-content-neutral-subtle: var(--fg-neutral-subtle);
+  --color-content-on-danger-emphasis: var(--fg-on-danger-emphasis);
+  --color-content-on-danger-subtle: var(--fg-on-danger-subtle);
+  --color-content-on-info-emphasis: var(--fg-on-info-emphasis);
+  --color-content-on-info-subtle: var(--fg-on-info-subtle);
+  --color-content-on-neutral-emphasis: var(--fg-on-neutral-emphasis);
+  --color-content-on-primary-emphasis: var(--fg-on-primary-emphasis);
+  --color-content-on-primary-subtle: var(--fg-on-primary-subtle);
+  --color-content-on-selected-emphasis: var(--fg-on-selected-emphasis);
+  --color-content-on-success-emphasis: var(--fg-on-success-emphasis);
+  --color-content-on-success-subtle: var(--fg-on-success-subtle);
+  --color-content-on-warning-emphasis: var(--fg-on-warning-emphasis);
+  --color-content-on-warning-subtle: var(--fg-on-warning-subtle);
+  --color-content-primary-emphasis: var(--fg-primary-emphasis);
+  --color-content-primary-muted: var(--fg-primary-muted);
+  --color-content-success-emphasis: var(--fg-success-emphasis);
+  --color-content-success-muted: var(--fg-success-muted);
+  --color-content-warning-emphasis: var(--fg-warning-emphasis);
+  --color-content-warning-muted: var(--fg-warning-muted);
+
+  /* border/* → line-* (21) */
+  --color-line-danger-emphasis: var(--border-danger-emphasis);
+  --color-line-danger-muted: var(--border-danger-muted);
+  --color-line-disabled: var(--border-disabled);
+  --color-line-focused: var(--border-focused);
+  --color-line-info-emphasis: var(--border-info-emphasis);
+  --color-line-info-muted: var(--border-info-muted);
+  --color-line-input-default: var(--border-input-default);
+  --color-line-input-disabled: var(--border-input-disabled);
+  --color-line-input-focused: var(--border-input-focused);
+  --color-line-input-hovered: var(--border-input-hovered);
+  --color-line-input-invalid: var(--border-input-invalid);
+  --color-line-inverse: var(--border-inverse);
+  --color-line-neutral-emphasis: var(--border-neutral-emphasis);
+  --color-line-neutral-muted: var(--border-neutral-muted);
+  --color-line-neutral-subtle: var(--border-neutral-subtle);
+  --color-line-primary-emphasis: var(--border-primary-emphasis);
+  --color-line-primary-muted: var(--border-primary-muted);
+  --color-line-success-emphasis: var(--border-success-emphasis);
+  --color-line-success-muted: var(--border-success-muted);
+  --color-line-warning-emphasis: var(--border-warning-emphasis);
+  --color-line-warning-muted: var(--border-warning-muted);
+
+  /* ---- IR status + chart, exposed as utilities ---- */
+  --color-status-healthy: var(--status-healthy);
+  --color-status-warning: var(--status-warning);
+  --color-status-critical: var(--status-critical);
+  --color-status-info: var(--status-info);
+  --color-status-unknown: var(--status-unknown);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-chart-6: var(--chart-6);
+  --color-chart-7: var(--chart-7);
+  --color-chart-8: var(--chart-8);
+
+  /* ---- role utilities used directly in app code ---- */
+  --color-primary-subtle: var(--bg-primary-subtle);
+  --color-success-subtle: var(--bg-success-subtle);
+  --color-warning-subtle: var(--bg-warning-subtle);
+  --color-danger-subtle: var(--bg-danger-subtle);
+  --color-info-subtle: var(--bg-info-subtle);
+
+  --color-fg-muted: var(--fg-neutral-muted);
+  --color-fg-subtle: var(--fg-neutral-subtle);
+  --color-fg-success: var(--fg-success-emphasis);
+  --color-fg-warning: var(--fg-warning-emphasis);
+  --color-fg-danger: var(--fg-danger-emphasis);
+  --color-fg-info: var(--fg-info-emphasis);
+
+  --color-canvas: var(--bg-canvas);
+
+  /* ---- radius + shadow exposed to utilities ---- */
+  /* Derived from the single `--radius` knob (themes.css §3), following
+     shadcn. sm/md/lg/xl use shadcn's own multipliers; the rest extend the
+     same curve so one variable moves the entire system in proportion. */
+  --radius-none: 0;
+  --radius-xs:   calc(var(--radius) * 0.2);
+  --radius-sm:   calc(var(--radius) * 0.6);
+  --radius-md:   calc(var(--radius) * 0.8);
+  --radius-lg:   var(--radius);
+  --radius-xl:   calc(var(--radius) * 1.4);
+  --radius-2xl:  calc(var(--radius) * 1.6);
+  --radius-3xl:  calc(var(--radius) * 2.4);
+  --radius-4xl:  calc(var(--radius) * 3.2);
+  --radius-full: 9999px;
+
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+
+  /* focus rings — composites, so they belong to the shadow namespace */
+  --shadow-ring-focus: var(--ring-focus);
+  --shadow-ring-focus-danger: var(--ring-focus-danger);
+  --shadow-ring-focus-inset: var(--ring-focus-inset);
+
+
+  /* ---- type scale ----
+     Tailwind's own scale is cleared so there is ONE vocabulary. `text-md` is
+     IR's 14px, not Tailwind's `text-base` 16px. Every size and its paired
+     line height comes from the ramp, so a utility cannot drift off it. */
+  --text-*: initial;
+
+  --text-2xs: var(--type-size-2xs);
+  --text-2xs--line-height: var(--type-leading-snug);
+  --text-xs: var(--type-size-xs);
+  --text-xs--line-height: var(--type-leading-default);
+  --text-sm: var(--type-size-sm);
+  --text-sm--line-height: var(--type-leading-default);
+  --text-md: var(--type-size-md);
+  --text-md--line-height: var(--type-leading-default);
+  --text-lg: var(--type-size-lg);
+  --text-lg--line-height: var(--type-leading-default);
+  --text-xl: var(--type-size-xl);
+  --text-xl--line-height: var(--type-leading-snug);
+  --text-2xl: var(--type-size-2xl);
+  --text-2xl--line-height: var(--type-leading-snug);
+  --text-3xl: var(--type-size-3xl);
+  --text-3xl--line-height: var(--type-leading-tight);
+  --text-4xl: var(--type-size-4xl);
+  --text-4xl--line-height: var(--type-leading-tight);
+  --text-5xl: var(--type-size-5xl);
+  --text-5xl--line-height: var(--type-leading-tight);
+
+  --font-weight-regular: var(--type-weight-regular);
+  --font-weight-medium: var(--type-weight-medium);
+  --font-weight-semibold: var(--type-weight-semibold);
+  --font-weight-bold: var(--type-weight-bold);
+
+  --tracking-tight: var(--type-tracking-tight);
+  --tracking-normal: var(--type-tracking-default);
+  --tracking-wide: var(--type-tracking-wide);
+
+  /* ---- spacing ----
+     Tailwind v4 derives every spacing utility from this one value, so the
+     `[data-spacing]` axis needs to change exactly one thing. */
+  --spacing: var(--space-1);
+
+  /* ---- fonts ---- */
+  --font-sans: var(--type-family-sans);
+  --font-mono: var(--type-family-mono);
+}
+
+@layer base {
+  * {
+    border-color: var(--border-neutral-muted);
+  }
+  html {
+    font-family: var(--type-family-sans);
+  }
+  body {
+    background: var(--bg-app);
+    color: var(--fg-neutral-emphasis);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  :focus-visible {
+    outline: none;
+  }
+  /* RTL: components must use logical properties (ps-/pe-/ms-/me-/start-/end-).
+     `no-physical-properties` in .oxlintrc.json enforces it. Icons that encode
+     direction (chevrons, arrows, back/forward) mirror; clocks, checkmarks,
+     logos and media controls do not. */
+  [dir="rtl"] .rtl-mirror {
+    transform: scaleX(-1);
+  }
+}

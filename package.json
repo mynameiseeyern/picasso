@@ -1,0 +1,17 @@
+{
+  "name": "picasso",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Picasso — Integrated Research's design system. Repo is the source of truth; Figma is a consumer.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "workspaces": ["packages/tokens", "packages/ui"],
+  "scripts": {
+    "build:tokens": "npm run build --workspace @ir/tokens",
+    "storybook": "npm run storybook --workspace @ir/ui",
+    "build-storybook": "npm run build:tokens && npm run build-storybook --workspace @ir/ui",
+    "type-check": "npm run type-check --workspace @ir/ui",
+    "test": "npm run test --workspace @ir/ui",
+    "lint": "oxlint --config .oxlintrc.json packages/ui/src"
+  }
+}

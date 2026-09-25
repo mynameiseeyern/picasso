@@ -1,0 +1,21 @@
+/* Storybook global stylesheet — mirrors how a real app wires @ir/tokens.
+ *
+ * Uses workspace-relative paths (not the "@ir/tokens/…" package specifier) so
+ * the build never depends on node_modules symlink resolution. A real consuming
+ * app would instead import "@ir/tokens/tokens.css" + "@ir/tokens/theme.css".
+ *
+ * theme.css carries @theme/@custom-variant directives, so it MUST be imported
+ * here (inside the Tailwind-processed stylesheet), not as a plain JS import.
+ */
+@import "tailwindcss";
+@import "../../tokens/dist/tokens.css";
+@import "../../tokens/theme.css";
+
+/* Scan the component + story sources for class names. */
+@source "../src";
+
+body {
+  padding: 2rem;
+  background: var(--bg-app);
+  color: var(--fg-neutral-emphasis);
+}
