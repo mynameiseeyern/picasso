@@ -2,6 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "npm install",
-  "buildCommand": "ROOT=$(git rev-parse --show-toplevel) && npm run build-storybook && rm -rf \"$ROOT/storybook-static\" && cp -r \"$ROOT/packages/ui/storybook-static\" \"$ROOT/storybook-static\"",
+  "buildCommand": "ROOT=$(git rev-parse --show-toplevel) && npm run build-storybook && rm -rf \"$ROOT/storybook-static\" && cp -r \"$ROOT/packages/ui/storybook-static\" \"$ROOT/storybook-static\" && cp \"$ROOT/public/\"llms*.txt \"$ROOT/storybook-static/\"",
   "outputDirectory": "storybook-static"
 }

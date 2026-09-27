@@ -15,9 +15,10 @@
   "scripts": {
     "build:tokens": "npm run build --workspace @ir/tokens",
     "storybook": "npm run storybook --workspace @ir/ui",
-    "build-storybook": "npm run build:tokens && npm run build-storybook --workspace @ir/ui",
+    "build-storybook": "npm run build:tokens && npm run build:llms && npm run build-storybook --workspace @ir/ui",
     "type-check": "npm run type-check --workspace @ir/ui",
     "test": "npm run test --workspace @ir/ui",
-    "lint": "oxlint --config .oxlintrc.json packages/ui/src"
+    "lint": "oxlint --config .oxlintrc.json packages/ui/src",
+    "build:llms": "node scripts/build-llms.mjs"
   }
 }
