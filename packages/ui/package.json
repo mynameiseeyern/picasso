@@ -20,7 +20,7 @@
     "prestorybook": "node ../tokens/build/style-dictionary.config.mjs",
     "storybook": "storybook dev -p 6006",
     "prebuild-storybook": "node ../tokens/build/style-dictionary.config.mjs",
-    "build-storybook": "storybook build -o ../../storybook-static"
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.11",
