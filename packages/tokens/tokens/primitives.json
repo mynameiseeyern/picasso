@@ -775,7 +775,7 @@
           "$value": {
             "fontFamily": "{type.family.sans}",
             "fontSize": "{type.size.4xl}",
-            "fontWeight": "{type.weight.medium}",
+            "fontWeight": "{type.weight.semibold}",
             "lineHeight": "{type.leading.tight}",
             "letterSpacing": "{type.tracking.tight}"
           }
@@ -785,7 +785,7 @@
           "$value": {
             "fontFamily": "{type.family.sans}",
             "fontSize": "{type.size.3xl}",
-            "fontWeight": "{type.weight.medium}",
+            "fontWeight": "{type.weight.semibold}",
             "lineHeight": "{type.leading.tight}",
             "letterSpacing": "{type.tracking.tight}"
           }
@@ -795,7 +795,7 @@
           "$value": {
             "fontFamily": "{type.family.sans}",
             "fontSize": "{type.size.2xl}",
-            "fontWeight": "{type.weight.medium}",
+            "fontWeight": "{type.weight.semibold}",
             "lineHeight": "{type.leading.snug}",
             "letterSpacing": "{type.tracking.default}"
           }
@@ -805,7 +805,7 @@
           "$value": {
             "fontFamily": "{type.family.sans}",
             "fontSize": "{type.size.xl}",
-            "fontWeight": "{type.weight.medium}",
+            "fontWeight": "{type.weight.semibold}",
             "lineHeight": "{type.leading.snug}",
             "letterSpacing": "{type.tracking.default}"
           }
@@ -815,7 +815,7 @@
           "$value": {
             "fontFamily": "{type.family.sans}",
             "fontSize": "{type.size.lg}",
-            "fontWeight": "{type.weight.medium}",
+            "fontWeight": "{type.weight.semibold}",
             "lineHeight": "{type.leading.snug}",
             "letterSpacing": "{type.tracking.default}"
           }
@@ -880,7 +880,7 @@
             "fontFamily": "{type.family.sans}",
             "fontSize": "{type.size.sm}",
             "fontWeight": "{type.weight.medium}",
-            "lineHeight": "{type.leading.none}",
+            "lineHeight": "{type.leading.snug}",
             "letterSpacing": "{type.tracking.default}"
           }
         },
@@ -943,7 +943,7 @@
             "fontFamily": "{type.family.mono}",
             "fontSize": "{type.size.md}",
             "fontWeight": "{type.weight.medium}",
-            "lineHeight": "{type.leading.snug}",
+            "lineHeight": "{type.leading.none}",
             "letterSpacing": "{type.tracking.default}"
           }
         }
