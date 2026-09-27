@@ -1,0 +1,68 @@
+{
+  "component": "Button",
+  "summary": "Triggers an action. Verb first, naming the outcome.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "22:267" },
+  "structureFrom": "figma",
+  "measurementsFrom": "shadcn",
+  "pairs": [
+    {
+      "id": "ghost-resting-fill",
+      "dont": "Give Ghost a resting background.",
+      "do": "Keep Ghost transparent until hover.",
+      "why": "A ghost with a resting fill reads as Outline, so the hierarchy between a primary and a tertiary action collapses and every toolbar looks equally important.",
+      "source": "Found on 168 buttons in the Figma library — audit §17.2"
+    },
+    {
+      "id": "link-in-a-box",
+      "dont": "Put Link in a box — fill, border or radius.",
+      "do": "Leave Link as text, coloured by fg/link/*.",
+      "why": "A link drawn as a button is ambiguous about whether it navigates or acts. fg/link carries it at 7.66:1 without a box.",
+      "source": "audit §17.3"
+    },
+    {
+      "id": "underline-at-rest",
+      "dont": "Underline Link at rest.",
+      "do": "Underline on hover only.",
+      "why": "textDecoration propagates across every node sharing a text style, so underlining Link in Figma underlines all 168 buttons. Colour distinguishes it; the underline is a hover affordance.",
+      "source": "audit §17.2"
+    },
+    {
+      "id": "icon-only-needs-label",
+      "dont": "Ship an icon-only button with no accessible name.",
+      "do": "Pass aria-label on every icon-* size.",
+      "why": "Screen readers announce nothing. The icon sizes have no text child by definition, so the label has to come from the attribute."
+    },
+    {
+      "id": "size-is-height",
+      "dont": "Reach for a larger Size to get bigger text.",
+      "do": "Pick Size for height and touch target.",
+      "why": "Size changes height and padding; the label stays label/md. Resizing an instance to force a height is how 36 instances ended up off-scale.",
+      "source": "audit §17.1"
+    },
+    {
+      "id": "never-vertical-hug",
+      "dont": "Set a Button to vertical HUG in Figma.",
+      "do": "Leave it at its variant height.",
+      "why": "Its vertical padding is inert, so a HUG instance collapses to 16–18px. This broke 22 instances once already.",
+      "source": "audit §17.1"
+    },
+    {
+      "id": "submit-and-ok",
+      "dont": "Label a button \"Submit\", \"OK\" or \"Yes\".",
+      "do": "Name the outcome — \"Save changes\", \"Delete probe\", \"Export CSV\".",
+      "why": "The label is the only thing many people read before clicking. Two or three words; if it needs more, the explanation belongs above the button.",
+      "source": "Tone of voice — Buttons and labels"
+    },
+    {
+      "id": "destructive-confirm",
+      "dont": "Use Destructive without a confirmation that restates what is lost.",
+      "do": "Name the thing in both the button and the confirm.",
+      "why": "Destructive is a warning, not a safeguard. \"Delete probe\" then \"Delete probe SYD-03? Its history is removed.\""
+    }
+  ],
+  "a11y": [
+    "Focus ring is border/focused at 2px with a 2px offset; never remove it.",
+    "loading sets aria-busy and disables the button — a busy button must not be activatable.",
+    "Disabled contrast is 2.24:1 by design. SC 1.4.3 exempts disabled controls; the low contrast is the signal."
+  ]
+}
