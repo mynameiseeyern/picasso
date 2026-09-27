@@ -10,7 +10,18 @@ import { defineConfig, globalIgnores } from "eslint/config";
  * config that runs everywhere beats a fast one that runs in some places.
  */
 export default defineConfig([
-  globalIgnores(["**/dist/**", "**/storybook-static/**", "**/node_modules/**", "public/**"]),
+  globalIgnores([
+    "**/dist/**",
+    "**/storybook-static/**",
+    "**/node_modules/**",
+    "public/**",
+    // Generated or vendored into the site: the nested Storybook bundle, Next's
+    // output, and the Fumadocs collections. Linting a build artefact reports
+    // other people's rules as missing definitions.
+    "apps/site/public/**",
+    "apps/site/.next/**",
+    "apps/site/.source/**",
+  ]),
   {
     files: ["packages/ui/src/**/*.{ts,tsx}"],
     languageOptions: {

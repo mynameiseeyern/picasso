@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prebuild": "fumadocs-mdx",
     "build": "next build",
+    "predev": "fumadocs-mdx",
     "dev": "next dev",
     "start": "next start",
+    "postinstall": "fumadocs-mdx",
     "types:check": "next typegen && tsc --noEmit"
   },
   "dependencies": {

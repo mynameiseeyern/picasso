@@ -60,13 +60,17 @@ export const Sizes: Story = {
   render: () => (
     <div className="flex max-w-2xl gap-8">
       {(["md", "sm"] as const).map((s) => (
-        <Field key={s} size={s} className="flex-1">
-          <FieldLabel>Threshold ({s})</FieldLabel>
-          <FieldControl>
-            <Input size={s} placeholder="3.6" />
-          </FieldControl>
-          <FieldDescription>MOS is measured to one decimal.</FieldDescription>
-        </Field>
+        // Layout belongs on a wrapper, not on the component — Field's contract
+        // takes no classes from outside, and the linter enforces it.
+        <div key={s} className="flex-1">
+          <Field size={s}>
+            <FieldLabel>Threshold ({s})</FieldLabel>
+            <FieldControl>
+              <Input size={s} placeholder="3.6" />
+            </FieldControl>
+            <FieldDescription>MOS is measured to one decimal.</FieldDescription>
+          </Field>
+        </div>
       ))}
     </div>
   ),
