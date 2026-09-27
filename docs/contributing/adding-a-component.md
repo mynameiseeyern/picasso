@@ -103,7 +103,30 @@ Then **look at it** — light and dark, every variant and size. A class name tha
 Tailwind never emitted fails silently; the build stays green and the button
 renders unstyled.
 
-## 8. Reconcile Figma
+## 8. Reconcile Figma — in the same session
 
-Where the component now differs from Figma — a new variant, a changed height —
-update Figma to match, and note it in the changeset's `figma-impact`.
+**Every correction made in the repo goes back into Figma.** Not "eventually",
+not on a sweep later: in the same session, while you still know what changed
+and why.
+
+This is the half of the direction-of-truth rule that is easy to skip, because
+the code works without it. But a Figma component that still shows the old
+behaviour is not a stale document — it is a second, contradicting answer, and
+designers will keep building against it. Every hour it stays wrong, more
+instances inherit it.
+
+What counts as a correction to push:
+
+| In the repo | In Figma |
+|---|---|
+| A state Figma does not have (read-only, say) | add the variant |
+| A token swapped for a more correct one | rebind the affected variants |
+| A measurement taken from shadcn over Figma's | update the frames, and say so in the doc block |
+| A defect fixed (a fill that should not be there) | fix it in every variant, not just the one you noticed |
+
+Then note it in the changeset's `figma-impact` so the release says what a
+designer will see when they accept the library update.
+
+**Prefer a variable rebind to a literal.** A hand-typed value in Figma matches
+the repo today and drifts the next time either side moves — that is how the
+focus ring ended up hand-typed at a value the palette no longer held.

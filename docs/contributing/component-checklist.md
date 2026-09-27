@@ -36,6 +36,11 @@ description: Copy this into the pull request.
 - [ ] `type-check`, `test` and `build-storybook` all pass
 - [ ] Looked at in light and dark, at every size
 
+## Reconcile Figma
+- [ ] Every correction made here has been pushed back into Figma, in this session
+- [ ] New states exist as variants, not just in code
+- [ ] Pushed as variable bindings, not hand-typed values
+
 ## Release
 - [ ] Changeset added, with a `figma-impact` line
 ```
