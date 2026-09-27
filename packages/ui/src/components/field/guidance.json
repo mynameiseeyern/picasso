@@ -1,0 +1,58 @@
+{
+  "component": "Field",
+  "summary": "Label, control and message, wired together. The wrapper every form control belongs in.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "705:2117" },
+  "structureFrom": "figma",
+  "measurementsFrom": "shadcn",
+  "pairs": [
+    {
+      "id": "use-the-wrapper",
+      "dont": "Lay out a label, an input and a hint by hand.",
+      "do": "Wrap them in Field.",
+      "why": "Hand-laid fields are where htmlFor, aria-describedby and aria-invalid go missing — they are invisible when they are wrong, so nothing catches it. Field generates the ids and hangs the wiring off them."
+    },
+    {
+      "id": "invalid-needs-a-message",
+      "dont": "Set invalid without rendering a FieldError.",
+      "do": "Pair every invalid state with a message that says what to do.",
+      "why": "Invalid with no error leaves a red border and nothing else — and because the hint is swapped out, the field says less than it did when it was valid.",
+      "source": "Content — Errors"
+    },
+    {
+      "id": "error-replaces-hint",
+      "dont": "Try to show the hint and the error at once.",
+      "do": "Let the error replace the hint, and repeat any format detail the error needs.",
+      "why": "A screen reader announcing a format hint and a failure together is noisier than announcing the failure. If the format still matters, say it in the error: \"MOS is measured to one decimal. Use 3.6.\""
+    },
+    {
+      "id": "required-is-not-an-asterisk",
+      "dont": "Mark required with an asterisk alone.",
+      "do": "Pass required to FieldLabel and FieldControl together.",
+      "why": "The asterisk is aria-hidden, because a screen reader reading \"star\" is not information. aria-required is what carries the fact; the asterisk is its visual half."
+    },
+    {
+      "id": "mark-the-minority",
+      "dont": "Asterisk every field in a form where all of them are required.",
+      "do": "Mark whichever set is smaller — required, or optional.",
+      "why": "A column of asterisks carries no information. If only two fields of twelve are optional, label those two."
+    },
+    {
+      "id": "hint-is-not-an-error",
+      "dont": "Use the hint to warn — \"Don't use spaces\".",
+      "do": "Use it to describe the expected shape — \"Letters, digits and hyphens\".",
+      "why": "A hint written as a prohibition reads as an error that has already happened, so people check whether they have done something wrong before they have typed anything."
+    },
+    {
+      "id": "disable-at-the-field",
+      "dont": "Disable the control and leave the label at full strength.",
+      "do": "Pass disabled to Field.",
+      "why": "A live-looking label above a dead control reads as a bug. Field dims the label and hint with the control, in one place."
+    }
+  ],
+  "a11y": [
+    "The label is a real <label htmlFor>, so clicking it focuses the control and the hit target includes the text.",
+    "FieldError carries role=\"alert\", so the failure is announced when it appears rather than when focus happens to reach the control.",
+    "aria-describedby points at the hint while valid and at the error while invalid — never at both, and never at a node that is not rendered.",
+    "The required asterisk is aria-hidden; aria-required on the control is what assistive tech reads."
+  ]
+}

@@ -133,18 +133,19 @@ export interface FieldControlProps {
  */
 export function FieldControl({ children, required }: FieldControlProps) {
   const { id, descriptionId, errorId, invalid, disabled } = useField("FieldControl");
-  return (
-    <Slot
-      id={id}
-      aria-describedby={invalid ? errorId : descriptionId}
-      aria-invalid={invalid || undefined}
-      aria-required={required || undefined}
-      disabled={disabled || undefined}
-      data-slot="field-control"
-    >
-      {children}
-    </Slot>
-  );
+  // Slot's props are typed as HTMLAttributes, which has no `disabled` — but it
+  // forwards whatever it is handed to its child, and the child here is a form
+  // control. The cast is on the prop bag, not on the child.
+  const forwarded = {
+    id,
+    "aria-describedby": invalid ? errorId : descriptionId,
+    "aria-invalid": invalid || undefined,
+    "aria-required": required || undefined,
+    disabled: disabled || undefined,
+    "data-slot": "field-control",
+  } as React.ComponentPropsWithoutRef<typeof Slot>;
+
+  return <Slot {...forwarded}>{children}</Slot>;
 }
 
 const messageVariants = cva("", {
