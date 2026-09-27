@@ -174,3 +174,21 @@ npm test
 ```
 
 **After changing a token, rebuild.** `dist/tokens.css` is generated; never edit it.
+
+---
+
+## Documentation
+
+Prose about the system lives in `docs/`, not in this file. This file is *how to
+write code here*; `docs/` is *what the system is*.
+
+- Copy rules — casing, errors, empty states, numbers, button labels — are in
+  `docs/content/`. Follow them when you write any user-facing string.
+- Foundations — the grid, the radius ladder, the type ramp — are in
+  `docs/foundations/`.
+- Adding a component: `docs/contributing/adding-a-component.md`, and copy
+  `docs/contributing/component-checklist.md` into the PR.
+
+**If you produced off-system code, the docs failed, not you.** Say which rule
+you broke and where it was written down — or that it was not. See
+`docs/contributing/reporting-off-system-output.md`.
