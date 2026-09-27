@@ -1,0 +1,57 @@
+{
+  "component": "Input",
+  "summary": "A single-line text field. Always paired with a visible label.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "720:2119" },
+  "structureFrom": "figma",
+  "measurementsFrom": "shadcn",
+  "pairs": [
+    {
+      "id": "placeholder-is-not-a-label",
+      "dont": "Use the placeholder as the label.",
+      "do": "Give every input a visible label, and use the placeholder for format.",
+      "why": "A placeholder disappears the moment someone types, so the field loses its name exactly when they are checking their answer. It also fails on autofill, and most placeholder colours do not meet contrast."
+    },
+    {
+      "id": "placeholder-shows-format",
+      "dont": "Write an instruction in the placeholder — \"Enter the probe name\".",
+      "do": "Show the shape of the answer — \"SYD-03\", \"14:30 AEST\".",
+      "why": "The label already says what the field is. The placeholder's one job is to remove ambiguity about format, which is where people actually get stuck."
+    },
+    {
+      "id": "invalid-needs-a-message",
+      "dont": "Signal an error with the red border alone.",
+      "do": "Set aria-invalid and render a message that says what to do.",
+      "why": "Colour is not available to everyone, and a red border does not say what is wrong. aria-invalid is what a screen reader announces; the border is what a sighted user sees. Both or neither.",
+      "source": "Content — Errors"
+    },
+    {
+      "id": "disabled-is-not-read-only",
+      "dont": "Disable an input to display a value someone cannot change.",
+      "do": "Use readOnly, or render it as text.",
+      "why": "A disabled input is skipped by keyboard navigation and often by screen readers, so the value becomes invisible. Disabled means \"not available yet\"; read-only means \"yours to see, not to change\"."
+    },
+    {
+      "id": "known-set-is-a-select",
+      "dont": "Use an Input when the answer is one of a known set.",
+      "do": "Use Select, or Combobox when the set is long.",
+      "why": "A free-text field invites typos the system then has to reconcile — this is how \"tenant\", \"Tenant\" and \"tenat\" end up as three values."
+    },
+    {
+      "id": "never-remove-the-ring",
+      "dont": "Remove the focus ring because the border already changes.",
+      "do": "Keep both — border/input/focused and the 2px ring.",
+      "why": "A 1px border change is not a sufficient focus indicator, and in dark mode it is nearly invisible. The ring is what satisfies SC 2.4.7."
+    },
+    {
+      "id": "size-is-density",
+      "dont": "Reach for sm to fit more characters.",
+      "do": "Pick the size by density — sm in a table row or toolbar, md in a form.",
+      "why": "Size changes height and text size, not width. Width comes from the layout, and a 32px field in a form reads as a filter rather than something to fill in."
+    }
+  ],
+  "a11y": [
+    "Every input needs a programmatic label — a <label htmlFor>, or aria-label when the label is genuinely visual chrome.",
+    "Invalid state is aria-invalid, not a prop, so assistive tech gets it at the same time as the border colour.",
+    "Do not use the native size attribute for width; it is measured in ex units and does not respond to the theme."
+  ]
+}

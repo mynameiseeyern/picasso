@@ -2,7 +2,7 @@
   "name": "picasso",
   "version": "0.0.0",
   "private": true,
-  "description": "Picasso \u2014 Integrated Research's design system. Repo is the source of truth; Figma is a consumer.",
+  "description": "Picasso — Integrated Research's design system. Repo is the source of truth; Figma is a consumer.",
   "license": "UNLICENSED",
   "type": "module",
   "engines": {
@@ -10,7 +10,8 @@
   },
   "workspaces": [
     "packages/tokens",
-    "packages/ui"
+    "packages/ui",
+    "apps/site"
   ],
   "scripts": {
     "build:tokens": "npm run build --workspace @ir/tokens",
@@ -19,7 +20,9 @@
     "type-check": "npm run type-check --workspace @ir/ui",
     "test": "npm run test --workspace @ir/ui",
     "lint": "eslint",
-    "build:llms": "node scripts/build-llms.mjs"
+    "build:llms": "node scripts/build-llms.mjs",
+    "dev:site": "npm run dev --workspace @ir/site",
+    "build:site": "npm run build:tokens && npm run build:llms && npm run build-storybook --workspace @ir/ui && node scripts/nest-storybook.mjs && npm run build --workspace @ir/site"
   },
   "devDependencies": {
     "@shadcn/lint": "^0.2.0",
