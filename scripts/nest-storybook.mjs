@@ -8,7 +8,7 @@
  *
  * Storybook is one rendering of the system; the site is the front door.
  */
-import { cpSync, existsSync, mkdirSync, readdirSync, rmSync, copyFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, rmSync, copyFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -22,9 +22,20 @@ if (!existsSync(SB)) {
   process.exit(1);
 }
 
+/* Plain recursive copy — fs.cpSync also tries to replicate directory modes,
+ * which some mounted filesystems refuse. */
+const copyDir = (from, to) => {
+  mkdirSync(to, { recursive: true });
+  for (const e of readdirSync(from, { withFileTypes: true })) {
+    const src = join(from, e.name);
+    const dst = join(to, e.name);
+    if (e.isDirectory()) copyDir(src, dst);
+    else copyFileSync(src, dst);
+  }
+};
+
 rmSync(DEST, { recursive: true, force: true });
-mkdirSync(DEST, { recursive: true });
-cpSync(SB, DEST, { recursive: true });
+copyDir(SB, DEST);
 
 const llms = readdirSync(join(ROOT, "public")).filter((f) => /^llms.*\.txt$/.test(f));
 for (const f of llms) copyFileSync(join(ROOT, "public", f), join(PUBLIC, f));
