@@ -50,6 +50,9 @@ const inputVariants = cva(
     "aria-invalid:border-line-input-invalid " +
     "aria-invalid:focus-visible:ring-line-danger-emphasis " +
     "disabled:cursor-not-allowed disabled:bg-surface-input-disabled " +
+    // Figma's Textarea uses border/input/disabled where its Input kept
+    // border/input/default. The token exists and means what it says.
+    "disabled:border-line-input-disabled " +
     "disabled:text-content-disabled disabled:placeholder:text-content-disabled " +
     // file inputs render their own button; strip its chrome so it inherits ours
     "file:inline-flex file:border-0 file:bg-transparent file:font-medium " +

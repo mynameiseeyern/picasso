@@ -1,0 +1,44 @@
+{
+  "component": "Textarea",
+  "summary": "For an answer longer than a line. Input's sibling; the same wiring, more room.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "711:2070" },
+  "structureFrom": "figma",
+  "measurementsFrom": "shadcn",
+  "pairs": [
+    {
+      "id": "let-it-grow",
+      "dont": "Fix the height and let content scroll inside it.",
+      "do": "Set a minimum and let the field grow.",
+      "why": "A box that cannot grow is why people write three words where they meant three sentences — they cannot see what they have written, so they stop. field-sizing-content does this without JavaScript."
+    },
+    {
+      "id": "no-horizontal-resize",
+      "dont": "Leave the browser default resize, which drags both ways.",
+      "do": "Keep resize-y.",
+      "why": "A textarea dragged wider breaks the column it sits in, and nobody has ever needed a wider one. Vertical is the axis people actually want."
+    },
+    {
+      "id": "one-line-is-an-input",
+      "dont": "Use a Textarea for a name, an ID or a threshold.",
+      "do": "Use Input.",
+      "why": "The size of the box is a promise about the length of the answer. A three-line box under \"Probe name\" invites a paragraph, and then something downstream has to truncate it."
+    },
+    {
+      "id": "say-the-limit",
+      "dont": "Enforce maxLength silently.",
+      "do": "State the limit, and show the count as it approaches.",
+      "why": "A field that stops accepting characters without explanation reads as broken. If the limit matters enough to enforce, it matters enough to say."
+    },
+    {
+      "id": "read-only-stops-resizing",
+      "dont": "Leave a read-only textarea draggable.",
+      "do": "Let read-only drop the resize handle along with the editing.",
+      "why": "A resize handle is an affordance for editing. On a field nobody can edit it is a control that does nothing, which is worse than no control."
+    }
+  ],
+  "a11y": [
+    "Wrap it in Field so the label, hint and error are wired — Textarea takes the same FieldControl as Input.",
+    "aria-invalid rather than a prop, so the failure reaches assistive tech at the same moment the border turns red.",
+    "field-sizing-content is Chrome-only today; elsewhere the minimum height plus the native resize handle is the fallback, which is what people already expect."
+  ]
+}
