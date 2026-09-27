@@ -2,6 +2,57 @@
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 
+/* IR brand variables — brand design.md §9.6. These are for the site shell and
+ * landing page only. Picasso components consume @ir/tokens, never these. */
+:root {
+  --ir-corporate-blue: #3CC9F3;
+  --ir-red: #E73750;
+  --ir-rich-grey: #161618;
+  --ir-white: #FFFFFF;
+  --ir-secondary-blue: #0099DD;
+  --ir-purple: #852CAA;
+  --ir-lime: #D4D726;
+  --ir-ink: #100F10;
+  --ir-panel-grey: #EDEDEE;
+  --ir-line-grey: #E6E7E8;
+  --ir-text-grey: #4B4B4C;
+  --ir-mid-grey: #939598;
+
+  --ir-font-display: var(--font-oswald), 'Lato', sans-serif;
+  --ir-font-body: var(--font-poppins), 'Lato', 'Century Gothic', sans-serif;
+
+  /* Fumadocs shell: brand accent that passes AA as text on white is Purple
+   * (§6.4 — Corporate Blue and Secondary Blue don't). */
+  --color-fd-primary: var(--ir-purple);
+  --color-fd-background: var(--ir-white);
+  --color-fd-foreground: var(--ir-rich-grey);
+  --color-fd-muted-foreground: var(--ir-text-grey);
+  --color-fd-border: var(--ir-line-grey);
+}
+
+.dark {
+  /* On Rich Grey, Corporate Blue is the brand accent and passes AA. */
+  --color-fd-primary: var(--ir-corporate-blue);
+  --color-fd-background: var(--ir-rich-grey);
+  --color-fd-foreground: var(--ir-white);
+}
+
+@theme inline {
+  --font-sans: var(--ir-font-body);
+  --font-display: var(--ir-font-display);
+  --color-ir-corporate-blue: var(--ir-corporate-blue);
+  --color-ir-red: var(--ir-red);
+  --color-ir-rich-grey: var(--ir-rich-grey);
+  --color-ir-secondary-blue: var(--ir-secondary-blue);
+  --color-ir-purple: var(--ir-purple);
+  --color-ir-lime: var(--ir-lime);
+  --color-ir-ink: var(--ir-ink);
+  --color-ir-panel-grey: var(--ir-panel-grey);
+  --color-ir-line-grey: var(--ir-line-grey);
+  --color-ir-text-grey: var(--ir-text-grey);
+  --color-ir-mid-grey: var(--ir-mid-grey);
+}
+
 html {
   scrollbar-gutter: stable;
 }
@@ -9,4 +60,35 @@ html {
 html > body[data-scroll-locked] {
   margin-right: 0px !important;
   --removed-body-scroll-bar-size: 0px !important;
+}
+
+/* Oswald is ALL CAPS and headlines only (brand §5). One utility, so it can't
+ * be reached for in body copy by accident. */
+.ir-display {
+  font-family: var(--ir-font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.02;
+}
+
+/* Pill tag — small Poppins caps, top-left above a headline (brand §8). */
+.ir-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Hairline footer rule (brand §8). */
+.ir-hairline {
+  border-top: 1px solid var(--ir-line-grey);
+}
+.dark .ir-hairline, .ir-dark .ir-hairline {
+  border-top-color: color-mix(in srgb, var(--ir-white) 16%, transparent);
 }
