@@ -23,13 +23,16 @@
       ]
     },
     "types": [
-      "node"
+      "node",
+      "@testing-library/jest-dom"
     ]
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    ".storybook/**/*.ts"
+    ".storybook/**/*.ts",
+    "vitest.setup.ts",
+    "vitest.config.ts"
   ],
   "exclude": [
     "node_modules"
