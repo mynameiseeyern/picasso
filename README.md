@@ -19,7 +19,7 @@ earlier Picasso Figma work, and it applies to tokens and component APIs alike.
 npm install
 npm run build:tokens     # generates packages/tokens/dist/tokens.css
 npm run storybook        # component library at :6006
-npm run lint             # @shadcn/lint — design system rules
+npm run lint             # @shadcn/lint — design system rules, enforced
 ```
 
 ## Import order matters

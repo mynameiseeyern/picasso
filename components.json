@@ -5,17 +5,17 @@
   "tsx": true,
   "tailwind": {
     "config": "",
-    "css": "packages/tokens/theme.css",
+    "css": "packages/ui/.storybook/preview.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components",
-    "lib": "@/lib",
-    "hooks": "@/hooks"
+    "components": "@ir/ui",
+    "ui": "@ir/ui",
+    "utils": "@ir/ui/lib/utils",
+    "lib": "@ir/ui/lib",
+    "hooks": "@ir/ui/hooks"
   }
 }

@@ -18,7 +18,13 @@
     "build-storybook": "npm run build:tokens && npm run build:llms && npm run build-storybook --workspace @ir/ui",
     "type-check": "npm run type-check --workspace @ir/ui",
     "test": "npm run test --workspace @ir/ui",
-    "lint": "oxlint --config .oxlintrc.json packages/ui/src",
+    "lint": "eslint",
     "build:llms": "node scripts/build-llms.mjs"
+  },
+  "devDependencies": {
+    "@shadcn/lint": "^0.2.0",
+    "@typescript-eslint/parser": "^8.70.1",
+    "eslint": "^10.11.0",
+    "oxlint": "^1.85.0"
   }
 }

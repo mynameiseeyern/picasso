@@ -98,7 +98,12 @@ StyleDictionary.registerFormat({
           `  letter-spacing: var(--${className}-letter-spacing);`,
         ];
         if (v.textCase) props.push(`  text-transform: ${v.textCase};`);
-        typographyClasses.push(`.${className} {\n${props.join("\n")}\n}`);
+        // `@utility`, not a plain `.class`. A bare class is invisible to
+        // Tailwind: it cannot take a variant (`md:text-label-sm` silently does
+        // nothing), it sits outside the utilities layer so cascade order is by
+        // source position, and tooling cannot see it. @utility makes each step
+        // a first-class Tailwind utility.
+        typographyClasses.push(`@utility ${className} {\n${props.join("\n")}\n}`);
         return;
       }
 

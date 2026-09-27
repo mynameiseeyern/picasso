@@ -1,7 +1,7 @@
 # AGENTS.md — working in Picasso
 
 Rules for any agent or human writing code here. Violations are caught by
-`npm run lint` (`@shadcn/lint`), but knowing them beats being told.
+`npm run lint` (`@shadcn/lint` on ESLint), but knowing them beats being told.
 
 ---
 
