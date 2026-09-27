@@ -13,7 +13,10 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "public");
-const SITE = process.env.PICASSO_DOCS_URL ?? "https://design.ir.com";
+// The deployed docs. A custom domain is wanted eventually; when it lands, set
+// PICASSO_DOCS_URL in Vercel's environment and every generated link follows.
+// Nothing else references the host, which is the point of it living here.
+const SITE = (process.env.PICASSO_DOCS_URL ?? "https://ir-picasso.vercel.app").replace(/\/$/, "");
 
 const walk = (dir, acc = []) => {
   for (const e of readdirSync(dir, { withFileTypes: true })) {

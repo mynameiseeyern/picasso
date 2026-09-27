@@ -93,12 +93,19 @@ table invents hex codes; an agent with it cannot.
 Point an assistant at it:
 
 ```
-Use Picasso design system documentation from https://design.ir.com/llms.txt
+Use Picasso design system documentation from https://ir-picasso.vercel.app/llms.txt
 ```
 
-⚠️ The docs domain is not settled — `design.ir.com` is a placeholder. Set
-`PICASSO_DOCS_URL` to override it. Decide it before it lands in anyone's editor
-config.
+The host appears in one place — `PICASSO_DOCS_URL` in `scripts/build-llms.mjs`,
+defaulting to the Vercel deployment. When Picasso moves to its own domain, set
+that variable in Vercel's environment and every generated link follows on the
+next build.
+
+⚠️ **Editor configs are the exception.** Anyone who has pointed Cursor,
+Windsurf or Claude Code at `ir-picasso.vercel.app` has the host saved on their
+own machine, where a rebuild cannot reach it. Worth keeping the Vercel URL
+resolving after the custom domain lands rather than chasing everyone's
+settings.
 
 ## Status
 
