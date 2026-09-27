@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, Blocks, BookOpenText, Bot, GitBranch, Palette, PenLine, Ruler, Type } from 'lucide-react';
+import { ArrowRight, Blocks, BookOpenText, Bot, GitBranch, GitCommitHorizontal, Palette, PenLine, Ruler } from 'lucide-react';
 import { componentsRoute, docsRoute } from '@/lib/shared';
 
 /* The landing page is an IR brand piece (design.md §9.3 web pattern), not a
@@ -196,7 +196,7 @@ export default function HomePage() {
           <div className="rounded-xl border border-white/15 bg-ir-ink p-5 text-sm font-mono leading-relaxed overflow-x-auto">
             <div className="text-white/50"># Claude Code, Cursor, Windsurf — any assistant that takes a URL</div>
             <div className="mt-2 text-ir-corporate-blue">Use Picasso design system documentation from</div>
-            <div className="text-white">https://&lt;docs-domain&gt;/llms.txt</div>
+            <div className="text-white">https://ir-picasso.vercel.app/llms.txt</div>
             <div className="mt-4 text-white/50"># The file set</div>
             {['llms.txt', 'llms-full.txt', 'llms-foundations.txt', 'llms-components.txt', 'llms-tokens.txt'].map((f) => (
               <div key={f}>
@@ -213,7 +213,7 @@ export default function HomePage() {
       <section className="bg-white text-ir-rich-grey">
         <div className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
           <div className="grid gap-10 md:grid-cols-[auto_1fr] md:items-start">
-            <Type className="size-8 text-ir-red" aria-hidden strokeWidth={1.5} />
+            <GitCommitHorizontal className="size-8 text-ir-red" aria-hidden strokeWidth={1.5} />
             <div>
               <h2 className="ir-display text-4xl md:text-5xl max-w-3xl">The repo is the source of truth</h2>
               <p className="mt-5 max-w-2xl text-ir-text-grey leading-relaxed">

@@ -1,0 +1,12 @@
+{
+  "pages": [
+    "index",
+    "principles-and-register",
+    "casing",
+    "buttons-and-labels",
+    "errors",
+    "empty-and-loading-states",
+    "numbers-units-and-time",
+    "terminology"
+  ]
+}

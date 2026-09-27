@@ -14,15 +14,18 @@ const docs = defineDocs({
   meta: { schema: metaSchema },
 });
 
+/* Each folder's README.md is its index page — that is how the folder reads on
+ * GitHub, and Fumadocs wants the same file called index.md. Rename it on the
+ * way in rather than in the repo. */
+const raw = docs.toFumadocsSource();
+const files = raw.files.map((file) => ({
+  ...file,
+  path: file.path.replace(/(^|\/)README\.md$/i, '$1index.md'),
+}));
+
 export const source = loader({
   baseUrl: docsRoute,
-  source: docs.toFumadocsSource(),
-  // README.md is each folder's index page, matching how the folder reads on GitHub.
-  slugs: (info) => {
-    const slugs = info.path.replace(/\.mdx?$/, '').split('/');
-    if (slugs.at(-1)?.toLowerCase() === 'readme') slugs.pop();
-    return slugs;
-  },
+  source: { ...raw, files } as typeof raw,
 });
 
 export const docsLlms = llms(source, {

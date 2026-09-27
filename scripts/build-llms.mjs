@@ -46,7 +46,8 @@ const pages = walk(join(ROOT, "docs")).sort().map((path) => {
   return {
     rel,
     isIndex: rel.endsWith("README.md"),
-    url: `${SITE}/${rel.replace(/^docs\//, "").replace(/\/?README\.md$/, "").replace(/\.md$/, "")}`.replace(/\/$/, ""),
+    // Pages render under /docs on the site; a `.md` suffix returns the page's markdown.
+    url: `${SITE}/docs/${rel.replace(/^docs\//, "").replace(/\/?README\.md$/, "").replace(/\.md$/, "")}`.replace(/\/$/, ""),
     section: rel.split("/")[1] === rel.split("/").pop() ? "root" : rel.split("/")[1],
     title: meta.title ?? rel,
     description: meta.description ?? "",
