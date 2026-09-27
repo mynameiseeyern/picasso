@@ -48,8 +48,10 @@ describe("Button", () => {
         </Button>,
       );
       const el = screen.getByRole("button", { name: "Filter" });
-      expect(el.className, variant).toContain("disabled:bg-transparent");
-      expect(el.className, variant).not.toContain("disabled:bg-surface-disabled");
+      expect(el.className, variant).toContain("[&:disabled:not([data-loading])]:bg-transparent");
+      expect(el.className, variant).not.toContain(
+        "[&:disabled:not([data-loading])]:bg-surface-disabled",
+      );
       unmount();
     }
   });
@@ -64,6 +66,9 @@ describe("Button", () => {
     const el = screen.getByRole("button", { name: /saving/i });
     expect(el).toHaveAttribute("aria-busy", "true");
     expect(el).toBeDisabled();
+    // Loading and Disabled are separate states in Figma: a loading button must
+    // keep its variant fill, so data-loading opts it out of the disabled look.
+    expect(el).toHaveAttribute("data-loading", "true");
     await userEvent.click(el);
     expect(onClick).not.toHaveBeenCalled();
   });

@@ -23,7 +23,8 @@ const buttonVariants = cva(
     "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-line-focused " +
     "focus-visible:ring-offset-2 focus-visible:ring-offset-surface-app " +
     "disabled:pointer-events-none " +
-    "disabled:text-content-disabled disabled:border-transparent " +
+    "[&:disabled:not([data-loading])]:text-content-disabled " +
+    "[&:disabled:not([data-loading])]:border-transparent " +
     "[&_svg]:shrink-0",
   {
     variants: {
@@ -32,35 +33,35 @@ const buttonVariants = cva(
           "bg-surface-primary-emphasis text-content-on-primary-emphasis " +
           "hover:bg-surface-primary-emphasis-hovered " +
           "active:bg-surface-primary-emphasis-pressed " +
-          "disabled:bg-surface-disabled",
+          "[&:disabled:not([data-loading])]:bg-surface-disabled",
         neutral:
           "bg-surface-neutral-emphasis text-content-on-neutral-emphasis " +
           "hover:bg-surface-neutral-emphasis-hovered " +
           "active:bg-surface-neutral-emphasis-pressed " +
-          "disabled:bg-surface-disabled",
+          "[&:disabled:not([data-loading])]:bg-surface-disabled",
         secondary:
           "border-line-neutral-emphasis bg-surface-neutral-subtle text-content-neutral-emphasis " +
           "hover:bg-surface-neutral-subtle-hovered " +
           "active:bg-surface-neutral-subtle-pressed " +
-          "disabled:bg-surface-disabled",
+          "[&:disabled:not([data-loading])]:bg-surface-disabled",
         destructive:
           "border-line-danger-muted bg-surface-danger-subtle text-content-on-danger-subtle " +
           "hover:bg-surface-danger-subtle-hovered " +
           "active:bg-surface-danger-subtle-pressed " +
           "focus-visible:ring-line-danger-emphasis " +
-          "disabled:bg-surface-disabled",
+          "[&:disabled:not([data-loading])]:bg-surface-disabled",
         outline:
           "border-line-neutral-muted bg-surface-neutral-muted text-content-neutral-emphasis " +
           "hover:bg-surface-neutral-muted-hovered " +
           "active:bg-surface-neutral-muted-pressed " +
-          "disabled:bg-surface-disabled",
+          "[&:disabled:not([data-loading])]:bg-surface-disabled",
         // Transparent at rest — a ghost that carries a resting fill reads as
         // Outline, and the hierarchy between primary and tertiary collapses.
         ghost:
           "bg-transparent text-content-neutral-emphasis " +
           "hover:bg-surface-neutral-muted-hovered " +
           "active:bg-surface-neutral-muted-pressed " +
-          "disabled:bg-transparent",
+          "[&:disabled:not([data-loading])]:bg-transparent",
         // A text link, not a button in a box: no fill, no border, no radius.
         // Not underlined at rest — fg/link/* carries it at 7.66:1, and a
         // shared text style cannot be underlined for one consumer only.
@@ -68,7 +69,7 @@ const buttonVariants = cva(
           "bg-transparent border-0 rounded-none text-content-link-default " +
           "underline-offset-2 hover:text-content-link-hovered hover:underline " +
           "active:text-content-link-pressed " +
-          "disabled:bg-transparent",
+          "[&:disabled:not([data-loading])]:bg-transparent",
       },
       size: {
         // Measurements are shadcn's, mapped onto Figma's size names.

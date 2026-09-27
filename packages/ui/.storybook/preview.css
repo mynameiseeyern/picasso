@@ -2,13 +2,14 @@
  *
  * Uses workspace-relative paths (not the "@ir/tokens/…" package specifier) so
  * the build never depends on node_modules symlink resolution. A real consuming
- * app would instead import "@ir/tokens/tokens.css" + "@ir/tokens/theme.css".
+ * app would instead import the three "@ir/tokens/*.css" entry points.
  *
  * theme.css carries @theme/@custom-variant directives, so it MUST be imported
  * here (inside the Tailwind-processed stylesheet), not as a plain JS import.
  */
 @import "tailwindcss";
 @import "../../tokens/dist/tokens.css";
+@import "../../tokens/themes.css";
 @import "../../tokens/theme.css";
 
 /* Scan the component + story sources for class names. */
