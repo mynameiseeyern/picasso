@@ -125,29 +125,39 @@ html > body[data-scroll-locked] {
 .text-2xs { font-size: 0.6875rem; }
 
 /* ═══ Colour picker ══════════════════════════════════════════════════
-   ChromaKit's own stylesheet is never imported — its JS bundle has no
-   reference to it, so leaving it out costs nothing and we own every
-   declaration below. We reuse its class hooks and its pointer/keyboard
-   logic; the appearance is ours.
+   ChromaKit's stylesheet is never imported — its JS bundle carries no
+   reference to it, so leaving it out costs nothing and every declaration
+   below is ours, on our tokens. We reuse its markup, its pointer handling
+   and its keyboard sliders; the appearance is ours entirely.
 
-   Load-bearing properties are marked. Without them the control is not
-   merely unstyled, it is broken: the hue slider has no height, and the
-   canvas scrolls the page instead of dragging on touch.                */
+   Verified against the rendered DOM rather than its docs: the hue wheel
+   and the saturation/brightness overlays live in ITS stylesheet, not
+   inline, so they have to be restated here or the canvas is a flat block
+   of hue and the slider a blank strip.                                  */
 
 .ck-color-area {
-  position: relative;           /* load-bearing: thumb is absolute */
+  position: relative;                 /* thumb and layers are absolute */
+  width: 100% !important;             /* the library sets width inline */
   overflow: hidden;
-  height: 100%;
   cursor: crosshair;
-  touch-action: none;           /* load-bearing: drag, not scroll */
+  touch-action: none;                 /* drag, not scroll */
   user-select: none;
   border: 1px solid var(--color-fd-border);
   border-radius: calc(var(--radius) * 0.8);
 }
-.ck-color-area-layer {
-  position: absolute;           /* load-bearing: stacks the gradients */
-  inset: 0;
+.ck-color-area-layer { position: absolute; inset: 0; }
+/* Saturation left→right over the hue, brightness top→bottom over both. */
+.ck-color-area-layer--saturation {
+  background: linear-gradient(to right, #fff, transparent);
 }
+.ck-color-area-layer--brightness {
+  background: linear-gradient(to top, #000, transparent);
+}
+/* Two overlaid range inputs, one per axis — keyboard only. Pointer events
+   belong to the parent, which owns the drag. */
+.ck-color-area-axis { position: absolute; inset: 0; pointer-events: none; outline: none; }
+.ck-color-area-axis-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
 .ck-color-area:focus-within,
 .ck-hue-slider:focus-visible {
   outline: 2px solid var(--border-focused);
@@ -155,13 +165,15 @@ html > body[data-scroll-locked] {
 }
 .ck-hue-slider:focus { outline: none; }
 
-.ck-color-area-thumb {
-  position: absolute;           /* load-bearing */
+.ck-color-area-thumb,
+.ck-slider-thumb {
+  position: absolute;
   width: 14px;
   height: 14px;
   pointer-events: none;
   transform: translate(-50%, -50%);
 }
+.ck-slider-thumb { top: 50%; }
 .ck-color-area-thumb-inner,
 .ck-slider-thumb-inner {
   width: 100%;
@@ -172,36 +184,26 @@ html > body[data-scroll-locked] {
 }
 
 .ck-hue-slider {
-  position: relative;           /* load-bearing */
+  position: relative;
   width: 100%;
-  height: 20px;                 /* load-bearing: no height, no slider */
+  height: 20px;                       /* no height, no slider */
   cursor: pointer;
-  touch-action: none;           /* load-bearing */
+  touch-action: none;
   user-select: none;
 }
 .ck-hue-slider-track {
-  position: absolute;           /* load-bearing */
-  inset: 5px 0;                 /* the track is thinner than the hit area */
+  position: absolute;
+  inset: 5px 0;                       /* track thinner than the hit area */
   border-radius: 9999px;
   border: 1px solid var(--color-fd-border);
-  /* the hue wheel itself is inline on the element, from the library */
-}
-.ck-slider-thumb {
-  position: absolute;           /* load-bearing */
-  top: 50%;
-  width: 14px;
-  height: 14px;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  border: 2px solid var(--palette-white);
-  border-radius: 9999px;
-  box-shadow: 0 0 0 1px #0000002e;
-  background: transparent;
+  background: linear-gradient(90deg, red, #ff0, #0f0, #0ff, #00f, #f0f, red);
 }
 
-.ck-inputs { display: flex; flex-direction: column; gap: 4px; }
-.ck-inputs-values { display: flex; gap: 6px; }
-.ck-channel { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+/* Channel inputs: a grid, not a stack — the library names the count. */
+.ck-channel-grid { display: grid; gap: 6px; }
+.ck-channel-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.ck-channel-grid-4 { grid-template-columns: repeat(4, 1fr); }
+.ck-channel { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
 .ck-channel-label {
   text-align: center;
   font-size: 10px;
@@ -212,6 +214,7 @@ html > body[data-scroll-locked] {
 }
 .ck-channel-input {
   width: 100%;
+  min-width: 0;
   min-height: 32px;
   padding: 4px 2px;
   text-align: center;
