@@ -1,4 +1,5 @@
 export { Button, buttonVariants, type ButtonProps } from "./components/button/button";
+export { Checkbox, checkboxVariants, type CheckboxProps } from "./components/checkbox/checkbox";
 export { Input, inputVariants, type InputProps } from "./components/input/input";
 export { Textarea, textareaVariants, type TextareaProps } from "./components/textarea/textarea";
 export {

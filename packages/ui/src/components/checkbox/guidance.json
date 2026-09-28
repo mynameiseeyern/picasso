@@ -1,0 +1,50 @@
+{
+  "component": "Checkbox",
+  "summary": "An independent yes/no. Several of them are several separate questions.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "796:60" },
+  "structureFrom": "figma",
+  "measurementsFrom": "shadcn",
+  "pairs": [
+    {
+      "id": "checkbox-vs-radio",
+      "dont": "Use checkboxes for a choice where only one answer is allowed.",
+      "do": "Use Radio for one-of-many, Checkbox for any-of-many.",
+      "why": "A checkbox says each option is an independent question. If ticking one should untick another, the control is lying about the shape of the choice."
+    },
+    {
+      "id": "checkbox-vs-switch",
+      "dont": "Use a Checkbox for something that takes effect immediately.",
+      "do": "Use Switch for an immediate change, Checkbox for something a Save button confirms.",
+      "why": "A checkbox reads as a form value — it has been marked, not applied. A switch reads as a live setting. Getting these the wrong way round is how people click Save on a page that already saved."
+    },
+    {
+      "id": "indeterminate-is-derived",
+      "dont": "Let someone click a parent checkbox into the indeterminate state.",
+      "do": "Derive it — indeterminate means some children are ticked, never a third thing to choose.",
+      "why": "Indeterminate is a report, not an option. A three-way cycle on click leaves people unable to tell what they just asked for."
+    },
+    {
+      "id": "label-is-the-target",
+      "dont": "Leave the label unassociated so only the 20px box is clickable.",
+      "do": "Wrap it in Field, or pair it with a real label.",
+      "why": "A 20px target is below every touch guideline, and the label is the part people aim at. Associating it makes the whole phrase clickable."
+    },
+    {
+      "id": "state-the-positive",
+      "dont": "Label it with a negative — \"Do not send notifications\".",
+      "do": "Label the positive and let the tick mean yes — \"Send notifications\".",
+      "why": "A ticked box next to a negative is a double negative, and people have to read it twice to work out what is on."
+    },
+    {
+      "id": "disabled-still-reads",
+      "dont": "Leave a disabled checked box painted like a live one.",
+      "do": "Mute it, so disabled reads as disabled whether ticked or not.",
+      "why": "A checked box at full strength invites a click that does nothing. This was a real defect in the Figma component, found while building this one."
+    }
+  ],
+  "a11y": [
+    "Radix renders a real button with role=checkbox and aria-checked, including \"mixed\" for indeterminate — the tri-state is announced, not just drawn.",
+    "Space toggles; the label is a click target once associated through Field.",
+    "aria-invalid colours the box and the focus ring together, so the failure does not depend on noticing one thin border."
+  ]
+}
