@@ -50,6 +50,11 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   the code, where the spinner inherits `currentColor`.
   **Figma impact** — 49 Loading variants; instances update on accept, nothing
   moves.
+- **Destructive icon-only buttons use the label's token.** The icon sizes were
+  bound to `fg/danger/emphasis` while the text sizes' label used
+  `fg/on/danger-subtle`; the icon now uses the on-colour, so text and icon
+  buttons of the same variant read as one.
+  **Figma impact** — 16 Destructive icon variants, a shade darker.
 - **Storybook never imported `themes.css`**, so `--radius` was undefined, every
   corner fell back to 0 and all five theme axes were inert.
 - **The radius primitives were shadowed.** `primitives.json` carried Tailwind's
