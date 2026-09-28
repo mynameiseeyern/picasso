@@ -21,9 +21,11 @@ the ladder runs 0 → 96. Engineering inherits it for free, and Tailwind's own
 --spacing: var(--space-1);   /* 0.25rem */
 ```
 
-That is also how the `comfortable` theme axis works — it moves the base to
-`0.375rem` and the whole system loosens proportionally. There is no second
-spacing scale to keep in sync.
+Every ladder step is also a **named** Tailwind key (`p-4` reads `--space-4`),
+so a brand or preset can move the whole ladder at once. The spacing presets —
+`compact` ×0.875 and `relaxed` ×1.25 — scale every step and round it to the 2px
+grid (`space/4` is 14 · 16 · 20px). See
+[Tokens, brands and Figma sync](tokens-and-brands.md).
 
 **Do not pick from all 35 steps.** Eight do the real work:
 

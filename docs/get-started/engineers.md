@@ -41,23 +41,24 @@ import { Button } from "@ir/ui";
 
 ## Theme
 
-Five independent axes on `<html>`, plus dark mode:
+A brand, plus independent axes, plus dark mode — all attributes on any element:
 
 ```html
-<html data-neutral="warm" data-radius="rounded"
-      data-type="compact" data-spacing="comfortable" class="dark">
+<html data-brand="clarion" data-radius="rounded" data-spacing="relaxed" class="dark">
 ```
 
-| Axis | Values |
+| Attribute | Values |
 |---|---|
-| `data-radius` | `default` · `sharp` · `subtle` · `rounded` |
-| `data-neutral` | `default` (cool) · `warm` |
+| `data-brand` | `clarion` (default) · any brand in `tokens/brands/` |
+| `data-radius` | `sharp` · `subtle` · `default` · `rounded` |
+| `data-neutral` | `cool` · `warm` |
 | `data-type` | `default` · `system` · `compact` |
-| `data-spacing` | `default` · `comfortable` |
+| `data-spacing` | `compact` · `default` · `relaxed` |
 | `class="dark"` | dark mode |
 
-Storybook's toolbar drives all five, so every story is a live preview of every
-axis.
+A brand sets the defaults for the axes; an explicit axis beats it. Storybook's
+toolbar drives the axes, so every story is a live preview. How brands and
+presets are defined: [Tokens, brands and Figma sync](../foundations/tokens-and-brands.md).
 
 ## The rules
 
