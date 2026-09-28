@@ -160,25 +160,6 @@ function Solo({
   );
 }
 
-/**
- * The anti-pattern, drawn as a wrapper rather than by restyling Radio. A
- * permanent danger ring is what we are arguing against, so it only needs to
- * look like itself — it must not become a shape anyone can copy off a prop.
- */
-function Ringed({ value, label }: { value: string; label: string }) {
-  const id = `radio-${React.useId()}`;
-  return (
-    <div className="flex items-center gap-2.5">
-      <span className="rounded-full ring-2 ring-line-danger-emphasis ring-offset-2 ring-offset-surface-app">
-        <Radio id={id} value={value} />
-      </span>
-      <label htmlFor={id} className="text-body-md text-content-neutral-emphasis">
-        {label}
-      </label>
-    </div>
-  );
-}
-
 function Guidance({
   variant,
   caption,
@@ -260,20 +241,6 @@ export const DoAndDont: Story = {
         </Guidance>
       </div>
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="A permanent danger ring reads as focus, so real focus has nothing left to say.">
-          <RadioGroup aria-label="Severity (ringed)">
-            <Ringed value="low" label="Low" />
-            <Ringed value="high" label="High" />
-          </RadioGroup>
-        </Guidance>
-        <Guidance variant="do" caption="Invalid colours the border, as every other control does. The ring stays focus.">
-          <RadioGroup aria-label="Severity (invalid)">
-            <Labelled value="low" label="Low" aria-invalid />
-            <Labelled value="high" label="High" aria-invalid />
-          </RadioGroup>
-        </Guidance>
-      </div>
     </div>
   ),
 };

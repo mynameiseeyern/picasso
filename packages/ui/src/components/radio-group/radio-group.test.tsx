@@ -50,43 +50,25 @@ describe("RadioGroup", () => {
     );
   });
 
-  it("colours the border when invalid, rather than ringing it", () => {
+  it("draws invalid as the danger ring Figma specifies", () => {
     render(
       <RadioGroup aria-label="Severity">
         <Radio value="low" aria-label="Low" aria-invalid />
       </RadioGroup>,
     );
     const radio = screen.getByRole("radio", { name: "Low" });
-    expect(radio.className).toContain("aria-invalid:border-line-danger-emphasis");
-    // A ring that is always on stops reading as focus.
-    expect(radio.className).not.toMatch(/(^|\s)ring-line-danger/);
+    // Figma's Invalid variants carry the ring/focus-danger effect style over
+    // the resting colours, so the composite token is what the code uses.
+    expect(radio.className).toContain("aria-invalid:shadow-ring-focus-danger");
   });
 
-  it("settles the three-way conflict: disabled > invalid > selected", () => {
-    render(
-      <RadioGroup aria-label="Severity" value="low">
-        <Radio value="low" aria-label="Low" aria-invalid />
-      </RadioGroup>,
-    );
-    const radio = screen.getByRole("radio", { name: "Low" });
-    // Each of these is a compound selector on purpose. Single-variant rules
-    // land in whatever order Tailwind sorts them, so "invalid wins" cannot be
-    // left to source order — stacking the variants is what makes it true.
-    // Verified against rendered CSS: selected+invalid is a danger border and a
-    // danger dot; anything disabled is fully muted, dot included.
-    expect(radio.className).toContain("aria-invalid:data-[state=checked]:border-line-danger-emphasis");
-    expect(radio.className).toContain("disabled:aria-invalid:border-line-input-disabled");
-    expect(radio.className).toContain(
-      "disabled:aria-invalid:data-[state=checked]:border-line-input-disabled",
-    );
-    const dot = radio.querySelector("[data-slot=radio-dot]");
-    expect(dot?.className).toContain("group-disabled:group-aria-invalid:bg-content-disabled");
-  });
-
-  it("mutes a disabled selection", () => {
+  it("takes the disabled fill from the input family", () => {
     render(<Group defaultValue="low" disabled />);
     const low = screen.getByRole("radio", { name: "Low" });
     expect(low).toBeDisabled();
-    expect(low.className).toContain("disabled:data-[state=checked]:border-line-input-disabled");
+    // Figma changes only the fill when disabled — the border and the dot keep
+    // their resting colours.
+    expect(low.className).toContain("disabled:bg-surface-input-disabled");
+    expect(low.className).not.toContain("disabled:data-[state=checked]:border");
   });
 });
