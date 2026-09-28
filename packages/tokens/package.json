@@ -1,7 +1,7 @@
 {
   "name": "@ir/tokens",
   "version": "0.1.0",
-  "description": "IR design tokens — Token Studio source + Style Dictionary build. Cool UntitledUI-modern neutral, brand, status, chart, typography. Light + dark.",
+  "description": "IR design tokens \u2014 Token Studio source + Style Dictionary build. Cool UntitledUI-modern neutral, brand, status, chart, typography. Light + dark.",
   "license": "UNLICENSED",
   "type": "module",
   "files": [
@@ -10,7 +10,9 @@
     "themes.css",
     "tokens",
     "build/ramp.mjs",
-    "build/ramp.d.mts"
+    "build/ramp.d.mts",
+    "build/space.mjs",
+    "build/space.d.mts"
   ],
   "exports": {
     ".": {
@@ -22,11 +24,17 @@
     "./ramp": {
       "types": "./build/ramp.d.mts",
       "default": "./build/ramp.mjs"
+    },
+    "./presets.json": "./tokens/presets.json",
+    "./space": {
+      "types": "./build/space.d.mts",
+      "default": "./build/space.mjs"
     }
   },
   "scripts": {
     "build": "node build/style-dictionary.config.mjs",
-    "check": "node build/style-dictionary.config.mjs && git diff --exit-code dist/"
+    "check": "node build/style-dictionary.config.mjs && node build/check.mjs",
+    "brand:new": "node build/brand-new.mjs"
   },
   "devDependencies": {
     "@tokens-studio/sd-transforms": "^2.0.3",

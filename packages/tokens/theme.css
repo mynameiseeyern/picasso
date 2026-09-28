@@ -250,6 +250,10 @@
   --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
+  --shadow-widget-panel: var(--shadow-widget-panel);
+  --shadow-widget-notification: var(--shadow-widget-notification);
+  --shadow-widget-screen: var(--shadow-widget-screen);
+  --shadow-widget-smooth: var(--shadow-widget-smooth);
 
   /* focus rings — composites, so they belong to the shadow namespace */
   --shadow-ring-focus: var(--ring-focus);
@@ -294,9 +298,46 @@
   --tracking-wide: var(--type-tracking-wide);
 
   /* ---- spacing ----
-     Tailwind v4 derives every spacing utility from this one value, so the
-     `[data-spacing]` axis needs to change exactly one thing. */
+     Every ladder step is a NAMED key, so p-4 resolves to --space-4 rather
+     than 4 x a base. A brand's (or preset's) ladder is rounded to the 2px
+     grid and is not linear, so a single multiplier cannot express it.
+     --spacing stays for arbitrary multiples (p-13) that are off the ladder. */
   --spacing: var(--space-1);
+  --spacing-0: var(--space-0);
+  --spacing-1: var(--space-1);
+  --spacing-2: var(--space-2);
+  --spacing-3: var(--space-3);
+  --spacing-4: var(--space-4);
+  --spacing-5: var(--space-5);
+  --spacing-6: var(--space-6);
+  --spacing-7: var(--space-7);
+  --spacing-8: var(--space-8);
+  --spacing-9: var(--space-9);
+  --spacing-10: var(--space-10);
+  --spacing-11: var(--space-11);
+  --spacing-12: var(--space-12);
+  --spacing-14: var(--space-14);
+  --spacing-16: var(--space-16);
+  --spacing-20: var(--space-20);
+  --spacing-24: var(--space-24);
+  --spacing-28: var(--space-28);
+  --spacing-32: var(--space-32);
+  --spacing-36: var(--space-36);
+  --spacing-40: var(--space-40);
+  --spacing-44: var(--space-44);
+  --spacing-48: var(--space-48);
+  --spacing-52: var(--space-52);
+  --spacing-56: var(--space-56);
+  --spacing-60: var(--space-60);
+  --spacing-64: var(--space-64);
+  --spacing-72: var(--space-72);
+  --spacing-80: var(--space-80);
+  --spacing-96: var(--space-96);
+  --spacing-px: var(--space-px);
+  --spacing-0\.5: var(--space-0-5);
+  --spacing-1\.5: var(--space-1-5);
+  --spacing-2\.5: var(--space-2-5);
+  --spacing-3\.5: var(--space-3-5);
 
   /* ---- fonts ---- */
   --font-sans: var(--type-family-sans);

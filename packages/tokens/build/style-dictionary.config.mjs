@@ -44,15 +44,17 @@ const isLightToken = (t) =>
   typeof t.filePath === "string" && t.filePath.endsWith("light.json");
 
 // ── Brands ───────────────────────────────────────────────────────────
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
-const DEFAULT_BRAND = "clarion";
+import { readFileSync, writeFileSync } from "node:fs";
+import { BRANDS, DEFAULT_BRAND, presets, writeBrandArtifacts, toPx, scaleSpace } from "./brands.mjs";
 const CORE = resolve(TOKENS_DIR, "core.json");
-const brandFile = (b) => resolve(TOKENS_DIR, "brands", b, "primitives.json");
-const BRANDS = readdirSync(resolve(TOKENS_DIR, "brands"), { withFileTypes: true })
-  .filter((d) => d.isDirectory())
-  .map((d) => d.name)
-  .sort((a, b) => (a === DEFAULT_BRAND ? -1 : b === DEFAULT_BRAND ? 1 : a.localeCompare(b)));
-if (!BRANDS.includes(DEFAULT_BRAND)) throw new Error(`tokens/brands/${DEFAULT_BRAND} is missing`);
+// Each brand's primitive layer is generated from brand.json + presets.json
+// (see brands.mjs) into dist/brands/<id>/layer.json, alongside the figma.json
+// the sync plugin applies.
+const ARTIFACTS = writeBrandArtifacts(resolve(PKG_ROOT, "dist"));
+const brandFile = (b) => ARTIFACTS[b].layerPath;
+// `_`-prefixed tokens (_shadow, _ring) are internal: they feed composites and
+// Figma effect styles, and are never emitted as CSS custom properties.
+const isInternal = (t) => t.path.some((p) => p.startsWith("_"));
 const isBrandToken = (t) =>
   typeof t.filePath === "string" && t.filePath.replace(/\\/g, "/").includes("/brands/");
 
@@ -132,7 +134,7 @@ StyleDictionary.registerFormat({
     const typographyClasses = [];
 
     dictionary.allTokens.forEach((token) => {
-      if (isDerivedRadius(token)) return;
+      if (isDerivedRadius(token) || isInternal(token)) return;
       if (token.$type === "typography" && typeof token.$value === "object") {
         const v = token.$value;
         const className = token.name;
@@ -216,7 +218,8 @@ StyleDictionary.registerFormat({
             t.path[0] === "space" ||
             t.path[0] === "radius" ||
             isLightToken(t)) &&
-          t.$type !== "typography",
+          t.$type !== "typography" &&
+          !isInternal(t),
       )
       .map((t) => `'${t.name}'`);
 
@@ -315,7 +318,7 @@ StyleDictionary.registerFormat({
   format: async ({ dictionary }) => {
     const darkDecls = [];
     dictionary.allTokens.forEach((token) => {
-      if (!isDarkToken(token)) return;
+      if (!isDarkToken(token) || isInternal(token)) return;
       if (token.$type === "shadow" && Array.isArray(token.$value)) {
         const shadowStr = token.$value
           .map((sh) => {
@@ -364,7 +367,13 @@ for (const brand of BRANDS) {
       const decls = dictionary.allTokens
         .filter((t) => isBrandToken(t) && !isDerivedRadius(t))
         .map((t) => `  --${t.name}: ${t.$value};`);
-      brandBlocks.push(`[data-brand="${brand}"] {\n${decls.join("\n")}\n}`);
+      const o = ARTIFACTS[brand].overrides;
+      const on = (m) => Object.entries(o[m]).map(([k, v]) => `  --fg-on-${k}: var(--${v.slice(1, -1).replaceAll(".", "-")});`);
+      decls.push(...on("light"));
+      let block = `[data-brand="${brand}"] {\n${decls.join("\n")}\n}`;
+      if (on("dark").length)
+        block += `\n.dark[data-brand="${brand}"], .dark [data-brand="${brand}"] {\n${on("dark").join("\n")}\n}`;
+      brandBlocks.push(block);
       return "";
     },
   });
@@ -382,6 +391,24 @@ for (const brand of BRANDS) {
   });
   await sd.formatPlatform("css");
 }
+// Axes — the same presets a brand chooses from, applied at runtime. They come
+// AFTER the brand blocks, so an explicit axis beats the brand's default.
+const own = (o) => Object.entries(o).filter(([k]) => !k.startsWith("$"));
+const axisBlocks = [];
+for (const [k, v] of own(presets.radius)) axisBlocks.push(`[data-radius="${k}"] { --radius: ${v}; }`);
+for (const [k, ramp] of own(presets.neutral))
+  axisBlocks.push(`[data-neutral="${k}"] {\n${own(ramp).map(([s, c]) => `  --palette-neutral-${s}: ${c};`).join("\n")}\n}`);
+for (const [k, mult] of own(presets.spacing))
+  axisBlocks.push(
+    `[data-spacing="${k}"] {\n${own(presets.space)
+      .map(([s, v]) => {
+        const px = scaleSpace(toPx(v), mult, s);
+        return `  --space-${s.replace(/_/g, "-")}: ${s === "px" ? "1px" : px === 0 ? "0" : `${+(px / 16).toFixed(4)}rem`};`;
+      })
+      .join("\n")}\n}`,
+  );
+brandBlocks.push("/* ── Axes (presets.json) — after brands, so an explicit axis wins ── */", ...axisBlocks);
+
 const css = readFileSync(DIST_DIR + "tokens.css", "utf8");
 writeFileSync(
   DIST_DIR + "tokens.css",

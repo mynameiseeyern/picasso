@@ -1,8 +1,0 @@
-{
-  "tokenSetOrder": [
-    "core",
-    "brands/clarion/primitives",
-    "light",
-    "dark"
-  ]
-}

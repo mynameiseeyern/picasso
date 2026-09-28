@@ -1,0 +1,27 @@
+{
+  "$description": "Clarion — the default brand. Each field picks from presets.json. colour.ramp pins the eleven stops; omit it and the build generates them from colour.base.",
+  "name": "Clarion",
+  "colour": {
+    "base": "#007FAB",
+    "ramp": {
+      "50": "#EAF8FF",
+      "100": "#CDEEFF",
+      "200": "#9DDBFB",
+      "300": "#6EC3ED",
+      "400": "#42ABDA",
+      "500": "#1A92C1",
+      "600": "#007FAB",
+      "700": "#005D7F",
+      "800": "#004660",
+      "900": "#003347",
+      "950": "#00202F"
+    }
+  },
+  "neutral": "cool",
+  "radius": "default",
+  "spacing": "default",
+  "type": {
+    "sans": "Inter",
+    "mono": "JetBrains Mono"
+  }
+}

@@ -531,202 +531,6 @@
       }
     }
   },
-  "ring": {
-    "focus": {
-      "$type": "boxShadow",
-      "$value": [
-        {
-          "color": "{palette.neutral.900}",
-          "x": "0",
-          "y": "0",
-          "blur": "0",
-          "spread": "2px",
-          "type": "dropShadow"
-        },
-        {
-          "color": "{palette.brand.400}",
-          "x": "0",
-          "y": "0",
-          "blur": "0",
-          "spread": "4px",
-          "type": "dropShadow"
-        }
-      ]
-    },
-    "focus-danger": {
-      "$type": "boxShadow",
-      "$value": [
-        {
-          "color": "{palette.neutral.900}",
-          "x": "0",
-          "y": "0",
-          "blur": "0",
-          "spread": "2px",
-          "type": "dropShadow"
-        },
-        {
-          "color": "{palette.danger.400}",
-          "x": "0",
-          "y": "0",
-          "blur": "0",
-          "spread": "4px",
-          "type": "dropShadow"
-        }
-      ]
-    },
-    "focus-inset": {
-      "$type": "boxShadow",
-      "$value": [
-        {
-          "color": "{palette.brand.400}",
-          "x": "0",
-          "y": "0",
-          "blur": "0",
-          "spread": "2px",
-          "type": "innerShadow"
-        }
-      ]
-    }
-  },
-  "shadow": {
-    "xs": {
-      "$type": "boxShadow",
-      "$value": [
-        {
-          "color": "rgba(255, 255, 255, 0.04)",
-          "x": "0",
-          "y": "1px",
-          "blur": "0",
-          "spread": "0",
-          "type": "innerShadow"
-        },
-        {
-          "color": "rgba(0, 0, 0, 0.40)",
-          "x": "0",
-          "y": "1px",
-          "blur": "2px",
-          "spread": "0",
-          "type": "dropShadow"
-        }
-      ]
-    },
-    "sm": {
-      "$type": "boxShadow",
-      "$value": [
-        {
-          "color": "rgba(255, 255, 255, 0.05)",
-          "x": "0",
-          "y": "1px",
-          "blur": "0",
-          "spread": "0",
-          "type": "innerShadow"
-        },
-        {
-          "color": "rgba(0, 0, 0, 0.40)",
-          "x": "0",
-          "y": "1px",
-          "blur": "2px",
-          "spread": "0",
-          "type": "dropShadow"
-        },
-        {
-          "color": "rgba(0, 0, 0, 0.30)",
-          "x": "0",
-          "y": "2px",
-          "blur": "4px",
-          "spread": "0",
-          "type": "dropShadow"
-        }
-      ]
-    },
-    "md": {
-      "$type": "boxShadow",
-      "$value": [
-        {
-          "color": "rgba(255, 255, 255, 0.06)",
-          "x": "0",
-          "y": "1px",
-          "blur": "0",
-          "spread": "0",
-          "type": "innerShadow"
-        },
-        {
-          "color": "rgba(0, 0, 0, 0.50)",
-          "x": "0",
-          "y": "2px",
-          "blur": "4px",
-          "spread": "0",
-          "type": "dropShadow"
-        },
-        {
-          "color": "rgba(0, 0, 0, 0.40)",
-          "x": "0",
-          "y": "4px",
-          "blur": "8px",
-          "spread": "0",
-          "type": "dropShadow"
-        }
-      ]
-    },
-    "lg": {
-      "$type": "boxShadow",
-      "$value": [
-        {
-          "color": "rgba(255, 255, 255, 0.06)",
-          "x": "0",
-          "y": "1px",
-          "blur": "0",
-          "spread": "0",
-          "type": "innerShadow"
-        },
-        {
-          "color": "rgba(0, 0, 0, 0.55)",
-          "x": "0",
-          "y": "4px",
-          "blur": "8px",
-          "spread": "0",
-          "type": "dropShadow"
-        },
-        {
-          "color": "rgba(0, 0, 0, 0.45)",
-          "x": "0",
-          "y": "8px",
-          "blur": "16px",
-          "spread": "0",
-          "type": "dropShadow"
-        }
-      ]
-    },
-    "xl": {
-      "$type": "boxShadow",
-      "$value": [
-        {
-          "color": "rgba(255, 255, 255, 0.08)",
-          "x": "0",
-          "y": "1px",
-          "blur": "0",
-          "spread": "0",
-          "type": "innerShadow"
-        },
-        {
-          "color": "rgba(0, 0, 0, 0.60)",
-          "x": "0",
-          "y": "8px",
-          "blur": "16px",
-          "spread": "0",
-          "type": "dropShadow"
-        },
-        {
-          "color": "rgba(0, 0, 0, 0.50)",
-          "x": "0",
-          "y": "16px",
-          "blur": "32px",
-          "spread": "0",
-          "type": "dropShadow"
-        }
-      ]
-    }
-  },
   "status": {
     "healthy": {
       "$type": "color",
@@ -781,6 +585,474 @@
     "8": {
       "$type": "color",
       "$value": "{palette.vis.pink.400}"
+    }
+  },
+  "_ring": {
+    "$description": "Internal: colours feeding ring/*. Never used directly.",
+    "focus": {
+      "$type": "color",
+      "$value": "{palette.brand.400}"
+    },
+    "danger": {
+      "$type": "color",
+      "$value": "{palette.danger.400}"
+    },
+    "offset": {
+      "$type": "color",
+      "$value": "{palette.neutral.900}"
+    }
+  },
+  "_shadow": {
+    "$description": "Internal: one colour per shadow layer, per mode, feeding shadow/*. Figma binds its effect styles to these.",
+    "xs": {
+      "inset": {
+        "$type": "color",
+        "$value": "#FFFFFF0A"
+      },
+      "layer-1": {
+        "$type": "color",
+        "$value": "#00000066"
+      }
+    },
+    "sm": {
+      "inset": {
+        "$type": "color",
+        "$value": "#FFFFFF0D"
+      },
+      "layer-1": {
+        "$type": "color",
+        "$value": "#0000004D"
+      },
+      "layer-2": {
+        "$type": "color",
+        "$value": "#00000066"
+      }
+    },
+    "md": {
+      "inset": {
+        "$type": "color",
+        "$value": "#FFFFFF0F"
+      },
+      "layer-1": {
+        "$type": "color",
+        "$value": "#00000066"
+      },
+      "layer-2": {
+        "$type": "color",
+        "$value": "#00000080"
+      }
+    },
+    "lg": {
+      "inset": {
+        "$type": "color",
+        "$value": "#FFFFFF0F"
+      },
+      "layer-1": {
+        "$type": "color",
+        "$value": "#00000073"
+      },
+      "layer-2": {
+        "$type": "color",
+        "$value": "#0000008C"
+      }
+    },
+    "xl": {
+      "inset": {
+        "$type": "color",
+        "$value": "#FFFFFF14"
+      },
+      "layer-1": {
+        "$type": "color",
+        "$value": "#00000080"
+      },
+      "layer-2": {
+        "$type": "color",
+        "$value": "#00000099"
+      }
+    },
+    "widget-panel": {
+      "inset": {
+        "$type": "color",
+        "$value": "#FFFFFF0F"
+      },
+      "layer-1": {
+        "$type": "color",
+        "$value": "#00000080"
+      }
+    },
+    "widget-notification": {
+      "inset": {
+        "$type": "color",
+        "$value": "#FFFFFF0F"
+      },
+      "layer-1": {
+        "$type": "color",
+        "$value": "#00000073"
+      }
+    },
+    "widget-screen": {
+      "inset": {
+        "$type": "color",
+        "$value": "#FFFFFF0F"
+      },
+      "layer-1": {
+        "$type": "color",
+        "$value": "#00000080"
+      }
+    },
+    "widget-smooth": {
+      "inset": {
+        "$type": "color",
+        "$value": "#FFFFFF0D"
+      },
+      "layer-1": {
+        "$type": "color",
+        "$value": "#00000014"
+      },
+      "layer-2": {
+        "$type": "color",
+        "$value": "#0000001F"
+      },
+      "layer-3": {
+        "$type": "color",
+        "$value": "#00000026"
+      },
+      "layer-4": {
+        "$type": "color",
+        "$value": "#0000002E"
+      },
+      "layer-5": {
+        "$type": "color",
+        "$value": "#00000038"
+      },
+      "layer-6": {
+        "$type": "color",
+        "$value": "#0000004D"
+      }
+    }
+  },
+  "ring": {
+    "$description": "Focus rings. Layers are in CSS order (first = on top); Figma lists them the other way round.",
+    "focus": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "{_ring.offset}",
+          "x": "0",
+          "y": "0",
+          "blur": "0",
+          "spread": "2px",
+          "type": "dropShadow"
+        },
+        {
+          "color": "{_ring.focus}",
+          "x": "0",
+          "y": "0",
+          "blur": "0",
+          "spread": "4px",
+          "type": "dropShadow"
+        }
+      ]
+    },
+    "focus-danger": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "{_ring.offset}",
+          "x": "0",
+          "y": "0",
+          "blur": "0",
+          "spread": "2px",
+          "type": "dropShadow"
+        },
+        {
+          "color": "{_ring.danger}",
+          "x": "0",
+          "y": "0",
+          "blur": "0",
+          "spread": "4px",
+          "type": "dropShadow"
+        }
+      ]
+    },
+    "focus-inset": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "{_ring.focus}",
+          "x": "0",
+          "y": "0",
+          "blur": "0",
+          "spread": "2px",
+          "type": "innerShadow"
+        }
+      ]
+    }
+  },
+  "shadow": {
+    "$description": "Elevation. Layers are in CSS order (first = on top); Figma lists them the other way round. widget/* are for the Clarion widget.",
+    "xs": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "{_shadow.xs.layer-1}",
+          "x": "0",
+          "y": "1px",
+          "blur": "2px",
+          "spread": "0",
+          "type": "dropShadow"
+        },
+        {
+          "color": "{_shadow.xs.inset}",
+          "x": "0",
+          "y": "1px",
+          "blur": "0",
+          "spread": "0",
+          "type": "innerShadow"
+        }
+      ]
+    },
+    "sm": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "{_shadow.sm.layer-2}",
+          "x": "0",
+          "y": "1px",
+          "blur": "2px",
+          "spread": "0",
+          "type": "dropShadow"
+        },
+        {
+          "color": "{_shadow.sm.layer-1}",
+          "x": "0",
+          "y": "2px",
+          "blur": "4px",
+          "spread": "0",
+          "type": "dropShadow"
+        },
+        {
+          "color": "{_shadow.sm.inset}",
+          "x": "0",
+          "y": "1px",
+          "blur": "0",
+          "spread": "0",
+          "type": "innerShadow"
+        }
+      ]
+    },
+    "md": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "{_shadow.md.layer-2}",
+          "x": "0",
+          "y": "2px",
+          "blur": "4px",
+          "spread": "0",
+          "type": "dropShadow"
+        },
+        {
+          "color": "{_shadow.md.layer-1}",
+          "x": "0",
+          "y": "4px",
+          "blur": "8px",
+          "spread": "0",
+          "type": "dropShadow"
+        },
+        {
+          "color": "{_shadow.md.inset}",
+          "x": "0",
+          "y": "1px",
+          "blur": "0",
+          "spread": "0",
+          "type": "innerShadow"
+        }
+      ]
+    },
+    "lg": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "{_shadow.lg.layer-2}",
+          "x": "0",
+          "y": "4px",
+          "blur": "8px",
+          "spread": "0",
+          "type": "dropShadow"
+        },
+        {
+          "color": "{_shadow.lg.layer-1}",
+          "x": "0",
+          "y": "8px",
+          "blur": "16px",
+          "spread": "0",
+          "type": "dropShadow"
+        },
+        {
+          "color": "{_shadow.lg.inset}",
+          "x": "0",
+          "y": "1px",
+          "blur": "0",
+          "spread": "0",
+          "type": "innerShadow"
+        }
+      ]
+    },
+    "xl": {
+      "$type": "shadow",
+      "$value": [
+        {
+          "color": "{_shadow.xl.layer-2}",
+          "x": "0",
+          "y": "8px",
+          "blur": "16px",
+          "spread": "0",
+          "type": "dropShadow"
+        },
+        {
+          "color": "{_shadow.xl.layer-1}",
+          "x": "0",
+          "y": "16px",
+          "blur": "32px",
+          "spread": "0",
+          "type": "dropShadow"
+        },
+        {
+          "color": "{_shadow.xl.inset}",
+          "x": "0",
+          "y": "1px",
+          "blur": "0",
+          "spread": "0",
+          "type": "innerShadow"
+        }
+      ]
+    },
+    "widget": {
+      "panel": {
+        "$type": "shadow",
+        "$value": [
+          {
+            "color": "{_shadow.widget-panel.layer-1}",
+            "x": "0",
+            "y": "18px",
+            "blur": "44px",
+            "spread": "0",
+            "type": "dropShadow"
+          },
+          {
+            "color": "{_shadow.widget-panel.inset}",
+            "x": "0",
+            "y": "1px",
+            "blur": "0",
+            "spread": "0",
+            "type": "innerShadow"
+          }
+        ]
+      },
+      "notification": {
+        "$type": "shadow",
+        "$value": [
+          {
+            "color": "{_shadow.widget-notification.layer-1}",
+            "x": "0",
+            "y": "8px",
+            "blur": "24px",
+            "spread": "0",
+            "type": "dropShadow"
+          },
+          {
+            "color": "{_shadow.widget-notification.inset}",
+            "x": "0",
+            "y": "1px",
+            "blur": "0",
+            "spread": "0",
+            "type": "innerShadow"
+          }
+        ]
+      },
+      "screen": {
+        "$type": "shadow",
+        "$value": [
+          {
+            "color": "{_shadow.widget-screen.layer-1}",
+            "x": "0",
+            "y": "30px",
+            "blur": "30px",
+            "spread": "0",
+            "type": "dropShadow"
+          },
+          {
+            "color": "{_shadow.widget-screen.inset}",
+            "x": "0",
+            "y": "1px",
+            "blur": "0",
+            "spread": "0",
+            "type": "innerShadow"
+          }
+        ]
+      },
+      "smooth": {
+        "$type": "shadow",
+        "$value": [
+          {
+            "color": "{_shadow.widget-smooth.layer-6}",
+            "x": "0",
+            "y": "100px",
+            "blur": "80px",
+            "spread": "0",
+            "type": "dropShadow"
+          },
+          {
+            "color": "{_shadow.widget-smooth.layer-5}",
+            "x": "0",
+            "y": "41.7776px",
+            "blur": "33.4221px",
+            "spread": "0",
+            "type": "dropShadow"
+          },
+          {
+            "color": "{_shadow.widget-smooth.layer-4}",
+            "x": "0",
+            "y": "22.3363px",
+            "blur": "17.869px",
+            "spread": "0",
+            "type": "dropShadow"
+          },
+          {
+            "color": "{_shadow.widget-smooth.layer-3}",
+            "x": "0",
+            "y": "12.5216px",
+            "blur": "10.0172px",
+            "spread": "0",
+            "type": "dropShadow"
+          },
+          {
+            "color": "{_shadow.widget-smooth.layer-2}",
+            "x": "0",
+            "y": "6.6501px",
+            "blur": "5.3201px",
+            "spread": "0",
+            "type": "dropShadow"
+          },
+          {
+            "color": "{_shadow.widget-smooth.layer-1}",
+            "x": "0",
+            "y": "2.7673px",
+            "blur": "2.2138px",
+            "spread": "0",
+            "type": "dropShadow"
+          },
+          {
+            "color": "{_shadow.widget-smooth.inset}",
+            "x": "0",
+            "y": "1px",
+            "blur": "0",
+            "spread": "0",
+            "type": "innerShadow"
+          }
+        ]
+      }
     }
   }
 }

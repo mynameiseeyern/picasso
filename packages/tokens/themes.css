@@ -34,49 +34,23 @@
    no data-* attributes renders the Clarion cool theme. These blocks only
    need to exist for the NON-default values.                            */
 
-/* ═══ 1. Brand ramp ══════════════════════════════════════════════════
-   Only the brand-owned ramp moves. neutral / danger / success / warning
-   stay in tokens.css — they do not change per product, and duplicating
-   them per brand is how a theme system rots.
-
-   ⚠️ The Clarion ramp is the tokens.css default and is currently in
-   dispute — Figma and the repo disagree on all 11 stops (see
-   picasso-tokens-reconciliation §1.2). Settle that before adding a
-   second brand, or the conflict gets baked into every theme.
-
-   To add one, copy this block and supply 11 stops:
-
-   [data-brand="prognosis"] {
-     --palette-brand-50:  #...;   --palette-brand-500: #...;
-     --palette-brand-100: #...;   --palette-brand-600: #...;
-     --palette-brand-200: #...;   --palette-brand-700: #...;
-     --palette-brand-300: #...;   --palette-brand-800: #...;
-     --palette-brand-400: #...;   --palette-brand-900: #...;
-                                  --palette-brand-950: #...;
-   }                                                                    */
+/* ═══ 1. Brands ═════════════════════════════════════════════════════
+   A brand is tokens/brands/<brand>/brand.json — a base colour and one
+   choice per axis from presets.json. The build generates its
+   [data-brand="…"] block into tokens.css (ramp, neutral, radius base,
+   spacing ladder, fonts, and any fg/on/* the contrast measurement flips).
+   Add one with `npm run brand:new`; never hand-write a brand block here. */
 
 /* ═══ 2. Neutral ramp — cool (default) / warm ════════════════════════
-   Cool is the Untitled-UI blue-grey already in tokens.css.
-   Warm below is Tailwind's `stone`, a conventional warm neutral and a
+   Both ramps live in presets.json. Cool is the Untitled-UI blue-grey;
+   warm is Tailwind's `stone`, a conventional warm neutral and a
    sane starting point — replace if Marketing has its own.
 
    ⚠️ Note an existing quirk in the cool ramp: neutral-950 (#161618) is
    LESS blue than neutral-900 (#121926), so the ramp loses its hue at the
-   darkest step. The warm ramp below is hue-consistent throughout.       */
+   darkest step. The warm ramp is hue-consistent throughout.       */
 
-[data-neutral="warm"] {
-  --palette-neutral-50:  #fafaf9;
-  --palette-neutral-100: #f5f5f4;
-  --palette-neutral-200: #e7e5e4;
-  --palette-neutral-300: #d6d3d1;
-  --palette-neutral-400: #a8a29e;
-  --palette-neutral-500: #78716c;
-  --palette-neutral-600: #57534e;
-  --palette-neutral-700: #44403c;
-  --palette-neutral-800: #292524;
-  --palette-neutral-900: #1c1917;
-  --palette-neutral-950: #0f0d0c;
-}
+/* [data-neutral="cool|warm"] is GENERATED into tokens.css from presets.json. */
 
 /* ═══ 3. Radius — shadcn's model, one knob ══════════════════════════
    shadcn deviates from Tailwind here on purpose: instead of 8 explicit
@@ -99,14 +73,8 @@
    tokens/core.json (formulas, for Token Studio → Figma). The build fails
    if they disagree.                                                     */
 
-/* The default --radius is NOT set here. It comes from the brand
-   (tokens/brands/<brand>/primitives.json → radius.base), emitted into
-   tokens.css as :root and [data-brand="…"]. Setting it here would beat
-   every brand, because this file loads after tokens.css.               */
-
-[data-radius="sharp"]   { --radius: 0; }
-[data-radius="subtle"]  { --radius: 0.375rem; }  /*  6px */
-[data-radius="rounded"] { --radius: 1rem; }      /* 16px */
+/* The radius axis blocks ([data-radius="…"]) are GENERATED into tokens.css
+   from presets.json — the same presets a brand picks from. Not set here. */
 
 /* ═══ 4. Typography ══════════════════════════════════════════════════
    Family swap, and a scale one step tighter for dense screens.
@@ -132,15 +100,11 @@
 }
 
 /* ═══ 5. Spacing ═════════════════════════════════════════════════════
-   Tailwind v4 derives EVERY spacing utility from one base, so this axis
-   changes exactly one value.
+   compact x0.875 · default x1 · relaxed x1.25 on the whole ladder, each
+   step rounded to the 2px grid so the 4pt-with-2pt-half-steps rule holds
+   (space/4: 14 · 16 · 20px). theme.css maps every step to a named
+   Tailwind spacing key, so p-4 reads --space-4 rather than 4 x a base —
+   that is what lets a rounded ladder survive into utilities.            */
 
-   ⚠️ Honest trade-off: Picasso is a 4pt grid with 2pt half-steps.
-   Only bases that are multiples of 2 keep that true. 4px (default) and
-   6px (comfortable) do; a "compact" 3px base would leave the grid, so it
-   is deliberately not offered here. If you want denser UI, reduce padding
-   at the COMPONENT level (a size variant) rather than bending the grid.  */
-
-[data-spacing="comfortable"] {
-  --space-1: 0.375rem;  /* 6px base — every utility scales from it */
-}
+/* [data-spacing="compact|default|relaxed"] is GENERATED into tokens.css from
+   presets.json: the whole ladder × the preset, rounded to the 2px grid. */
