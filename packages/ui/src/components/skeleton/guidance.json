@@ -1,0 +1,40 @@
+{
+  "component": "Skeleton",
+  "summary": "The shape of content that has not arrived yet.",
+  "figma": null,
+  "structureFrom": "code",
+  "measurementsFrom": "code",
+  "note": "No Figma component exists for Skeleton. Built from the system's own tokens; worth drawing in Figma before it spreads.",
+  "pairs": [
+    {
+      "id": "match-the-real-thing",
+      "dont": "Show three generic grey bars where a table will land.",
+      "do": "Match the shape and count of what is actually coming.",
+      "why": "A skeleton is a promise about the layout. Break it and the page jumps, which is worse than having shown nothing."
+    },
+    {
+      "id": "announce-once",
+      "dont": "Let a screen reader meet twelve skeleton blocks.",
+      "do": "Hide them (they already are) and announce the wait once on the region.",
+      "why": "Twelve empty boxes read out one at a time tells the person nothing about what is happening."
+    },
+    {
+      "id": "not-for-every-wait",
+      "dont": "Flash skeletons for a request that usually takes 200ms.",
+      "do": "Show them only past about half a second, or keep the old content in place.",
+      "why": "A skeleton that appears and vanishes reads as a glitch. Below the threshold, nothing at all is calmer."
+    },
+    {
+      "id": "not-a-spinner",
+      "dont": "Use a skeleton for a submit, a save, or an action in flight.",
+      "do": "Use the button's loading state; save skeletons for content arriving.",
+      "why": "A skeleton says \"this will be here shortly\". An action has no shape to stand in for."
+    },
+    {
+      "id": "dont-skeleton-the-chrome",
+      "dont": "Skeleton the nav, the page title and the buttons too.",
+      "do": "Render the frame for real and skeleton only what is loading.",
+      "why": "Chrome is already known at render time. Greying it out makes the whole page look broken rather than busy."
+    }
+  ]
+}

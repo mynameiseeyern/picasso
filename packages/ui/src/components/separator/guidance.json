@@ -1,0 +1,39 @@
+{
+  "component": "Separator",
+  "summary": "A 1px rule dividing related groups inside one surface.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2055:4783" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "one-surface-only",
+      "dont": "Put a rule between two cards.",
+      "do": "Use it inside a surface, between sections of the same card or menu.",
+      "why": "Things that already have their own surface are already separated. A rule between them adds a line and no meaning."
+    },
+    {
+      "id": "space-first",
+      "dont": "Reach for a rule to create a gap.",
+      "do": "Use spacing, and add the rule only if the grouping is still unclear.",
+      "why": "Whitespace groups as well as a line does and leaves the page quieter. A rule is for when space alone has stopped working."
+    },
+    {
+      "id": "decorative-by-default",
+      "dont": "Set decorative={false} on every rule so it is 'accessible'.",
+      "do": "Leave it decorative unless the rule is the only boundary marker.",
+      "why": "Headings, lists and landmarks already carry the grouping. \"Separator\" announced between every section is noise, not access."
+    },
+    {
+      "id": "vertical-needs-height",
+      "dont": "Drop a vertical rule into a block container and expect a line.",
+      "do": "Put it in a flex row, or give it a height.",
+      "why": "It fills the height it is given. Given none, it is 1px wide and 0 tall — nothing at all."
+    },
+    {
+      "id": "not-a-divider-grid",
+      "dont": "Rule every row of a list.",
+      "do": "Rule between groups, and let rows sit on spacing alone.",
+      "why": "A line per row turns a list into a table and makes the one meaningful boundary impossible to find."
+    }
+  ]
+}

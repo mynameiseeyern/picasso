@@ -74,3 +74,5 @@ export {
   type FileUploadProps,
   type FileUploadItemProps,
 } from "./components/file-upload/file-upload";
+export { Separator, type SeparatorProps } from "./components/separator/separator";
+export { Skeleton, SkeletonText, type SkeletonProps, type SkeletonTextProps } from "./components/skeleton/skeleton";

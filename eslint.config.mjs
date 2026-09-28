@@ -64,6 +64,13 @@ export default defineConfig([
           // the parent — and no sensible closed set of widths to make into a
           // variant. Colour and type on it are still refused.
           { pattern: "^TableCol$", allow: ["layout"] },
+          // A Skeleton is a stand-in for content that has not arrived, so its
+          // size IS the component — and there is no closed set to make into
+          // variants, because it mirrors whatever is coming (a label, an
+          // avatar, a chart). A wrapper cannot express it without a second
+          // element per skeleton. Shape is a variant instead of an allowance,
+          // and colour, type and effects are still refused.
+          { pattern: "^Skeleton$", allow: ["layout"] },
         ],
       }],
       "shadcn/no-inline-styles": "error",
