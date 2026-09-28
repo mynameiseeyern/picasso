@@ -389,7 +389,7 @@
    Source: Clarion loader handoffs; Figma "Loader" page.                  */
 @theme inline {
   --animate-loader-turn: loader-turn 3s linear infinite;
-  --animate-loader-reach: loader-reach 1.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  --animate-loader-reach: loader-reach 1.5s cubic-bezier(0.45, 0, 0.55, 1) var(--loader-delay, 0s) infinite;
   --animate-loader-fade: loader-fade 1.8s ease-in-out infinite alternate;
   --animate-loader-pulse-l: loader-pulse-l 1.3s ease-in-out infinite;
   --animate-loader-pulse-m: loader-pulse-m 1.3s ease-in-out infinite;

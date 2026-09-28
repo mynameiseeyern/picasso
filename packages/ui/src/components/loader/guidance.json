@@ -1,0 +1,45 @@
+{
+  "component": "Loader",
+  "summary": "Indeterminate wait indicators: spinner for in-console waits, fuse for brand moments, pulse for Iris thinking.",
+  "figma": "Loader (Variant = Spinner · Fuse · Pulse)",
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "skeleton-first",
+      "dont": "Put a spinner where you already know the layout that is coming.",
+      "do": "Use Skeleton when the shape is known; keep the spinner for small regions with nothing to stand in for.",
+      "why": "A skeleton promises the layout and stops the page jumping. A spinner only says 'wait'."
+    },
+    {
+      "id": "fuse-is-a-brand-moment",
+      "dont": "Use Fuse for a table refresh or anywhere inside the console.",
+      "do": "Keep Fuse for app boot, the widget's first run and empty states — one on screen, at least 56px.",
+      "why": "It is slow, large and carries IR red, which means critical everywhere else in Clarion. It also repaints every frame."
+    },
+    {
+      "id": "name-the-work",
+      "dont": "Label it \"Loading\".",
+      "do": "Name the work: \"Bringing your fleet online\", \"Iris is thinking\".",
+      "why": "The label is the only thing a screen reader hears, and 'Loading' tells the person nothing."
+    },
+    {
+      "id": "announce-once",
+      "dont": "Leave the label on when visible text beside the loader says the same thing.",
+      "do": "Pass label={null} so it is announced once.",
+      "why": "Hearing the same sentence twice reads as a bug."
+    },
+    {
+      "id": "no-flash",
+      "dont": "Show a loader for a wait that usually ends in 300ms.",
+      "do": "Rely on the show delay (Pulse waits 400ms by default; set delay for others).",
+      "why": "A loader that appears and vanishes reads as a glitch, not as work."
+    },
+    {
+      "id": "actions-use-buttons",
+      "dont": "Put a Loader next to a button while it saves.",
+      "do": "Use the button's loading state.",
+      "why": "The action and its progress belong in the same place."
+    }
+  ]
+}
