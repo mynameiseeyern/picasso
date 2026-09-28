@@ -1,0 +1,39 @@
+{
+  "component": "Avatar",
+  "summary": "A person or tenant, as a picture, initials or a generic mark.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "375:427" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "always-a-fallback",
+      "dont": "Render an avatar with only an image source.",
+      "do": "Always give it initials or the generic person to fall back to.",
+      "why": "Profile pictures 404 more than anything else on a page. Without a fallback the layout collapses to an empty circle."
+    },
+    {
+      "id": "name-the-status",
+      "dont": "Let the dot be the only thing saying someone is offline.",
+      "do": "Give AvatarStatus a label, and repeat the state in text nearby.",
+      "why": "A colour on a 10px dot is invisible to a screen reader and hard for anyone who does not know the convention."
+    },
+    {
+      "id": "not-a-button",
+      "dont": "Hang the only route to a profile off clicking the avatar.",
+      "do": "Wrap it in a real link or button with a name.",
+      "why": "An avatar is an image. Nothing about it says it can be activated, and nothing announces where it goes."
+    },
+    {
+      "id": "initials-are-not-names",
+      "dont": "Use initials alone in a list people scan to find someone.",
+      "do": "Put the name beside it; keep the avatar as recognition, not identification.",
+      "why": "Two colleagues share initials more often than you would think, and initials do not disambiguate them."
+    },
+    {
+      "id": "size-with-the-row",
+      "dont": "Mix avatar sizes down one list.",
+      "do": "Pick the size from the row it sits in — xs in dense tables, md in headers.",
+      "why": "The avatar sets the row's optical height. Changing it mid-list makes the whole list look misaligned."
+    }
+  ]
+}

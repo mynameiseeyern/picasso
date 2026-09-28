@@ -77,3 +77,14 @@ export {
 export { Loader, type LoaderProps } from "./components/loader/loader";
 export { Separator, type SeparatorProps } from "./components/separator/separator";
 export { Skeleton, SkeletonText, type SkeletonProps, type SkeletonTextProps } from "./components/skeleton/skeleton";
+export {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  AvatarStatus,
+  avatarVariants,
+  useAvatarSize,
+  type AvatarFallbackProps,
+  type AvatarProps,
+  type AvatarStatusProps,
+} from "./components/avatar/avatar";
