@@ -4,13 +4,25 @@ import presets from '@ir/tokens/presets.json';
 
 /* The theme builder's model. Everything a brand chooses, and nothing a brand
  * may not: status colours and every semantic except fg/on/* stay put
- * (picasso-multibrand-theming §2). */
+ * (picasso-multibrand-theming §2).
+ *
+ * ── What a brand IS, since the token split ──────────────────────────
+ * A brand is one file: tokens/brands/<id>/brand.json. It names a base colour
+ * and one choice per axis from presets.json, and the build turns those
+ * choices into that brand's primitive layer — the brand ramp, THE NEUTRAL
+ * RAMP, the radius base, the whole spacing ladder and the font stacks —
+ * emitted as a single [data-brand="<id>"] block in tokens.css.
+ *
+ * So the JSON is the deliverable and the CSS is a preview of what the build
+ * will generate from it. Both are produced here from the same resolved
+ * values the build uses, so they cannot disagree.
+ */
 
 export const SANS_FONTS = [
   { id: 'inter', label: 'Inter', family: 'Inter', google: 'Inter:wght@400;500;600' },
+  { id: 'manrope', label: 'Manrope', family: 'Manrope', google: 'Manrope:wght@400;500;600' },
   { id: 'geist', label: 'Geist', family: 'Geist', google: 'Geist:wght@400;500;600' },
   { id: 'plex', label: 'IBM Plex Sans', family: 'IBM Plex Sans', google: 'IBM+Plex+Sans:wght@400;500;600' },
-  { id: 'manrope', label: 'Manrope', family: 'Manrope', google: 'Manrope:wght@400;500;600' },
   { id: 'source', label: 'Source Sans 3', family: 'Source Sans 3', google: 'Source+Sans+3:wght@400;500;600' },
   { id: 'system', label: 'System', family: null, google: null },
 ] as const;
@@ -23,14 +35,31 @@ export const MONO_FONTS = [
   { id: 'system-mono', label: 'System', family: null, google: null },
 ] as const;
 
-const SANS_FALLBACK = 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-const MONO_FALLBACK = 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace';
+/* The build's own fallbacks (build/brands.mjs `font()`), so a font with no
+ * presets.json entry gets the same stack here as it will in tokens.css. */
+const SANS_FALLBACK = 'ui-sans-serif, system-ui, sans-serif';
+const MONO_FALLBACK = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* Read from packages/tokens/tokens/presets.json — the same menu a brand.json
  * picks from — so the builder cannot offer a value the tokens cannot honour. */
 const own = <T,>(o: Record<string, T>) => Object.entries(o).filter(([k]) => !k.startsWith('$')) as [string, T][];
 const cap = (s: string) => s[0].toUpperCase() + s.slice(1);
 const remPx = (v: string) => (v === '0' ? 0 : parseFloat(v) * 16);
+
+type FontPreset = { stack?: string; styles?: Record<string, string> };
+const FONT_PRESETS = Object.fromEntries(own(presets.fonts as unknown as Record<string, FontPreset>));
+
+/** Exactly build/brands.mjs `font()`: the preset stack if there is one, else the generic. */
+export function fontStack(kind: 'sans' | 'mono', id: string) {
+  const f = (kind === 'sans' ? SANS_FONTS : MONO_FONTS).find((x) => x.id === id);
+  const fallback = kind === 'sans' ? SANS_FALLBACK : MONO_FALLBACK;
+  if (!f?.family) return fallback;
+  return FONT_PRESETS[f.family]?.stack ?? `'${f.family}', ${fallback}`;
+}
+
+/** False when the build will warn: no presets.json entry, so a generic stack
+ *  and Inter-style Figma weight names. */
+export const isPresetFont = (family: string | null | undefined) => !!family && family in FONT_PRESETS;
 
 export const RADIUS = own(presets.radius as unknown as Record<string, string>).map(([id, value]) => ({ id, label: cap(id), value, px: remPx(value) }));
 
@@ -41,15 +70,16 @@ export const SPACING = own(presets.spacing as unknown as Record<string, number>)
   return { id, label: cap(id), mult, ladder, px: remPx(ladder['4']) };
 });
 
-export const NEUTRALS = [
-  { id: 'cool', label: 'Cool' },
-  { id: 'warm', label: 'Warm' },
-] as const;
+/* The neutral ramps a brand chooses between. The chosen one is emitted INSIDE
+ * the brand's block — brandLayer() puts palette.neutral in the brand's own
+ * tokens, so it travels with the brand rather than being applied beside it. */
+const NEUTRAL_RAMPS = presets.neutral as unknown as Record<string, Record<string, string>>;
+export const NEUTRALS = own(NEUTRAL_RAMPS).map(([id]) => ({ id, label: cap(id) }));
 
 export type Theme = {
   name: string;
   brand: string; // hex
-  neutral: (typeof NEUTRALS)[number]['id'];
+  neutral: string;
   radius: string;
   spacing: string;
   sans: (typeof SANS_FONTS)[number]['id'];
@@ -67,15 +97,15 @@ export const DEFAULT_THEME: Theme = {
 };
 
 /* Which step each emphasis surface uses per mode — mirrors light.json /
- * dark.json, same as build/brand.mjs. */
+ * dark.json, the same pairing build/brands.mjs resolves. */
 const EMPHASIS = { light: 600, dark: 500 } as const;
 
-export function fontStack(kind: 'sans' | 'mono', id: string) {
-  const list = kind === 'sans' ? SANS_FONTS : MONO_FONTS;
-  const f = list.find((x) => x.id === id) ?? list[0];
-  const fallback = kind === 'sans' ? SANS_FALLBACK : MONO_FALLBACK;
-  return f.family ? `"${f.family}", ${fallback}` : fallback;
-}
+/* The ink light.json / dark.json already give fg/on/primary-emphasis. The
+ * build emits an override only where the measured ink differs from these, so
+ * the builder does too — otherwise the CSS shows overrides the build omits.
+ * Only `primary` can differ at all: every other on-colour sits on a surface
+ * no brand touches. */
+const DEFAULT_ON_INK = { light: 'light', dark: 'dark' } as const;
 
 export function googleFontsUrl(theme: Theme) {
   const fams = [
@@ -87,78 +117,129 @@ export function googleFontsUrl(theme: Theme) {
 
 export type Resolved = {
   ramp: Ramp;
-  onColour: Record<'light' | 'dark', ReturnType<typeof inkFor> & { surface: string }>;
+  neutral: Record<string, string>;
+  space: Record<string, string>;
+  radius: string;
+  sans: string;
+  mono: string;
+  onColour: Record<'light' | 'dark', ReturnType<typeof inkFor> & { surface: string; overridden: boolean }>;
   vars: Record<string, string>; // custom properties to set on <html>
 };
 
 export function resolve(theme: Theme): Resolved {
   const ramp = buildRamp(theme.brand);
-  const onColour = {
-    light: { surface: ramp[EMPHASIS.light], ...inkFor(ramp[EMPHASIS.light]) },
-    dark: { surface: ramp[EMPHASIS.dark], ...inkFor(ramp[EMPHASIS.dark]) },
-  };
+  const neutral = NEUTRAL_RAMPS[theme.neutral] ?? NEUTRAL_RAMPS.cool;
+  const space = SPACING.find((s) => s.id === theme.spacing)!.ladder;
+  const radius = RADIUS.find((r) => r.id === theme.radius)!.value;
+  const sans = fontStack('sans', theme.sans);
+  const mono = fontStack('mono', theme.mono);
+
+  const onColour = {} as Resolved['onColour'];
+  for (const mode of ['light', 'dark'] as const) {
+    const surface = ramp[EMPHASIS[mode]];
+    // The dark ink is the brand's own neutral-950, which is what
+    // onColourOverrides() resolves ({palette.neutral.950}) — not inkFor's
+    // generic default, or the measured ratios drift from the build's.
+    const measured = inkFor(surface, { dark: neutral['950'] });
+    onColour[mode] = { surface, ...measured, overridden: measured.ink !== DEFAULT_ON_INK[mode] };
+  }
+
+  /* Exactly the declarations the build puts in [data-brand="…"], so the live
+   * preview and the exported CSS are the same set of values. */
   const vars: Record<string, string> = {};
   for (const s of STEPS) vars[`--palette-brand-${s}`] = ramp[s];
-  vars['--radius'] = RADIUS.find((r) => r.id === theme.radius)!.value;
-  for (const [k, v] of Object.entries(SPACING.find((r) => r.id === theme.spacing)!.ladder)) vars[`--space-${k.replace(/_/g, '-')}`] = v;
-  vars['--type-family-sans'] = fontStack('sans', theme.sans);
-  vars['--type-family-mono'] = fontStack('mono', theme.mono);
-  return { ramp, onColour, vars };
+  for (const [k, v] of own(neutral)) vars[`--palette-neutral-${k}`] = v;
+  vars['--type-family-sans'] = sans;
+  vars['--type-family-mono'] = mono;
+  vars['--radius'] = radius;
+  for (const [k, v] of Object.entries(space)) vars[`--space-${cssKey(k)}`] = v;
+
+  return { ramp, neutral, space, radius, sans, mono, onColour, vars };
 }
+
+/* presets.space spells half steps "0_5"; the build emits --space-0-5. */
+const cssKey = (k: string) => k.replace(/[._]/g, '-');
 
 const slug = (s: string) => s.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'brand';
 const inkVar = (ink: 'light' | 'dark') => (ink === 'light' ? 'var(--palette-white)' : 'var(--palette-neutral-950)');
 
-/* A themes.css block in the shape build/brand.mjs emits — the brand sets the
- * axis defaults, and an explicit data-* axis still overrides it because the
- * axis blocks come later in the file. */
+/**
+ * The `[data-brand="…"]` block the build generates into tokens.css from this
+ * brand.json — ramp, neutral ramp, fonts, radius base and the scaled spacing
+ * ladder, in that order.
+ *
+ * It is a PREVIEW. Commit the JSON and let `npm run check` generate this;
+ * pasting it by hand means the next build overwrites it.
+ */
 export function toCss(theme: Theme, r: Resolved) {
-  const name = slug(theme.name);
+  const id = slug(theme.name);
+  const L = (k: string, v: string) => `  --${k}: ${v};`;
   const lines = [
-    `/* ${name} — generated by the Picasso theme builder. Do not hand-edit; regenerate. */`,
-    `/* Preview only — the build generates this from brand.json. Commit the JSON, not this. */`,
-    `[data-brand="${name}"] {`,
-    `  /* brand ramp, OKLCH from ${theme.brand.toUpperCase()}; 600–950 solved for white text */`,
-    ...STEPS.map((s) => `  --palette-brand-${s}: ${r.ramp[s]};`),
+    `/* ${id} — preview of what the build generates from brands/${id}/brand.json.`,
+    ` * Commit the JSON, not this: \`npm run check\` writes the real block into`,
+    ` * dist/tokens.css, and anything pasted here is overwritten next build. */`,
+    `[data-brand="${id}"] {`,
+    `  /* brand ramp — OKLCH from ${theme.brand.toUpperCase()}, 600–950 solved for white text */`,
+    ...STEPS.map((s) => L(`palette-brand-${s}`, r.ramp[s])),
     ``,
-    `  /* the brand's defaults for the axes */`,
-    `  --radius: ${r.vars['--radius']};`,
-    `  /* spacing: ${theme.spacing} — the full ladder is generated by the build */`,
-    `  --type-family-sans: ${r.vars['--type-family-sans']};`,
-    `  --type-family-mono: ${r.vars['--type-family-mono']};`,
+    `  /* neutral ramp — the brand's "${theme.neutral}" choice travels with it */`,
+    ...own(r.neutral).map(([k, v]) => L(`palette-neutral-${k}`, v)),
+    ``,
+    `  /* type */`,
+    L('type-family-sans', r.sans),
+    L('type-family-mono', r.mono),
+    ``,
+    `  /* radius base — "${theme.radius}"; every radius step is a multiple of it */`,
+    L('radius', r.radius),
+    ``,
+    `  /* spacing ladder — "${theme.spacing}", every step rounded to the 2px grid */`,
+    ...Object.entries(r.space).map(([k, v]) => L(`space-${cssKey(k)}`, v)),
     `}`,
   ];
-  if (theme.neutral === 'warm') {
+
+  const overrides = (['light', 'dark'] as const).filter((m) => r.onColour[m].overridden);
+  if (overrides.length) {
     lines.push(
       ``,
-      `/* Neutral is an axis, not part of the brand block: the warm ramp already`,
-      ` * lives in themes.css. Apply it with data-neutral="warm" beside data-brand. */`,
+      `/* on-colours — emitted only where the measured ink differs from the`,
+      ` * default in light.json / dark.json. */`,
+    );
+    for (const mode of overrides) {
+      const o = r.onColour[mode];
+      const sel = mode === 'light' ? `[data-brand="${id}"]` : `.dark[data-brand="${id}"], .dark [data-brand="${id}"]`;
+      lines.push(
+        `${sel} {`,
+        `  --fg-on-primary-emphasis: ${inkVar(o.ink)}; /* on ${o.surface}: white ${o.onWhite}, dark ${o.onDark} */`,
+        `}`,
+      );
+    }
+  } else {
+    lines.push(
+      ``,
+      `/* No on-colour overrides: the measured ink matches light.json and`,
+      ` * dark.json on both modes, so the build emits nothing here.`,
+      ` * light — on ${r.onColour.light.surface}: white ${r.onColour.light.onWhite}, dark ${r.onColour.light.onDark}`,
+      ` * dark  — on ${r.onColour.dark.surface}: white ${r.onColour.dark.onWhite}, dark ${r.onColour.dark.onDark} */`,
     );
   }
-  lines.push(
-    ``,
-    `/* on-colours, measured — white where it passes 4.5:1, dark ink where it cannot */`,
-    `[data-brand="${name}"] {`,
-    `  --fg-on-primary-emphasis: ${inkVar(r.onColour.light.ink)}; /* on ${r.onColour.light.surface}: white ${r.onColour.light.onWhite}, dark ${r.onColour.light.onDark} */`,
-    `}`,
-    `.dark [data-brand="${name}"], [data-brand="${name}"].dark {`,
-    `  --fg-on-primary-emphasis: ${inkVar(r.onColour.dark.ink)}; /* on ${r.onColour.dark.surface}: white ${r.onColour.dark.onWhite}, dark ${r.onColour.dark.onDark} */`,
-    `}`,
-  );
   return lines.join('\n');
 }
 
 const FONT_FAMILY = (kind: 'sans' | 'mono', id: string) =>
   (kind === 'sans' ? SANS_FONTS : MONO_FONTS).find((f) => f.id === id)?.family ?? 'system-ui';
 
-/* The brand, as the repo stores it: save as
- * packages/tokens/tokens/brands/<name>/brand.json and run `npm run check`.
- * The same file `npm run brand:new` writes — the ramp is regenerated from
- * colour.base at build time, so it is not repeated here. */
-export function toJson(theme: Theme, _r: Resolved) {
+/**
+ * The brand, as the repo stores it. Save as
+ * `packages/tokens/tokens/brands/<id>/brand.json`, then `npm run check`.
+ *
+ * The same file `npm run brand:new` writes, field for field. `colour.ramp` is
+ * deliberately absent: the build regenerates the eleven stops from
+ * `colour.base`. Pin them here only when Marketing supplies exact values.
+ */
+export function toJson(theme: Theme) {
   return JSON.stringify(
     {
-      $description: `${theme.name} — exported from the Picasso theme builder. Each field picks from presets.json.`,
+      $description: `${theme.name} — exported from the Picasso theme builder. Each field picks from presets.json. colour.ramp pins the eleven stops; omit it and the build generates them from colour.base.`,
       name: theme.name,
       colour: { base: theme.brand.toUpperCase() },
       neutral: theme.neutral,
@@ -170,5 +251,11 @@ export function toJson(theme: Theme, _r: Resolved) {
     2,
   );
 }
+
+/** Where the exported brand.json belongs in the repo. */
+export const brandPath = (theme: Theme) => `packages/tokens/tokens/brands/${slug(theme.name)}/brand.json`;
+
+/** The brand id — the folder name, and the value of data-brand. */
+export const brandId = (theme: Theme) => slug(theme.name);
 
 export const STEPS_LABELS = STEPS;

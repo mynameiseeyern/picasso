@@ -11,7 +11,10 @@ import {
   SANS_FONTS,
   SPACING,
   STEPS_LABELS,
+  brandId,
+  brandPath,
   googleFontsUrl,
+  isPresetFont,
   resolve,
   toCss,
   toJson,
@@ -33,8 +36,17 @@ export function ThemeBuilder() {
 
   const resolved = useMemo(() => resolve(theme), [theme]);
   const css = useMemo(() => toCss(theme, resolved), [theme, resolved]);
-  const json = useMemo(() => toJson(theme, resolved), [theme, resolved]);
+  const json = useMemo(() => toJson(theme), [theme, resolved]);
   const set = <K extends keyof Theme>(k: K, v: Theme[K]) => setTheme((t) => ({ ...t, [k]: v }));
+
+  /* Fonts with no presets.json entry: the build still works, but with a
+     generic stack and Inter-style weight names in the Figma export. */
+  const unlisted = [
+    SANS_FONTS.find((f) => f.id === theme.sans),
+    MONO_FONTS.find((f) => f.id === theme.mono),
+  ]
+    .filter((f) => f?.family && !isPresetFont(f.family))
+    .map((f) => f!.label);
 
   /* Push the theme into the iframe whenever it changes. */
   useEffect(() => {
@@ -42,10 +54,17 @@ export function ThemeBuilder() {
     const root = doc?.documentElement;
     if (!doc || !root || !ready) return;
 
+    // resolved.vars IS the [data-brand] block: ramp, neutral ramp, fonts,
+    // radius base and the spacing ladder. Setting them on <html> is what an
+    // app does when it switches brand, so the preview and the export agree.
     for (const [k, v] of Object.entries(resolved.vars)) root.style.setProperty(k, v);
-    root.style.setProperty('--fg-on-primary-emphasis', resolved.onColour[dark ? 'dark' : 'light'].ink === 'light' ? 'var(--palette-white)' : 'var(--palette-neutral-950)');
-    if (theme.neutral === 'cool') root.removeAttribute('data-neutral');
-    else root.setAttribute('data-neutral', theme.neutral);
+    // Neutral rides inside the brand now, so no data-neutral attribute: the
+    // ramp is already in vars, and the attribute would be a second source.
+    root.removeAttribute('data-neutral');
+    // Pin the on-colour only where the build would emit an override.
+    const on = resolved.onColour[dark ? 'dark' : 'light'];
+    if (on.overridden) root.style.setProperty('--fg-on-primary-emphasis', on.ink === 'light' ? 'var(--palette-white)' : 'var(--palette-neutral-950)');
+    else root.style.removeProperty('--fg-on-primary-emphasis');
     root.classList.toggle('dark', dark);
     doc.body.style.padding = '0';
 
@@ -146,6 +165,9 @@ export function ThemeBuilder() {
 
             <label className="mb-1.5 mt-4 block text-xs font-semibold text-fd-muted-foreground">Neutral</label>
             <Segmented options={NEUTRALS} value={theme.neutral} onChange={(v) => set('neutral', v)} />
+            <p className="mt-2 text-xs text-fd-muted-foreground">
+              The chosen ramp is written into the brand&rsquo;s own block, not applied beside it.
+            </p>
           </Section>
 
           <Section title="Radius">
@@ -161,15 +183,22 @@ export function ThemeBuilder() {
             <label className="mb-1.5 block text-xs font-semibold text-fd-muted-foreground">Main</label>
             <select className="field" value={theme.sans} onChange={(e) => set('sans', e.target.value as Theme['sans'])} aria-label="Main font">
               {SANS_FONTS.map((f) => (
-                <option key={f.id} value={f.id}>{f.label}</option>
+                <option key={f.id} value={f.id}>{f.label}{f.family && !isPresetFont(f.family) ? ' — not in presets' : ''}</option>
               ))}
             </select>
             <label className="mb-1.5 mt-3 block text-xs font-semibold text-fd-muted-foreground">Mono</label>
             <select className="field" value={theme.mono} onChange={(e) => set('mono', e.target.value as Theme['mono'])} aria-label="Mono font">
               {MONO_FONTS.map((f) => (
-                <option key={f.id} value={f.id}>{f.label}</option>
+                <option key={f.id} value={f.id}>{f.label}{f.family && !isPresetFont(f.family) ? ' — not in presets' : ''}</option>
               ))}
             </select>
+            {unlisted.length ? (
+              <p className="mt-2 text-xs text-fd-muted-foreground">
+                <strong>{unlisted.join(' and ')}</strong> {unlisted.length > 1 ? 'are' : 'is'} not in{' '}
+                <span className="font-mono">presets.json</span>, so the build falls back to a generic stack and
+                Inter-style weight names in Figma. Add an entry to pin the stack.
+              </p>
+            ) : null}
           </Section>
         </aside>
 
@@ -190,7 +219,7 @@ export function ThemeBuilder() {
               <div role="tablist" className="flex gap-1">
                 {(['css', 'json'] as const).map((t) => (
                   <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)} className="tab">
-                    {t === 'css' ? 'themes.css' : 'brand.json'}
+                    {t === 'css' ? 'tokens.css — preview' : 'brand.json'}
                   </button>
                 ))}
               </div>
@@ -204,6 +233,22 @@ export function ThemeBuilder() {
                 </button>
               </div>
             </div>
+            <p className="border-b border-fd-border px-4 py-2 text-xs text-fd-muted-foreground">
+              {tab === 'json' ? (
+                <>
+                  Save as <span className="font-mono">{brandPath(theme)}</span>, then run{' '}
+                  <span className="font-mono">npm run check</span>. The build generates the CSS, the Figma
+                  export and the contrast checks from this one file.
+                </>
+              ) : (
+                <>
+                  What the build will generate as{' '}
+                  <span className="font-mono">[data-brand=&quot;{brandId(theme)}&quot;]</span> in{' '}
+                  <span className="font-mono">dist/tokens.css</span>. Shown so you can read it — commit the
+                  JSON, not this.
+                </>
+              )}
+            </p>
             <pre className="max-h-[420px] overflow-auto p-4 font-mono text-xs leading-relaxed">
               <code>{tab === 'css' ? css : json}</code>
             </pre>
