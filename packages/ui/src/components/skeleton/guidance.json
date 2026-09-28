@@ -1,10 +1,13 @@
 {
   "component": "Skeleton",
   "summary": "The shape of content that has not arrived yet.",
-  "figma": null,
-  "structureFrom": "code",
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "40000533:20"
+  },
+  "structureFrom": "figma",
   "measurementsFrom": "code",
-  "note": "No Figma component exists for Skeleton. Built from the system's own tokens; worth drawing in Figma before it spreads.",
+  "note": "Built in code first \u2014 Picasso had no Skeleton. The Figma component set was drawn afterwards to match (28 Sept), so structure is shared but sizes still come from the instance rather than the file.",
   "pairs": [
     {
       "id": "match-the-real-thing",
