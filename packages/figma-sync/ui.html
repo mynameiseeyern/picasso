@@ -16,6 +16,12 @@
   <button id="sync" class="primary" disabled>Sync</button>
   <button id="prune" disabled>Sync + remove extras</button>
 </div>
+<h1 style="margin-top:20px">Export a brand to the repo</h1>
+<p>Downloads one brand as it is in this file. In the repo: <code>npm run figma:import -- &lt;file&gt;</code>, review the git diff, then <code>npm run check</code>.</p>
+<div class="row">
+  <select id="brand" style="font:inherit;padding:6px;border-radius:6px"></select>
+  <button id="export">Export</button>
+</div>
 <div id="status"></div>
 <pre id="out">No file loaded.</pre>
 <script>
@@ -40,8 +46,18 @@
     if (!armed) { armed = true; $("prune").textContent = "Click again to delete extras"; setTimeout(() => { armed = false; $("prune").textContent = "Sync + remove extras"; }, 4000); return; }
     armed = false; $("prune").textContent = "Sync + remove extras"; run(true, true);
   };
+  $("export").onclick = () => { $("status").textContent = "Exporting…"; parent.postMessage({ pluginMessage: { type: "export", brand: $("brand").value } }, "*"); };
   onmessage = (e) => {
     const m = e.data.pluginMessage; if (!m) return;
+    if (m.type === "brands") { $("brand").innerHTML = m.brands.map((b) => `<option>${b}</option>`).join(""); $("export").disabled = !m.brands.length; return; }
+    if (m.type === "exported") {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([m.json], { type: "application/json" }));
+      a.download = `${m.brand.toLowerCase()}.figma-export.json`;
+      document.body.appendChild(a); a.click(); a.remove();
+      $("status").innerHTML = `<span class="ok">Exported ${m.brand}. Next: npm run figma:import -- ~/Downloads/${m.brand.toLowerCase()}.figma-export.json</span>`;
+      return;
+    }
     if (m.type === "error") { $("status").innerHTML = `<span class="bad">Error: ${m.message}</span>`; return; }
     const r = m.report;
     $("status").innerHTML = r.inSync ? `<span class="ok">✓ In sync with the repo (${r.unchanged} items).</span>`

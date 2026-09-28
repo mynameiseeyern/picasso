@@ -209,11 +209,102 @@ async function picassoSync(payload, opts) {
   r.inSync = !r.created.length && !r.changed.length && !r.renamed.length && !r.problems.length && !(prune && r.extra.length);
   return r;
 }
+/**
+ * Export one brand from the open file, in the same shape the repo's build
+ * writes to dist/brands/<brand>/figma.json. `npm run figma:import` turns it
+ * back into repo files. Semantic fg/on/*-emphasis are resolved through the
+ * brand's _on/* primitives, so the result is exactly one brand's view.
+ */
+async function picassoExport(brandName) {
+  const hex = (c) => {
+    const h = (n) => Math.round(n * 255).toString(16).padStart(2, "0");
+    const a = c.a === undefined ? 1 : c.a;
+    return ("#" + h(c.r) + h(c.g) + h(c.b) + (a < 0.999 ? h(a) : "")).toUpperCase();
+  };
+  const collections = await figma.variables.getLocalVariableCollectionsAsync();
+  const vars = await figma.variables.getLocalVariablesAsync();
+  const prim = collections.find((c) => c.name === "Primitives");
+  const sem = collections.find((c) => c.name === "Semantic");
+  if (!prim || !sem) throw new Error("This file has no Primitives/Semantic collections.");
+  const bMode = prim.modes.find((m) => m.name === brandName);
+  if (!bMode) throw new Error(`No brand "${brandName}" — Primitives modes are ${prim.modes.map((m) => m.name).join(", ")}`);
+  const byId = new Map(vars.map((v) => [v.id, v]));
+  const val = (v, modeId) => {
+    const x = v.valuesByMode[modeId];
+    if (x && x.type === "VARIABLE_ALIAS") return { alias: byId.get(x.id).name };
+    return v.resolvedType === "COLOR" ? hex(x) : x;
+  };
+  const inPrim = vars.filter((v) => v.variableCollectionId === prim.id);
+  const primOut = inPrim.filter((v) => !v.name.startsWith("_on/")).map((v) => ({
+    name: v.name, type: v.resolvedType, scopes: [...v.scopes],
+    ...(v.description ? { description: v.description } : {}),
+    values: { [brandName]: val(v, bMode.modeId) },
+  }));
+  const pv = (name) => { const v = inPrim.find((x) => x.name === name); return v ? val(v, bMode.modeId) : undefined; };
+  const semOut = vars.filter((v) => v.variableCollectionId === sem.id).map((v) => {
+    const values = {};
+    for (const m of sem.modes) {
+      let x = val(v, m.modeId);
+      // Follow the brand's _on/* indirection so the export reads like one brand.
+      if (x && x.alias && x.alias.startsWith("_on/")) x = pv(x.alias);
+      values[m.name] = x;
+    }
+    return { name: v.name, type: v.resolvedType, scopes: [...v.scopes], values };
+  });
+  const textStyles = [];
+  for (const s of await figma.getLocalTextStylesAsync()) {
+    const b = s.boundVariables || {};
+    const bind = {};
+    for (const k of Object.keys(b)) bind[k] = byId.get(b[k].id).name;
+    const family = bind.fontFamily ? pv(bind.fontFamily) : s.fontName.family;
+    const style = bind.fontStyle ? pv(bind.fontStyle) : s.fontName.style;
+    textStyles.push({
+      name: s.name, fontFamily: family, fontStyle: style, fontSize: s.fontSize,
+      lineHeightPercent: s.lineHeight.unit === "PERCENT" ? +s.lineHeight.value.toFixed(3) : null,
+      letterSpacingPercent: s.letterSpacing.unit === "PERCENT" ? +s.letterSpacing.value.toFixed(3) : null,
+      textCase: s.textCase, bind,
+    });
+  }
+  const effectStyles = [];
+  for (const s of await figma.getLocalEffectStylesAsync())
+    effectStyles.push({
+      name: s.name,
+      effects: s.effects.map((f) => ({
+        type: f.type, x: (f.offset && f.offset.x) || 0, y: (f.offset && f.offset.y) || 0,
+        blur: f.radius || 0, spread: f.spread || 0,
+        colorVar: f.boundVariables && f.boundVariables.color ? byId.get(f.boundVariables.color.id).name : null,
+      })),
+    });
+  return {
+    $schema: "picasso-figma-sync/1", brand: brandName.toLowerCase().replace(/[^a-z0-9]+/g, "-"), name: brandName,
+    exportedFrom: figma.root.name, exportedAt: new Date().toISOString(),
+    collections: [
+      { name: "Primitives", modes: [brandName], variables: primOut },
+      { name: "Semantic", modes: sem.modes.map((m) => m.name), variables: semOut },
+    ],
+    textStyles, effectStyles,
+  };
+}
+
+async function picassoBrands() {
+  const prim = (await figma.variables.getLocalVariableCollectionsAsync()).find((c) => c.name === "Primitives");
+  return prim ? prim.modes.map((m) => m.name) : [];
+}
 // ── CORE:end ───────────────────────────────────────────────────────────
 
 if (typeof __html__ !== "undefined") {
   figma.showUI(__html__, { width: 520, height: 600, themeColors: true });
+  picassoBrands().then((brands) => figma.ui.postMessage({ type: "brands", brands }));
   figma.ui.onmessage = async (msg) => {
+    if (msg.type === "export") {
+      try {
+        const data = await picassoExport(msg.brand);
+        figma.ui.postMessage({ type: "exported", brand: msg.brand, json: JSON.stringify(data, null, 2) });
+      } catch (e) {
+        figma.ui.postMessage({ type: "error", message: String(e && e.message ? e.message : e) });
+      }
+      return;
+    }
     if (msg.type !== "run") return;
     try {
       const report = await picassoSync(msg.payload, { apply: msg.apply, prune: msg.prune });

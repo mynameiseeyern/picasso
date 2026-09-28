@@ -34,7 +34,8 @@
   "scripts": {
     "build": "node build/style-dictionary.config.mjs",
     "check": "node build/style-dictionary.config.mjs && node build/check.mjs",
-    "brand:new": "node build/brand-new.mjs"
+    "brand:new": "node build/brand-new.mjs",
+    "figma:import": "node build/figma-import.mjs"
   },
   "devDependencies": {
     "@tokens-studio/sd-transforms": "^2.0.3",

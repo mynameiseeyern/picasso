@@ -8,12 +8,14 @@ description: One source in the repo, brands as choices, and a plugin that keeps 
 ## The one rule
 
 **The repo is the source of truth for every token.** Figma follows it. A change
-made directly in Figma's variables panel is overwritten the next time Picasso is
-synced — make it in `packages/tokens/` instead.
+can *start* in Figma, but it only counts once it is exported back into the repo
+and reviewed as a git diff — otherwise the next sync overwrites it.
 
 ```
-packages/tokens/tokens/*.json  ──npm run check──▶  dist/tokens.css      → code
-                                                 └▶ dist/figma.json     → Picasso Sync plugin → Figma
+packages/tokens/tokens/*.json  ──npm run check──▶  dist/tokens.css   → code
+        ▲                                        └▶ dist/figma.json  → Picasso Sync ▶ Figma
+        │                                                                              │
+        └──── npm run figma:import ◀── <brand>.figma-export.json ◀── Picasso Export ◀───┘
 ```
 
 ## Two layers, the same in code and Figma
@@ -112,6 +114,7 @@ plugins): Figma menu → **Plugins → Development → Import plugin from manife
 | **Check** | Lists every difference — new, changed, extra, problems. Changes nothing. |
 | **Sync** | Makes the file match. Never deletes. |
 | **Sync + remove extras** | Also deletes variables and styles the repo no longer has (asks for a second click). |
+| **Export** (pick a brand) | Downloads that brand as `<brand>.figma-export.json` for `npm run figma:import`. Changes nothing. |
 
 What **Sync** does, in order:
 
@@ -124,7 +127,7 @@ What **Sync** does, in order:
 What it does **not** do:
 
 - **Edit components or layers.** They already point at the variables.
-- **Bring Figma edits back to the repo.** Sync is one way.
+- **Bring Figma edits back on its own.** Sync is one way; the way back is Export + `npm run figma:import`.
 - **Publish.** Publish Picasso as usual afterwards.
 
 Two things to know:
@@ -134,6 +137,41 @@ Two things to know:
   in the plugin's rename list.
 - **Fonts come from your computer.** Run the plugin in the desktop app so it can
   use locally installed fonts.
+
+## Bringing a Figma change back to the repo
+
+When a change is easier to make in Figma — a semantic re-pointed, a type size
+nudged, a brand's ramp tuned by eye — export it instead of re-typing it.
+
+1. In Picasso: **Picasso Sync → Export a brand**, pick the brand, **Export**.
+   You get `<brand>.figma-export.json` in Downloads.
+2. In `packages/tokens`: `npm run figma:import -- ~/Downloads/<brand>.figma-export.json`
+   (add `--dry-run` to only list what would change).
+3. Review `git diff`, then `npm run check`.
+
+The import compares the export with what the repo would generate for that
+brand and writes each difference to the file that owns it:
+
+| Changed in Figma | Lands in |
+|---|---|
+| `palette/brand/*` | the brand's `colour.ramp` (pinned; dropped if it equals the generated ramp) |
+| `palette/neutral/*`, `radius/base`, `space/*` | the brand's `neutral` / `radius` / `spacing` — **must match a preset** |
+| `type/family/*` | the brand's `type` |
+| any other primitive | `core.json` — **shared, so every brand changes**, and it says so |
+| a Semantic value | `light.json` / `dark.json` |
+| a text style | `core.json` `shared.text` — line height and tracking must be existing tokens |
+| an effect style's geometry | the shadow/ring composite in `light.json` and `dark.json` |
+| a brand that is not in the repo yet | a new `brands/<brand>/brand.json` |
+
+**It refuses — and writes nothing — when a change breaks the model:**
+
+- a single radius step edited (steps are `radius/base` × multiplier — change the base)
+- a neutral ramp, radius base or spacing ladder that matches no preset (add a preset first)
+- `fg/on/*-emphasis` edited (it is measured by contrast — change the ramp)
+- a new variable or style (decide by hand whether it is shared or per brand)
+
+Exporting a brand nobody has touched reports *Figma matches the repo — nothing
+to import*, which is also a quick way to confirm the two are in step.
 
 ## Proving parity
 
@@ -162,4 +200,5 @@ hashes every variable, text style and effect style — from `figma.json`, and
 | `build/brands.mjs` | Choices → primitives, on-colour measurement, Figma export |
 | `dist/tokens.css` | Default brand in `:root`, every brand as `[data-brand]`, then the preset axes |
 | `dist/figma.json` | Every brand, for the plugin |
+| `build/figma-import.mjs` | Figma export → repo files, with the refusal rules |
 | `packages/figma-sync/` | The plugin and the fingerprint |

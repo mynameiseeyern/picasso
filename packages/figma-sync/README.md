@@ -30,6 +30,19 @@ What it writes:
 Variable scopes are set by the repo too (palette hidden from pickers, `bg/*`
 fills, `fg/*` text + icons, `border/*` strokes + divider fills, …).
 
+## Export a brand back to the repo
+
+Pick a brand under **Export a brand** → **Export** → `<brand>.figma-export.json`
+lands in Downloads. Then in `packages/tokens`:
+
+    npm run figma:import -- ~/Downloads/<brand>.figma-export.json [--dry-run]
+
+It writes each Figma change to the repo file that owns it and refuses (writing
+nothing) when a change breaks the model — a single radius step, a ramp or ladder
+that matches no preset, an edited on-colour, a brand-new variable. Review
+`git diff`, then `npm run check`. Full rules:
+`docs/foundations/tokens-and-brands.md`.
+
 ## What Figma cannot hold
 
 Line height (%) and tracking (em) exist only inside the text styles, because

@@ -1,0 +1,45 @@
+{
+  "component": "Badge",
+  "summary": "A short, static label on a thing — a status, a count, a category.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "383:41" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "badge-is-not-a-control",
+      "dont": "Make a badge clickable, or use one as a filter chip.",
+      "do": "Use Chip for something selectable and Button for something that acts.",
+      "why": "A badge is a label on a thing, not a thing to press. Making one clickable gives it no focus ring, no hit area and no keyboard route."
+    },
+    {
+      "id": "never-colour-alone",
+      "dont": "Signal status with colour and nothing else.",
+      "do": "Keep the word — \"Healthy\", \"Critical\" — and add the dot if it helps.",
+      "why": "Colour alone fails for anyone who cannot separate the hues, and a badge is small enough that the hue is all there is. The word is the signal; the colour reinforces it."
+    },
+    {
+      "id": "one-badge",
+      "dont": "Put three badges in a row on the same object.",
+      "do": "Show the one that changes what the reader does next.",
+      "why": "Badges are loud by design. Three of them compete, and the reader ends up scanning past all three."
+    },
+    {
+      "id": "keep-it-short",
+      "dont": "Write a sentence in a badge.",
+      "do": "One or two words. Put the detail in the text beside it.",
+      "why": "A badge does not wrap gracefully and cannot be read at a glance once it is longer than its container is wide."
+    },
+    {
+      "id": "emphasis-is-for-one-thing",
+      "dont": "Use emphasis badges everywhere because they read more clearly.",
+      "do": "Keep emphasis for the exception, and subtle for the rest.",
+      "why": "The solid fill is the loudest thing on most surfaces. Used for every row it becomes the background, and the one that matters disappears into it."
+    },
+    {
+      "id": "outline-is-colourless",
+      "dont": "Reach for outline expecting a quieter red or green.",
+      "do": "Use subtle for a quiet coloured badge; outline is deliberately neutral.",
+      "why": "Outline renders identically for all five colours — neutral fill, neutral border, neutral text. Choosing it discards the colour rather than muting it."
+    }
+  ]
+}
