@@ -270,7 +270,58 @@ export function figmaExport(id) {
   };
 }
 
-/** Write dist/brands/<id>/{layer,figma}.json for every brand. */
+/**
+ * Every brand in ONE Figma payload: brands are modes of the Primitives
+ * collection (Clarion · Vantage · …), Light/Dark stay modes of Semantic, so a
+ * frame can be any brand × any mode.
+ *
+ * Semantic modes cannot vary by brand, so the one per-brand semantic —
+ * fg/on/*-emphasis, chosen by contrast measurement — goes through an
+ * internal primitive: fg/on/primary-emphasis (Light) → _on/primary-emphasis/light,
+ * which each brand mode points at white or the darkest neutral.
+ */
+export function figmaExportAll() {
+  const all = BRANDS.map(figmaExport);
+  const [base] = all;
+  const prim = base.collections[0].variables.map((v) => ({ ...v, values: {} }));
+  const byName = new Map(prim.map((v) => [v.name, v]));
+  for (const e of all)
+    for (const v of e.collections[0].variables) {
+      const t = byName.get(v.name);
+      if (!t) throw new Error(`${e.brand}: primitive ${v.name} is not in ${base.brand}`);
+      t.values[e.name] = v.values[e.name];
+    }
+  const sem = base.collections[1].variables.map((v) => ({ ...v, values: { ...v.values } }));
+  for (const v of sem) {
+    const perBrand = /^fg\/on\/.+-emphasis$/.test(v.name);
+    for (const mode of ["Light", "Dark"]) {
+      const vals = all.map((e) => JSON.stringify(e.collections[1].variables.find((x) => x.name === v.name).values[mode]));
+      if (!perBrand) {
+        if (new Set(vals).size > 1) throw new Error(`semantic ${v.name} (${mode}) differs between brands — only fg/on/*-emphasis may`);
+        continue;
+      }
+      const helper = `_on/${v.name.slice("fg/on/".length)}/${mode.toLowerCase()}`;
+      const h = { name: helper, type: "COLOR", scopes: [], description: `Internal: ink for ${v.name} in ${mode}, measured per brand.`, values: {} };
+      all.forEach((e, i) => (h.values[e.name] = JSON.parse(vals[i])));
+      prim.push(h);
+      v.values[mode] = { alias: helper };
+    }
+  }
+  return {
+    $schema: "picasso-figma-sync/1",
+    brand: "all",
+    name: all.map((e) => e.name).join(" · "),
+    brands: all.map((e) => ({ id: e.brand, name: e.name, choices: e.choices })),
+    collections: [
+      { name: "Primitives", modes: all.map((e) => e.name), variables: prim },
+      { name: "Semantic", modes: ["Light", "Dark"], variables: sem },
+    ],
+    textStyles: base.textStyles,
+    effectStyles: base.effectStyles,
+  };
+}
+
+/** Write dist/brands/<id>/{layer,figma}.json for every brand, plus dist/figma.json (all brands as modes). */
 export function writeBrandArtifacts(distDir) {
   const out = {};
   for (const id of BRANDS) {
@@ -281,5 +332,6 @@ export function writeBrandArtifacts(distDir) {
     writeFileSync(resolve(dir, "figma.json"), JSON.stringify(figmaExport(id), null, 2) + "\n");
     out[id] = { layerPath, overrides: onColourOverrides(id), layer: brandLayer(id) };
   }
+  writeFileSync(resolve(distDir, "figma.json"), JSON.stringify(figmaExportAll(), null, 2) + "\n");
   return out;
 }

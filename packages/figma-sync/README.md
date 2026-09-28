@@ -11,9 +11,9 @@ choose `packages/figma-sync/manifest.json`.
 ## Use
 
 1. `cd packages/tokens && npm run check` — builds CSS, writes
-   `dist/brands/<brand>/figma.json`, runs the parity checks.
-2. Open the brand's token file in Figma → **Plugins → Development → Picasso Sync**.
-3. Choose `dist/brands/<brand>/figma.json`.
+   `dist/figma.json` (every brand), runs the parity checks.
+2. Open Picasso in the Figma desktop app → **Plugins → Development → Picasso Sync**.
+3. Choose `dist/figma.json`.
 4. **Check** lists every difference and changes nothing. **Sync** makes the
    file match and never deletes. **Sync + remove extras** also deletes
    variables/styles the repo no longer has.
@@ -22,7 +22,7 @@ What it writes:
 
 | Figma | From |
 |---|---|
-| `Primitives` collection, one mode named after the brand | `core.json` + the brand's choices (`brands/<brand>/brand.json` → `presets.json`) |
+| `Primitives` collection, one mode per brand (Clarion · Vantage · …) | `core.json` + the brand's choices (`brands/<brand>/brand.json` → `presets.json`) |
 | `Semantic` collection, `Light` / `Dark` | `light.json` / `dark.json` (aliases stay aliases) |
 | Text styles `shared/text/*` | typography composites in `core.json`, bound to the type variables |
 | Effect styles `ring/*`, `shadow/*` | composites in `light.json`, each layer's colour bound to `_ring/*` / `_shadow/*` |
@@ -41,8 +41,16 @@ Figma variables cannot express either. Everything else is a variable.
 per section; the `FIGMA` half of the same file computes the hashes from a live
 file. Equal hashes = identical.
 
+## Brands are modes
+
+Primitives has one mode per brand; Semantic has Light and Dark. Set a frame's
+Primitives mode to pick the brand and its Semantic mode to pick light/dark —
+the two are independent. The one per-brand semantic, `fg/on/*-emphasis`, goes
+through internal `_on/*/light|dark` primitives so each brand keeps its own
+measured ink. `dist/brands/<brand>/figma.json` still exists for a single brand.
+
 ## Adding a brand
 
-`npm run brand:new -- <id> --base "#RRGGBB" …` (see `packages/tokens`), then
-duplicate the Clarion token file in Figma, run Sync with the new
-`figma.json`, publish, and swap libraries where the brand should apply.
+`npm run brand:new -- <id> --base "#RRGGBB" …` (see `packages/tokens`),
+`npm run check`, then Sync `dist/figma.json` in Picasso — the brand appears as
+a new Primitives mode.

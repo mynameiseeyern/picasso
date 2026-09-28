@@ -46,7 +46,6 @@ writeFileSync(resolve(dir, "brand.json"), JSON.stringify(brand, null, 2) + "\n")
 console.log(`Created tokens/brands/${id}/brand.json
 
 Next:
-  1. npm run check                     → builds dist/brands/${id}/figma.json and runs the parity checks
-  2. In Figma, duplicate the Clarion token file and name it "${brand.name} tokens"
-  3. Run the Picasso Sync plugin there with dist/brands/${id}/figma.json → Sync
-  4. Publish it, then swap libraries in any file that should render as ${brand.name}`);
+  1. npm run check          → builds CSS + dist/figma.json (every brand as a Primitives mode) and runs parity checks
+  2. In Figma (Picasso), run Picasso Sync with dist/figma.json → Sync. ${brand.name} appears as a new
+     mode of the Primitives collection; set any frame's Primitives mode to ${brand.name} to see it.`);
