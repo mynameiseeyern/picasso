@@ -62,6 +62,27 @@ describe("RadioGroup", () => {
     expect(radio.className).not.toMatch(/(^|\s)ring-line-danger/);
   });
 
+  it("settles the three-way conflict: disabled > invalid > selected", () => {
+    render(
+      <RadioGroup aria-label="Severity" value="low">
+        <Radio value="low" aria-label="Low" aria-invalid />
+      </RadioGroup>,
+    );
+    const radio = screen.getByRole("radio", { name: "Low" });
+    // Each of these is a compound selector on purpose. Single-variant rules
+    // land in whatever order Tailwind sorts them, so "invalid wins" cannot be
+    // left to source order — stacking the variants is what makes it true.
+    // Verified against rendered CSS: selected+invalid is a danger border and a
+    // danger dot; anything disabled is fully muted, dot included.
+    expect(radio.className).toContain("aria-invalid:data-[state=checked]:border-line-danger-emphasis");
+    expect(radio.className).toContain("disabled:aria-invalid:border-line-input-disabled");
+    expect(radio.className).toContain(
+      "disabled:aria-invalid:data-[state=checked]:border-line-input-disabled",
+    );
+    const dot = radio.querySelector("[data-slot=radio-dot]");
+    expect(dot?.className).toContain("group-disabled:group-aria-invalid:bg-content-disabled");
+  });
+
   it("mutes a disabled selection", () => {
     render(<Group defaultValue="low" disabled />);
     const low = screen.getByRole("radio", { name: "Low" });

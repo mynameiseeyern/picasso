@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils";
  * 1. **Border 1px, not 1.5** — as Checkbox, for one border weight system-wide.
  * 2. **Disabled checked is muted.** Figma keeps the dot and ring at full
  *    primary, so a disabled selection looks live.
- * 3. **Invalid is a danger border**, not a permanent danger focus-ring over a
+ * 3. **Invalid is a danger border**, and beats selected, not a permanent danger focus-ring over a
  *    neutral border. Checkbox, Input and Textarea all colour the border;
  *    Radio was the only control expressing it as a ring, and a ring that is
  *    always on stops reading as focus.
@@ -33,10 +33,19 @@ const radioVariants = cva(
     // the box stays as it is; only the ring colours, and the dot appears
     "data-[state=checked]:border-line-primary-emphasis " +
     "aria-invalid:border-line-danger-emphasis " +
+    // Invalid has to beat selected on the border, or a selected-but-invalid
+    // radio is a primary ring around a danger dot — two answers at once. Two
+    // variants outrank the single-variant checked rule, so this is the compound
+    // selector rather than a source-order coincidence.
+    "aria-invalid:data-[state=checked]:border-line-danger-emphasis " +
     "aria-invalid:focus-visible:ring-line-danger-emphasis " +
     "disabled:cursor-not-allowed disabled:hover:bg-surface-input-disabled " +
     "disabled:bg-surface-input-disabled disabled:border-line-input-disabled " +
-    "disabled:data-[state=checked]:border-line-input-disabled",
+    "disabled:data-[state=checked]:border-line-input-disabled " +
+    // ...and disabled outranks invalid in turn. A control nobody can answer
+    // should not still be shouting about the answer.
+    "disabled:aria-invalid:border-line-input-disabled " +
+    "disabled:aria-invalid:data-[state=checked]:border-line-input-disabled",
   {
     variants: {
       size: {
@@ -89,6 +98,7 @@ export function Radio({ className, size, ...props }: RadioProps) {
             "group-hover:bg-surface-primary-emphasis-hovered",
             "group-aria-invalid:bg-surface-danger-emphasis",
             "group-disabled:bg-content-disabled group-disabled:group-hover:bg-content-disabled",
+            "group-disabled:group-aria-invalid:bg-content-disabled",
           )}
         />
       </RadioGroupPrimitive.Indicator>
