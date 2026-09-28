@@ -14,7 +14,11 @@ describe("Alert", () => {
     expect(alert).toHaveClass("bg-surface-warning-subtle", "border-line-warning-emphasis");
     // Figma paints all four tone icons fg/neutral/emphasis. Tinting the icon
     // would double the signal and leave the surface doing nothing.
-    expect(alert.className).toContain("[&>svg]:text-content-neutral-emphasis");
+    // The icon inherits the title row's ink and carries no tone of its own.
+    const title = alert.querySelector("[data-slot=alert-title]");
+    expect(title?.className).toContain("text-content-neutral-emphasis");
+    const icon = alert.querySelector("[data-slot=alert-icon]");
+    expect(icon?.getAttribute("class") ?? "").not.toMatch(/text-/);
   });
 
   it("picks the icon from the tone", () => {
@@ -40,7 +44,32 @@ describe("Alert", () => {
         <AlertTitle>Quiet</AlertTitle>
       </Alert>,
     );
-    expect(screen.getByTestId("a").querySelector("svg")).toBeNull();
+    expect(screen.getByTestId("a").querySelector("[data-slot=alert-icon]")).toBeNull();
+  });
+
+  it("puts the icon and the dismiss inside the title row, as Figma does", () => {
+    render(
+      <Alert onDismiss={() => {}} data-testid="a">
+        <AlertTitle data-testid="t">Disk nearly full</AlertTitle>
+        <AlertDescription>Two lines, and the icon still sits on the first.</AlertDescription>
+      </Alert>,
+    );
+    const title = screen.getByTestId("t");
+    // Not a cosmetic detail: as a sibling of the whole body the icon floats
+    // against the middle of a two-line block instead of the title.
+    expect(title.querySelector("[data-slot=alert-icon]")).not.toBeNull();
+    expect(title.querySelector("[data-slot=alert-dismiss]")).not.toBeNull();
+  });
+
+  it("has no icon and no dismiss without a title — both live in the title row", () => {
+    render(
+      <Alert onDismiss={() => {}} data-testid="a">
+        <AlertDescription>Description only.</AlertDescription>
+      </Alert>,
+    );
+    const alert = screen.getByTestId("a");
+    expect(alert.querySelector("[data-slot=alert-icon]")).toBeNull();
+    expect(screen.queryByRole("button")).toBeNull();
   });
 
   it("gives the dismiss control words, since it is only an ✕", async () => {

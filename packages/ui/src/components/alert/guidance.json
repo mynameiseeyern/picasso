@@ -1,0 +1,51 @@
+{
+  "component": "Alert",
+  "summary": "Something the page needs to say about itself, in place — and that stays there.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "79:8042" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "alert-vs-toast",
+      "dont": "Use an Alert for something that just happened and does not need to persist.",
+      "do": "Use Toast for a passing confirmation; keep Alert for a condition that is still true.",
+      "why": "An Alert stays on the page. If the thing it describes is over, it becomes a piece of furniture people learn to read past."
+    },
+    {
+      "id": "alert-vs-dialog",
+      "dont": "Use an Alert to ask a question that must be answered before continuing.",
+      "do": "Use a Dialog when the work genuinely cannot proceed.",
+      "why": "An Alert can be ignored by design. A question that cannot be ignored needs a control that takes the focus."
+    },
+    {
+      "id": "tone-means-something",
+      "dont": "Reach for Destructive because the message feels important.",
+      "do": "Match the tone to the state: success happened, warning is about to, destructive already went wrong, info is context.",
+      "why": "Four tones only work while they differ. A page of red alerts carries exactly as much information as a page of grey ones."
+    },
+    {
+      "id": "say-what-to-do",
+      "dont": "State the problem and stop — \"Connection failed.\"",
+      "do": "Say what happened and what happens next, and attach the action if there is one.",
+      "why": "An alert that cannot be acted on is a notification. The description is where the reader finds out whether this is theirs to fix."
+    },
+    {
+      "id": "dismissible-means-recoverable",
+      "dont": "Let someone dismiss an alert describing a condition that is still true.",
+      "do": "Offer dismiss for something acknowledged; leave a live condition on the page until it clears.",
+      "why": "Dismissing is a promise that the information is no longer needed. If the disk is still full, closing the notice only hides it."
+    },
+    {
+      "id": "one-at-a-time",
+      "dont": "Stack four alerts at the top of a page.",
+      "do": "Show the one that matters, or summarise them into a single alert that links to the detail.",
+      "why": "A stack of alerts reads as a wall. Whichever is most urgent is the one least likely to be read."
+    },
+    {
+      "id": "title-is-one-line",
+      "dont": "Write a title that wraps onto a second line.",
+      "do": "Keep the title to a short phrase and put the rest in the description.",
+      "why": "The title shares its row with the icon and the dismiss. A wrapping title pushes them apart and stops the row reading as one thing."
+    }
+  ]
+}
