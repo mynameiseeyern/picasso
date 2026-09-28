@@ -7,6 +7,10 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### ⚠️ Changed (visual)
 
+- **`data-spacing="comfortable"` is now `relaxed`**, and scales the whole
+  ladder ×1.25 instead of moving the base to 6px.
+- **Tokens Studio removed.** `$themes.json` / `$metadata.json` are gone and
+  `primitives.json` is now `core.json` + `presets.json` + `brands/*/brand.json`.
 - **Kbd radius is `radius/sm` (6px)**, down from `radius/lg` (10px), which read
   as a pill at 20px tall. **Figma impact** — already applied to all five
   `Background` variants and the doc-page overrides.
@@ -33,6 +37,23 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Added
 
+- **Brands are choices, not values.** `tokens/brands/<brand>/brand.json` picks a
+  base colour, `neutral` (cool/warm), `radius` (sharp/subtle/default/rounded),
+  `spacing` (compact/default/relaxed) and `type` (sans + mono) from
+  `tokens/presets.json`. The build generates that brand's primitives, its
+  `[data-brand]` CSS block, any `fg/on/*` that contrast measurement flips, and
+  `dist/brands/<brand>/figma.json`. `npm run brand:new` creates one.
+- **Spacing presets** — compact ×0.875 and relaxed ×1.25 on the whole ladder,
+  each step rounded to the 2px grid. `theme.css` now maps every step to a
+  named Tailwind key (`p-4` → `--space-4`) so a non-linear ladder survives.
+- **Figma sync without Tokens Studio.** `packages/figma-sync` is a Figma plugin
+  that applies `figma.json` (Check / Sync / Sync + remove extras), and
+  `fingerprint.cjs` proves parity by hash.
+- **Parity checks** (`npm run check`): light/dark define the same tokens; every
+  brand has the same structure as Clarion; shared primitives match; Clarion's
+  authored on-colours agree with measurement. Contrast tests run per brand.
+- **Widget shadows** (`shadow/widget/panel|notification|screen|smooth`) — were
+  Figma-only.
 - **Kbd and KbdGroup** in `@ir/ui`, built to the Figma component (five
   `background` options).
 - **Brand folders.** `tokens/primitives.json` is split into `tokens/core.json`
@@ -43,6 +64,15 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Fixed
 
+- **Figma now matches the repo.** Clarion brand ramp (all 11 stops, e.g.
+  `brand/600` #0079AD → #007FAB), `vis/indigo/500·600`, six missing
+  `vis/amber` and `vis/lime` stops, dark `bg/scrim` alpha. Variables are scoped
+  (palette hidden from pickers). `type/tracking/*` removed from Figma (it lives
+  in the text styles). **Outstanding:** `metric/xl·lg·md` stay Medium in Figma
+  until JetBrains Mono SemiBold is installed — then run Sync.
+- **Shadows and rings are structured like Figma's**: one colour token per layer
+  per mode (`_shadow/*`, `_ring/*`), geometry in the composite. Same CSS
+  output; rings now follow the brand at runtime.
 - **The radius ladder was defined twice in CSS.** `tokens.css` still emitted
   static `--radius-sm` etc. alongside `theme.css`'s `calc()` ladder. Now only
   `--radius` is emitted; the ladder in `core.json` is written as formulas on
