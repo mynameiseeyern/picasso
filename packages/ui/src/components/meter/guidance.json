@@ -1,0 +1,33 @@
+{
+  "component": "Meter",
+  "summary": "A ten-segment bar for a value against a known ceiling.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1462:1192" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "never-alone",
+      "dont": "Show a meter on its own and expect it to carry the value.",
+      "do": "Always pair it with the number it represents.",
+      "why": "It moves in 20% steps, so it cannot tell you 3.4 from 3.9 — and it is hidden from screen readers, so on its own it says nothing at all."
+    },
+    {
+      "id": "meter-is-not-progress",
+      "dont": "Use a meter for something that is completing — an upload, an import.",
+      "do": "Use Progress for work in flight; a meter is for a reading.",
+      "why": "Progress implies an end state and a direction. A meter is a measurement that can go back down."
+    },
+    {
+      "id": "needs-a-known-ceiling",
+      "dont": "Use a meter for an unbounded number like calls per hour.",
+      "do": "Use it where the maximum is real and known — MOS out of 5, a score out of 100.",
+      "why": "The bar is a fraction of something. With an invented ceiling, the fill is an opinion rather than a measurement."
+    },
+    {
+      "id": "unknown-shows-nothing",
+      "dont": "Draw an empty-looking meter when there is no reading.",
+      "do": "Pass status unknown, so nothing lights and the value reads \"—\".",
+      "why": "A meter at zero says the measurement is zero. No reading and a reading of nothing are different facts."
+    }
+  ]
+}
