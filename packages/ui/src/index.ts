@@ -18,3 +18,15 @@ export { Switch, switchVariants, type SwitchProps } from "./components/switch/sw
 export { Kbd, KbdGroup, kbdVariants, type KbdProps, type KbdGroupProps } from "./components/kbd/kbd";
 export { Alert, AlertTitle, AlertDescription, alertVariants, type AlertProps } from "./components/alert/alert";
 export { ButtonGroup, buttonGroupVariants, type ButtonGroupProps } from "./components/button-group/button-group";
+export {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardHeaderText,
+  CardTitle,
+  cardVariants,
+  type CardProps,
+} from "./components/card/card";

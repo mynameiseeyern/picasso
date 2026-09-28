@@ -1,0 +1,51 @@
+{
+  "component": "Card",
+  "summary": "A surface that holds one thing, and says so with a border and a little lift.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2579:33491" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "one-thing-per-card",
+      "dont": "Put three unrelated sections in one card because they share a screen.",
+      "do": "Give each its own card, or drop the card and use headings.",
+      "why": "The border is a claim that everything inside belongs together. Used on a grab bag it stops meaning anything, and the page reads as boxes rather than content."
+    },
+    {
+      "id": "no-nesting",
+      "dont": "Nest a card inside a card.",
+      "do": "Use a divider, a heading, or a plain bordered region inside.",
+      "why": "Two borders and two shadows say \"unit\" twice about the same content, and the inner one competes with the outer for the eye."
+    },
+    {
+      "id": "not-every-surface",
+      "dont": "Wrap the whole page body in a card.",
+      "do": "Let the page be the page; use cards for the things on it.",
+      "why": "A card that contains everything separates nothing. The lift is a comparison — it only reads against an unlifted surface."
+    },
+    {
+      "id": "title-earns-its-place",
+      "dont": "Repeat the section heading as the card title.",
+      "do": "Title the card only when the content needs naming.",
+      "why": "A card is allowed to be just content. A title that echoes the heading above it costs a line and adds nothing."
+    },
+    {
+      "id": "actions-belong-together",
+      "dont": "Scatter actions through the card — one in the header, two in the body, one in the footer.",
+      "do": "Put per-card actions in the header, and the ones that finish the job in the footer.",
+      "why": "Two places is a pattern people can learn. Four is a search."
+    },
+    {
+      "id": "clickable-card-needs-a-target",
+      "dont": "Make the whole card a link and put buttons inside it.",
+      "do": "Either the card is the target, or it holds targets — not both.",
+      "why": "A click inside a clickable card is ambiguous to the person and genuinely ambiguous in the markup; nested interactive elements are also invalid for assistive technology."
+    },
+    {
+      "id": "sm-is-for-density",
+      "dont": "Use sm to fit more words into the same space.",
+      "do": "Use sm where cards repeat — a list, a grid, a sidebar — and default where one card carries a page.",
+      "why": "The size changes padding, not type. Shrinking the padding to win room makes the content feel crowded rather than compact."
+    }
+  ]
+}
