@@ -6,6 +6,7 @@ import { Button } from "../button/button";
 import { checkboxVariants } from "../checkbox/checkbox";
 import { InputButton } from "../input-button/input-button";
 import { InputGroup, InputGroupAddon, InputGroupInput } from "../input-group/input-group";
+import { Separator } from "../separator/separator";
 
 /**
  * Select — Figma Select (1580:759), Select / Menu (1579:471).
@@ -177,7 +178,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                 />
               </InputGroup>
             </div>
-            <div aria-hidden className="h-px bg-line-neutral-muted" />
+            <Separator />
             <div
               id={listId}
               role="listbox"
@@ -195,7 +196,11 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                   const gid = `${uid}-g${gi}`;
                   return (
                     <React.Fragment key={name ?? `_${gi}`}>
-                      {gi > 0 ? <div role="presentation" className="my-1 h-px bg-line-neutral-muted" /> : null}
+                      {gi > 0 ? (
+                        <div className="my-1">
+                          <Separator />
+                        </div>
+                      ) : null}
                       <div role="group" aria-labelledby={name ? gid : undefined}>
                         {name ? (
                           <div id={gid} role="presentation" className="px-1.5 py-1 text-label-sm text-content-neutral-subtle">
@@ -242,7 +247,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                 })
               )}
             </div>
-            <div aria-hidden className="h-px bg-line-neutral-muted" />
+            <Separator />
             <div className="flex items-center justify-between gap-2 p-2" data-slot="select-footer">
               <Button variant="ghost" size="sm" disabled={!draft.length} onClick={() => setDraft([])}>
                 {clearLabel}
