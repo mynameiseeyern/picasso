@@ -11,28 +11,12 @@ import { contrast, hexToRgb } from "../../../tokens/build/ramp.mjs";
  * rather than in an audit six months later — which is how the amber flip got
  * found the first time, by hand, after it had already shipped.
  */
-const T = (f: string) => JSON.parse(readFileSync(join(__dirname, "../../../tokens/tokens", f), "utf8"));
-// A brand's primitives layer over core, exactly as Token Studio resolves them.
-const deepMerge = (a: any, b: any): any =>
-  Object.fromEntries(
-    [...new Set([...Object.keys(a), ...Object.keys(b)])].map((k) => [
-      k,
-      a[k] && b[k] && typeof a[k] === "object" && typeof b[k] === "object" && !("$value" in b[k])
-        ? deepMerge(a[k], b[k])
-        : (b[k] ?? a[k]),
-    ]),
-  );
-const prims = deepMerge(T("core.json"), T("brands/clarion/primitives.json"));
+// @ts-expect-error — plain .mjs build module, no types needed here
+import { BRANDS, brandLayer, core, resolver, semantic } from "../../../tokens/build/brands.mjs";
 
-const resolve = (ref: string): string => {
-  const path = ref.replace(/[{}]/g, "").split(".");
-  let n: any = prims;
-  for (const p of path) n = n?.[p];
-  if (!n?.$value) throw new Error(`unresolved: ${ref}`);
-  return String(n.$value).toUpperCase();
-};
-
-const MODES = { light: T("light.json"), dark: T("dark.json") } as const;
+/* Every brand is measured, not just the default: a brand's on-colours are
+ * generated, and this is the gate that proves the generator right. */
+const MODES = semantic as Record<"light" | "dark", any>;
 
 /** fg/on/<intent>-<prominence> is named for the surface it sits on. */
 const pairs = Object.entries(MODES).flatMap(([mode, sem]) =>
