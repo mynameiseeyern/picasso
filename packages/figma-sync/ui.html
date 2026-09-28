@@ -34,7 +34,12 @@
   const run = (apply, prune) => { $("status").textContent = apply ? "Syncing…" : "Checking…"; parent.postMessage({ pluginMessage: { type: "run", payload, apply, prune } }, "*"); };
   $("check").onclick = () => run(false, false);
   $("sync").onclick = () => run(true, false);
-  $("prune").onclick = () => { if (confirm("Delete variables and styles the repo no longer has?")) run(true, true); };
+  // Figma's plugin iframe blocks confirm(), so ask for a second click instead.
+  let armed = false;
+  $("prune").onclick = () => {
+    if (!armed) { armed = true; $("prune").textContent = "Click again to delete extras"; setTimeout(() => { armed = false; $("prune").textContent = "Sync + remove extras"; }, 4000); return; }
+    armed = false; $("prune").textContent = "Sync + remove extras"; run(true, true);
+  };
   onmessage = (e) => {
     const m = e.data.pluginMessage; if (!m) return;
     if (m.type === "error") { $("status").innerHTML = `<span class="bad">Error: ${m.message}</span>`; return; }
