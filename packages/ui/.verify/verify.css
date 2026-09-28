@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@import "../../tokens/dist/tokens.css";
+@import "../../tokens/themes.css";
+@import "../../tokens/theme.css";
+@source "../src";
+body { margin: 0; background: var(--bg-app); }
