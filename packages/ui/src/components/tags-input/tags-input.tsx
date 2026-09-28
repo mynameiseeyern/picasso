@@ -94,7 +94,7 @@ export const TagsInput = React.forwardRef<HTMLInputElement, TagsInputProps>(
             "focus-within:ring-offset-2 focus-within:ring-offset-surface-app " +
             "has-[[aria-invalid=true]]:border-line-input-invalid " +
             "has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-surface-input-disabled has-[input:disabled]:border-line-input-disabled",
-          size === "sm" ? "min-h-8 gap-1 px-2 py-1 text-body-sm" : "min-h-10 gap-1.5 px-2 py-1.5 text-body-md",
+          size === "sm" ? "min-h-9 gap-1.5 px-2 py-1 text-body-sm" : "min-h-10 gap-1.5 px-2 py-1.5 text-body-md",
           groupClassName,
         )}
         onMouseDown={(e) => {
@@ -132,7 +132,7 @@ export const TagsInput = React.forwardRef<HTMLInputElement, TagsInputProps>(
           }}
           onBlur={(e) => { onBlur?.(e); if (text.trim()) add([text]); }}
           className={cn(
-            "h-7 min-w-16 flex-1 bg-transparent px-1 outline-none placeholder:text-content-neutral-subtle disabled:cursor-not-allowed",
+            "h-7 min-w-20 flex-1 bg-transparent px-1 outline-none placeholder:text-content-neutral-subtle disabled:cursor-not-allowed",
             className,
           )}
           {...props}

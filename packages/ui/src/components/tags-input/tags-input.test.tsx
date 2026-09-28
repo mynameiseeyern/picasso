@@ -38,4 +38,26 @@ describe("TagsInput", () => {
     expect(input).toHaveValue("not-an-email");
     expect(screen.queryByRole("button", { name: /Remove/ })).toBeNull();
   });
+}
+
+  it("keeps room for the placeholder, so the input wraps rather than truncating", () => {
+    render(<TagsInput aria-label="Tags" defaultValue={["prod", "apac"]} />);
+    // Figma measures "Add a tag…" at 76px. Below that the input holds its
+    // line and clips the placeholder, which is the one thing a box that
+    // grows in height exists to avoid. min-w-20 is 80px.
+    expect(screen.getByLabelText("Tags").className).toContain("min-w-20");
+  });
+
+  it("keeps one chip size and a 6px gap at both sizes, as Figma draws them", () => {
+    const { rerender, container } = render(<TagsInput aria-label="Tags" defaultValue={["prod"]} />);
+    const box = () => container.querySelector("[data-slot=tags-input]") ?? container.firstElementChild!;
+    expect(container.querySelector("[data-slot=input-chip]")!.className).toContain("h-7");
+    expect(box().className).toContain("min-h-10");
+    expect(box().className).toContain("gap-1.5");
+    rerender(<TagsInput aria-label="Tags" size="sm" defaultValue={["prod"]} />);
+    // sm shrinks the padding only — 36 tall, same chip, same gap.
+    expect(container.querySelector("[data-slot=input-chip]")!.className).toContain("h-7");
+    expect(box().className).toContain("min-h-9");
+    expect(box().className).toContain("gap-1.5");
+  });
 });

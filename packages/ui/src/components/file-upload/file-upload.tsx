@@ -59,7 +59,7 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
         <span className={cn("min-w-0 flex-1 truncate", summary ? "text-content-neutral-emphasis" : "text-content-neutral-subtle", disabled && "text-content-disabled")}>
           {summary ?? placeholder}
         </span>
-        <Button asChild variant="secondary" size={size === "sm" ? "xs" : "sm"} aria-hidden>
+        <Button asChild variant="secondary" size="xs" aria-hidden>
           <span className={cn(disabled && "pointer-events-none text-content-disabled")}>{browseLabel}</span>
         </Button>
       </label>

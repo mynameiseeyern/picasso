@@ -47,6 +47,9 @@ const checkboxVariants = cva(
     "aria-invalid:border-line-danger-emphasis " +
     "aria-invalid:data-[state=checked]:bg-surface-danger-emphasis " +
     "aria-invalid:data-[state=indeterminate]:bg-surface-danger-emphasis " +
+    // on a danger fill the mark is the danger pairing, as Figma draws it
+    "aria-invalid:data-[state=checked]:text-content-on-danger-emphasis " +
+    "aria-invalid:data-[state=indeterminate]:text-content-on-danger-emphasis " +
     "aria-invalid:focus-visible:ring-line-danger-emphasis " +
     // disabled, including checked — see the doc block
     "disabled:cursor-not-allowed disabled:hover:bg-surface-input-disabled " +
