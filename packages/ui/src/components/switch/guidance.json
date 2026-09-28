@@ -1,0 +1,45 @@
+{
+  "component": "Switch",
+  "summary": "An immediate change. Flipping it does the thing — nothing is waiting on a Save button.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1604:99" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "switch-vs-checkbox",
+      "dont": "Use a Switch for a value that a Save button confirms.",
+      "do": "Use Switch for an immediate change, Checkbox for a form value.",
+      "why": "A switch says the change has already happened. Putting one in a form makes people flip it, press Save, and wonder which of the two actually did the work."
+    },
+    {
+      "id": "no-save-button",
+      "dont": "Pair a panel of switches with Save and Cancel.",
+      "do": "Apply each change as it is made, and say so if it takes a moment.",
+      "why": "Cancel cannot undo something that already took effect. If the change genuinely needs confirming, the control was never a switch."
+    },
+    {
+      "id": "switch-is-not-a-choice",
+      "dont": "Use two switches for two mutually exclusive options.",
+      "do": "Use a radio group — one tab stop, arrows to move, one answer.",
+      "why": "Two switches can both be on. If that state is impossible, the control is lying about the shape of the question."
+    },
+    {
+      "id": "label-the-thing-not-the-state",
+      "dont": "Label a switch \"Notifications off\" and flip the meaning with its state.",
+      "do": "Label the thing being switched — \"Notifications\" — and let on mean on.",
+      "why": "A switch already carries the state. A negative label makes the on position mean off, which nobody reads correctly at a glance."
+    },
+    {
+      "id": "immediate-means-immediate",
+      "dont": "Flip the switch optimistically and let it snap back when the request fails.",
+      "do": "Hold the new position, show that it is saving, and explain it if it fails.",
+      "why": "A control that moves by itself reads as a bug, and people stop trusting what the position tells them."
+    },
+    {
+      "id": "disabled-reads-as-disabled",
+      "dont": "Leave a disabled ON switch at full colour.",
+      "do": "Mute it, so it reads as a setting nobody can currently change.",
+      "why": "A live-looking switch invites a flip that does nothing, and no feedback follows to explain why."
+    }
+  ]
+}
