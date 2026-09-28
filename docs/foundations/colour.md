@@ -57,6 +57,31 @@ theme axes override *primitives*. That asymmetry is what lets five axes and two
 modes compose by cascade instead of being authored as ten sets. A component that
 uses semantic utilities gets dark mode without a single `dark:` class.
 
+## Brands
+
+Picasso is multi-brand: a brand supplies its own brand and accent ramps and
+inherits everything else.
+
+The rule that keeps that from sprawling is that **only `fg/on/*` may differ
+per brand**. Every other semantic aliases a primitive, so re-pointing
+`--palette-brand-600` carries the whole system with it. If a brand seems to
+need some other semantic overridden, the ramp is wrong.
+
+Ramps are generated in OKLCH from one base colour, and the steps that carry
+text are **solved** so white passes — not generated freely and then rescued by
+flipping the text to dark. A primary button should look structurally the same
+in every brand, with only the hue changing.
+
+The flip survives for the two cases that cannot be constrained: a colour that
+must stay recognisable (amber cannot be darkened enough to carry white and
+still read as a warning), and dark mode, which paints with a lighter step.
+
+`npm test` measures every on-colour pair against its own surface in both
+modes, so a ramp that drifts a step lighter fails the build rather than an
+audit.
+
+See `AGENTS.md` → Adding a brand.
+
 ## ⚠️ Unresolved: the brand ramp
 
 **All eleven brand stops disagree between Figma and the repo**, and the repo is

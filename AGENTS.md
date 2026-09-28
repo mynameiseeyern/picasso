@@ -177,6 +177,60 @@ npm test
 
 ---
 
+## Adding a brand
+
+Picasso is multi-brand. A brand brings its own ramps; everything else is
+inherited, and that is deliberate.
+
+**A brand is a preset, not a sixth axis.** It sets defaults for radius, type
+and spacing; an explicit `data-radius` still overrides it. That works by CSS
+source order, so in `themes.css` **brand blocks sit above the axis blocks** —
+load-bearing, not cosmetic.
+
+**Constrain the surface; do not flip the ink.** Generate the ramp so the
+emphasis step carries white text, rather than generating freely and flipping
+`fg/on/*` to dark when it fails. A system where a primary button has white
+text in one brand and dark text in another has two different-looking primary
+buttons, and every screenshot, doc and habit diverges with it. Constrain the
+ramp and only the hue changes.
+
+`build/ramp.mjs` does this: for the steps that carry text it solves lightness
+down until relative luminance clears 0.1833. **OKLCH lightness is not WCAG
+luminance** — luminance weights green at 0.7152 and blue at 0.0722, so a fixed
+L lands one hue at 4.61 and another at 4.48. Solve, do not tabulate.
+
+**Keep the flip for what cannot be constrained.** Two cases, and only two:
+a colour that must stay recognisable (amber cannot be darkened enough to carry
+white and still read as a warning), and dark mode, which deliberately paints
+with a lighter step. Everywhere else a flip means the ramp is wrong.
+
+**Only `fg/on/*` may differ per brand.** Every other semantic aliases a
+primitive, so re-pointing the primitive carries the whole system. If a brand
+needs some other semantic overridden, fix the ramp — that is a bug report
+against the ramp, not a new override. Without this, brand three arrives with
+nine overrides and brand four with fifteen.
+
+**Colour and radius move freely; typography and spacing need a reason.**
+Colour is nearly free because semantics alias primitives. Type and spacing
+change *layout*, so every screen has to be re-checked per brand. That cost is
+real and it multiplies.
+
+**Never per brand:** `danger`, `success`, `warning`, `info`. A brand whose
+colour is red does not make errors green. These are meaning, not identity.
+
+**Generated, committed, never hand-edited.** `node build/brand.mjs <name>
+--brand "#RRGGBB"` emits the block and prints the contrast evidence. A
+hand-edited ramp cannot be regenerated, and the first nudged stop silently
+desynchronises the on-colours.
+
+**WCAG 2.1 AA is the gate; the eye overrides upward only.** 2.1 mis-ranks
+saturated colours and APCA models it better, but APCA is not a standard and
+not what an accessibility obligation names. So: comply with 2.1, and where 2.1
+says pass and the screen says otherwise, darken. Never the reverse.
+`npm test` enforces the floor — every on-colour pair, both modes.
+
+---
+
 ## Documentation
 
 Prose about the system lives in `docs/`, not in this file. This file is *how to
