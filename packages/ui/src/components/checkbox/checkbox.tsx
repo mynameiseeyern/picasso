@@ -13,19 +13,20 @@ import { cn } from "@/lib/utils";
  * Figma's `State` axis (Default · Hover · Focus · Disabled · Invalid) is CSS
  * states, the disabled attribute and aria-invalid, as everywhere else.
  *
- * ⚠️ Two deliberate differences from the Figma component:
+ * ⚠️ One departure from the Figma file:
  *
- * 1. **Border is 1px, not 1.5.** Figma draws 1.5; every other control in the
- *    system draws 1, and shadcn's checkbox draws 1. Measurements come from
- *    shadcn, and a single border weight is worth more than half a pixel.
+ * **Border is 1px, not 1.5.** Figma draws 1.5 and keeps it. Chrome floors a
+ * fractional border width — measured, `border:1.5px` and `border:1px` give
+ * identical computed values and identical layout at DPR 1 and DPR 2 — so 1px
+ * is the only form 1.5 can take on the web. The file is right; the browser
+ * cannot draw it.
  *
- * 2. **A disabled checked box is muted.** Figma paints it bg/primary/emphasis
- *    at full strength, identical to an enabled one — so a disabled checked box
- *    is indistinguishable from a live one, which is the state most likely to
- *    be misread as "you can still untick this". It now takes the disabled
- *    surface.
- *
- * Both are pushed back to Figma per AGENTS.md → Adding a component §8.
+ * The disabled treatment is NOT a departure. A disabled checked box takes
+ * bg/disabled with an fg/disabled mark, which is exactly Button's disabled
+ * pairing, and Figma draws the same (Ee's call, 28 Sept). The mark sits at
+ * 2.24:1 against its surface — soft, and the same softness as every disabled
+ * button label, which is the point: it reads as inactive without the state
+ * becoming unreadable.
  */
 const checkboxVariants = cva(
   "group peer shrink-0 rounded-sm border transition-colors outline-none " +
