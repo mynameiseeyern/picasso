@@ -1,7 +1,9 @@
 import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import { CircleHelp } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../tooltip/tooltip";
 
 /**
  * Field
@@ -97,11 +99,16 @@ const labelVariants = cva("flex items-center gap-0.5 text-content-neutral-emphas
 export interface FieldLabelProps extends React.ComponentProps<"label"> {
   /** Renders the asterisk and sets required on the control. */
   required?: boolean;
+  /**
+   * Figma's `Help icon`: a (?) after the label that explains the field in a
+   * tooltip. For background — anything needed to answer belongs in the hint.
+   */
+  help?: React.ReactNode;
 }
 
-export function FieldLabel({ className, children, required, ...props }: FieldLabelProps) {
+export function FieldLabel({ className, children, required, help, ...props }: FieldLabelProps) {
   const { id, size, disabled } = useField("FieldLabel");
-  return (
+  const label = (
     <label
       htmlFor={id}
       data-slot="field-label"
@@ -117,6 +124,27 @@ export function FieldLabel({ className, children, required, ...props }: FieldLab
         </span>
       ) : null}
     </label>
+  );
+  if (!help) return label;
+  // The help button sits beside the label, not inside it — a button inside a
+  // <label> would forward its click to the control.
+  return (
+    <div data-slot="field-label-row" className="flex items-center gap-0.5">
+      {label}
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            aria-label={`About ${typeof children === "string" ? children : "this field"}`}
+            data-slot="field-help"
+            className="inline-flex size-4 items-center justify-center rounded-full text-content-neutral-subtle outline-none hover:text-content-neutral-emphasis focus-visible:ring-2 focus-visible:ring-line-focused"
+          >
+            <CircleHelp aria-hidden className="size-4" />
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>{help}</TooltipContent>
+      </Tooltip>
+    </div>
   );
 }
 

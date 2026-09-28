@@ -1,0 +1,39 @@
+{
+  "component": "InputGroup",
+  "summary": "An input with things beside it — an icon, a unit, a spinner, a button.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "958:666" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "group-draws-the-box",
+      "dont": "Put a border on the input inside the group.",
+      "do": "Let the group draw the box and keep the input bare.",
+      "why": "Only then does the focus ring surround the addons too. Draw it on the input and the ring stops at the icon."
+    },
+    {
+      "id": "units-are-not-placeholders",
+      "dont": "Write the unit into the placeholder — 'Threshold in ms'.",
+      "do": "Put it in a trailing text addon, so it stays visible once there is a value.",
+      "why": "A placeholder disappears exactly when the person needs to check what they typed."
+    },
+    {
+      "id": "decoration-is-not-a-control",
+      "dont": "Make a decorative icon focusable.",
+      "do": "Leave icons out of the tab order; give real controls a label.",
+      "why": "Every stop in the tab order costs a keyboard user a keystroke. A search icon is not worth one."
+    },
+    {
+      "id": "state-comes-from-the-input",
+      "dont": "Pass invalid or disabled to the group as a prop.",
+      "do": "Set aria-invalid or disabled on the input; the group reads it.",
+      "why": "One source of truth. The thing that is invalid is the value, and the value lives in the input."
+    },
+    {
+      "id": "one-job-per-side",
+      "dont": "Stack a unit, a spinner and two buttons into one trailing slot.",
+      "do": "Keep one thing per side, and move the rest out of the field.",
+      "why": "The field shrinks to fit whatever you put beside it, and a 60px input is not a field any more."
+    }
+  ]
+}

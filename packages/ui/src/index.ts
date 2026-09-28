@@ -48,3 +48,29 @@ export { Badge, badgeVariants, type BadgeProps } from "./components/badge/badge"
 export { Meter, litSegments, type MeterProps, type MeterStatus } from "./components/meter/meter";
 export { KpiTile, type KpiTileProps, type KpiStatus } from "./components/kpi-tile/kpi-tile";
 export { Progress, progressIndicatorVariants, type ProgressProps } from "./components/progress/progress";
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./components/tooltip/tooltip";
+export {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupCheck,
+  InputGroupInput,
+  InputGroupSpinner,
+  InputGroupText,
+  InputGroupTooltip,
+  inputGroupVariants,
+  type InputGroupProps,
+  type InputGroupAddonProps,
+  type InputGroupInputProps,
+} from "./components/input-group/input-group";
+export { InputButton, inputButtonVariants, type InputButtonProps } from "./components/input-button/input-button";
+export { PasswordInput, type PasswordInputProps } from "./components/password-input/password-input";
+export { NumberInput, type NumberInputProps } from "./components/number-input/number-input";
+export { Select, type SelectProps, type SelectOption } from "./components/select/select";
+export { TagsInput, InputChip, type TagsInputProps, type InputChipProps } from "./components/tags-input/tags-input";
+export {
+  FileUpload,
+  FileUploadItem,
+  formatBytes,
+  type FileUploadProps,
+  type FileUploadItemProps,
+} from "./components/file-upload/file-upload";

@@ -1,0 +1,39 @@
+{
+  "component": "Tooltip",
+  "summary": "A short explanation attached to a control, on hover or focus.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "426:8325" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "never-the-only-copy",
+      "dont": "Put something the person needs in order to finish the task in a tooltip.",
+      "do": "Put it in the field's hint, where it is always visible.",
+      "why": "A tooltip is invisible until you go looking for it, and on touch it may never appear at all."
+    },
+    {
+      "id": "not-a-container",
+      "dont": "Put links, buttons or a form inside a tooltip.",
+      "do": "Use a Popover for anything interactive.",
+      "why": "A tooltip closes when the pointer leaves, so nothing inside it can reliably be clicked."
+    },
+    {
+      "id": "label-vs-description",
+      "dont": "Rely on a tooltip to name an icon-only button.",
+      "do": "Give the button an aria-label, and use the tooltip for the extra detail.",
+      "why": "A tooltip describes; it does not name. A control with no accessible name is unusable without one."
+    },
+    {
+      "id": "keep-it-short",
+      "dont": "Write a paragraph.",
+      "do": "One sentence, up to about two lines.",
+      "why": "It sits over the content the person is reading, and it leaves as soon as they move."
+    },
+    {
+      "id": "dont-restate",
+      "dont": "Tooltip a 'Save' button with 'Save'.",
+      "do": "Say what saving will do, or say nothing.",
+      "why": "A tooltip that repeats the label teaches people that tooltips are not worth opening."
+    }
+  ]
+}

@@ -67,4 +67,22 @@ describe("Field", () => {
     expect(() => render(<FieldLabel>Orphan</FieldLabel>)).toThrow(/inside a <Field>/);
     console.error = quiet.error;
   });
+
+  it("adds a help button beside the label that explains the field on focus", async () => {
+    const { default: userEvent } = await import("@testing-library/user-event");
+    render(
+      <Field>
+        <FieldLabel help="Probes report every 30 seconds.">Poll interval</FieldLabel>
+        <FieldControl><input /></FieldControl>
+      </Field>,
+    );
+    const help = screen.getByRole("button", { name: "About Poll interval" });
+    // beside the label, not inside it — a button in a <label> would click the control
+    expect(help.closest("label")).toBeNull();
+    expect(screen.getByLabelText("Poll interval")).toBeInTheDocument();
+    // first stop: it sits beside the label, before the control
+    await userEvent.tab();
+    expect(help).toHaveFocus();
+    expect(await screen.findByRole("tooltip")).toHaveTextContent("Probes report every 30 seconds.");
+  });
 });
