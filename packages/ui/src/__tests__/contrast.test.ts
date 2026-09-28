@@ -12,7 +12,17 @@ import { contrast, hexToRgb } from "../../../tokens/build/ramp.mjs";
  * found the first time, by hand, after it had already shipped.
  */
 const T = (f: string) => JSON.parse(readFileSync(join(__dirname, "../../../tokens/tokens", f), "utf8"));
-const prims = T("primitives.json");
+// A brand's primitives layer over core, exactly as Token Studio resolves them.
+const deepMerge = (a: any, b: any): any =>
+  Object.fromEntries(
+    [...new Set([...Object.keys(a), ...Object.keys(b)])].map((k) => [
+      k,
+      a[k] && b[k] && typeof a[k] === "object" && typeof b[k] === "object" && !("$value" in b[k])
+        ? deepMerge(a[k], b[k])
+        : (b[k] ?? a[k]),
+    ]),
+  );
+const prims = deepMerge(T("core.json"), T("brands/clarion/primitives.json"));
 
 const resolve = (ref: string): string => {
   const path = ref.replace(/[{}]/g, "").split(".");

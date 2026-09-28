@@ -7,6 +7,9 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### ⚠️ Changed (visual)
 
+- **Kbd radius is `radius/sm` (6px)**, down from `radius/lg` (10px), which read
+  as a pill at 20px tall. **Figma impact** — already applied to all five
+  `Background` variants and the doc-page overrides.
 - **The radius ladder moved from Tailwind's to shadcn's.** `sm` 4→6, `md` 6→8,
   `lg` 8→10, `xl` 12→14. `xs`, `2xl`, `3xl` and `4xl` are unchanged. Radius now
   derives from a single `--radius` knob, which is what makes it themeable.
@@ -27,6 +30,24 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   hover.
 - **A loading button keeps its variant fill.** It previously rendered as
   disabled, conflating two states Figma keeps separate.
+
+### Added
+
+- **Kbd and KbdGroup** in `@ir/ui`, built to the Figma component (five
+  `background` options).
+- **Brand folders.** `tokens/primitives.json` is split into `tokens/core.json`
+  (shared) and `tokens/brands/<brand>/primitives.json` (per brand: brand ramp,
+  font families, and `radius.base`). The build emits the default brand into
+  `:root` and every brand as a `[data-brand="…"]` block. Token Studio sets and
+  themes are updated to match; add a brand by copying `brands/clarion/`.
+
+### Fixed
+
+- **The radius ladder was defined twice in CSS.** `tokens.css` still emitted
+  static `--radius-sm` etc. alongside `theme.css`'s `calc()` ladder. Now only
+  `--radius` is emitted; the ladder in `core.json` is written as formulas on
+  `radius.base` (Token Studio resolves them for Figma), and the build fails if
+  those multipliers ever disagree with `theme.css`.
 
 ### Added
 

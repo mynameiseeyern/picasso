@@ -93,11 +93,16 @@
 
      xs 2 · sm 6 · md 8 · lg 10 · xl 14 · 2xl 16 · 3xl 24 · 4xl 32
 
-   `none` and `full` never scale — 0 is 0 and a pill is a pill.          */
+   `none` and `full` never scale — 0 is 0 and a pill is a pill.
 
-:root {
-  --radius: 0.625rem;   /* 10px */
-}
+   The multipliers live in two places — theme.css (calc, for code) and
+   tokens/core.json (formulas, for Token Studio → Figma). The build fails
+   if they disagree.                                                     */
+
+/* The default --radius is NOT set here. It comes from the brand
+   (tokens/brands/<brand>/primitives.json → radius.base), emitted into
+   tokens.css as :root and [data-brand="…"]. Setting it here would beat
+   every brand, because this file loads after tokens.css.               */
 
 [data-radius="sharp"]   { --radius: 0; }
 [data-radius="subtle"]  { --radius: 0.375rem; }  /*  6px */

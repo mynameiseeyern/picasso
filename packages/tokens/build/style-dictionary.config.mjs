@@ -6,9 +6,14 @@
  * Only the build paths changed: output lands in this package's ./dist.
  *
  * Reads Token Studio JSON from ../tokens/:
- *   primitives.json       → palette, type, space, radius, screen, typography
- *   light.json             → light-mode semantic tokens
- *   dark.json              → dark-mode semantic tokens
+ *   core.json                     → shared primitives: neutral + status ramps,
+ *                                   type scale, space, radius ladder, screen
+ *   brands/<brand>/primitives.json → per-brand: palette.brand, type.family,
+ *                                   radius.base (the one radius knob)
+ *   light.json / dark.json        → semantic tokens, shared by every brand
+ *
+ * The default brand (clarion) lands in :root; every brand also gets a
+ * [data-brand="…"] block so a subtree can switch brand.
  *
  * Outputs:
  *   dist/tokens.css        → :root holds palette + light semantic;
@@ -38,6 +43,48 @@ const isDarkToken = (t) =>
 const isLightToken = (t) =>
   typeof t.filePath === "string" && t.filePath.endsWith("light.json");
 
+// ── Brands ───────────────────────────────────────────────────────────
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+const DEFAULT_BRAND = "clarion";
+const CORE = resolve(TOKENS_DIR, "core.json");
+const brandFile = (b) => resolve(TOKENS_DIR, "brands", b, "primitives.json");
+const BRANDS = readdirSync(resolve(TOKENS_DIR, "brands"), { withFileTypes: true })
+  .filter((d) => d.isDirectory())
+  .map((d) => d.name)
+  .sort((a, b) => (a === DEFAULT_BRAND ? -1 : b === DEFAULT_BRAND ? 1 : a.localeCompare(b)));
+if (!BRANDS.includes(DEFAULT_BRAND)) throw new Error(`tokens/brands/${DEFAULT_BRAND} is missing`);
+const isBrandToken = (t) =>
+  typeof t.filePath === "string" && t.filePath.replace(/\\/g, "/").includes("/brands/");
+
+// The radius ladder is NOT emitted as static values. Code derives it at
+// runtime from --radius in theme.css (calc), so the data-radius axis can
+// turn one knob. Emitting static --radius-sm etc. here would shadow that —
+// the 28 Sept bug. Only radius.base (→ --radius), none and full go out.
+const isDerivedRadius = (t) =>
+  t.path[0] === "radius" && !["base", "none", "full"].includes(t.path[1]);
+
+// ── Drift gate: token formulas ⇔ theme.css calc() ────────────────────
+// Token Studio needs the multipliers (it resolves them into Figma numbers);
+// CSS needs them as calc(). Two copies of one fact — so the build checks
+// they agree and fails loudly if not.
+{
+  const core = JSON.parse(readFileSync(CORE, "utf8"));
+  const themeCss = readFileSync(resolve(PKG_ROOT, "theme.css"), "utf8");
+  const problems = [];
+  for (const [step, tok] of Object.entries(core.radius)) {
+    if (step.startsWith("$") || step === "none" || step === "full") continue;
+    const m = String(tok.$value).match(/^\{radius\.base\}(?:\s*\*\s*([\d.]+))?$/);
+    if (!m) { problems.push(`core radius.${step} = "${tok.$value}" is not {radius.base} * n`); continue; }
+    const want = m[1] ? Number(m[1]) : 1;
+    const line = themeCss.match(new RegExp(`--radius-${step}:\\s*([^;]+);`));
+    if (!line) { problems.push(`theme.css has no --radius-${step}`); continue; }
+    const c = line[1].trim().match(/^(?:calc\(var\(--radius\)\s*\*\s*([\d.]+)\)|var\(--radius\))$/);
+    const got = c ? (c[1] ? Number(c[1]) : 1) : NaN;
+    if (got !== want) problems.push(`radius.${step}: tokens say ×${want}, theme.css says "${line[1].trim()}"`);
+  }
+  if (problems.length) throw new Error("Radius ladder drift:\n  " + problems.join("\n  "));
+}
+
 // ── Name transform ───────────────────────────────────────────────────
 function buildCssName(token) {
   const path = [...token.path];
@@ -46,6 +93,10 @@ function buildCssName(token) {
   }
   if (path[path.length - 1] === "DEFAULT") {
     path.pop();
+  }
+  // radius.base is shadcn's single knob, which CSS has always called --radius.
+  if (path[0] === "radius" && path[1] === "base" && path.length === 2) {
+    return "radius";
   }
   return path.join("-").replace(/_/g, "-");
 }
@@ -67,7 +118,7 @@ StyleDictionary.registerTransform({
     token.original.$value.includes("{"),
   transform: (token) =>
     token.original.$value.replace(/\{([^}]+)\}/g, (_, ref) => {
-      const cssName = ref.split(".").join("-");
+      const cssName = buildCssName({ path: ref.split(".") });
       return `var(--${cssName})`;
     }),
 });
@@ -81,6 +132,7 @@ StyleDictionary.registerFormat({
     const typographyClasses = [];
 
     dictionary.allTokens.forEach((token) => {
+      if (isDerivedRadius(token)) return;
       if (token.$type === "typography" && typeof token.$value === "object") {
         const v = token.$value;
         const className = token.name;
@@ -233,12 +285,12 @@ StyleDictionary.registerTransform({
 // into one tree keyed by path, so feeding both to one build makes them collide
 // and the last source silently wins. They must be built in two passes.
 
-import { readFileSync } from "node:fs";
 
 // Pass 1 — primitives (incl. typography) + light → :root (and a sentinel for .dark)
 const light = new StyleDictionary({
   source: [
-    resolve(TOKENS_DIR, "primitives.json"),
+    CORE,
+    brandFile(DEFAULT_BRAND),
     resolve(TOKENS_DIR, "light.json"),
   ],
   preprocessors: ["tokens-studio"],
@@ -288,7 +340,7 @@ StyleDictionary.registerFormat({
 });
 
 const dark = new StyleDictionary({
-  source: [resolve(TOKENS_DIR, "primitives.json"), resolve(TOKENS_DIR, "dark.json")],
+  source: [CORE, brandFile(DEFAULT_BRAND), resolve(TOKENS_DIR, "dark.json")],
   preprocessors: ["tokens-studio"],
   platforms: {
     css: {
@@ -299,3 +351,39 @@ const dark = new StyleDictionary({
   },
 });
 await dark.buildAllPlatforms();
+
+// Pass 3 — one [data-brand="…"] block per brand, appended after :root/.dark.
+// tokens.css is imported BEFORE themes.css, so an explicit axis
+// (data-radius, data-type …) still beats the brand's default. That ordering
+// is load-bearing: brand sets defaults, axes override them.
+const brandBlocks = [];
+for (const brand of BRANDS) {
+  StyleDictionary.registerFormat({
+    name: `css/ir-brand-${brand}`,
+    format: async ({ dictionary }) => {
+      const decls = dictionary.allTokens
+        .filter((t) => isBrandToken(t) && !isDerivedRadius(t))
+        .map((t) => `  --${t.name}: ${t.$value};`);
+      brandBlocks.push(`[data-brand="${brand}"] {\n${decls.join("\n")}\n}`);
+      return "";
+    },
+  });
+  const sd = new StyleDictionary({
+    source: [CORE, brandFile(brand)],
+    preprocessors: ["tokens-studio"],
+    log: { verbosity: "silent" },
+    platforms: {
+      css: {
+        transforms: ["name/ir/css", "value/ir/css-var-references", "size/ir/rem"],
+        buildPath: DIST_DIR,
+        files: [{ destination: `.brand-${brand}.tmp`, format: `css/ir-brand-${brand}` }],
+      },
+    },
+  });
+  await sd.formatPlatform("css");
+}
+const css = readFileSync(DIST_DIR + "tokens.css", "utf8");
+writeFileSync(
+  DIST_DIR + "tokens.css",
+  css.replace(/\n*$/, "\n\n/* ── Brands (default brand is also in :root) ── */\n" + brandBlocks.join("\n\n") + "\n"),
+);

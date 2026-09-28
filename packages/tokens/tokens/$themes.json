@@ -1,10 +1,11 @@
 [
   {
     "id": "primitives",
-    "name": "Value",
+    "name": "Clarion",
     "group": "Primitives",
     "selectedTokenSets": {
-      "primitives": "enabled",
+      "core": "enabled",
+      "brands/clarion/primitives": "enabled",
       "light": "disabled",
       "dark": "disabled"
     },
@@ -18,7 +19,8 @@
     "name": "Light",
     "group": "Semantic",
     "selectedTokenSets": {
-      "primitives": "source",
+      "core": "source",
+      "brands/clarion/primitives": "source",
       "light": "enabled",
       "dark": "disabled"
     },
@@ -32,7 +34,8 @@
     "name": "Dark",
     "group": "Semantic",
     "selectedTokenSets": {
-      "primitives": "source",
+      "core": "source",
+      "brands/clarion/primitives": "source",
       "light": "disabled",
       "dark": "enabled"
     },
