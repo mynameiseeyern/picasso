@@ -124,6 +124,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         aria-busy={loading || undefined}
         data-loading={loading || undefined}
         data-slot="button"
+        // Metadata, not styling. ButtonGroup needs to know which of its
+        // children carry a visible border and which are solid, so it can draw
+        // the divider between two solid buttons that Figma draws as a
+        // separate 1px rectangle.
+        data-variant={variant ?? "default"}
         {...props}
       >
         {loading ? <Loader2 className="animate-spin" aria-hidden="true" /> : null}

@@ -1,0 +1,45 @@
+{
+  "component": "ButtonGroup",
+  "summary": "Several buttons that belong to one decision, joined into a single control.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "667:1703" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "group-is-not-a-choice",
+      "dont": "Use a ButtonGroup for a setting where one option stays selected.",
+      "do": "Use Radio, or a segmented control, when the choice persists.",
+      "why": "Nothing in a ButtonGroup stays pressed. If the control has to show which option is current, it is answering a question, not offering actions."
+    },
+    {
+      "id": "same-level-actions",
+      "dont": "Join Save, Cancel and Delete because they sit next to each other.",
+      "do": "Group actions that are variations of one job — Day, Week, Month.",
+      "why": "Joining two buttons says they are the same kind of thing. Cancel and Delete are not, and the shared edge makes the destructive one easier to hit by accident."
+    },
+    {
+      "id": "one-primary",
+      "dont": "Fill a group with primary buttons so everything competes.",
+      "do": "Use Outline or Secondary for a set of peers, and keep primary for a split of one action.",
+      "why": "A row of five primary buttons has no hierarchy left to offer. The solid treatment is for a group that is really one action plus its options."
+    },
+    {
+      "id": "label-the-group",
+      "dont": "Leave the group without a name.",
+      "do": "Give it an aria-label — \"Zoom\", \"View as\", \"Export\".",
+      "why": "Read on their own, the buttons are six labels with nothing to say what they have in common. The group's name is what supplies it."
+    },
+    {
+      "id": "keep-it-short",
+      "dont": "Join eight buttons into one bar.",
+      "do": "Keep it to a handful, and move the rest behind a menu.",
+      "why": "A long joined bar stops reading as a set of choices and starts reading as a toolbar, where the shared edges are just noise."
+    },
+    {
+      "id": "icon-buttons-need-names",
+      "dont": "Put bare icon buttons in the group and rely on the shape.",
+      "do": "Give each an aria-label, and a tooltip if the icon is not obvious.",
+      "why": "An icon in a joined bar has no label beside it to borrow meaning from, so the name has to come from the button itself."
+    }
+  ]
+}

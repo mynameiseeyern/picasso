@@ -17,3 +17,4 @@ export { Radio, RadioGroup, radioVariants, type RadioProps } from "./components/
 export { Switch, switchVariants, type SwitchProps } from "./components/switch/switch";
 export { Kbd, KbdGroup, kbdVariants, type KbdProps, type KbdGroupProps } from "./components/kbd/kbd";
 export { Alert, AlertTitle, AlertDescription, alertVariants, type AlertProps } from "./components/alert/alert";
+export { ButtonGroup, buttonGroupVariants, type ButtonGroupProps } from "./components/button-group/button-group";
