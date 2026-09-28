@@ -1,0 +1,50 @@
+{
+  "component": "RadioGroup",
+  "summary": "One of many. Unlike a checkbox, it cannot be unticked once ticked.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "798:32" },
+  "structureFrom": "figma",
+  "measurementsFrom": "shadcn",
+  "pairs": [
+    {
+      "id": "no-way-back",
+      "dont": "Offer a radio group with no default and no way to choose nothing.",
+      "do": "Either preselect a sensible default, or add an explicit \"None\" option.",
+      "why": "A radio cannot be unticked by the person who ticked it. Without a default or a None, someone who clicks by accident is stuck with a value they never wanted and no way back."
+    },
+    {
+      "id": "radio-vs-checkbox",
+      "dont": "Use a radio group for options that are not mutually exclusive.",
+      "do": "Use Checkbox for any-of-many.",
+      "why": "The control is a promise about the shape of the choice. A radio says picking this un-picks that, and if that is not true the form will fight people."
+    },
+    {
+      "id": "two-options-is-a-switch",
+      "dont": "Use two radios for on and off.",
+      "do": "Use a Switch, or a single Checkbox.",
+      "why": "\"On / Off\" as two radios takes twice the space to say the same thing, and makes the reader compare two labels to find the one difference."
+    },
+    {
+      "id": "many-options-is-a-select",
+      "dont": "List fifteen radios.",
+      "do": "Use Select past about seven options.",
+      "why": "Radios are for a set you can take in at a glance and compare. Past that they are a list that happens to be circular, and a Select costs one click to show the same thing."
+    },
+    {
+      "id": "order-is-meaning",
+      "dont": "Order the options by how they arrived in the API.",
+      "do": "Order them by what they mean — severity, frequency, or least to most.",
+      "why": "People read a radio group as a scale whether or not you intended one. An arbitrary order invites them to infer a ranking that is not there."
+    },
+    {
+      "id": "invalid-colours-the-border",
+      "dont": "Signal invalid with a permanent danger ring.",
+      "do": "Colour the border, as every other control does.",
+      "why": "A focus ring that is always on stops reading as focus, so the one signal that means \"you are here\" is spent on something else. This was a real inconsistency in the Figma component."
+    }
+  ],
+  "a11y": [
+    "Radix renders a real radiogroup: arrow keys move between options and wrap, and the group is a single tab stop.",
+    "The group needs a name — wrap it in a Field with a FieldLabel, or give the RadioGroup an aria-label.",
+    "aria-invalid goes on the item, and colours the border and focus ring together."
+  ]
+}
