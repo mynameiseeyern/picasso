@@ -1,0 +1,45 @@
+{
+  "component": "KpiTile",
+  "summary": "One headline number, with just enough around it to say what it is and whether it is a problem.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "40000388:23522" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "one-number",
+      "dont": "Put two or three numbers in one tile.",
+      "do": "One number per tile, or use a Card if they belong together.",
+      "why": "The tile's whole layout is built to make one figure the loudest thing on it. A second number halves that and neither reads at a glance."
+    },
+    {
+      "id": "label-says-what",
+      "dont": "Label a tile \"MOS\" and leave the reader to work out whose.",
+      "do": "Name the measure and its scope — \"Network MOS\", \"Endpoints online\".",
+      "why": "A dashboard is read in one pass. A label that needs the surrounding page to make sense fails the moment the tile is seen on its own."
+    },
+    {
+      "id": "status-means-act",
+      "dont": "Set a status on a tile nobody would act on.",
+      "do": "Use status where there is a threshold and a response.",
+      "why": "A status badge is a claim that something needs attention. On a number that is merely interesting it trains people to ignore the badge everywhere."
+    },
+    {
+      "id": "unit-not-in-the-number",
+      "dont": "Write \"4.0 / 5\" as the value.",
+      "do": "Put \"4.0\" in the value and \"/ 5\" in the unit.",
+      "why": "The value is set in the metric face at 30px and the unit in body at 14px. Rolling them together makes the qualifier as loud as the figure."
+    },
+    {
+      "id": "no-reading-is-not-zero",
+      "dont": "Show 0 when a probe has stopped reporting.",
+      "do": "Use status unknown and an em dash for the value.",
+      "why": "Zero is a measurement. A tile showing 0 for a dead probe is stating something false, and someone will act on it."
+    },
+    {
+      "id": "tiles-are-a-row",
+      "dont": "Mix tile widths, or drop one tile into a page on its own.",
+      "do": "Use them in a row or grid of peers, at equal width.",
+      "why": "The quiet border and missing shadow are tuned for a set. A single tile on a page reads as an unfinished card."
+    }
+  ]
+}
