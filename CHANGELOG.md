@@ -41,6 +41,15 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Fixed
 
+- **A loading button's spinner and label now take the variant's own colour in
+  Figma.** Every Loading variant had its spinner stroke bound to
+  `fg/neutral/emphasis` and its label to `fg/disabled`, so a primary button
+  spun dark-on-blue. Both now use the same token as the variant's Default
+  label (`fg/on/primary-emphasis`, `fg/on/neutral-emphasis`,
+  `fg/on/danger-subtle`, `fg/neutral/emphasis`, `fg/link/default`) — matching
+  the code, where the spinner inherits `currentColor`.
+  **Figma impact** — 49 Loading variants; instances update on accept, nothing
+  moves.
 - **Storybook never imported `themes.css`**, so `--radius` was undefined, every
   corner fell back to 0 and all five theme axes were inert.
 - **The radius primitives were shadowed.** `primitives.json` carried Tailwind's
