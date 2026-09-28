@@ -154,7 +154,7 @@ const SCOPES = [
   [/^palette\//, []],
   [/^bg\//, ["FRAME_FILL", "SHAPE_FILL"]],
   [/^fg\//, ["TEXT_FILL", "SHAPE_FILL", "STROKE_COLOR"]],
-  [/^border\//, ["STROKE_COLOR"]],
+  [/^border\//, ["STROKE_COLOR", "SHAPE_FILL"]], // SHAPE_FILL: 1px divider rectangles
   [/^(status|chart)\//, ["FRAME_FILL", "SHAPE_FILL", "STROKE_COLOR", "TEXT_FILL"]],
   [/^_(shadow|ring)\//, ["EFFECT_COLOR"]],
   [/^space\//, ["GAP", "WIDTH_HEIGHT"]],
