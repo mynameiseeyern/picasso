@@ -1,0 +1,32 @@
+{
+  "component": "Kbd",
+  "summary": "Shows a keyboard key or shortcut. Not interactive.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "45:2487" },
+  "structureFrom": "figma",
+  "measurementsFrom": "shadcn",
+  "pairs": [
+    {
+      "id": "radius-sm",
+      "dont": "Round Kbd beyond radius/sm.",
+      "do": "Keep Kbd on radius/sm.",
+      "why": "At 20px tall, radius/lg (10px) turns a key cap into a pill and it stops reading as a key.",
+      "source": "Corrected in Figma and code, 28 Sept"
+    },
+    {
+      "id": "on-emphasis-only-on-fills",
+      "dont": "Use On Emphasis on a light surface.",
+      "do": "Use On Emphasis only inside a filled surface, such as a primary Button.",
+      "why": "Its fill is 18% white over whatever is beneath it; on a light surface it disappears."
+    },
+    {
+      "id": "group-combos",
+      "dont": "Put a whole shortcut in one Kbd (\"Ctrl+K\").",
+      "do": "One key per Kbd, wrapped in KbdGroup.",
+      "why": "Each key reads as its own cap, and KbdGroup renders as nested <kbd>, which is the semantic markup for a key combination."
+    }
+  ],
+  "a11y": [
+    "Renders <kbd>, so assistive tech can identify it as keyboard input.",
+    "Icon-only keys (e.g. ⌘) need a text alternative nearby or an aria-label on the Kbd."
+  ]
+}
