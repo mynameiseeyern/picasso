@@ -20,6 +20,7 @@ export function baseOptions(): BaseLayoutProps {
       { text: 'Foundations', url: `${docsRoute}/foundations`, active: 'nested-url' },
       { text: 'Content', url: `${docsRoute}/content`, active: 'nested-url' },
       { text: 'Components', url: componentsRoute, active: 'nested-url' },
+      { text: 'Theming', url: '/theming', active: 'nested-url' },
       { text: 'Releases', url: `${docsRoute}/releases`, active: 'nested-url' },
     ],
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,

@@ -7,14 +7,22 @@
   "files": [
     "dist",
     "theme.css",
-    "tokens"
+    "themes.css",
+    "tokens",
+    "build/ramp.mjs",
+    "build/ramp.d.mts"
   ],
   "exports": {
     ".": {
       "types": "./dist/generated.d.ts"
     },
     "./tokens.css": "./dist/tokens.css",
-    "./theme.css": "./theme.css"
+    "./theme.css": "./theme.css",
+    "./themes.css": "./themes.css",
+    "./ramp": {
+      "types": "./build/ramp.d.mts",
+      "default": "./build/ramp.mjs"
+    }
   },
   "scripts": {
     "build": "node build/style-dictionary.config.mjs",
