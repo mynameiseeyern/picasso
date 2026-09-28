@@ -38,7 +38,6 @@ describe("TagsInput", () => {
     expect(input).toHaveValue("not-an-email");
     expect(screen.queryByRole("button", { name: /Remove/ })).toBeNull();
   });
-}
 
   it("keeps room for the placeholder, so the input wraps rather than truncating", () => {
     render(<TagsInput aria-label="Tags" defaultValue={["prod", "apac"]} />);

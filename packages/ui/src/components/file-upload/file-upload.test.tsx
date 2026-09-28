@@ -16,6 +16,16 @@ describe("FileUpload", () => {
     expect(onFilesChange).toHaveBeenCalledWith([file]);
     expect(input.closest("label")).toHaveTextContent("endpoints-export.csv");
   });
+
+  it("draws the browse button at one size, as Figma does", () => {
+    const { rerender } = render(<FileUpload aria-label="File" />);
+    // Figma draws it 63x28 with 10px padding at BOTH sizes. Mapping md to
+    // Button size="sm" made it 32 tall, leaving 1px of clearance in a 36 box.
+    const browse = () => screen.getByText("Browse");
+    expect(browse().className).toContain("h-7");
+    rerender(<FileUpload aria-label="File" size="sm" />);
+    expect(browse().className).toContain("h-7");
+  });
 });
 
 describe("FileUploadItem", () => {
@@ -38,16 +48,5 @@ describe("formatBytes", () => {
     expect(formatBytes(512)).toBe("512 B");
     expect(formatBytes(860160)).toBe("840 KB");
     expect(formatBytes(1.5 * 1024 * 1024)).toBe("1.5 MB");
-  });
-}
-
-  it("draws the browse button at one size, as Figma does", () => {
-    const { rerender } = render(<FileUpload aria-label="File" />);
-    // Figma draws it 63x28 with 10px padding at BOTH sizes. Mapping md to
-    // Button size="sm" made it 32 tall, leaving 1px of clearance in a 36 box.
-    const browse = () => screen.getByText("Browse");
-    expect(browse().className).toContain("h-7");
-    rerender(<FileUpload aria-label="File" size="sm" />);
-    expect(browse().className).toContain("h-7");
   });
 });
