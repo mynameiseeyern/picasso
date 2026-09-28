@@ -56,6 +56,20 @@ export const Required: Story = {
   ),
 };
 
+export const WithHelp: Story = {
+  render: () => (
+    <div className="w-72">
+      <Field>
+        <FieldLabel help="How often each probe reports. Shorter intervals catch outages sooner and cost more.">
+          Poll interval
+        </FieldLabel>
+        <FieldControl><Input placeholder="30 s" /></FieldControl>
+        <FieldDescription>Between 10 s and 5 min.</FieldDescription>
+      </Field>
+    </div>
+  ),
+};
+
 export const Sizes: Story = {
   render: () => (
     <div className="flex max-w-2xl gap-8">

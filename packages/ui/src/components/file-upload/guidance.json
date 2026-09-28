@@ -1,0 +1,31 @@
+{
+  "component": "FileUpload",
+  "summary": "Pick a file, and show chosen files as rows with size and progress.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "720:2119" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "say-the-format",
+      "dont": "Leave the accepted format to trial and error.",
+      "do": "Set accept and name the format and size limit in the hint — 'CSV, up to 10 MB'.",
+      "why": "The picker greys out wrong types, but nothing says why. People need the rule before they go looking."
+    },
+    {
+      "id": "one-row-per-file",
+      "dont": "Show only a count once files are chosen.",
+      "do": "Render a FileUploadItem per file, with its size and a remove button.",
+      "why": "'3 files' cannot be checked. Rows let people spot the wrong one and take it out."
+    },
+    {
+      "id": "cancel-vs-remove",
+      "dont": "Use the same word for stopping an upload and removing a finished file.",
+      "do": "Let FileUploadItem say Cancel while progress is running and Remove after.",
+      "why": "They have different consequences, and the button's name is what a screen reader announces."
+    }
+  ],
+  "a11y": [
+    "The native file input stays in the page (visually hidden), labelled by the whole field — so keyboard, accept filtering and form submission all behave natively.",
+    "Upload progress is a progressbar named 'Uploading <file>' with aria-valuenow."
+  ]
+}

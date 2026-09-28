@@ -132,7 +132,7 @@ export const TagsInput = React.forwardRef<HTMLInputElement, TagsInputProps>(
           }}
           onBlur={(e) => { onBlur?.(e); if (text.trim()) add([text]); }}
           className={cn(
-            "h-7 min-w-20 flex-1 bg-transparent px-1 outline-none placeholder:text-content-neutral-subtle disabled:cursor-not-allowed",
+            "h-7 min-w-16 flex-1 bg-transparent px-1 outline-none placeholder:text-content-neutral-subtle disabled:cursor-not-allowed",
             className,
           )}
           {...props}

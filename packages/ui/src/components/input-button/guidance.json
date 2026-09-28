@@ -1,0 +1,25 @@
+{
+  "component": "InputButton",
+  "summary": "A button dressed as a field, for things that open a picker — a date, a filter.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "720:2119" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "button-not-readonly-input",
+      "dont": "Fake a picker trigger with a read-only input.",
+      "do": "Use InputButton.",
+      "why": "A read-only input is announced as a text field that cannot be edited — the opposite of what it does. A button with aria-expanded says what it is."
+    },
+    {
+      "id": "placeholder-when-empty",
+      "dont": "Show 'Select…' in the same colour as a chosen value.",
+      "do": "Pass value, and let placeholder render in the placeholder colour when it is empty.",
+      "why": "Empty and filled must be distinguishable at a glance, exactly as they are in an Input."
+    }
+  ],
+  "a11y": [
+    "A real <button>; set aria-expanded when it controls a popover (Radix triggers do this). The chevron turns with it.",
+    "The leading icon is aria-hidden."
+  ]
+}

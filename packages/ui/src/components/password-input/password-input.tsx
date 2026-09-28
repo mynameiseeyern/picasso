@@ -14,25 +14,29 @@ import { InputGroup, InputGroupAddon, InputGroupInput, type InputGroupInputProps
  *
  * autoComplete defaults to "current-password"; pass "new-password" where the
  * person is choosing one, so password managers offer to generate it.
+ *
+ * No groupClassName here, unlike NumberInput / TagsInput / FileUpload. Those
+ * draw their own box, so restyling it is theirs to offer; this one delegates
+ * to InputGroup, and forwarding an unchecked class string into a design-system
+ * component is the thing require-static-classes exists to stop. Compose
+ * InputGroup directly if you need the box to differ.
  */
 export interface PasswordInputProps extends InputGroupInputProps {
   size?: "sm" | "md";
   /** Accessible names for the eye button, e.g. to localise. */
   showLabel?: string;
   hideLabel?: string;
-  /** Classes for the outer group (the box). */
-  groupClassName?: string;
 }
 
 export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
   (
-    { size = "md", showLabel = "Show password", hideLabel = "Hide password", groupClassName, autoComplete = "current-password", disabled, ...props },
+    { size = "md", showLabel = "Show password", hideLabel = "Hide password", autoComplete = "current-password", disabled, ...props },
     ref,
   ) => {
     const [visible, setVisible] = React.useState(false);
     const Icon = visible ? EyeOff : Eye;
     return (
-      <InputGroup size={size} className={cn(groupClassName)} data-slot="password-input">
+      <InputGroup size={size} data-slot="password-input">
         <InputGroupInput
           ref={ref}
           type={visible ? "text" : "password"}

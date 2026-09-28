@@ -1,7 +1,10 @@
 {
   "component": "Field",
   "summary": "Label, control and message, wired together. The wrapper every form control belongs in.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "705:2117" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "705:2117"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "shadcn",
   "pairs": [
@@ -47,6 +50,12 @@
       "dont": "Disable the control and leave the label at full strength.",
       "do": "Pass disabled to Field.",
       "why": "A live-looking label above a dead control reads as a bug. Field dims the label and hint with the control, in one place."
+    },
+    {
+      "id": "help-is-background",
+      "dont": "Put what someone needs to answer in the help tooltip.",
+      "do": "Use help for background, and the hint for anything needed to fill the field in.",
+      "why": "A tooltip is hidden until someone thinks to open it, and not at all on touch. The hint is always there."
     }
   ],
   "a11y": [

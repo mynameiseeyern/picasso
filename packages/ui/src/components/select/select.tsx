@@ -231,7 +231,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                               </span>
                               <span className="min-w-0 flex-1 truncate">{o.label}</span>
                               {showDetail ? (
-                                <span className="shrink-0 text-body-xs text-content-neutral-subtle">{o.detail ?? o.value}</span>
+                                <span className="max-w-32 shrink-0 truncate text-body-xs text-content-neutral-subtle">{o.detail ?? o.value}</span>
                               ) : null}
                             </div>
                           );

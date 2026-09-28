@@ -1,0 +1,31 @@
+{
+  "component": "TagsInput",
+  "summary": "A field that turns entries into removable chips — hosts, emails, labels.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "720:2119" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "say-how-to-add",
+      "dont": "Assume people know Enter or a comma makes a tag.",
+      "do": "Say so in the hint — 'Separate hosts with a comma'.",
+      "why": "Nothing on screen explains the gesture, and a typed value that never becomes a chip looks saved but is not."
+    },
+    {
+      "id": "validate-dont-drop",
+      "dont": "Silently drop an entry that is not allowed.",
+      "do": "Use validate, which leaves the entry in the field, and show why in the error.",
+      "why": "A value that vanishes reads as accepted. Left in place, it can be corrected."
+    },
+    {
+      "id": "fixed-set-is-select",
+      "dont": "Use tags for choosing from a known list.",
+      "do": "Use Select.",
+      "why": "Free text invites typos in things that should be exact. Tags are for values the system cannot list."
+    }
+  ],
+  "a11y": [
+    "Each chip's × is a button named 'Remove <tag>'.",
+    "Backspace in the empty field removes the last tag; Enter, comma and paste add."
+  ]
+}

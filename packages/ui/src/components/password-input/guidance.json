@@ -1,0 +1,31 @@
+{
+  "component": "PasswordInput",
+  "summary": "A password field with a show / hide toggle.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "720:2119" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "always-offer-show",
+      "dont": "Ship a password field without a way to see what was typed.",
+      "do": "Use PasswordInput, which has the eye built in.",
+      "why": "Typing blind is the main cause of failed sign-ins and mistyped new passwords. Seeing it once fixes both."
+    },
+    {
+      "id": "new-password",
+      "dont": "Leave autocomplete as current-password on a 'choose a password' field.",
+      "do": "Set autoComplete='new-password' there.",
+      "why": "It is the signal password managers use to offer a strong generated password instead of filling an old one."
+    },
+    {
+      "id": "no-confirm-field",
+      "dont": "Add a 'Confirm password' field.",
+      "do": "Let people reveal what they typed.",
+      "why": "Retyping a password twice checks memory, not accuracy. The eye checks accuracy directly."
+    }
+  ],
+  "a11y": [
+    "The eye is a button with aria-pressed and a label that says what it will do: 'Show password' / 'Hide password'.",
+    "Autocorrect, autocapitalise and spellcheck are off, so a revealed password is not 'corrected'."
+  ]
+}
