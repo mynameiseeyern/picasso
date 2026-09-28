@@ -44,3 +44,4 @@ export {
   type TableProps,
   type TableRowProps,
 } from "./components/table/table";
+export { Badge, badgeVariants, type BadgeProps } from "./components/badge/badge";
