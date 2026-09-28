@@ -44,7 +44,28 @@ export default defineConfig([
     rules: {
       "shadcn/no-raw-colors": "error",
       "shadcn/no-arbitrary-values": "error",
-      "shadcn/no-restyle": "warn",
+      /**
+       * no-restyle — a component owns its own look; the page owns where it
+       * sits. By default that means NO classes from outside, and the fix for
+       * "I need this 420 wide" or "this should span two columns" is a wrapper
+       * element, not a class on the component. That default is deliberate and
+       * should stay: it is what keeps a Button the same Button everywhere.
+       *
+       * A `contracts` entry is for the narrow case where a class is not
+       * restyling but the component's entire purpose. Add one only when the
+       * component has no other way to express the thing, and keep it to the
+       * category it needs — `allow: ["layout"]` still refuses colour,
+       * typography, spacing, shape, effects and motion.
+       */
+      "shadcn/no-restyle": ["warn", {
+        contracts: [
+          // <col> exists to carry a column width and accepts almost nothing
+          // else. There is no parent to move the width to — the colgroup is
+          // the parent — and no sensible closed set of widths to make into a
+          // variant. Colour and type on it are still refused.
+          { pattern: "^TableCol$", allow: ["layout"] },
+        ],
+      }],
       "shadcn/no-inline-styles": "error",
       "shadcn/no-unknown-classes": "error",
       "shadcn/require-static-classes": "error",

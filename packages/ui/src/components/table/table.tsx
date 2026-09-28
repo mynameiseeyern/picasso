@@ -88,12 +88,12 @@ export function TableColGroup({ className, ...props }: React.ComponentProps<"col
  * background and little else — which is the point: it sets the column's
  * size without becoming another place to style cells.
  *
- * ⚠️ `shadcn/no-restyle` warns on the width class here ("its contract allows
- * no classes"). The rule reads a component's contract from its cva, and this
- * one deliberately has none: a column width is arbitrary, and carrying it is
- * the whole reason `<col>` exists. The warning is the rule's assumption not
- * fitting, not a class that should move to a parent — there is no parent to
- * move it to.
+ * The width comes in as a class, which `no-restyle` would normally refuse.
+ * It is allowed by a `contracts` entry in `eslint.config.mjs` scoped to this
+ * component and to layout classes only — colour and typography on a `<col>`
+ * are still refused. Carrying an arbitrary width is the entire reason the
+ * element exists, and the colgroup IS the parent, so there is nowhere else
+ * for it to go.
  */
 export function TableCol({ className, ...props }: React.ComponentProps<"col">) {
   return <col data-slot="table-col" className={cn(className)} {...props} />;
