@@ -37,6 +37,17 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Added
 
+- **The Field family, built to Figma** (Field · ↳ Input · ↳ Select):
+  - **InputGroup** — Input's Leading / Trailing slots: icon, text prefix/suffix,
+    Kbd, spinner, check, tooltip and button addons. The group draws the box, so
+    the focus ring surrounds the addons.
+  - **Select** — the searchable, grouped, multi-select filter. The trigger keeps
+    its label and shows a count; ticks are a draft committed once on Apply.
+  - **PasswordInput** (show/hide), **NumberInput** (steppers, spinbutton
+    keyboard), **TagsInput** + **InputChip**, **FileUpload** +
+    **FileUploadItem**, and **InputButton** (Input `Type=Button` / `Select
+    trigger`).
+  - **Tooltip**, and **FieldLabel `help`** — Figma's Help icon beside the label.
 - **Brands are choices, not values.** `tokens/brands/<brand>/brand.json` picks a
   base colour, `neutral` (cool/warm), `radius` (sharp/subtle/default/rounded),
   `spacing` (compact/default/relaxed) and `type` (sans + mono) from
