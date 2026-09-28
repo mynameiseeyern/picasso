@@ -47,3 +47,4 @@ export {
 export { Badge, badgeVariants, type BadgeProps } from "./components/badge/badge";
 export { Meter, litSegments, type MeterProps, type MeterStatus } from "./components/meter/meter";
 export { KpiTile, type KpiTileProps, type KpiStatus } from "./components/kpi-tile/kpi-tile";
+export { Progress, progressIndicatorVariants, type ProgressProps } from "./components/progress/progress";

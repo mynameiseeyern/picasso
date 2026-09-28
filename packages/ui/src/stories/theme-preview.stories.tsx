@@ -1,12 +1,14 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Bell, Download, MoreHorizontal, Plus } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "../components/alert/alert";
+import { Badge } from "../components/badge/badge";
 import { Button } from "../components/button/button";
 import {
   Card, CardAction, CardContent, CardDescription, CardFooter,
   CardHeader, CardHeaderText, CardTitle,
 } from "../components/card/card";
 import { Field, FieldControl, FieldDescription, FieldError, FieldLabel } from "../components/field/field";
+import { KpiTile } from "../components/kpi-tile/kpi-tile";
 import { Input } from "../components/input/input";
 import { Textarea } from "../components/textarea/textarea";
 
@@ -42,9 +44,9 @@ const statusClass = {
 } as const;
 
 const kpis = [
-  { label: "Endpoints online", value: "3,412", delta: "+2.1%", tone: "text-content-success-emphasis" },
-  { label: "Mean MOS", value: "4.1", delta: "−0.1", tone: "text-content-warning-emphasis" },
-  { label: "Open alerts", value: "7", delta: "3 critical", tone: "text-content-danger-emphasis" },
+  { label: "Endpoints online", value: "3,412", unit: undefined, delta: <Badge color="success">+2.1%</Badge> },
+  { label: "Mean MOS", value: "4.1", unit: "/ 5", delta: <Badge color="warning">−0.1</Badge> },
+  { label: "Open alerts", value: "7", unit: "of 1,240", delta: <Badge color="danger">3 critical</Badge> },
 ] as const;
 
 function Preview() {
@@ -82,20 +84,11 @@ function Preview() {
           </Alert>
         </div>
 
-        {/* KPI tiles — real cards at sm, because they repeat */}
+        {/* KPI tiles — the real component, not a Card standing in for one.
+            A tile is deliberately quieter than a Card: border/neutral/subtle
+            and no shadow, because it lives in a row of its peers. */}
         {kpis.map((k) => (
-          <Card key={k.label} size="sm">
-            <CardContent>
-              <p className="text-body-sm text-content-neutral-muted">{k.label}</p>
-              {/* metric/xl — the system's own style for a number like this,
-                  so the mono axis moves it rather than font-mono + text-3xl
-                  happening to land near it. */}
-              <p className="text-metric-xl">{k.value}</p>
-              {/* body/sm, not label/xs: label/xs uppercases by design, which
-                  is right for a column header and wrong for "3 critical". */}
-              <p className={`text-body-sm ${k.tone}`}>{k.delta}</p>
-            </CardContent>
-          </Card>
+          <KpiTile key={k.label} label={k.label} value={k.value} unit={k.unit} comparison={k.delta} />
         ))}
 
         {/* Table — header from the card, the table itself edge to edge */}

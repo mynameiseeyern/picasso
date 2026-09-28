@@ -1,0 +1,39 @@
+{
+  "component": "Progress",
+  "summary": "Work in flight, with an end — an upload, an import, a scan.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2298:15158" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "progress-is-not-a-meter",
+      "dont": "Use a progress bar for a reading like MOS or disk usage.",
+      "do": "Use Meter for a measurement; Progress is for something finishing.",
+      "why": "Progress implies a direction and an end. A value that can go back down reads as work being undone."
+    },
+    {
+      "id": "unknown-is-not-zero",
+      "dont": "Show 0% while waiting for the server to say how much there is.",
+      "do": "Pass value={null} until you know, so it announces as indeterminate.",
+      "why": "0% is a claim that nothing has happened yet. Usually something has — you just cannot measure it."
+    },
+    {
+      "id": "dont-fake-it",
+      "dont": "Animate a bar to 90% and hold it there while you wait.",
+      "do": "Show real progress, or an indeterminate bar, or nothing.",
+      "why": "A bar that stalls near the end is worse than no bar: it makes a promise about time and then visibly breaks it."
+    },
+    {
+      "id": "label-the-work",
+      "dont": "Show a bare bar with no idea what it is doing.",
+      "do": "Name the work, and give a count when you have one.",
+      "why": "A percentage answers \"how far\", never \"how long\" or \"of what\". \"420 of 1,000 endpoints\" answers all three."
+    },
+    {
+      "id": "one-at-a-time",
+      "dont": "Stack a progress bar per item in a list of fifty.",
+      "do": "Show one bar for the batch, and per-item state as text.",
+      "why": "Fifty animating bars are a texture, not information, and they cost more to render than the work being measured."
+    }
+  ]
+}
