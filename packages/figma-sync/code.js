@@ -70,7 +70,12 @@ async function picassoSync(payload, opts) {
     spec.modes.forEach((m, i) => {
       let mode = col.modes.find((x) => x.name === m);
       if (!mode && col.modes.length === 1 && spec.modes.length === 1) mode = col.modes[0];
-      if (!mode && i === 0 && col.modes.length && !col.modes.some((x) => spec.modes.includes(x.name))) mode = col.modes[0];
+      if (!mode && i === 0 && col.modes.length && !col.modes.some((x) => spec.modes.includes(x.name))) {
+        // A fresh collection starts with "Mode 1": adopt it as the first mode.
+        mode = col.modes[0];
+        r.changed.push(`${spec.name}: mode "${mode.name}" → "${m}"`);
+        if (apply) col.renameMode(mode.modeId, m);
+      }
       if (!mode) {
         r.created.push(`${spec.name}: mode ${m}`);
         if (apply) modeId[m] = col.addMode(m);
