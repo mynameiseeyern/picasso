@@ -37,6 +37,15 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Added
 
+- **`Loader`** — `variant="spinner" | "fuse" | "pulse"`, matching Figma's
+  `Loader` set. Spinner for in-console waits (Size 3–8, xl); Fuse for brand
+  moments only (56 / 96 / 160, goo filter built in — no defs to mount); Pulse
+  for Iris thinking, with a 400ms show delay and `onTint` for the assistant
+  bubble. Labels name the work (`label={null}` when visible text says it),
+  and reduced motion swaps travel for a cross-fade. Colours are `chart-4/2/3`.
+  Keyframes were already in `theme.css`; `loader-reach` now takes a
+  per-drop `--loader-delay`. Stories under *Components/Loader*.
+
 - **The Field family, built to Figma** (Field · ↳ Input · ↳ Select):
   - **InputGroup** — Input's Leading / Trailing slots: icon, text prefix/suffix,
     Kbd, spinner, check, tooltip and button addons. The group draws the box, so
