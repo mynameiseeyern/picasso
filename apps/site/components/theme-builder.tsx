@@ -71,7 +71,7 @@ export function ThemeBuilder() {
     const blob = new Blob([kind === 'css' ? css : json], { type: kind === 'css' ? 'text/css' : 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = kind === 'css' ? `${theme.name || 'brand'}.theme.css` : `${theme.name || 'brand'}.brand.json`;
+    a.download = kind === 'css' ? `${theme.name || 'brand'}.preview.css` : 'brand.json';
     a.click();
     URL.revokeObjectURL(a.href);
   };
@@ -153,8 +153,8 @@ export function ThemeBuilder() {
           </Section>
 
           <Section title="Spacing">
-            <Segmented options={SPACING} value={theme.spacing} onChange={(v) => set('spacing', v)} hint={(o) => `${o.px}px base`} />
-            <p className="mt-2 text-xs text-fd-muted-foreground">Every spacing utility scales from the base. Only even bases keep the 2pt half-step grid.</p>
+            <Segmented options={SPACING} value={theme.spacing} onChange={(v) => set('spacing', v)} hint={(o) => `×${o.mult} · space/4 ${o.px}px`} />
+            <p className="mt-2 text-xs text-fd-muted-foreground">Every step scales, then rounds to the 2px grid so the 4pt rule holds.</p>
           </Section>
 
           <Section title="Typography">

@@ -7,9 +7,9 @@ import "./preview.css";
  * the theme builder: every story is a live preview of every axis. */
 const axes = {
   radius: { name: "Radius", options: ["default", "sharp", "subtle", "rounded"] },
-  neutral: { name: "Neutral", options: ["default", "warm"] },
+  neutral: { name: "Neutral", options: ["default", "cool", "warm"] },
   type: { name: "Type", options: ["default", "system", "compact"] },
-  spacing: { name: "Spacing", options: ["default", "comfortable"] },
+  spacing: { name: "Spacing", options: ["default", "compact", "relaxed"] },
 } as const;
 
 const preview: Preview = {
