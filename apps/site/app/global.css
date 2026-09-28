@@ -123,3 +123,114 @@ html > body[data-scroll-locked] {
 .tab { border-radius: 0.375rem; padding: 0.35rem 0.7rem; font-size: 0.8125rem; font-weight: 600; color: var(--color-fd-muted-foreground); }
 .tab[aria-selected="true"] { background: var(--color-fd-muted); color: var(--color-fd-foreground); }
 .text-2xs { font-size: 0.6875rem; }
+
+/* ═══ Colour picker ══════════════════════════════════════════════════
+   ChromaKit's own stylesheet is never imported — its JS bundle has no
+   reference to it, so leaving it out costs nothing and we own every
+   declaration below. We reuse its class hooks and its pointer/keyboard
+   logic; the appearance is ours.
+
+   Load-bearing properties are marked. Without them the control is not
+   merely unstyled, it is broken: the hue slider has no height, and the
+   canvas scrolls the page instead of dragging on touch.                */
+
+.ck-color-area {
+  position: relative;           /* load-bearing: thumb is absolute */
+  overflow: hidden;
+  height: 100%;
+  cursor: crosshair;
+  touch-action: none;           /* load-bearing: drag, not scroll */
+  user-select: none;
+  border: 1px solid var(--color-fd-border);
+  border-radius: calc(var(--radius) * 0.8);
+}
+.ck-color-area-layer {
+  position: absolute;           /* load-bearing: stacks the gradients */
+  inset: 0;
+}
+.ck-color-area:focus-within,
+.ck-hue-slider:focus-visible {
+  outline: 2px solid var(--border-focused);
+  outline-offset: 2px;
+}
+.ck-hue-slider:focus { outline: none; }
+
+.ck-color-area-thumb {
+  position: absolute;           /* load-bearing */
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+}
+.ck-color-area-thumb-inner,
+.ck-slider-thumb-inner {
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--palette-white);
+  border-radius: 9999px;
+  box-shadow: 0 0 0 1px #0000002e;
+}
+
+.ck-hue-slider {
+  position: relative;           /* load-bearing */
+  width: 100%;
+  height: 20px;                 /* load-bearing: no height, no slider */
+  cursor: pointer;
+  touch-action: none;           /* load-bearing */
+  user-select: none;
+}
+.ck-hue-slider-track {
+  position: absolute;           /* load-bearing */
+  inset: 5px 0;                 /* the track is thinner than the hit area */
+  border-radius: 9999px;
+  border: 1px solid var(--color-fd-border);
+  /* the hue wheel itself is inline on the element, from the library */
+}
+.ck-slider-thumb {
+  position: absolute;           /* load-bearing */
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  border: 2px solid var(--palette-white);
+  border-radius: 9999px;
+  box-shadow: 0 0 0 1px #0000002e;
+  background: transparent;
+}
+
+.ck-inputs { display: flex; flex-direction: column; gap: 4px; }
+.ck-inputs-values { display: flex; gap: 6px; }
+.ck-channel { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+.ck-channel-label {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-fd-muted-foreground);
+}
+.ck-channel-input {
+  width: 100%;
+  min-height: 32px;
+  padding: 4px 2px;
+  text-align: center;
+  font-family: var(--type-family-mono);
+  font-size: 12px;
+  color: var(--color-fd-foreground);
+  background: var(--color-fd-background);
+  border: 1px solid var(--color-fd-border);
+  border-radius: calc(var(--radius) * 0.6);
+  outline: none;
+}
+.ck-channel-input:focus {
+  border-color: var(--border-focused);
+  outline: 2px solid var(--border-focused);
+  outline-offset: -1px;
+}
+/* Spinners on a colour channel are noise — the value is dragged, not stepped. */
+.ck-channel-input::-webkit-outer-spin-button,
+.ck-channel-input::-webkit-inner-spin-button { appearance: none; margin: 0; }
+.ck-channel-input[type='number'] { appearance: textfield; -moz-appearance: textfield; }
+
+.ck-eyedropper-btn:disabled { opacity: 0.4; cursor: not-allowed; }

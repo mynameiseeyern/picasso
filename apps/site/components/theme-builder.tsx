@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, Copy, Download, Moon, RotateCcw, Sun } from 'lucide-react';
+import { BrandColorPicker } from '@/components/brand-color-picker';
 import {
   DEFAULT_THEME,
   MONO_FONTS,
@@ -115,23 +116,18 @@ export function ThemeBuilder() {
 
           <Section title="Colour">
             <label className="mb-1.5 block text-xs font-semibold text-fd-muted-foreground">Brand</label>
-            <div className="flex items-center gap-2">
-              <input
-                type="color"
-                value={validHex ? theme.brand : '#007FAB'}
-                onChange={(e) => set('brand', e.target.value.toUpperCase())}
-                aria-label="Brand colour"
-                className="h-9 w-12 cursor-pointer rounded-md border border-fd-border bg-transparent p-0.5"
-              />
-              <input
-                className="field font-mono uppercase"
-                value={theme.brand}
-                onChange={(e) => set('brand', e.target.value)}
-                aria-label="Brand colour hex"
-                aria-invalid={!validHex}
-                spellCheck={false}
-              />
-            </div>
+            <BrandColorPicker
+              value={validHex ? theme.brand : '#007FAB'}
+              onChange={(hex) => set('brand', hex)}
+            />
+            <input
+              className="field mt-2 font-mono uppercase"
+              value={theme.brand}
+              onChange={(e) => set('brand', e.target.value)}
+              aria-label="Brand colour hex"
+              aria-invalid={!validHex}
+              spellCheck={false}
+            />
             <div className="mt-3 grid grid-cols-11 gap-0.5" aria-label="Generated ramp">
               {STEPS_LABELS.map((s) => (
                 <span
