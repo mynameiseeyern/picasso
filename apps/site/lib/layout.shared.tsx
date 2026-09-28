@@ -15,13 +15,14 @@ export function baseOptions(): BaseLayoutProps {
       ),
       url: '/',
     },
+    /* Three links, not six. Get started, Foundations, Content and Releases all
+     * live under /docs and the sidebar already lists them — repeating them up
+     * here made the top nav a second table of contents competing with the
+     * real one, and six items is past the point where anyone reads them. */
     links: [
-      { text: 'Get started', url: `${docsRoute}/get-started`, active: 'nested-url' },
-      { text: 'Foundations', url: `${docsRoute}/foundations`, active: 'nested-url' },
-      { text: 'Content', url: `${docsRoute}/content`, active: 'nested-url' },
-      { text: 'Components', url: componentsRoute, active: 'nested-url' },
+      { text: 'Docs', url: docsRoute, active: 'nested-url' },
       { text: 'Theming', url: '/theming', active: 'nested-url' },
-      { text: 'Releases', url: `${docsRoute}/releases`, active: 'nested-url' },
+      { text: 'Components', url: componentsRoute, active: 'nested-url' },
     ],
     githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
   };
