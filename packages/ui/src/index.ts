@@ -30,3 +30,17 @@ export {
   cardVariants,
   type CardProps,
 } from "./components/card/card";
+export {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableCol,
+  TableColGroup,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+  type TableProps,
+  type TableRowProps,
+} from "./components/table/table";

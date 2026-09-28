@@ -1,0 +1,52 @@
+{
+  "component": "Table",
+  "summary": "Rows of the same kind of thing, compared column by column.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "40000377:22464" },
+  "structureFrom": "code",
+  "measurementsFrom": "figma",
+  "note": "Figma models a table as columns side by side; HTML has no column element, so the code is row-oriented. Figma's column Types are cell content here, not variants.",
+  "pairs": [
+    {
+      "id": "table-is-for-comparison",
+      "dont": "Use a table to lay out a form or a set of cards.",
+      "do": "Use a table when the reader needs to compare the same field across rows.",
+      "why": "A table earns its density by making columns scannable. Used as a layout grid it inherits all the cost — the semantics, the scrolling, the alignment — and returns none of it."
+    },
+    {
+      "id": "one-thing-per-row",
+      "dont": "Split one record across two rows to fit more fields.",
+      "do": "Use the Title + supporting cell to stack a second line inside one row.",
+      "why": "Every row is one record, for a reader and for a screen reader. A record that spans two rows breaks selection, sorting and counting at once."
+    },
+    {
+      "id": "align-numbers-right",
+      "dont": "Left-align numeric columns.",
+      "do": "Right-align numbers and set them in mono.",
+      "why": "Digits only line up by place value when they are right-aligned in a fixed-width face. Left-aligned figures cannot be compared down a column, which is the only reason they are in one."
+    },
+    {
+      "id": "headers-say-what-not-how",
+      "dont": "Write \"MOS (calculated hourly, 0–5)\" in the column header.",
+      "do": "Head the column \"MOS\" and put the rest in a caption or a tooltip.",
+      "why": "The header repeats in assistive technology on every cell in the column. A sentence there is read dozens of times."
+    },
+    {
+      "id": "selection-belongs-to-the-row",
+      "dont": "Track selection on the checkbox and leave the row unmarked.",
+      "do": "Set the selected state on the row, so it reads and looks selected.",
+      "why": "The thing being selected is the record, not the tick. A screen reader that hears \"checked\" without \"selected\" has to infer the connection."
+    },
+    {
+      "id": "empty-is-a-state",
+      "dont": "Render a header with nothing under it.",
+      "do": "Say what would be here and how to get it — or that a filter is hiding it.",
+      "why": "An empty table looks identical whether there is no data, no match, or a failed request, and the reader cannot tell which."
+    },
+    {
+      "id": "sm-is-for-density",
+      "dont": "Reach for sm to squeeze in another column.",
+      "do": "Use sm when a table is a supporting panel, and md when it is the page.",
+      "why": "Shrinking the row height does not create horizontal room. If columns do not fit, the answer is fewer columns or a scroll, not tighter rows."
+    }
+  ]
+}
