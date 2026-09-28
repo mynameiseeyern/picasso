@@ -1,0 +1,47 @@
+<style>
+  body { font: 12px/1.45 Inter, system-ui, sans-serif; margin: 0; padding: 16px; color: var(--figma-color-text); background: var(--figma-color-bg); }
+  h1 { font-size: 13px; margin: 0 0 4px; } p { margin: 0 0 12px; color: var(--figma-color-text-secondary); }
+  .row { display: flex; gap: 8px; margin: 12px 0; flex-wrap: wrap; }
+  button { font: inherit; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--figma-color-border); background: var(--figma-color-bg); color: var(--figma-color-text); cursor: pointer; }
+  button.primary { background: var(--figma-color-bg-brand); color: var(--figma-color-text-onbrand); border-color: transparent; }
+  button:disabled { opacity: .45; cursor: default; }
+  pre { white-space: pre-wrap; background: var(--figma-color-bg-secondary); padding: 10px; border-radius: 6px; max-height: 380px; overflow: auto; margin: 0; }
+  .ok { color: var(--figma-color-text-success); } .bad { color: var(--figma-color-text-danger); }
+</style>
+<h1>Picasso Sync</h1>
+<p>Choose <code>packages/tokens/dist/brands/&lt;brand&gt;/figma.json</code> (run <code>npm run check</code> first). Check changes nothing; Sync never deletes.</p>
+<input type="file" id="file" accept=".json,application/json" />
+<div class="row">
+  <button id="check" disabled>Check</button>
+  <button id="sync" class="primary" disabled>Sync</button>
+  <button id="prune" disabled>Sync + remove extras</button>
+</div>
+<div id="status"></div>
+<pre id="out">No file loaded.</pre>
+<script>
+  let payload = null;
+  const $ = (id) => document.getElementById(id);
+  const btns = ["check", "sync", "prune"].map($);
+  $("file").onchange = async (e) => {
+    const f = e.target.files[0]; if (!f) return;
+    try {
+      payload = JSON.parse(await f.text());
+      if (payload.$schema !== "picasso-figma-sync/1") throw new Error("Not a Picasso figma.json");
+      $("out").textContent = `${payload.name}: ${payload.collections.map((c) => `${c.variables.length} ${c.name}`).join(", ")}, ${payload.textStyles.length} text styles, ${payload.effectStyles.length} effect styles.`;
+      btns.forEach((b) => (b.disabled = false));
+    } catch (err) { payload = null; $("out").textContent = String(err.message || err); btns.forEach((b) => (b.disabled = true)); }
+  };
+  const run = (apply, prune) => { $("status").textContent = apply ? "Syncing…" : "Checking…"; parent.postMessage({ pluginMessage: { type: "run", payload, apply, prune } }, "*"); };
+  $("check").onclick = () => run(false, false);
+  $("sync").onclick = () => run(true, false);
+  $("prune").onclick = () => { if (confirm("Delete variables and styles the repo no longer has?")) run(true, true); };
+  onmessage = (e) => {
+    const m = e.data.pluginMessage; if (!m) return;
+    if (m.type === "error") { $("status").innerHTML = `<span class="bad">Error: ${m.message}</span>`; return; }
+    const r = m.report;
+    $("status").innerHTML = r.inSync ? `<span class="ok">✓ In sync with the repo (${r.unchanged} items).</span>`
+      : `<span class="${r.apply ? "ok" : "bad"}">${r.apply ? "Applied" : "Differences found"} — ${r.created.length} new, ${r.changed.length} changed, ${r.extra.length} extra, ${r.problems.length} problems.</span>`;
+    const sec = (t, a) => (a.length ? `${t} (${a.length})\n  ${a.join("\n  ")}\n\n` : "");
+    $("out").textContent = sec("Problems", r.problems) + sec("Renamed", r.renamed) + sec("New", r.created) + sec("Changed", r.changed) + sec(r.prune ? "Removed" : "Extra in Figma (not in the repo)", r.prune ? r.removed : r.extra) || "Nothing to report.";
+  };
+</script>
