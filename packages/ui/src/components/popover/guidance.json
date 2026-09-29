@@ -1,0 +1,39 @@
+{
+  "component": "Popover",
+  "summary": "A small panel of content or controls, anchored to what opened it.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2298:11200" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "not-a-tooltip",
+      "dont": "Use a popover for a one-line explanation on hover.",
+      "do": "Use Tooltip for explaining, Popover for content you interact with.",
+      "why": "A popover takes focus and waits to be dismissed. That is too much ceremony for a sentence."
+    },
+    {
+      "id": "not-a-dialog",
+      "dont": "Put a destructive confirmation in a popover.",
+      "do": "Use Dialog when the answer matters and the page must wait.",
+      "why": "A popover closes when you click away, so \"are you sure?\" can be dismissed by accident."
+    },
+    {
+      "id": "give-it-a-name",
+      "dont": "Open a panel of controls with no title.",
+      "do": "Add PopoverHeader with a title, or an aria-label on the content.",
+      "why": "Radix does not name a popover for you the way it does a dialog. Without one a screen reader announces an unnamed group."
+    },
+    {
+      "id": "anchor-to-the-cause",
+      "dont": "Anchor to a container when a specific control opened it.",
+      "do": "Let the trigger be the anchor, or use PopoverAnchor deliberately.",
+      "why": "A panel that appears away from the thing you clicked reads as unrelated to it."
+    },
+    {
+      "id": "keep-it-shallow",
+      "dont": "Open a popover from inside a popover.",
+      "do": "Put the second step in the same panel, or use a dialog.",
+      "why": "Stacked dismiss-on-outside-click layers make Escape ambiguous and strand focus."
+    }
+  ]
+}

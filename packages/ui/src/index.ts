@@ -112,3 +112,13 @@ export {
   overlaySurfaceVariants,
   type OverlaySurfaceProps,
 } from "./components/overlay/overlay";
+export {
+  Popover,
+  PopoverAnchor,
+  PopoverClose,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+} from "./components/popover/popover";
