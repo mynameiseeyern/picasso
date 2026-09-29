@@ -1,0 +1,39 @@
+{
+  "component": "Accordion",
+  "summary": "Sections that expand in place, for content most people will not need to read.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1136:1487" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "icon-sets-the-expectation",
+      "dont": "Pick the icon pair by taste.",
+      "do": "faq (plus/minus) for answers that appear; default (chevrons) for sections that unfold.",
+      "why": "This is the only thing the axis changes, and it is the only signal people get about what the control will do."
+    },
+    {
+      "id": "not-for-primary-content",
+      "dont": "Hide the thing the page is about behind a closed section.",
+      "do": "Collapse what most people will skip — edge cases, detail, history.",
+      "why": "Anything collapsed is not found, not read and not searchable on the page. That is the cost of every closed row."
+    },
+    {
+      "id": "headings-are-headings",
+      "dont": "Write \"More\" or \"Details\" on the trigger.",
+      "do": "Say what is inside — the trigger is the only thing visible when closed.",
+      "why": "A closed accordion is a list of its own labels. If the labels say nothing, the list says nothing."
+    },
+    {
+      "id": "one-open-or-many",
+      "dont": "Default to multiple open just to avoid choosing.",
+      "do": "Single for comparison-free reading, multiple when people cross-reference sections.",
+      "why": "Single keeps the page short; multiple keeps two answers side by side. Which one is right depends on the reading, not the component."
+    },
+    {
+      "id": "divider-above",
+      "dont": "Add a rule under the last item to close the list off.",
+      "do": "Put the divider above each item after the first.",
+      "why": "The rule separates items. A trailing one draws a line under nothing."
+    }
+  ]
+}

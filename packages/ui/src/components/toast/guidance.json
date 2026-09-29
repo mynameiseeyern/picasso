@@ -1,0 +1,45 @@
+{
+  "component": "Toast",
+  "summary": "Transient confirmation that something already happened.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "94:59093" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "toast-or-alert",
+      "dont": "Put something the person must act on in a toast.",
+      "do": "Toast what already happened; use an Alert for what still needs doing.",
+      "why": "A toast leaves. Anything that disappears on a timer cannot be the only place a required action lives."
+    },
+    {
+      "id": "emphasis-sparingly",
+      "dont": "Reach for Emphasis because the message feels important.",
+      "do": "Subtle by default; Emphasis when the tone must carry across a busy screen.",
+      "why": "A screen where everything is saturated has no hierarchy left for the one thing that genuinely is urgent."
+    },
+    {
+      "id": "say-what-happened",
+      "dont": "\"Success!\"",
+      "do": "\"Endpoint probe-04 deleted.\"",
+      "why": "People read the toast to confirm the thing they just did. The object and the verb are the whole message."
+    },
+    {
+      "id": "give-destructive-an-undo",
+      "dont": "Toast a deletion and leave.",
+      "do": "Offer Undo in the action slot for anything destructive.",
+      "why": "The moment right after a mistake is the only moment someone can still fix it cheaply."
+    },
+    {
+      "id": "do-not-queue-a-wall",
+      "dont": "Fire one toast per item in a bulk operation.",
+      "do": "Toast the operation once — \"12 endpoints archived\".",
+      "why": "Twelve stacked cards cover the screen and outlive their own usefulness, and every one is read aloud in turn."
+    },
+    {
+      "id": "one-tone-means-one-thing",
+      "dont": "Use Destructive for a routine save that happened to be a delete.",
+      "do": "Keep Destructive for failures and losses.",
+      "why": "If the loud tone is used for ordinary outcomes, nothing is left to mark the outcomes that matter."
+    }
+  ]
+}

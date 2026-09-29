@@ -1,0 +1,39 @@
+{
+  "component": "Breadcrumb",
+  "summary": "Where the current page sits in the hierarchy — every level but the last is a link.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2499:242" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "last-is-not-a-link",
+      "dont": "Make the last crumb a link to the page you are already on.",
+      "do": "Render it as the current page, with aria-current.",
+      "why": "A link that goes nowhere wastes a tab stop and tells a screen-reader user the wrong thing about where they are."
+    },
+    {
+      "id": "collapse-the-middle",
+      "dont": "Print all seven levels and let the row wrap.",
+      "do": "Collapse the middle into an ellipsis past four levels.",
+      "why": "The first and last levels are what people orient by. The middle is only needed when someone goes looking."
+    },
+    {
+      "id": "not-a-history-trail",
+      "dont": "Show where the person has been.",
+      "do": "Show where this page sits in the structure.",
+      "why": "Breadcrumbs describe the hierarchy, not the journey. A trail that changes per visitor cannot be learned."
+    },
+    {
+      "id": "name-the-ellipsis",
+      "dont": "Leave the collapsed crumb as three dots and nothing else.",
+      "do": "Give it text only a screen reader hears.",
+      "why": "An ellipsis is a shape. Without words it is a control nobody can name or explain."
+    },
+    {
+      "id": "sm-is-not-smaller-type",
+      "dont": "Reach for sm expecting smaller text in a dense context.",
+      "do": "Use sm to tighten the gaps — both sizes are body/md at 14px.",
+      "why": "Size moves the spacing only. If the type needs to shrink, that is a change to make in Figma first."
+    }
+  ]
+}
