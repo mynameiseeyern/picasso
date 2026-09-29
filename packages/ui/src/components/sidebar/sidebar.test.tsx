@@ -2,10 +2,22 @@ import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
-  Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarInset,
-  SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem,
-  SidebarMenuLabel, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem,
-  SidebarProvider, SidebarTrigger, sidebarMenuButtonVariants,
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuLabel,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarProvider,
+  SidebarTrigger,
+  sidebarMenuButtonVariants,
 } from "./sidebar";
 
 function Fixture(props: React.ComponentProps<typeof SidebarProvider>) {
@@ -53,14 +65,22 @@ describe("Sidebar", () => {
     render(<Fixture />);
     const current = screen.getByRole("button", { name: /Endpoints/ });
     expect(current).toHaveAttribute("aria-current", "page");
-    expect(screen.getByRole("button", { name: /Alerts/ })).not.toHaveAttribute("aria-current");
+    expect(screen.getByRole("button", { name: /Alerts/ })).not.toHaveAttribute(
+      "aria-current",
+    );
   });
 
   it("carries the active state in the weight as well as the fill", () => {
     // On a rail where several rows share a muted fill, the weight survives.
-    expect(sidebarMenuButtonVariants({ active: true })).toContain("text-label-lg");
-    expect(sidebarMenuButtonVariants({ active: false })).toContain("text-body-md");
-    expect(sidebarMenuButtonVariants({ active: true })).toContain("bg-surface-primary-subtle");
+    expect(sidebarMenuButtonVariants({ active: true })).toContain(
+      "text-label-lg",
+    );
+    expect(sidebarMenuButtonVariants({ active: false })).toContain(
+      "text-body-md",
+    );
+    expect(sidebarMenuButtonVariants({ active: true })).toContain(
+      "bg-surface-primary-subtle",
+    );
   });
 
   it("collapses to a rail on the trigger, and says which way it goes", async () => {
@@ -69,7 +89,9 @@ describe("Sidebar", () => {
     const trigger = screen.getByRole("button", { name: "Collapse sidebar" });
     expect(trigger).toHaveAttribute("aria-expanded", "true");
     await user.click(trigger);
-    expect(screen.getByRole("button", { name: "Expand sidebar" })).toHaveAttribute("aria-expanded", "false");
+    expect(
+      screen.getByRole("button", { name: "Expand sidebar" }),
+    ).toHaveAttribute("aria-expanded", "false");
   });
 
   it("drops the words when collapsed, so the icons can centre", () => {
@@ -88,14 +110,18 @@ describe("Sidebar", () => {
     await user.click(screen.getByRole("button", { name: "Collapse sidebar" }));
     expect(onCollapsedChange).toHaveBeenCalledWith(true);
     // Controlled, so it stays open until the prop changes.
-    expect(screen.getByRole("button", { name: "Collapse sidebar" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Collapse sidebar" }),
+    ).toBeInTheDocument();
   });
 
   it("is a list of items, and the submenu is a list inside it", () => {
     render(<Fixture />);
     const lists = screen.getAllByRole("list");
     expect(lists.length).toBeGreaterThanOrEqual(2);
-    expect(document.querySelector("[data-slot=sidebar-menu-sub]")?.tagName).toBe("UL");
+    expect(
+      document.querySelector("[data-slot=sidebar-menu-sub]")?.tagName,
+    ).toBe("UL");
   });
 
   it("gives a sub-item the same fill for active and hover, as drawn", () => {
@@ -108,9 +134,17 @@ describe("Sidebar", () => {
 
   it("takes its measurements from the file", () => {
     render(<Fixture />);
-    expect(document.querySelector("[data-slot=sidebar-menu-button]")).toHaveClass("h-8", "gap-2", "p-2", "rounded-md");
-    expect(document.querySelector("[data-slot=sidebar-menu-sub-button]")).toHaveClass("h-7", "px-2");
-    expect(document.querySelector("[data-slot=sidebar-group]")).toHaveClass("p-2");
-    expect(document.querySelector("[data-slot=sidebar-group-label]")).toHaveClass("h-8", "text-label-sm");
+    expect(
+      document.querySelector("[data-slot=sidebar-menu-button]"),
+    ).toHaveClass("h-8", "gap-2", "p-2", "rounded-md");
+    expect(
+      document.querySelector("[data-slot=sidebar-menu-sub-button]"),
+    ).toHaveClass("h-7", "px-2");
+    expect(document.querySelector("[data-slot=sidebar-group]")).toHaveClass(
+      "p-2",
+    );
+    expect(
+      document.querySelector("[data-slot=sidebar-group-label]"),
+    ).toHaveClass("h-8", "text-label-sm");
   });
 });

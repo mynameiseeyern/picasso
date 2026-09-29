@@ -302,6 +302,31 @@ export {
 } from "./components/otp/otp";
 export { Slider, type SliderProps } from "./components/slider/slider";
 export {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupAction,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuBadge,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarMenuLabel,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
+  SidebarProvider,
+  SidebarTrigger,
+  sidebarMenuButtonVariants,
+  sidebarMenuSubVariants,
+  type SidebarMenuButtonProps,
+  type SidebarMenuSubProps,
+  type SidebarProviderProps,
+} from "./components/sidebar/sidebar";
+export {
   Stepper,
   StepperContent,
   StepperDescription,

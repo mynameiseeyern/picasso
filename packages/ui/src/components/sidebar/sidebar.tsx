@@ -31,7 +31,10 @@ import { cn } from "@/lib/utils";
  * from one the pointer happens to be over. The parent button does not have
  * this problem: its Active is bg/primary/subtle. Built as drawn, and raised.
  */
-const SIDEBAR_WIDTH = "w-64";
+// 248 expanded and 48 collapsed, which is what the file draws: SidebarGroup
+// is 248×240 open and 48×208 closed, and 48 is exactly a 32 button inside the
+// group's 8 of padding.
+const SIDEBAR_WIDTH = "w-62";
 const SIDEBAR_WIDTH_COLLAPSED = "w-12";
 
 interface SidebarContextValue {
@@ -79,9 +82,12 @@ export function SidebarProvider({
 
   return (
     <SidebarContext.Provider value={ctx}>
+      {/* Fills whatever it is given rather than claiming the viewport: a
+          component that hardcodes min-h-svh cannot be put in a panel, a
+          story or a split view without a class fighting it. */}
       <div
         data-slot="sidebar-provider"
-        className={cn("flex min-h-svh w-full", className)}
+        className={cn("flex h-full w-full", className)}
         {...props}
       />
     </SidebarContext.Provider>
