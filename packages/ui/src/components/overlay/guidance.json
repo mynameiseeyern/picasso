@@ -1,0 +1,39 @@
+{
+  "component": "Overlay",
+  "summary": "The floating card every anchored or modal panel is built on.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "40000241:48" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "change-it-here",
+      "dont": "Restyle the panel inside Popover, Dropdown menu or Dialog.",
+      "do": "Change the surface, and let all of them move together.",
+      "why": "The file says so in as many words. Four near-identical floating cards is how a system stops looking like one system."
+    },
+    {
+      "id": "density-by-content",
+      "dont": "Use comfortable for a list of menu rows.",
+      "do": "Compact for rows, comfortable for prose.",
+      "why": "Compact's 4px padding lets a row's own padding reach the edge; comfortable's 16 gives paragraphs room."
+    },
+    {
+      "id": "surface-on-the-content",
+      "dont": "Wrap Radix's Content in a styled div.",
+      "do": "Put overlaySurfaceVariants on the Content element itself.",
+      "why": "Radix positions and animates that node. A wrapper leaves the shadow behind when it moves and breaks the exit animation."
+    },
+    {
+      "id": "scrim-is-not-the-modal",
+      "dont": "Rely on dimming to say something is modal.",
+      "do": "Trap focus and label the panel; the scrim is decoration.",
+      "why": "A screen reader never sees the dimming. What makes a dialog modal is that nothing behind it can be reached."
+    },
+    {
+      "id": "no-scrim-for-anchored",
+      "dont": "Dim the page behind a popover or a menu.",
+      "do": "Save the scrim for dialogs and drawers.",
+      "why": "A scrim says \"finish this first\". A menu you can dismiss by looking away is not making that demand."
+    }
+  ]
+}

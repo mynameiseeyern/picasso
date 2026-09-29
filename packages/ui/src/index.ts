@@ -105,3 +105,10 @@ export {
   type TabsProps,
   type TabsTriggerProps,
 } from "./components/tabs/tabs";
+export {
+  OverlayScrim,
+  OverlaySurface,
+  overlayScrimVariants,
+  overlaySurfaceVariants,
+  type OverlaySurfaceProps,
+} from "./components/overlay/overlay";
