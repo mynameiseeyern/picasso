@@ -15,12 +15,15 @@ const meta: Meta<typeof Skeleton> = {
       },
     },
   },
+  argTypes: {
+    shape: { control: "inline-radio", options: ["block", "circle"] },
+  },
 };
 export default meta;
 type Story = StoryObj<typeof Skeleton>;
 
 export const Default: Story = {
-  render: () => <Skeleton className="h-4 w-48" />,
+  render: (args) => <Skeleton shape={args.shape} className="h-4 w-48" />,
 };
 
 export const Text: Story = {

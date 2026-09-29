@@ -21,6 +21,11 @@ const meta: Meta<typeof Accordion> = {
       },
     },
   },
+  argTypes: {
+    variant: { control: "inline-radio", options: ["default", "faq"] },
+    iconPosition: { control: "inline-radio", options: ["right", "left"] },
+  },
+  args: { variant: "default", iconPosition: "right" },
 };
 export default meta;
 type Story = StoryObj<typeof Accordion>;
@@ -42,9 +47,15 @@ const QUESTIONS = [
 
 /** Chevrons — sections of a longer page unfolding in place. */
 export const Default: Story = {
-  render: () => (
+  render: (args) => (
     <div className="w-192">
-      <Accordion type="single" collapsible defaultValue="q0">
+      <Accordion
+        type="single"
+        collapsible
+        defaultValue="q0"
+        variant={args.variant}
+        iconPosition={args.iconPosition}
+      >
         {QUESTIONS.map((item, i) => (
           <AccordionItem key={item.q} value={`q${i}`} divider={i > 0}>
             <AccordionTrigger>{item.q}</AccordionTrigger>

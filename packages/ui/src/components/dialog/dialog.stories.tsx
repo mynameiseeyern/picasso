@@ -9,14 +9,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  type DialogContentProps,
 } from "./dialog";
 import { Button } from "../button/button";
 import { Field, FieldControl, FieldLabel } from "../field/field";
 import { Input } from "../input/input";
 
-const meta: Meta<typeof Dialog> = {
+// The variants live on DialogContent, not on the Root, so the meta types
+// against its props — otherwise `size` is not a known arg.
+const meta: Meta<DialogContentProps> = {
   title: "Components/Dialog",
-  component: Dialog,
+  component: DialogContent,
   parameters: {
     docs: {
       description: {
@@ -27,11 +30,48 @@ const meta: Meta<typeof Dialog> = {
       },
     },
   },
+  argTypes: {
+    size: { control: "inline-radio", options: ["sm", "md", "lg"] },
+  },
 };
 export default meta;
-type Story = StoryObj<typeof Dialog>;
+type Story = StoryObj<DialogContentProps>;
 
 /** sm — a confirmation. The verb is on the button. */
+/** Drive the width from the controls panel. */
+export const Playground: Story = {
+  args: { size: "md" },
+  render: (args) => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">Open dialog</Button>
+      </DialogTrigger>
+      <DialogContent size={args.size}>
+        <DialogHeader>
+          <DialogTitle>Add endpoint</DialogTitle>
+          <DialogDescription>
+            It starts collecting as soon as it is saved.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogBody>
+          <Field>
+            <FieldLabel>Name</FieldLabel>
+            <FieldControl>
+              <Input placeholder="probe-07" />
+            </FieldControl>
+          </Field>
+        </DialogBody>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="secondary">Cancel</Button>
+          </DialogClose>
+          <Button>Add endpoint</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ),
+};
+
 export const Confirmation: Story = {
   render: () => (
     <Dialog>

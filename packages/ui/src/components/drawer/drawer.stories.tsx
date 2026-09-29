@@ -20,14 +20,17 @@ import {
   DrawerTitle,
   DrawerTitleGroup,
   DrawerTrigger,
+  type DrawerContentProps,
 } from "./drawer";
 import { Button } from "../button/button";
 import { Field, FieldControl, FieldLabel } from "../field/field";
 import { Input } from "../input/input";
 
-const meta: Meta<typeof Drawer> = {
+// The variants live on DrawerContent, not on the Root, so the meta types
+// against its props — otherwise `side` and `size` are not known args.
+const meta: Meta<DrawerContentProps> = {
   title: "Components/Drawer",
-  component: Drawer,
+  component: DrawerContent,
   parameters: {
     docs: {
       description: {
@@ -39,11 +42,51 @@ const meta: Meta<typeof Drawer> = {
       },
     },
   },
+  argTypes: {
+    side: { control: "inline-radio", options: ["right", "left", "expanded"] },
+    size: { control: "inline-radio", options: ["default", "wide"] },
+  },
 };
 export default meta;
-type Story = StoryObj<typeof Drawer>;
+type Story = StoryObj<DrawerContentProps>;
 
 /** A title header — the everyday drawer. Filters, settings, a create flow. */
+/** Drive the side and the width from the controls panel. */
+export const Playground: Story = {
+  args: { side: "right", size: "default" },
+  render: (args) => (
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button variant="outline">Open drawer</Button>
+      </DrawerTrigger>
+      <DrawerContent side={args.side} size={args.size}>
+        <DrawerHeader type="title">
+          <DrawerHeading>
+            <DrawerTitleGroup>
+              <DrawerTitle>Endpoint detail</DrawerTitle>
+              <DrawerDescription>
+                Expanded ignores size — it is already the wide one.
+              </DrawerDescription>
+            </DrawerTitleGroup>
+            <DrawerActions>
+              <DrawerCloseButton />
+            </DrawerActions>
+          </DrawerHeading>
+        </DrawerHeader>
+        <DrawerBody>
+          <p className="text-body-sm text-content-neutral-muted">
+            Default is 480, Wide is 640, and Expanded insets 80 by 40.
+          </p>
+        </DrawerBody>
+        <DrawerFooter>
+          <Button variant="secondary">Cancel</Button>
+          <Button>Save</Button>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  ),
+};
+
 export const Filters: Story = {
   render: () => (
     <Drawer>

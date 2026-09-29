@@ -23,13 +23,17 @@ const meta: Meta<typeof Breadcrumb> = {
       },
     },
   },
+  argTypes: {
+    size: { control: "inline-radio", options: ["md", "sm"] },
+  },
+  args: { size: "md" },
 };
 export default meta;
 type Story = StoryObj<typeof Breadcrumb>;
 
 export const Default: Story = {
-  render: () => (
-    <Breadcrumb>
+  render: (args) => (
+    <Breadcrumb size={args.size}>
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="#">Fleet</BreadcrumbLink>
