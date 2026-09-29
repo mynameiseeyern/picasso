@@ -137,3 +137,17 @@ export {
   dropdownMenuItemVariants,
   type DropdownMenuItemProps,
 } from "./components/dropdown-menu/dropdown-menu";
+export {
+  Dialog,
+  DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  dialogContentVariants,
+  type DialogContentProps,
+  type DialogTitleProps,
+} from "./components/dialog/dialog";

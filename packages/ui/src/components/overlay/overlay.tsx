@@ -59,7 +59,16 @@ export function OverlaySurface({ className, density, ...props }: OverlaySurfaceP
 }
 
 /**
- * The dimmer behind a modal surface — Figma `Scrim` 961:2873, bg/scrim at 50%.
+ * The dimmer behind a modal surface — Figma `Scrim` 961:2873.
+ *
+ * ⚠️ The alpha is applied twice, and the code matches. `bg/scrim` is already
+ * a translucent token — `#16161880` (50%) in light, `#000000b3` (70%) in
+ * dark — and Figma's Scrim component then sets its paint to 50% opacity on
+ * top. The composite is therefore ~25% light / ~35% dark, which is what
+ * `bg-surface-scrim/50` renders here (measured: 0.251). Followed as drawn.
+ * If the intent was a 50% scrim, the component's paint opacity is the thing
+ * to drop, not the token — and note it would also flatten the deliberate
+ * light/dark difference the token carries.
  *
  * Decorative: it is the modal's own focus trap and labelling that make a
  * dialog a dialog, not the dimming. A scrim that announces itself is one more

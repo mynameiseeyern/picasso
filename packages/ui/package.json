@@ -1,7 +1,7 @@
 {
   "name": "@ir/ui",
   "version": "0.1.0",
-  "description": "IR component library \u2014 shadcn-based primitives bound to @ir/tokens. forwardRef + cva, semantic tokens only, automatic dark mode.",
+  "description": "IR component library — shadcn-based primitives bound to @ir/tokens. forwardRef + cva, semantic tokens only, automatic dark mode.",
   "license": "UNLICENSED",
   "type": "module",
   "sideEffects": false,
@@ -25,11 +25,12 @@
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.11",
     "@radix-ui/react-checkbox": "^1.1.4",
+    "@radix-ui/react-dialog": "^1.1.23",
     "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-label": "^2.1.8",
-    "@radix-ui/react-radio-group": "^1.2.3",
     "@radix-ui/react-popover": "^1.1.15",
     "@radix-ui/react-progress": "^1.1.8",
+    "@radix-ui/react-radio-group": "^1.2.3",
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",

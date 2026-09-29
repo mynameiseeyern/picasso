@@ -51,6 +51,9 @@ describe("OverlayScrim", () => {
   it("dims at half the scrim token and stays out of the tree", () => {
     const { container } = render(<OverlayScrim />);
     const el = container.querySelector("[data-slot=overlay-scrim]")!;
+    // The token is already translucent (#16161880 light, #000000b3 dark) and
+    // Figma's Scrim applies a further 50% on top, so /50 here reproduces the
+    // file's composite rather than double-dimming by accident.
     expect(el.className).toContain("bg-surface-scrim/50");
     expect(el.className).toContain("fixed");
     // The focus trap and the labelling make a dialog a dialog, not the dimming.
