@@ -1,0 +1,39 @@
+{
+  "component": "Sidebar",
+  "summary": "The app's primary navigation rail — where you are, and what else there is.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1137:443" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "current-is-not-only-a-fill",
+      "dont": "Mark the current page with the background alone.",
+      "do": "Keep the weight change and aria-current that come with `active`.",
+      "why": "Hover, focus and selection all tint the row. The weight is what still says which page you are on when the pointer is somewhere else."
+    },
+    {
+      "id": "labels-not-icons-alone",
+      "dont": "Ship the collapsed rail as the default state.",
+      "do": "Default to labels; let people collapse it.",
+      "why": "An icon-only rail is a memory test. It is a fine option for someone who already knows the product, and a poor starting point for someone who does not."
+    },
+    {
+      "id": "one-level-of-nesting",
+      "dont": "Nest submenus inside submenus.",
+      "do": "Keep to one level, and use a page for anything deeper.",
+      "why": "The rail is narrow. Two levels of indent leave no room for the words, and the tree becomes something to navigate rather than navigation."
+    },
+    {
+      "id": "group-what-belongs-together",
+      "dont": "Put twelve items in one flat list.",
+      "do": "Group them and label the groups.",
+      "why": "The labels are what make a long rail scannable — and they are the first thing that disappears when it collapses, which tells you how much work they were doing."
+    },
+    {
+      "id": "badges-are-counts",
+      "dont": "Use the badge slot for status words.",
+      "do": "Keep it to counts of things waiting.",
+      "why": "A number in a nav row reads as \"this many need you\". A word reads as part of the label and makes the row ambiguous."
+    }
+  ]
+}
