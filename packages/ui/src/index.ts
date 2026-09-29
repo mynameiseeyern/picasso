@@ -95,3 +95,13 @@ export {
   type AvatarGroupProps,
   type AvatarStatusProps,
 } from "./components/avatar/avatar";
+export {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+  tabsListVariants,
+  tabsTriggerVariants,
+  type TabsProps,
+  type TabsTriggerProps,
+} from "./components/tabs/tabs";
