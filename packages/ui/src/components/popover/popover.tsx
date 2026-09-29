@@ -34,36 +34,64 @@ const LabelContext = React.createContext<{
   register: (part: "title" | "description") => () => void;
 } | null>(null);
 
-export function Popover(props: React.ComponentProps<typeof PopoverPrimitive.Root>) {
+export function Popover(
+  props: React.ComponentProps<typeof PopoverPrimitive.Root>,
+) {
   return <PopoverPrimitive.Root data-slot="popover" {...props} />;
 }
 
-export function PopoverTrigger(props: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
+export function PopoverTrigger(
+  props: React.ComponentProps<typeof PopoverPrimitive.Trigger>,
+) {
   return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />;
 }
 
 /** Anchor the panel to something other than the trigger. */
-export function PopoverAnchor(props: React.ComponentProps<typeof PopoverPrimitive.Anchor>) {
+export function PopoverAnchor(
+  props: React.ComponentProps<typeof PopoverPrimitive.Anchor>,
+) {
   return <PopoverPrimitive.Anchor data-slot="popover-anchor" {...props} />;
+}
+
+export interface PopoverContentProps extends React.ComponentProps<
+  typeof PopoverPrimitive.Content
+> {
+  /**
+   * Off for content that is already a surface of its own — a Calendar, say,
+   * which draws its own card, border and padding. Two cards nested inside
+   * each other produce a double border and doubled inset, and stripping the
+   * outer one from the call site is what `no-restyle` refuses (rightly), so
+   * it is a prop instead.
+   *
+   * Positioning, portalling and z-index stay; only the card goes.
+   */
+  surface?: boolean;
 }
 
 export function PopoverContent({
   className,
   align = "center",
   sideOffset = 8,
+  surface = true,
   children,
   ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Content>) {
+}: PopoverContentProps) {
   const titleId = React.useId();
   const descriptionId = React.useId();
-  const [parts, setParts] = React.useState<{ title: number; description: number }>({ title: 0, description: 0 });
+  const [parts, setParts] = React.useState<{
+    title: number;
+    description: number;
+  }>({ title: 0, description: 0 });
 
   const register = React.useCallback((part: "title" | "description") => {
     setParts((p) => ({ ...p, [part]: p[part] + 1 }));
     return () => setParts((p) => ({ ...p, [part]: Math.max(0, p[part] - 1) }));
   }, []);
 
-  const value = React.useMemo(() => ({ titleId, descriptionId, register }), [titleId, descriptionId, register]);
+  const value = React.useMemo(
+    () => ({ titleId, descriptionId, register }),
+    [titleId, descriptionId, register],
+  );
 
   return (
     <PopoverPrimitive.Portal>
@@ -76,7 +104,12 @@ export function PopoverContent({
           aria-describedby={parts.description > 0 ? descriptionId : undefined}
           // The surface lands on Content itself — Radix positions and animates
           // this node, and a styled wrapper would leave the shadow behind.
-          className={cn(overlaySurfaceVariants({ density: "comfortable" }), "w-72", className)}
+          className={cn(
+            surface
+              ? cn(overlaySurfaceVariants({ density: "comfortable" }), "w-72")
+              : "z-50",
+            className,
+          )}
           {...props}
         >
           {children}
@@ -87,11 +120,23 @@ export function PopoverContent({
 }
 
 /** Title over description, gap 4 — Figma's `_PopoverHeader`. */
-export function PopoverHeader({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="popover-header" className={cn("flex flex-col gap-1", className)} {...props} />;
+export function PopoverHeader({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="popover-header"
+      className={cn("flex flex-col gap-1", className)}
+      {...props}
+    />
+  );
 }
 
-export function PopoverTitle({ className, ...props }: React.ComponentProps<"h2">) {
+export function PopoverTitle({
+  className,
+  ...props
+}: React.ComponentProps<"h2">) {
   const ctx = React.useContext(LabelContext);
   React.useEffect(() => ctx?.register("title"), [ctx]);
   return (
@@ -104,7 +149,10 @@ export function PopoverTitle({ className, ...props }: React.ComponentProps<"h2">
   );
 }
 
-export function PopoverDescription({ className, ...props }: React.ComponentProps<"p">) {
+export function PopoverDescription({
+  className,
+  ...props
+}: React.ComponentProps<"p">) {
   const ctx = React.useContext(LabelContext);
   React.useEffect(() => ctx?.register("description"), [ctx]);
   return (
@@ -117,6 +165,8 @@ export function PopoverDescription({ className, ...props }: React.ComponentProps
   );
 }
 
-export function PopoverClose(props: React.ComponentProps<typeof PopoverPrimitive.Close>) {
+export function PopoverClose(
+  props: React.ComponentProps<typeof PopoverPrimitive.Close>,
+) {
   return <PopoverPrimitive.Close data-slot="popover-close" {...props} />;
 }

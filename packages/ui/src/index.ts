@@ -211,6 +211,7 @@ export {
   PopoverHeader,
   PopoverTitle,
   PopoverTrigger,
+  type PopoverContentProps,
 } from "./components/popover/popover";
 export {
   DropdownMenu,
@@ -292,6 +293,16 @@ export {
   type BreadcrumbTriggerProps,
 } from "./components/breadcrumb/breadcrumb";
 export { Chip, chipVariants, type ChipProps } from "./components/chip/chip";
+export {
+  Calendar,
+  calendarVariants,
+  type CalendarProps,
+} from "./components/calendar/calendar";
+export {
+  DatePicker,
+  datePickerTriggerVariants,
+  type DatePickerProps,
+} from "./components/date-picker/date-picker";
 export {
   OtpInput,
   OtpSeparator,

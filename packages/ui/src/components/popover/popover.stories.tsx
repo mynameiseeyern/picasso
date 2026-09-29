@@ -1,6 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import {
-  Popover, PopoverClose, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger,
+  Popover,
+  PopoverClose,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
 } from "./popover";
 import { Button } from "../button/button";
 import { Field, FieldControl, FieldLabel } from "../field/field";
@@ -33,16 +39,22 @@ export const Default: Story = {
       <PopoverContent>
         <PopoverHeader>
           <PopoverTitle>Dimensions</PopoverTitle>
-          <PopoverDescription>Set the dimensions for the layer.</PopoverDescription>
+          <PopoverDescription>
+            Set the dimensions for the layer.
+          </PopoverDescription>
         </PopoverHeader>
         <div className="flex flex-col gap-3">
           <Field>
             <FieldLabel>Width</FieldLabel>
-            <FieldControl><Input defaultValue="100%" /></FieldControl>
+            <FieldControl>
+              <Input defaultValue="100%" />
+            </FieldControl>
           </Field>
           <Field>
             <FieldLabel>Height</FieldLabel>
-            <FieldControl><Input defaultValue="25px" /></FieldControl>
+            <FieldControl>
+              <Input defaultValue="25px" />
+            </FieldControl>
           </Field>
         </div>
       </PopoverContent>
@@ -59,7 +71,9 @@ export const NoHeader: Story = {
         <Button variant="outline">Filters</Button>
       </PopoverTrigger>
       <PopoverContent aria-label="Filters">
-        <p className="text-body-md text-content-neutral-muted">Anything can go in here.</p>
+        <p className="text-body-md text-content-neutral-muted">
+          Anything can go in here.
+        </p>
       </PopoverContent>
     </Popover>
   ),
@@ -75,7 +89,9 @@ export const Sides: Story = {
             <Button variant="outline">{side}</Button>
           </PopoverTrigger>
           <PopoverContent side={side} aria-label={side}>
-            <p className="text-body-md text-content-neutral-muted">On the {side}.</p>
+            <p className="text-body-md text-content-neutral-muted">
+              On the {side}.
+            </p>
           </PopoverContent>
         </Popover>
       ))}
@@ -94,11 +110,19 @@ export const WithAClose: Story = {
       <PopoverContent>
         <PopoverHeader>
           <PopoverTitle>Share this dashboard</PopoverTitle>
-          <PopoverDescription>Anyone with the link can view it.</PopoverDescription>
+          <PopoverDescription>
+            Anyone with the link can view it.
+          </PopoverDescription>
         </PopoverHeader>
         <div className="flex justify-end gap-2">
-          <PopoverClose asChild><Button variant="ghost" size="sm">Cancel</Button></PopoverClose>
-          <PopoverClose asChild><Button size="sm">Copy link</Button></PopoverClose>
+          <PopoverClose asChild>
+            <Button variant="ghost" size="sm">
+              Cancel
+            </Button>
+          </PopoverClose>
+          <PopoverClose asChild>
+            <Button size="sm">Copy link</Button>
+          </PopoverClose>
         </div>
       </PopoverContent>
     </Popover>

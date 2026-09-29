@@ -1,0 +1,39 @@
+{
+  "component": "DatePicker",
+  "summary": "A field-shaped trigger that opens a calendar.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2506:230" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "placeholder-is-not-a-value",
+      "dont": "Show today's date as the placeholder.",
+      "do": "Say \"Pick a date\", and let a real value look different.",
+      "why": "The only thing separating the two states is the text colour. A date-shaped placeholder reads as a value that has already been chosen."
+    },
+    {
+      "id": "unambiguous-format",
+      "dont": "Render 03/04/2026.",
+      "do": "Use a format with the month in words.",
+      "why": "That date is in March for half the world and April for the other half, and nothing on screen says which."
+    },
+    {
+      "id": "let-people-type",
+      "dont": "Make the calendar the only way in for a date far from today.",
+      "do": "Pair it with a field when the range is wide.",
+      "why": "A grid is the fast path for next Tuesday and the slow one for a date two years out."
+    },
+    {
+      "id": "range-needs-both-ends",
+      "dont": "Close the popover as soon as the first date is clicked in range mode.",
+      "do": "Wait for both ends.",
+      "why": "Half a range is not an answer, and reopening to finish it loses the context of what was already picked."
+    },
+    {
+      "id": "say-the-bounds",
+      "dont": "Silently disable everything before a date.",
+      "do": "Put the rule in the field's description.",
+      "why": "People try the date they want first. If it will not take, they need to know why before they start hunting."
+    }
+  ]
+}

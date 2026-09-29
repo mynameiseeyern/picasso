@@ -1,0 +1,39 @@
+{
+  "component": "Calendar",
+  "summary": "A month grid for picking a date or a span of them.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2506:3284" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "say-what-is-unavailable",
+      "dont": "Grey out dates and leave people guessing why.",
+      "do": "Say the rule near the calendar — \"data is kept for 13 months\".",
+      "why": "A disabled day looks the same whether it is in the past, outside a retention window or already booked. Only words separate them."
+    },
+    {
+      "id": "two-months-for-a-range",
+      "dont": "Ask for a range in a single month view.",
+      "do": "Show two months when the span is likely to cross one.",
+      "why": "Most ranges cross a month boundary, and paging back and forth loses the first end of the selection from view."
+    },
+    {
+      "id": "not-for-distant-dates",
+      "dont": "Use a calendar to capture a birth year.",
+      "do": "Use a calendar for dates near today; use fields for anything far away.",
+      "why": "A grid is faster than typing for this month. It is much slower than typing for 1974."
+    },
+    {
+      "id": "today-is-not-selected",
+      "dont": "Style today the same as the chosen day.",
+      "do": "Keep today's subtle fill distinct from the selected day's solid one.",
+      "why": "They answer different questions — where am I, and what did I pick. Merged, the calendar appears to have chosen for you."
+    },
+    {
+      "id": "respect-the-week-start",
+      "dont": "Hardcode Sunday or Monday as the first column.",
+      "do": "Let the locale decide.",
+      "why": "People read the grid by shape as much as by number, and a week starting on the wrong day is misread rather than re-read."
+    }
+  ]
+}

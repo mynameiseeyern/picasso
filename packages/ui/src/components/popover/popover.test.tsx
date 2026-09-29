@@ -2,7 +2,12 @@ import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
-  Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger,
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
 } from "./popover";
 
 function Fixture({ header = true }: { header?: boolean }) {
@@ -13,7 +18,9 @@ function Fixture({ header = true }: { header?: boolean }) {
         {header ? (
           <PopoverHeader>
             <PopoverTitle>Dimensions</PopoverTitle>
-            <PopoverDescription>Set the dimensions for the layer.</PopoverDescription>
+            <PopoverDescription>
+              Set the dimensions for the layer.
+            </PopoverDescription>
           </PopoverHeader>
         ) : null}
         <div>Body</div>
@@ -53,7 +60,9 @@ describe("Popover", () => {
     await user.click(screen.getByText("Dimensions", { selector: "button" }));
     const panel = document.querySelector("[data-slot=popover-content]")!;
     const titleId = document.querySelector("[data-slot=popover-title]")!.id;
-    const descId = document.querySelector("[data-slot=popover-description]")!.id;
+    const descId = document.querySelector(
+      "[data-slot=popover-description]",
+    )!.id;
     expect(panel.getAttribute("aria-labelledby")).toBe(titleId);
     expect(panel.getAttribute("aria-describedby")).toBe(descId);
   });
@@ -73,9 +82,15 @@ describe("Popover", () => {
     const user = userEvent.setup();
     render(<Fixture />);
     await user.click(screen.getByText("Dimensions", { selector: "button" }));
-    expect(document.querySelector("[data-slot=popover-title]")!.className).toContain("text-heading-xs");
-    expect(document.querySelector("[data-slot=popover-description]")!.className).toContain("text-body-md");
+    expect(
+      document.querySelector("[data-slot=popover-title]")!.className,
+    ).toContain("text-heading-xs");
+    expect(
+      document.querySelector("[data-slot=popover-description]")!.className,
+    ).toContain("text-body-md");
     // _PopoverHeader stacks at gap 4.
-    expect(document.querySelector("[data-slot=popover-header]")!.className).toContain("gap-1");
+    expect(
+      document.querySelector("[data-slot=popover-header]")!.className,
+    ).toContain("gap-1");
   });
 });
