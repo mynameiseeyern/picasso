@@ -1,0 +1,39 @@
+{
+  "component": "OtpInput",
+  "summary": "A one-time code, entered as one field behind a row of boxes.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "673:24" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "one-field",
+      "dont": "Build the row as one input per digit.",
+      "do": "Keep the single field this component is built on.",
+      "why": "Six inputs are six tab stops, six paste targets and a pile of focus-shuffling code — and screen readers announce six unlabelled boxes instead of one code."
+    },
+    {
+      "id": "let-people-paste",
+      "dont": "Block paste to keep the boxes tidy.",
+      "do": "Accept a pasted code and spread it across the slots.",
+      "why": "The code arrives in another app. Pasting is how almost everyone enters it, and blocking it makes people retype from memory."
+    },
+    {
+      "id": "invalid-needs-a-way-out",
+      "dont": "Turn the boxes red and stop there.",
+      "do": "Say what went wrong and offer a resend.",
+      "why": "A wrong code is usually an expired one. Without a resend the only option is to start the whole flow again."
+    },
+    {
+      "id": "say-where-it-went",
+      "dont": "Ask for the code with no context.",
+      "do": "Name the destination — \"sent to •••• 4821\".",
+      "why": "People check the wrong device otherwise, and there is no way to tell a delayed code from one sent somewhere they cannot reach."
+    },
+    {
+      "id": "not-a-password",
+      "dont": "Mask the digits.",
+      "do": "Show them.",
+      "why": "A one-time code is short-lived and is being copied from another screen. Masking it removes the only way to check it was typed correctly."
+    }
+  ]
+}

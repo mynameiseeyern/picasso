@@ -293,6 +293,14 @@ export {
 } from "./components/breadcrumb/breadcrumb";
 export { Chip, chipVariants, type ChipProps } from "./components/chip/chip";
 export {
+  OtpInput,
+  OtpSeparator,
+  OtpSlot,
+  otpSlotVariants,
+  type OtpInputProps,
+  type OtpSlotProps,
+} from "./components/otp/otp";
+export {
   Toast,
   ToastAction,
   ToastBody,
