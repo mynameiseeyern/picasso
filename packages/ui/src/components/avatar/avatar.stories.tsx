@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Avatar, AvatarFallback, AvatarImage, AvatarStatus } from "./avatar";
+import { Avatar, AvatarAddButton, AvatarFallback, AvatarGroup, AvatarImage, AvatarStatus } from "./avatar";
 
 const meta: Meta<typeof Avatar> = {
   title: "Components/Avatar",
@@ -93,5 +93,35 @@ export const Ringed: Story = {
       <Avatar ring><AvatarFallback>OR</AvatarFallback></Avatar>
       <Avatar ring variant="inverse"><AvatarFallback>EN</AvatarFallback></Avatar>
     </div>
+  ),
+};
+
+/** Overlap is 4 / 8 / 12 by size, and the add button sits 8px clear of it. */
+export const Group: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex flex-col gap-6">
+      {(["xs", "sm", "md"] as const).map((s) => (
+        <AvatarGroup key={s} size={s} action={<AvatarAddButton label="Add to this incident" />}>
+          <Avatar><AvatarFallback>OR</AvatarFallback></Avatar>
+          <Avatar><AvatarFallback>EN</AvatarFallback></Avatar>
+          <Avatar><AvatarFallback>SK</AvatarFallback></Avatar>
+          <Avatar><AvatarFallback>VP</AvatarFallback></Avatar>
+        </AvatarGroup>
+      ))}
+    </div>
+  ),
+};
+
+/** The group sets Size and Style; a child can still opt out. */
+export const GroupInverse: Story = {
+  name: "Group, inverse",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <AvatarGroup variant="inverse" action={<AvatarAddButton />}>
+      <Avatar><AvatarFallback>OR</AvatarFallback></Avatar>
+      <Avatar><AvatarFallback>EN</AvatarFallback></Avatar>
+      <Avatar variant="default"><AvatarFallback>SK</AvatarFallback></Avatar>
+    </AvatarGroup>
   ),
 };

@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { cva, type VariantProps } from "class-variance-authority";
-import { BadgeCheck, User } from "lucide-react";
+import { BadgeCheck, Plus, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -22,8 +22,13 @@ import { cn } from "@/lib/utils";
  * smaller inside it — a **1px inset ring**, not an outer one, so a bordered
  * avatar occupies exactly the same space as an unbordered one. In Figma the
  * wrapper is raw white; here it is `ring-surface-card`, because the ring
- * exists to separate overlapping avatars from the surface behind them, and
- * that surface is not white in dark mode.
+ * separates an avatar from the surface behind it and that surface is not
+ * white in dark mode.
+ *
+ * ⚠️ Note the ring is NOT what Figma uses for groups — every avatar in
+ * `Avatar group` is Border=False, so overlapping avatars have no separating
+ * edge at all. Followed as drawn; raised as an observation, because same-fill
+ * circles overlapping by 4–12px have nothing marking where one ends.
  *
  * The root does NOT clip, because the status dot sits on the edge. The image
  * carries its own radius instead.
@@ -54,19 +59,33 @@ const avatarVariants = cva(
 );
 
 type Size = "xs" | "sm" | "md";
+type Style = "default" | "inverse";
+
 const SizeContext = React.createContext<Size>("md");
 export const useAvatarSize = () => React.useContext(SizeContext);
+
+/**
+ * Set by AvatarGroup. Figma's group carries its own Size and Style axes and
+ * every child follows them, so in code the group supplies the default and an
+ * individual Avatar can still override it.
+ */
+const GroupContext = React.createContext<{ size: Size; variant: Style; ring: boolean } | null>(null);
+export const useAvatarGroup = () => React.useContext(GroupContext);
 
 export interface AvatarProps
   extends React.ComponentProps<typeof AvatarPrimitive.Root>,
     VariantProps<typeof avatarVariants> {}
 
-export function Avatar({ className, size = "md", variant, ring, ...props }: AvatarProps) {
+export function Avatar({ className, size, variant, ring, ...props }: AvatarProps) {
+  const group = React.useContext(GroupContext);
+  const s = size ?? group?.size ?? "md";
+  const v = variant ?? group?.variant ?? "default";
+  const r = ring ?? group?.ring ?? false;
   return (
-    <SizeContext.Provider value={size ?? "md"}>
+    <SizeContext.Provider value={s}>
       <AvatarPrimitive.Root
         data-slot="avatar"
-        className={cn(avatarVariants({ size, variant, ring }), className)}
+        className={cn(avatarVariants({ size: s, variant: v, ring: r }), className)}
         {...props}
       />
     </SizeContext.Provider>
@@ -154,3 +173,116 @@ export function AvatarStatus({ className, type, count, label, ...props }: Avatar
 }
 
 export { avatarVariants };
+
+/* ------------------------------------------------------------------ group */
+
+/**
+ * AvatarGroup — Figma 375:380.
+ *
+ * Overlap is a flat 4px step, measured off the slot's negative item spacing
+ * rather than guessed from a ratio: **xs −4 · sm −8 · md −12**. The group
+ * itself is a plain 8px gap between the stack and its trailing action, which
+ * is how Figma composes it (slot + 8 + add button = the group's width).
+ *
+ * Children inherit Size and Style from the group, matching the file's axes.
+ *
+ * ⚠️ TWO things the file does that are worth a decision, both followed as
+ * drawn rather than corrected:
+ *
+ * 1. **Every avatar in a group is Border=False.** With identical fills and a
+ *    4–12px overlap there is no edge between them, so the stack reads as one
+ *    blob AND each avatar's trailing initial is covered by the next — "OR"
+ *    renders as "OF". Verified in the browser. `ring` fixes it in one prop,
+ *    and Figma already has the Border axis; it just is not used here.
+ * 2. **There is no overflow avatar.** Figma's groups show seven and stop. A
+ *    "+3" counter is the obvious product need and is deliberately NOT
+ *    invented here; it wants adding to the file first.
+ */
+const avatarStackVariants = cva("flex items-center", {
+  variants: {
+    size: { xs: "-space-x-1", sm: "-space-x-2", md: "-space-x-3" },
+  },
+  defaultVariants: { size: "md" },
+});
+
+export interface AvatarGroupProps extends React.ComponentProps<"div"> {
+  size?: Size;
+  variant?: Style;
+  /** Trailing control, sat 8px clear of the stack. Usually AvatarAddButton. */
+  action?: React.ReactNode;
+  /**
+   * Ring every avatar in the group. **Defaults to false, because that is what
+   * the file draws** — see the warning above. Set it true and the stack reads
+   * as separate people again; it is one prop because Figma already has the
+   * Border axis, it simply is not used here.
+   */
+  ring?: boolean;
+}
+
+export function AvatarGroup({ className, size = "md", variant = "default", ring = false, action, children, ...props }: AvatarGroupProps) {
+  return (
+    <GroupContext.Provider value={{ size, variant, ring }}>
+      <div data-slot="avatar-group" className={cn("flex items-center gap-2", className)} {...props}>
+        <div data-slot="avatar-stack" className={avatarStackVariants({ size })}>
+          {children}
+        </div>
+        {action}
+      </div>
+    </GroupContext.Provider>
+  );
+}
+
+/**
+ * AvatarAddButton — Figma 375:1432.
+ *
+ * A real button, so it is reachable and announced. Disabled collapses both
+ * styles onto the same treatment in the file, which is why there is no
+ * per-style disabled branch here.
+ */
+const avatarAddVariants = cva(
+  "inline-flex shrink-0 items-center justify-center rounded-full border transition-colors outline-none " +
+    "focus-visible:ring-2 focus-visible:ring-line-focused " +
+    "focus-visible:ring-offset-2 focus-visible:ring-offset-surface-app " +
+    "disabled:cursor-not-allowed disabled:border-line-disabled " +
+    "disabled:bg-surface-disabled disabled:text-content-disabled",
+  {
+    variants: {
+      size: { xs: "size-6", sm: "size-8", md: "size-10" },
+      variant: {
+        default:
+          "bg-surface-neutral-muted border-line-neutral-muted text-content-neutral-subtle " +
+          "enabled:hover:bg-surface-neutral-muted-hovered enabled:hover:text-content-neutral-muted",
+        inverse:
+          "bg-surface-neutral-emphasis border-line-inverse text-content-on-neutral-emphasis " +
+          "enabled:hover:bg-surface-neutral-emphasis-hovered",
+      },
+    },
+    defaultVariants: { size: "md", variant: "default" },
+  },
+);
+
+export interface AvatarAddButtonProps extends Omit<React.ComponentProps<"button">, "children"> {
+  size?: Size;
+  variant?: Style;
+  /** What adding does. "Add" alone rarely says enough. */
+  label?: string;
+}
+
+export function AvatarAddButton({ className, size, variant, label = "Add person", ...props }: AvatarAddButtonProps) {
+  const group = React.useContext(GroupContext);
+  const s = size ?? group?.size ?? "md";
+  const v = variant ?? group?.variant ?? "default";
+  return (
+    <button
+      type="button"
+      data-slot="avatar-add"
+      aria-label={label}
+      className={cn(avatarAddVariants({ size: s, variant: v }), className)}
+      {...props}
+    >
+      <Plus aria-hidden className="size-4" />
+    </button>
+  );
+}
+
+export { avatarAddVariants, avatarStackVariants };

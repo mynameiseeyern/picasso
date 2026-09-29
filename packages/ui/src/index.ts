@@ -79,12 +79,19 @@ export { Separator, type SeparatorProps } from "./components/separator/separator
 export { Skeleton, SkeletonText, type SkeletonProps, type SkeletonTextProps } from "./components/skeleton/skeleton";
 export {
   Avatar,
+  AvatarAddButton,
+  AvatarGroup,
   AvatarFallback,
   AvatarImage,
   AvatarStatus,
+  avatarAddVariants,
+  avatarStackVariants,
   avatarVariants,
+  useAvatarGroup,
   useAvatarSize,
   type AvatarFallbackProps,
   type AvatarProps,
+  type AvatarAddButtonProps,
+  type AvatarGroupProps,
   type AvatarStatusProps,
 } from "./components/avatar/avatar";

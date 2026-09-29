@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { Avatar, AvatarFallback, AvatarImage, AvatarStatus } from "./avatar";
+import { Avatar, AvatarAddButton, AvatarFallback, AvatarGroup, AvatarImage, AvatarStatus } from "./avatar";
 
 describe("Avatar", () => {
   it("shows the fallback until an image loads", () => {
@@ -79,5 +79,91 @@ describe("Avatar", () => {
       </Avatar>,
     );
     expect(container.querySelector("[data-slot=avatar-fallback] svg")).toBeInTheDocument();
+  });
+});
+
+describe("AvatarGroup", () => {
+  it("overlaps by the step Figma measures, not a guessed ratio", () => {
+    const { container, rerender } = render(<AvatarGroup size="xs"><Avatar /></AvatarGroup>);
+    const stack = () => container.querySelector("[data-slot=avatar-stack]")!;
+    // slot item spacing in Figma: xs -4, sm -8, md -12.
+    expect(stack().className).toContain("-space-x-1");
+    rerender(<AvatarGroup size="sm"><Avatar /></AvatarGroup>);
+    expect(stack().className).toContain("-space-x-2");
+    rerender(<AvatarGroup size="md"><Avatar /></AvatarGroup>);
+    expect(stack().className).toContain("-space-x-3");
+  });
+
+  it("sizes and styles its children, the way the group's own axes do", () => {
+    const { container } = render(
+      <AvatarGroup size="sm" variant="inverse">
+        <Avatar />
+      </AvatarGroup>,
+    );
+    const cls = container.querySelector("[data-slot=avatar]")!.className;
+    expect(cls).toContain("size-8");
+    expect(cls).toContain("bg-surface-neutral-emphasis");
+  });
+
+  it("lets one avatar opt out of the group's size", () => {
+    const { container } = render(
+      <AvatarGroup size="sm">
+        <Avatar size="md" data-testid="big" />
+      </AvatarGroup>,
+    );
+    expect(container.querySelector("[data-slot=avatar]")!.className).toContain("size-10");
+  });
+
+  it("keeps the trailing action out of the overlap", () => {
+    const { container } = render(
+      <AvatarGroup action={<AvatarAddButton />}>
+        <Avatar />
+      </AvatarGroup>,
+    );
+    const stack = container.querySelector("[data-slot=avatar-stack]")!;
+    const add = container.querySelector("[data-slot=avatar-add]")!;
+    // Figma composes it as slot + 8px gap + button, so the button is a
+    // sibling of the stack rather than another overlapping child.
+    expect(stack.contains(add)).toBe(false);
+    expect(container.querySelector("[data-slot=avatar-group]")!.className).toContain("gap-2");
+  });
+});
+
+describe("AvatarAddButton", () => {
+  it("is a real button and says what it adds", () => {
+    render(<AvatarAddButton />);
+    const btn = screen.getByRole("button", { name: "Add person" });
+    expect(btn).toHaveAttribute("type", "button");
+  });
+
+  it("inherits the group's size and style", () => {
+    const { container } = render(
+      <AvatarGroup size="xs" variant="inverse" action={<AvatarAddButton />}>
+        <Avatar />
+      </AvatarGroup>,
+    );
+    const cls = container.querySelector("[data-slot=avatar-add]")!.className;
+    expect(cls).toContain("size-6");
+    expect(cls).toContain("bg-surface-neutral-emphasis");
+  });
+
+  it("takes one disabled treatment for both styles, as the file draws it", () => {
+    const { container } = render(<AvatarAddButton variant="inverse" disabled />);
+    const cls = container.querySelector("[data-slot=avatar-add]")!.className;
+    expect(cls).toContain("disabled:bg-surface-disabled");
+    expect(cls).toContain("disabled:border-line-disabled");
+  });
+});
+describe("AvatarGroup ring", () => {
+  it("follows the file and ships unringed, blob and all", () => {
+    const { container } = render(<AvatarGroup><Avatar /></AvatarGroup>);
+    expect(container.querySelector("[data-slot=avatar]")!.className).not.toContain("ring-inset");
+  });
+
+  it("rings every child in one prop, which is the fix if we want it", () => {
+    const { container } = render(<AvatarGroup ring><Avatar /><Avatar /></AvatarGroup>);
+    for (const el of container.querySelectorAll("[data-slot=avatar]")) {
+      expect(el.className).toContain("ring-inset");
+    }
   });
 });
