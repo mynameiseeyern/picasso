@@ -90,9 +90,14 @@ export interface DrawerContentProps
     React.ComponentProps<typeof DialogPrimitive.Content>,
     VariantProps<typeof drawerPanelVariants> {
   /**
-   * The drawer's accessible name, for a drawer with no visible `DrawerTitle`
-   * — a record header carries a counter, not a title, so it needs one here.
-   * Rendered as a screen-reader-only title.
+   * The drawer's accessible name, for a drawer with **no** visible
+   * `DrawerTitle` — a record header carries a counter, not a title, so it
+   * needs one here. Rendered as a screen-reader-only title.
+   *
+   * ⚠️ Mutually exclusive with `DrawerTitle`. Both render a Radix Title, both
+   * Titles get the same id, and the hidden one wins the accessible name — so
+   * a drawer with a perfectly good visible title would announce itself as
+   * something else entirely. Warns in development.
    */
   label?: string;
 }
@@ -103,6 +108,7 @@ export function DrawerContent({
   size,
   label,
   children,
+  ref,
   ...props
 }: DrawerContentProps) {
   return (
@@ -115,6 +121,24 @@ export function DrawerContent({
       <DialogPrimitive.Content
         data-slot="drawer-content"
         data-side={side ?? "right"}
+        ref={(node: HTMLDivElement | null) => {
+          // Ref callbacks run bottom-up, so the children are already in the
+          // DOM here — which an effect on this component cannot rely on: the
+          // Portal renders nothing while the drawer is closed.
+          if (
+            process.env.NODE_ENV !== "production" &&
+            node &&
+            label &&
+            node.querySelector("[data-slot='drawer-title']")
+          ) {
+            console.warn(
+              "Drawer: `label` and `DrawerTitle` are both set. Both render a title " +
+                "with the same id, and the hidden one wins the accessible name. Drop `label`.",
+            );
+          }
+          if (typeof ref === "function") ref(node);
+          else if (ref) ref.current = node;
+        }}
         className={cn(drawerPanelVariants({ side, size }), className)}
         {...props}
       >
