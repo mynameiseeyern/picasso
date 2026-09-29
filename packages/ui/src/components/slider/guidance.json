@@ -1,0 +1,39 @@
+{
+  "component": "Slider",
+  "summary": "Pick a value, or a span of values, where the approximate position matters more than the number.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1106:40" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "show-the-number",
+      "dont": "Ship a slider with no readout of the value it is setting.",
+      "do": "Put the number beside it, or let a field mirror it.",
+      "why": "A thumb on a track is an approximation. Anyone who needs the exact figure — and in a threshold they always do — cannot get it from the position."
+    },
+    {
+      "id": "not-for-precision",
+      "dont": "Use a slider to enter a port number or a timeout in milliseconds.",
+      "do": "Use a slider for ranges people judge by feel; use a number input for exact values.",
+      "why": "Hitting one value in a thousand by dragging is a pointer-accuracy test, and it is much worse on a touchscreen."
+    },
+    {
+      "id": "name-both-thumbs",
+      "dont": "Leave a range slider's two thumbs unlabelled.",
+      "do": "Name them — Minimum and Maximum.",
+      "why": "A screen reader announces two controls both called \"slider\", with no way to tell which end is which."
+    },
+    {
+      "id": "sensible-steps",
+      "dont": "Leave step at 1 on a 0–10000 range.",
+      "do": "Set a step that matches the precision the value actually has.",
+      "why": "Ten thousand keyboard presses to cross the track is not keyboard support."
+    },
+    {
+      "id": "disabled-must-look-disabled",
+      "dont": "Leave a disabled slider looking exactly like a live one.",
+      "do": "Let the disabled treatment show.",
+      "why": "The file draws them identically today. People drag a control that cannot move and conclude the page is broken."
+    }
+  ]
+}

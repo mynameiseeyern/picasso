@@ -300,6 +300,7 @@ export {
   type OtpInputProps,
   type OtpSlotProps,
 } from "./components/otp/otp";
+export { Slider, type SliderProps } from "./components/slider/slider";
 export {
   Toast,
   ToastAction,
