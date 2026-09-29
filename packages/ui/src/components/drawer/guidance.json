@@ -1,7 +1,10 @@
 {
   "component": "Drawer",
   "summary": "A side panel over a scrim for secondary work — filters, drilldowns, stepping through records.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "975:94" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "975:94"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -40,6 +43,12 @@
       "dont": "Scatter Apply and Reset through the body next to the fields they affect.",
       "do": "Keep the commitment in the footer, where it stays put while the body scrolls.",
       "why": "The body scrolls and the footer does not. An action that scrolls out of reach is one people stop finding."
+    },
+    {
+      "id": "primary-on-the-right",
+      "dont": "Lead with the primary action, or pair it with a ghost button.",
+      "do": "Primary last, on the right, paired with a secondary or an outline.",
+      "why": "The eye finishes at the right-hand edge, so that is where the commitment belongs — and a ghost beside it reads as a third-tier action rather than the way out."
     },
     {
       "id": "no-stacking",

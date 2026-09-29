@@ -429,7 +429,11 @@ export function DrawerBody({
   );
 }
 
-/** Actions, right-aligned, on a rule. */
+/**
+ * Actions, right-aligned, on a rule. Same order as Dialog: primary **last**,
+ * at the right-hand edge, paired with a secondary or an outline rather than
+ * a ghost.
+ */
 export function DrawerFooter({
   className,
   ...props

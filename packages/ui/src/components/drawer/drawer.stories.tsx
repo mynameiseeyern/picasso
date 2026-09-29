@@ -85,7 +85,7 @@ export const Filters: Story = {
           </Field>
         </DrawerBody>
         <DrawerFooter>
-          <Button variant="ghost">Reset</Button>
+          <Button variant="secondary">Reset</Button>
           <Button>Apply</Button>
         </DrawerFooter>
       </DrawerContent>

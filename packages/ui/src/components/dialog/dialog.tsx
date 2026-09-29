@@ -44,27 +44,42 @@ const dialogContentVariants = cva(
   },
 );
 
-export function Dialog(props: React.ComponentProps<typeof DialogPrimitive.Root>) {
+export function Dialog(
+  props: React.ComponentProps<typeof DialogPrimitive.Root>,
+) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />;
 }
 
-export function DialogTrigger(props: React.ComponentProps<typeof DialogPrimitive.Trigger>) {
+export function DialogTrigger(
+  props: React.ComponentProps<typeof DialogPrimitive.Trigger>,
+) {
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />;
 }
 
-export function DialogClose(props: React.ComponentProps<typeof DialogPrimitive.Close>) {
+export function DialogClose(
+  props: React.ComponentProps<typeof DialogPrimitive.Close>,
+) {
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />;
 }
 
 export interface DialogContentProps
-  extends React.ComponentProps<typeof DialogPrimitive.Content>,
+  extends
+    React.ComponentProps<typeof DialogPrimitive.Content>,
     VariantProps<typeof dialogContentVariants> {}
 
-export function DialogContent({ className, size, children, ...props }: DialogContentProps) {
+export function DialogContent({
+  className,
+  size,
+  children,
+  ...props
+}: DialogContentProps) {
   return (
     <DialogPrimitive.Portal>
       {/* The same scrim the rest of the system uses. */}
-      <DialogPrimitive.Overlay data-slot="dialog-overlay" className={overlayScrimVariants()} />
+      <DialogPrimitive.Overlay
+        data-slot="dialog-overlay"
+        className={overlayScrimVariants()}
+      />
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(dialogContentVariants({ size }), className)}
@@ -76,22 +91,42 @@ export function DialogContent({ className, size, children, ...props }: DialogCon
   );
 }
 
-export function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="dialog-header" className={cn("flex flex-col gap-2 p-4", className)} {...props} />;
+export function DialogHeader({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="dialog-header"
+      className={cn("flex flex-col gap-2 p-4", className)}
+      {...props}
+    />
+  );
 }
 
-export interface DialogTitleProps extends React.ComponentProps<typeof DialogPrimitive.Title> {
+export interface DialogTitleProps extends React.ComponentProps<
+  typeof DialogPrimitive.Title
+> {
   /** The close button in the title row. Off only for a dialog that must be answered. */
   close?: boolean;
   closeLabel?: string;
 }
 
-export function DialogTitle({ className, children, close = true, closeLabel = "Close", ...props }: DialogTitleProps) {
+export function DialogTitle({
+  className,
+  children,
+  close = true,
+  closeLabel = "Close",
+  ...props
+}: DialogTitleProps) {
   return (
     <div data-slot="dialog-title-row" className="flex items-center gap-2.5">
       <DialogPrimitive.Title
         data-slot="dialog-title"
-        className={cn("flex-1 text-heading-xs text-content-neutral-emphasis", className)}
+        className={cn(
+          "flex-1 text-heading-xs text-content-neutral-emphasis",
+          className,
+        )}
         {...props}
       >
         {children}
@@ -115,7 +150,10 @@ export function DialogTitle({ className, children, close = true, closeLabel = "C
   );
 }
 
-export function DialogDescription({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
+export function DialogDescription({
+  className,
+  ...props
+}: React.ComponentProps<typeof DialogPrimitive.Description>) {
   return (
     <DialogPrimitive.Description
       data-slot="dialog-description"
@@ -126,13 +164,36 @@ export function DialogDescription({ className, ...props }: React.ComponentProps<
 }
 
 /** No top padding — the header's bottom padding is the gap. */
-export function DialogBody({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="dialog-body" className={cn("flex flex-col gap-2 px-4 pb-4", className)} {...props} />;
+export function DialogBody({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="dialog-body"
+      className={cn("flex flex-col gap-2 px-4 pb-4", className)}
+      {...props}
+    />
+  );
 }
 
-/** Actions, right-aligned. */
-export function DialogFooter({ className, ...props }: React.ComponentProps<"div">) {
-  return <div data-slot="dialog-footer" className={cn("flex items-center justify-end gap-2 p-4", className)} {...props} />;
+/**
+ * Actions, right-aligned — which fixes the order, not just the alignment.
+ * The primary goes **last**, at the right-hand edge where the eye finishes,
+ * paired with a secondary or an outline. Not a ghost: beside a primary, a
+ * ghost reads as a third-tier action rather than the way out.
+ */
+export function DialogFooter({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
+  return (
+    <div
+      data-slot="dialog-footer"
+      className={cn("flex items-center justify-end gap-2 p-4", className)}
+      {...props}
+    />
+  );
 }
 
 export { dialogContentVariants };

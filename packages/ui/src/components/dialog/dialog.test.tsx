@@ -2,11 +2,24 @@ import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
-  Dialog, DialogBody, DialogContent, DialogDescription, DialogFooter,
-  DialogHeader, DialogTitle, DialogTrigger, dialogContentVariants,
+  Dialog,
+  DialogBody,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  dialogContentVariants,
 } from "./dialog";
 
-function Fixture({ close = true, size }: { close?: boolean; size?: "sm" | "md" | "lg" }) {
+function Fixture({
+  close = true,
+  size,
+}: {
+  close?: boolean;
+  size?: "sm" | "md" | "lg";
+}) {
   return (
     <Dialog>
       <DialogTrigger>Open</DialogTrigger>
@@ -51,7 +64,9 @@ describe("Dialog", () => {
     await user.click(screen.getByText("Open"));
     const close = await screen.findByRole("button", { name: "Close" });
     // In the title row, not floated over the corner.
-    expect(document.querySelector("[data-slot=dialog-title-row]")!.contains(close)).toBe(true);
+    expect(
+      document.querySelector("[data-slot=dialog-title-row]")!.contains(close),
+    ).toBe(true);
   });
 
   it("can drop the close for a dialog that must be answered", async () => {
@@ -94,6 +109,8 @@ describe("Dialog", () => {
     render(<Fixture />);
     await user.click(screen.getByText("Open"));
     await screen.findByRole("dialog");
-    expect(document.querySelector("[data-slot=dialog-footer]")!.className).toContain("justify-end");
+    expect(
+      document.querySelector("[data-slot=dialog-footer]")!.className,
+    ).toContain("justify-end");
   });
 });

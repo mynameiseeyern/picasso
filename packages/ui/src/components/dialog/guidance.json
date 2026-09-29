@@ -1,7 +1,10 @@
 {
   "component": "Dialog",
   "summary": "A modal for a focused task that interrupts the flow.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "40000392:23689" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "40000392:23689"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -22,6 +25,12 @@
       "dont": "Label the buttons OK and Cancel.",
       "do": "Say what will happen — Delete endpoint, Save changes.",
       "why": "People read the button, not the paragraph. The verb is where the decision actually gets made."
+    },
+    {
+      "id": "primary-on-the-right",
+      "dont": "Lead with the primary action, or pair it with a ghost button.",
+      "do": "Primary last, on the right, paired with a secondary or an outline.",
+      "why": "The eye finishes at the right-hand edge, so that is where the commitment belongs — and a ghost beside it reads as a third-tier action rather than the way out."
     },
     {
       "id": "one-way-out-at-least",
