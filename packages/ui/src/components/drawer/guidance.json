@@ -1,0 +1,51 @@
+{
+  "component": "Drawer",
+  "summary": "A side panel over a scrim for secondary work — filters, drilldowns, stepping through records.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "975:94" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "drawer-or-dialog",
+      "dont": "Reach for a Drawer because the Dialog felt cramped.",
+      "do": "Use a Dialog for a focused interruption; a Drawer for work the page's context still matters to.",
+      "why": "A drawer leaves the page visible on purpose. If the page behind is irrelevant, the modal was the right shape."
+    },
+    {
+      "id": "expanded-is-already-wide",
+      "dont": "Set size=\"wide\" on an expanded drawer.",
+      "do": "Pick Default 480 or Wide 640 for a side panel; Expanded ignores size.",
+      "why": "The file draws five variants, not six — Expanded is already the wide one, inset 80 by 40."
+    },
+    {
+      "id": "name-a-record-drawer",
+      "dont": "Ship a record header with no accessible name because it shows a counter instead of a title.",
+      "do": "Pass `label` — \"Endpoint 3 of 227: probe-04\".",
+      "why": "\"3 of 227\" is not a name. Someone arriving by screen reader gets a dialog that will not say what it is."
+    },
+    {
+      "id": "never-both-names",
+      "dont": "Set `label` and render a DrawerTitle.",
+      "do": "One or the other — `label` for record headers, DrawerTitle everywhere else.",
+      "why": "Both render a title with the same id and the hidden one wins, so the visible title is silently ignored."
+    },
+    {
+      "id": "stepper-follows-the-list",
+      "dont": "Swap the chevrons to left and right because the drawer came in from the right.",
+      "do": "Keep up and down — they move through the list behind the drawer.",
+      "why": "The arrows describe what moves, and what moves is the selection in a vertical list, not the panel."
+    },
+    {
+      "id": "footer-holds-the-commitment",
+      "dont": "Scatter Apply and Reset through the body next to the fields they affect.",
+      "do": "Keep the commitment in the footer, where it stays put while the body scrolls.",
+      "why": "The body scrolls and the footer does not. An action that scrolls out of reach is one people stop finding."
+    },
+    {
+      "id": "no-stacking",
+      "dont": "Open a drawer from inside a drawer.",
+      "do": "Replace the content in place, or step with previous and next.",
+      "why": "Two focus traps and two Escape handlers, and nobody can tell which layer they are answering."
+    }
+  ]
+}
