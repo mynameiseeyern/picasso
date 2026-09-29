@@ -1,0 +1,39 @@
+{
+  "component": "Stepper",
+  "summary": "Where someone is in a linear flow, and how much of it is left.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1065:653" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "only-for-linear",
+      "dont": "Use a stepper for a form people can fill in any order.",
+      "do": "Use it when the steps genuinely run in sequence.",
+      "why": "A stepper promises an order. On a flow that has none it makes people hunt for a next button that was never the point."
+    },
+    {
+      "id": "three-to-five",
+      "dont": "Show nine steps across the top of a page.",
+      "do": "Keep it to three to five, and group the rest.",
+      "why": "Past five the row stops reading as progress and starts reading as a warning about how long this will take."
+    },
+    {
+      "id": "pick-the-layout-for-the-space",
+      "dont": "Reach for the labelled layout inside a dialog.",
+      "do": "Icons-minimal in tight space, icons-connected for short flows, text-with-line when each step needs describing.",
+      "why": "The five layouts exist because the same five steps need different amounts of room. The labels are the first thing to lose."
+    },
+    {
+      "id": "state-is-not-only-colour",
+      "dont": "Rely on the fill alone to say which step is current.",
+      "do": "Keep aria-current and the indicator's shape doing the work too.",
+      "why": "A completed step and a current one are both filled. The check, the dot and aria-current are what actually distinguish them."
+    },
+    {
+      "id": "not-a-progress-bar",
+      "dont": "Use a stepper to show a percentage.",
+      "do": "Use Progress for continuous work; a stepper counts discrete stages.",
+      "why": "Steps are places a person stands. A percentage is a machine's estimate, and they do not mean the same thing."
+    }
+  ]
+}

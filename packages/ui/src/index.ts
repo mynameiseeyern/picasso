@@ -302,6 +302,19 @@ export {
 } from "./components/otp/otp";
 export { Slider, type SliderProps } from "./components/slider/slider";
 export {
+  Stepper,
+  StepperContent,
+  StepperDescription,
+  StepperIndicator,
+  StepperItem,
+  StepperSeparator,
+  StepperTitle,
+  StepperTrack,
+  stepperIndicatorVariants,
+  type StepperItemProps,
+  type StepperProps,
+} from "./components/stepper/stepper";
+export {
   Toast,
   ToastAction,
   ToastBody,
