@@ -1,7 +1,23 @@
-export { Button, buttonVariants, type ButtonProps } from "./components/button/button";
-export { Checkbox, checkboxVariants, type CheckboxProps } from "./components/checkbox/checkbox";
-export { Input, inputVariants, type InputProps } from "./components/input/input";
-export { Textarea, textareaVariants, type TextareaProps } from "./components/textarea/textarea";
+export {
+  Button,
+  buttonVariants,
+  type ButtonProps,
+} from "./components/button/button";
+export {
+  Checkbox,
+  checkboxVariants,
+  type CheckboxProps,
+} from "./components/checkbox/checkbox";
+export {
+  Input,
+  inputVariants,
+  type InputProps,
+} from "./components/input/input";
+export {
+  Textarea,
+  textareaVariants,
+  type TextareaProps,
+} from "./components/textarea/textarea";
 export {
   Field,
   FieldControl,
@@ -13,11 +29,36 @@ export {
   type FieldLabelProps,
   type FieldControlProps,
 } from "./components/field/field";
-export { Radio, RadioGroup, radioVariants, type RadioProps } from "./components/radio-group/radio-group";
-export { Switch, switchVariants, type SwitchProps } from "./components/switch/switch";
-export { Kbd, KbdGroup, kbdVariants, type KbdProps, type KbdGroupProps } from "./components/kbd/kbd";
-export { Alert, AlertTitle, AlertDescription, alertVariants, type AlertProps } from "./components/alert/alert";
-export { ButtonGroup, buttonGroupVariants, type ButtonGroupProps } from "./components/button-group/button-group";
+export {
+  Radio,
+  RadioGroup,
+  radioVariants,
+  type RadioProps,
+} from "./components/radio-group/radio-group";
+export {
+  Switch,
+  switchVariants,
+  type SwitchProps,
+} from "./components/switch/switch";
+export {
+  Kbd,
+  KbdGroup,
+  kbdVariants,
+  type KbdProps,
+  type KbdGroupProps,
+} from "./components/kbd/kbd";
+export {
+  Alert,
+  AlertTitle,
+  AlertDescription,
+  alertVariants,
+  type AlertProps,
+} from "./components/alert/alert";
+export {
+  ButtonGroup,
+  buttonGroupVariants,
+  type ButtonGroupProps,
+} from "./components/button-group/button-group";
 export {
   Card,
   CardAction,
@@ -44,11 +85,33 @@ export {
   type TableProps,
   type TableRowProps,
 } from "./components/table/table";
-export { Badge, badgeVariants, type BadgeProps } from "./components/badge/badge";
-export { Meter, litSegments, type MeterProps, type MeterStatus } from "./components/meter/meter";
-export { KpiTile, type KpiTileProps, type KpiStatus } from "./components/kpi-tile/kpi-tile";
-export { Progress, progressIndicatorVariants, type ProgressProps } from "./components/progress/progress";
-export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./components/tooltip/tooltip";
+export {
+  Badge,
+  badgeVariants,
+  type BadgeProps,
+} from "./components/badge/badge";
+export {
+  Meter,
+  litSegments,
+  type MeterProps,
+  type MeterStatus,
+} from "./components/meter/meter";
+export {
+  KpiTile,
+  type KpiTileProps,
+  type KpiStatus,
+} from "./components/kpi-tile/kpi-tile";
+export {
+  Progress,
+  progressIndicatorVariants,
+  type ProgressProps,
+} from "./components/progress/progress";
+export {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./components/tooltip/tooltip";
 export {
   InputGroup,
   InputGroupAddon,
@@ -62,11 +125,30 @@ export {
   type InputGroupAddonProps,
   type InputGroupInputProps,
 } from "./components/input-group/input-group";
-export { InputButton, inputButtonVariants, type InputButtonProps } from "./components/input-button/input-button";
-export { PasswordInput, type PasswordInputProps } from "./components/password-input/password-input";
-export { NumberInput, type NumberInputProps } from "./components/number-input/number-input";
-export { Select, type SelectProps, type SelectOption } from "./components/select/select";
-export { TagsInput, InputChip, type TagsInputProps, type InputChipProps } from "./components/tags-input/tags-input";
+export {
+  InputButton,
+  inputButtonVariants,
+  type InputButtonProps,
+} from "./components/input-button/input-button";
+export {
+  PasswordInput,
+  type PasswordInputProps,
+} from "./components/password-input/password-input";
+export {
+  NumberInput,
+  type NumberInputProps,
+} from "./components/number-input/number-input";
+export {
+  Select,
+  type SelectProps,
+  type SelectOption,
+} from "./components/select/select";
+export {
+  TagsInput,
+  InputChip,
+  type TagsInputProps,
+  type InputChipProps,
+} from "./components/tags-input/tags-input";
 export {
   FileUpload,
   FileUploadItem,
@@ -75,8 +157,16 @@ export {
   type FileUploadItemProps,
 } from "./components/file-upload/file-upload";
 export { Loader, type LoaderProps } from "./components/loader/loader";
-export { Separator, type SeparatorProps } from "./components/separator/separator";
-export { Skeleton, SkeletonText, type SkeletonProps, type SkeletonTextProps } from "./components/skeleton/skeleton";
+export {
+  Separator,
+  type SeparatorProps,
+} from "./components/separator/separator";
+export {
+  Skeleton,
+  SkeletonText,
+  type SkeletonProps,
+  type SkeletonTextProps,
+} from "./components/skeleton/skeleton";
 export {
   Avatar,
   AvatarAddButton,
@@ -201,6 +291,7 @@ export {
   type BreadcrumbProps,
   type BreadcrumbTriggerProps,
 } from "./components/breadcrumb/breadcrumb";
+export { Chip, chipVariants, type ChipProps } from "./components/chip/chip";
 export {
   Toast,
   ToastAction,

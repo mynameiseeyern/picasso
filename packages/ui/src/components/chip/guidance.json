@@ -1,0 +1,45 @@
+{
+  "component": "Chip",
+  "summary": "A compact token — a filter you toggle, a suggestion you take, or a value you remove.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "635:291" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "check-not-colour",
+      "dont": "Signal that a chip is selected with the fill alone.",
+      "do": "Leave the check on — it is what carries selection.",
+      "why": "On hover, focus and press a selected chip takes the same fill as an unselected one. Remove the check and three of the five states stop telling you anything."
+    },
+    {
+      "id": "toggle-or-action",
+      "dont": "Set `selected` on a chip that performs an action.",
+      "do": "Use `selected` only for something that stays on; leave it off for a one-shot.",
+      "why": "`aria-pressed` promises a state that persists. On a chip that just runs a search, it announces a toggle that does not exist."
+    },
+    {
+      "id": "removable-is-not-clickable",
+      "dont": "Make a removable token clickable as a whole as well.",
+      "do": "Let the ✕ be the only control on it.",
+      "why": "A button inside a button is invalid HTML, and a token with two overlapping hit areas is a coin toss for anyone using a pointer imprecisely."
+    },
+    {
+      "id": "name-the-remove",
+      "dont": "Ship a row of tokens whose controls are all called \"Remove\".",
+      "do": "Name the subject — \"Remove probe-04\".",
+      "why": "A screen reader lists controls out of context. Twelve identical \"Remove\" buttons is twelve coin tosses."
+    },
+    {
+      "id": "chips-are-not-buttons",
+      "dont": "Reach for a chip because it is a smaller, rounder button.",
+      "do": "Use chips for values — filters, tokens, suggestions. Use a Button for a command.",
+      "why": "Chips read as things you are collecting or narrowing by. A verb in a pill just looks like a button that lost an argument with the grid."
+    },
+    {
+      "id": "no-tone-variants",
+      "dont": "Recolour a chip to carry status.",
+      "do": "Use a Badge when the point is what something is, not what you are filtering by.",
+      "why": "Chip is deliberately one neutral ramp. Status lives in Badge, which has the tones and the semantics for it."
+    }
+  ]
+}
