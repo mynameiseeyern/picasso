@@ -122,3 +122,18 @@ export {
   PopoverTitle,
   PopoverTrigger,
 } from "./components/popover/popover";
+export {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+  dropdownMenuItemVariants,
+  type DropdownMenuItemProps,
+} from "./components/dropdown-menu/dropdown-menu";

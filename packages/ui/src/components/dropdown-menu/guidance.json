@@ -1,0 +1,39 @@
+{
+  "component": "DropdownMenu",
+  "summary": "Actions on a thing, opened from a control.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1146:3028" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "actions-not-values",
+      "dont": "Use a dropdown menu to choose a value for a field.",
+      "do": "Use Select for values; menus are for actions.",
+      "why": "A menu does something when you pick a row. A select stores what you picked — different promises, different keyboard behaviour."
+    },
+    {
+      "id": "no-hover",
+      "dont": "Add a hover state to a menu row.",
+      "do": "Leave focus to do the work.",
+      "why": "Radix moves DOM focus on pointer-over as well as arrow keys, so one state covers both. A second one double-lights the row."
+    },
+    {
+      "id": "destructive-last",
+      "dont": "Scatter destructive actions through the list.",
+      "do": "Put them last, behind a separator.",
+      "why": "The pointer travels down the list. A delete sitting mid-list is one slip away from the row above it."
+    },
+    {
+      "id": "shortcuts-must-be-real",
+      "dont": "Show a shortcut the app has not bound.",
+      "do": "Only show keys that actually work from that screen.",
+      "why": "A printed shortcut is a promise. People try it once, and stop trusting the menu when it does nothing."
+    },
+    {
+      "id": "shallow-submenus",
+      "dont": "Nest submenus more than one deep.",
+      "do": "Flatten, or open a dialog for the complicated case.",
+      "why": "Each level is another hover corridor to keep the pointer inside, and each one loses people."
+    }
+  ]
+}
