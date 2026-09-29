@@ -186,17 +186,25 @@ export { avatarVariants };
  *
  * Children inherit Size and Style from the group, matching the file's axes.
  *
- * ⚠️ TWO things the file does that are worth a decision, both followed as
- * drawn rather than corrected:
+ * Two things settled on 29 Sept, both now matching the file:
  *
- * 1. **Every avatar in a group is Border=False.** With identical fills and a
- *    4–12px overlap there is no edge between them, so the stack reads as one
- *    blob AND each avatar's trailing initial is covered by the next — "OR"
- *    renders as "OF". Verified in the browser. `ring` fixes it in one prop,
- *    and Figma already has the Border axis; it just is not used here.
- * 2. **There is no overflow avatar.** Figma's groups show seven and stop. A
- *    "+3" counter is the obvious product need and is deliberately NOT
- *    invented here; it wants adding to the file first.
+ * 1. **Grouped avatars are ringed.** They were Border=False, which with
+ *    identical fills and a 4–12px overlap left no edge at all and the stack
+ *    read as one shape. Fixed in Figma across all six group variants and
+ *    defaulted to true here; an individual avatar can still opt out.
+ *
+ *    ⚠️ The ring restores the EDGE. It does not uncover the trailing
+ *    initial — "OR" still renders as "OF" on the pale variants, because each
+ *    avatar is painted over by the next one. Figma has the same behaviour,
+ *    and it is inherent to centring initials under a 30% overlap. The usual
+ *    remedy is painting first-on-top instead of last-on-top, which is a pure
+ *    z-order change with identical geometry; it needs either reversed DOM
+ *    order (which reverses what a screen reader announces) or a z-index per
+ *    child. Raised, not taken.
+ * 2. **Overflow is just an avatar.** The file's groups end with a "+5" — not
+ *    a separate component, only the last avatar with its initials overridden,
+ *    which is why a structural dump does not show it. `max` does the counting
+ *    here and renders the same thing.
  */
 const avatarStackVariants = cva("flex items-center", {
   variants: {
@@ -211,20 +219,35 @@ export interface AvatarGroupProps extends React.ComponentProps<"div"> {
   /** Trailing control, sat 8px clear of the stack. Usually AvatarAddButton. */
   action?: React.ReactNode;
   /**
-   * Ring every avatar in the group. **Defaults to false, because that is what
-   * the file draws** — see the warning above. Set it true and the stack reads
-   * as separate people again; it is one prop because Figma already has the
-   * Border axis, it simply is not used here.
+   * Ring every avatar in the group. Defaults to true, matching the file:
+   * without it, overlapping avatars have no edge and swallow each other's
+   * initials.
    */
   ring?: boolean;
+  /**
+   * Show at most this many, then a "+N" avatar for the rest — which is
+   * exactly what the file draws at the end of a group.
+   */
+  max?: number;
 }
 
-export function AvatarGroup({ className, size = "md", variant = "default", ring = false, action, children, ...props }: AvatarGroupProps) {
+export function AvatarGroup({ className, size = "md", variant = "default", ring = true, max, action, children, ...props }: AvatarGroupProps) {
+  const items = React.Children.toArray(children);
+  const over = max != null && max >= 0 && items.length > max ? items.length - max : 0;
+  const shown = over > 0 ? items.slice(0, max) : items;
   return (
     <GroupContext.Provider value={{ size, variant, ring }}>
       <div data-slot="avatar-group" className={cn("flex items-center gap-2", className)} {...props}>
         <div data-slot="avatar-stack" className={avatarStackVariants({ size })}>
-          {children}
+          {shown}
+          {over > 0 ? (
+            // Marked with an attribute rather than a different data-slot: it
+            // is still an avatar, and anything selecting [data-slot=avatar]
+            // should find it.
+            <Avatar data-overflow="true">
+              <AvatarFallback>{`+${over}`}</AvatarFallback>
+            </Avatar>
+          ) : null}
         </div>
         {action}
       </div>

@@ -125,3 +125,16 @@ export const GroupInverse: Story = {
     </AvatarGroup>
   ),
 };
+
+/** Past about five, cap it and let the +N carry the rest. */
+export const GroupOverflow: Story = {
+  name: "Group, capped",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <AvatarGroup max={4} action={<AvatarAddButton />}>
+      {["OR", "EN", "SK", "VP", "AM", "JL", "TW"].map((t) => (
+        <Avatar key={t}><AvatarFallback>{t}</AvatarFallback></Avatar>
+      ))}
+    </AvatarGroup>
+  ),
+};

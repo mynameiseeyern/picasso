@@ -154,16 +154,43 @@ describe("AvatarAddButton", () => {
     expect(cls).toContain("disabled:border-line-disabled");
   });
 });
-describe("AvatarGroup ring", () => {
-  it("follows the file and ships unringed, blob and all", () => {
-    const { container } = render(<AvatarGroup><Avatar /></AvatarGroup>);
-    expect(container.querySelector("[data-slot=avatar]")!.className).not.toContain("ring-inset");
-  });
-
-  it("rings every child in one prop, which is the fix if we want it", () => {
-    const { container } = render(<AvatarGroup ring><Avatar /><Avatar /></AvatarGroup>);
+describe("AvatarGroup ring and overflow", () => {
+  it("rings grouped avatars by default, so they do not swallow each other", () => {
+    const { container } = render(<AvatarGroup><Avatar /><Avatar /></AvatarGroup>);
+    // Unringed, a 4-12px overlap covers each avatar's trailing initial —
+    // "OR" renders as "OF". Fixed in Figma on 29 Sept; true is the default.
     for (const el of container.querySelectorAll("[data-slot=avatar]")) {
       expect(el.className).toContain("ring-inset");
     }
+  });
+
+  it("lets a group opt out", () => {
+    const { container } = render(<AvatarGroup ring={false}><Avatar /></AvatarGroup>);
+    expect(container.querySelector("[data-slot=avatar]")!.className).not.toContain("ring-inset");
+  });
+
+  it("counts the rest into a +N avatar, which is what the file draws", () => {
+    render(
+      <AvatarGroup max={3}>
+        {["OR", "EN", "SK", "VP", "AM"].map((t) => (
+          <Avatar key={t}><AvatarFallback>{t}</AvatarFallback></Avatar>
+        ))}
+      </AvatarGroup>,
+    );
+    expect(screen.getByText("+2")).toBeInTheDocument();
+    expect(screen.queryByText("VP")).toBeNull();
+    // The counter is still an avatar, so it is found by the same selector.
+    expect(document.querySelectorAll("[data-slot=avatar]")).toHaveLength(4);
+  });
+
+  it("shows everyone when the group fits", () => {
+    render(
+      <AvatarGroup max={5}>
+        {["OR", "EN"].map((t) => (
+          <Avatar key={t}><AvatarFallback>{t}</AvatarFallback></Avatar>
+        ))}
+      </AvatarGroup>,
+    );
+    expect(screen.queryByText(/^\+/)).toBeNull();
   });
 });
