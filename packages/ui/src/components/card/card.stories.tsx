@@ -288,6 +288,41 @@ export const DoAndDont: Story = {
           </Card>
         }
       />
+
+      <Guidance
+        pair={pair("primary-with-outline")}
+        width="wide"
+        dont={
+          <Card size="sm">
+            <CardHeader>
+              <CardHeaderText>
+                <CardTitle>Sydney-01</CardTitle>
+              </CardHeaderText>
+            </CardHeader>
+            <CardFooter>
+              <Button size="sm" variant="secondary">
+                Logs
+              </Button>
+              <Button size="sm">Open probe</Button>
+            </CardFooter>
+          </Card>
+        }
+        do={
+          <Card size="sm">
+            <CardHeader>
+              <CardHeaderText>
+                <CardTitle>Sydney-01</CardTitle>
+              </CardHeaderText>
+            </CardHeader>
+            <CardFooter>
+              <Button size="sm" variant="outline">
+                Logs
+              </Button>
+              <Button size="sm">Open probe</Button>
+            </CardFooter>
+          </Card>
+        }
+      />
     </GuidanceStory>
   ),
 };

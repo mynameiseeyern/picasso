@@ -1,7 +1,10 @@
 {
   "component": "Card",
   "summary": "A surface that holds one thing, and says so with a border and a little lift.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2579:33491" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "2579:33491"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -34,6 +37,12 @@
       "dont": "Scatter actions through the card — one in the header, two in the body, one in the footer.",
       "do": "Put per-card actions in the header, and the ones that finish the job in the footer.",
       "why": "Two places is a pattern people can learn. Four is a search."
+    },
+    {
+      "id": "primary-with-outline",
+      "dont": "Pair a card's primary action with a secondary button.",
+      "do": "Pair it with an outline.",
+      "why": "Secondary's fill is bg/app — the page background. Inside a card it reads as a hole punched through to the page behind, and it only looks like a filled button at all because the card under it is white. Outline is what it is already pretending to be, with a border that belongs to the card rather than a fill that belongs to the page. A dialog has room for a secondary; a card does not, and the Figma page agrees — twelve primary and three outline in card footers, and no secondary in any of them."
     },
     {
       "id": "clickable-card-needs-a-target",
