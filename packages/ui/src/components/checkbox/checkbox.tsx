@@ -44,7 +44,7 @@ const checkboxVariants = cva(
     "data-[state=checked]:hover:bg-surface-primary-emphasis-hovered " +
     "data-[state=indeterminate]:hover:bg-surface-primary-emphasis-hovered " +
     // invalid: the box itself carries the failure, checked or not
-    "aria-invalid:border-line-danger-emphasis " +
+    "aria-invalid:shadow-ring-focus-danger " +
     "aria-invalid:data-[state=checked]:bg-surface-danger-emphasis " +
     "aria-invalid:data-[state=indeterminate]:bg-surface-danger-emphasis " +
     // on a danger fill the mark is the danger pairing, as Figma draws it
@@ -72,7 +72,8 @@ const checkboxVariants = cva(
 );
 
 export interface CheckboxProps
-  extends Omit<React.ComponentProps<typeof CheckboxPrimitive.Root>, "size">,
+  extends
+    Omit<React.ComponentProps<typeof CheckboxPrimitive.Root>, "size">,
     VariantProps<typeof checkboxVariants> {}
 
 export function Checkbox({ className, size, ...props }: CheckboxProps) {
@@ -85,8 +86,14 @@ export function Checkbox({ className, size, ...props }: CheckboxProps) {
       <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current">
         {/* Chosen by data-state rather than by reading props.checked, which is
             undefined whenever the checkbox is uncontrolled. */}
-        <Check strokeWidth={3} className="group-data-[state=indeterminate]:hidden" />
-        <Minus strokeWidth={3} className="hidden group-data-[state=indeterminate]:block" />
+        <Check
+          strokeWidth={3}
+          className="group-data-[state=indeterminate]:hidden"
+        />
+        <Minus
+          strokeWidth={3}
+          className="hidden group-data-[state=indeterminate]:block"
+        />
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   );

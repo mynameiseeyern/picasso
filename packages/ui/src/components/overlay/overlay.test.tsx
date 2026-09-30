@@ -1,11 +1,17 @@
 import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
-import { OverlayScrim, OverlaySurface, overlaySurfaceVariants } from "./overlay";
+import {
+  OverlayScrim,
+  OverlaySurface,
+  overlaySurfaceVariants,
+} from "./overlay";
 
 describe("OverlaySurface", () => {
   it("draws the compact density Figma measures", () => {
     const { container } = render(<OverlaySurface />);
-    const cls = container.querySelector("[data-slot=overlay-surface]")!.className;
+    const cls = container.querySelector(
+      "[data-slot=overlay-surface]",
+    )!.className;
     // radius/lg, 4 of padding, shadow/md
     expect(cls).toContain("rounded-lg");
     expect(cls).toContain("p-1");
@@ -14,7 +20,9 @@ describe("OverlaySurface", () => {
 
   it("draws the comfortable density", () => {
     const { container } = render(<OverlaySurface density="comfortable" />);
-    const cls = container.querySelector("[data-slot=overlay-surface]")!.className;
+    const cls = container.querySelector(
+      "[data-slot=overlay-surface]",
+    )!.className;
     // radius/xl, 16 of padding, 16 gap, shadow/lg
     expect(cls).toContain("rounded-xl");
     expect(cls).toContain("p-4");
@@ -25,7 +33,9 @@ describe("OverlaySurface", () => {
   it("takes bg/card on a muted border at both densities", () => {
     for (const d of ["compact", "comfortable"] as const) {
       const { container } = render(<OverlaySurface density={d} />);
-      const cls = container.querySelector("[data-slot=overlay-surface]")!.className;
+      const cls = container.querySelector(
+        "[data-slot=overlay-surface]",
+      )!.className;
       expect(cls).toContain("bg-surface-card");
       expect(cls).toContain("border-line-neutral-muted");
     }
@@ -34,8 +44,12 @@ describe("OverlaySurface", () => {
   it("binds the shadow to the scale rather than restating it", () => {
     // Figma carries raw effects whose values equal shadow/md and shadow/lg.
     // Bound here, so the overlay follows the scale if it ever moves.
-    expect(overlaySurfaceVariants({ density: "compact" })).toContain("shadow-md");
-    expect(overlaySurfaceVariants({ density: "comfortable" })).toContain("shadow-lg");
+    expect(overlaySurfaceVariants({ density: "compact" })).toContain(
+      "shadow-md",
+    );
+    expect(overlaySurfaceVariants({ density: "comfortable" })).toContain(
+      "shadow-lg",
+    );
   });
 
   it("exports its classes for use on a primitive's own content element", () => {
@@ -48,13 +62,14 @@ describe("OverlaySurface", () => {
 });
 
 describe("OverlayScrim", () => {
-  it("dims at half the scrim token and stays out of the tree", () => {
+  it("dims at the scrim token exactly, and stays out of the tree", () => {
     const { container } = render(<OverlayScrim />);
     const el = container.querySelector("[data-slot=overlay-scrim]")!;
-    // The token is already translucent (#16161880 light, #000000b3 dark) and
-    // Figma's Scrim applies a further 50% on top, so /50 here reproduces the
-    // file's composite rather than double-dimming by accident.
-    expect(el.className).toContain("bg-surface-scrim/50");
+    // The alpha belongs to the token — #16161880 light, #000000b3 dark. A
+    // second /50 here composited those to 25% and 35% and flattened the
+    // light/dark difference the token exists to express.
+    expect(el.className).toContain("bg-surface-scrim");
+    expect(el.className).not.toContain("bg-surface-scrim/");
     expect(el.className).toContain("fixed");
     // The focus trap and the labelling make a dialog a dialog, not the dimming.
     expect(el).toHaveAttribute("aria-hidden", "true");

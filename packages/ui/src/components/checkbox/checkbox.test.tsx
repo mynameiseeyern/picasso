@@ -6,12 +6,16 @@ import { Checkbox } from "./checkbox";
 describe("Checkbox", () => {
   it("defaults to md", () => {
     render(<Checkbox aria-label="Send notifications" />);
-    expect(screen.getByRole("checkbox", { name: "Send notifications" })).toHaveClass("size-5");
+    expect(
+      screen.getByRole("checkbox", { name: "Send notifications" }),
+    ).toHaveClass("size-5");
   });
 
   it("toggles on click and on Space", async () => {
     const onChange = vi.fn();
-    render(<Checkbox aria-label="Send notifications" onCheckedChange={onChange} />);
+    render(
+      <Checkbox aria-label="Send notifications" onCheckedChange={onChange} />,
+    );
     const box = screen.getByRole("checkbox");
     await userEvent.click(box);
     expect(onChange).toHaveBeenLastCalledWith(true);
@@ -23,21 +27,29 @@ describe("Checkbox", () => {
   it("announces indeterminate as mixed, not as unchecked", () => {
     render(<Checkbox aria-label="All probes" checked="indeterminate" />);
     // Drawing a dash is not enough — assistive tech needs aria-checked="mixed".
-    expect(screen.getByRole("checkbox")).toHaveAttribute("aria-checked", "mixed");
+    expect(screen.getByRole("checkbox")).toHaveAttribute(
+      "aria-checked",
+      "mixed",
+    );
   });
 
   it("shows the dash uncontrolled too", () => {
     // The indicator picks its glyph from data-state, not from props.checked,
     // which is undefined whenever the checkbox is uncontrolled.
     render(<Checkbox aria-label="All probes" defaultChecked="indeterminate" />);
-    expect(screen.getByRole("checkbox")).toHaveAttribute("data-state", "indeterminate");
+    expect(screen.getByRole("checkbox")).toHaveAttribute(
+      "data-state",
+      "indeterminate",
+    );
   });
 
   it("mutes a disabled checked box", () => {
     render(<Checkbox aria-label="Locked" disabled defaultChecked />);
     const box = screen.getByRole("checkbox");
     // Figma painted this at full primary, identical to a live one.
-    expect(box.className).toContain("disabled:data-[state=checked]:bg-surface-disabled");
+    expect(box.className).toContain(
+      "disabled:data-[state=checked]:bg-surface-disabled",
+    );
     expect(box).toBeDisabled();
   });
 
@@ -45,6 +57,16 @@ describe("Checkbox", () => {
     render(<Checkbox aria-label="Accept" aria-invalid />);
     const box = screen.getByRole("checkbox");
     expect(box).toHaveAttribute("aria-invalid", "true");
-    expect(box.className).toContain("aria-invalid:border-line-danger-emphasis");
+    // A checkbox is a mark, not a box you type in, so invalid is a ring —
+    // recolouring its border repaints the control's own shape. The danger
+    // fill on a checked box stays: that says the mark is wrong, which is a
+    // different statement from the control being wrong.
+    expect(box.className).toContain("aria-invalid:shadow-ring-focus-danger");
+    expect(box.className).not.toContain(
+      "aria-invalid:border-line-danger-emphasis",
+    );
+    expect(box.className).toContain(
+      "aria-invalid:data-[state=checked]:bg-surface-danger-emphasis",
+    );
   });
 });

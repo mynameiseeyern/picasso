@@ -90,7 +90,9 @@ describe("Dialog", () => {
     await user.click(screen.getByText("Open"));
     await screen.findByRole("dialog");
     const scrim = document.querySelector("[data-slot=dialog-overlay]")!;
-    expect(scrim.className).toContain("bg-surface-scrim/50");
+    expect(scrim.className).toContain("bg-surface-scrim");
+    // The alpha is the token's, not the component's.
+    expect(scrim.className).not.toContain("bg-surface-scrim/");
   });
 
   it("leaves no gap of its own between header and body", async () => {
