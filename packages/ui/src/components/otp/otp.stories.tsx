@@ -4,6 +4,9 @@ import { OtpInput, OtpSeparator, OtpSlot } from "./otp";
 import { Button } from "../button/button";
 import { Field, FieldLabel } from "../field/field";
 
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+
 const meta: Meta<typeof OtpInput> = {
   title: "Components/Verification OTP",
   component: OtpInput,
@@ -25,6 +28,8 @@ const meta: Meta<typeof OtpInput> = {
   },
   args: { size: "md", invalid: false, disabled: false },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof OtpInput>;
 
@@ -105,97 +110,63 @@ export const InAForm: Story = {
 
 /* ------------------------------------------------------------------ */
 
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 min-w-80 flex-1 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="min-h-20">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span
-          className={
-            isDo
-              ? "text-content-success-emphasis"
-              : "text-content-danger-emphasis"
-          }
-        >
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8">
-      <div className="flex flex-wrap gap-4">
-        <Guidance
-          variant="dont"
-          caption="Red boxes and nothing else — and the code has probably just expired."
-        >
-          <div className="flex flex-col gap-2">
-            <Six size="sm" invalid defaultValue="482100" />
-          </div>
-        </Guidance>
-        <Guidance
-          variant="do"
-          caption="Say what happened, and offer another code."
-        >
-          <div className="flex flex-col items-start gap-2">
-            <Six size="sm" invalid defaultValue="482100" />
-            <p className="text-body-sm text-content-danger-emphasis">
-              That code has expired.
-            </p>
-            <Button variant="secondary" size="sm">
-              Send a new code
-            </Button>
-          </div>
-        </Guidance>
-      </div>
+    <GuidanceStory>
+      <Guidance
+        pair={pair("invalid-needs-a-way-out")}
+        width="wide"
+        dont={
+          <>
+            <div className="flex flex-col gap-2">
+              <Six size="sm" invalid defaultValue="482100" />
+            </div>
+          </>
+        }
+        do={
+          <>
+            <div className="flex flex-col items-start gap-2">
+              <Six size="sm" invalid defaultValue="482100" />
+              <p className="text-body-sm text-content-danger-emphasis">
+                That code has expired.
+              </p>
+              <Button variant="secondary" size="sm">
+                Send a new code
+              </Button>
+            </div>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance
-          variant="dont"
-          caption="No destination — people check the wrong device and wait."
-        >
-          <div className="flex flex-col gap-2">
-            <p className="text-body-md text-content-neutral-emphasis">
-              Enter your code
-            </p>
-            <Six size="sm" />
-          </div>
-        </Guidance>
-        <Guidance
-          variant="do"
-          caption="Name where it went and how long it lasts."
-        >
-          <div className="flex flex-col gap-2">
-            <p className="text-body-md text-content-neutral-emphasis">
-              Enter your code
-            </p>
-            <p className="text-body-sm text-content-neutral-muted">
-              Sent by SMS to •••• 4821. Expires in 10 minutes.
-            </p>
-            <Six size="sm" />
-          </div>
-        </Guidance>
-      </div>
-    </div>
+      <Guidance
+        pair={pair("say-where-it-went")}
+        width="wide"
+        dont={
+          <>
+            <div className="flex flex-col gap-2">
+              <p className="text-body-md text-content-neutral-emphasis">
+                Enter your code
+              </p>
+              <Six size="sm" />
+            </div>
+          </>
+        }
+        do={
+          <>
+            <div className="flex flex-col gap-2">
+              <p className="text-body-md text-content-neutral-emphasis">
+                Enter your code
+              </p>
+              <p className="text-body-sm text-content-neutral-muted">
+                Sent by SMS to •••• 4821. Expires in 10 minutes.
+              </p>
+              <Six size="sm" />
+            </div>
+          </>
+        }
+      />
+    </GuidanceStory>
   ),
 };

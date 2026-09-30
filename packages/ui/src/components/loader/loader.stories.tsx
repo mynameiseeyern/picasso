@@ -66,7 +66,9 @@ export const FuseBootScreen: Story = {
   render: () => (
     <div className="flex h-80 w-80 flex-col items-center justify-center gap-4 bg-surface-app">
       <Loader variant="fuse" label={null} />
-      <p className="text-md text-content-neutral-muted">Bringing your fleet online</p>
+      <p className="text-md text-content-neutral-muted">
+        Bringing your fleet online
+      </p>
     </div>
   ),
 };
@@ -83,7 +85,9 @@ export const Pulse: Story = {
         <div className="inline-flex min-h-10 items-center rounded-xl bg-surface-neutral-subtle-hovered px-4">
           <Loader variant="pulse" onTint delay={0} />
         </div>
-        <span className="text-xs text-content-neutral-muted">In the assistant bubble (onTint)</span>
+        <span className="text-xs text-content-neutral-muted">
+          In the assistant bubble (onTint)
+        </span>
       </div>
     </div>
   ),
@@ -107,24 +111,30 @@ export const Choosing: Story = {
       <Card>
         <CardContent>
           <div className="flex h-40 flex-col items-center justify-center gap-3">
-          <Loader variant="spinner" size="6" label="Loading trunks" />
-          <span className="text-xs text-content-neutral-muted">Spinner · a panel refreshing</span>
+            <Loader variant="spinner" size="6" label="Loading trunks" />
+            <span className="text-xs text-content-neutral-muted">
+              Spinner · a panel refreshing
+            </span>
           </div>
         </CardContent>
       </Card>
       <Card>
         <CardContent>
           <div className="flex h-40 flex-col items-center justify-center gap-3">
-          <Loader variant="fuse" size={56} label="Setting up Clarion" />
-          <span className="text-xs text-content-neutral-muted">Fuse · first run</span>
+            <Loader variant="fuse" size={56} label="Setting up Clarion" />
+            <span className="text-xs text-content-neutral-muted">
+              Fuse · first run
+            </span>
           </div>
         </CardContent>
       </Card>
       <Card>
         <CardContent>
           <div className="flex h-40 flex-col items-center justify-center gap-3">
-          <Loader variant="pulse" delay={0} />
-          <span className="text-xs text-content-neutral-muted">Pulse · Iris thinking</span>
+            <Loader variant="pulse" delay={0} />
+            <span className="text-xs text-content-neutral-muted">
+              Pulse · Iris thinking
+            </span>
           </div>
         </CardContent>
       </Card>

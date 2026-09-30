@@ -1,6 +1,11 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { InputChip, TagsInput } from "./tags-input";
-import { Field, FieldControl, FieldDescription, FieldLabel } from "../field/field";
+import {
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldLabel,
+} from "../field/field";
 
 const meta: Meta<typeof TagsInput> = {
   title: "Components/TagsInput",
@@ -15,8 +20,17 @@ const meta: Meta<typeof TagsInput> = {
     },
   },
   args: { defaultValue: ["syd-03", "mel-01"], "aria-label": "Hosts" },
-  argTypes: { size: { control: "inline-radio", options: ["sm", "md"] }, disabled: { control: "boolean" } },
-  decorators: [(S) => <div className="w-80"><S /></div>],
+  argTypes: {
+    size: { control: "inline-radio", options: ["sm", "md"] },
+    disabled: { control: "boolean" },
+  },
+  decorators: [
+    (S) => (
+      <div className="w-80">
+        <S />
+      </div>
+    ),
+  ],
 };
 export default meta;
 type Story = StoryObj<typeof TagsInput>;
@@ -35,7 +49,12 @@ export const Validated: Story = {
   render: () => (
     <Field>
       <FieldLabel>Notify</FieldLabel>
-      <FieldControl><TagsInput defaultValue={["ops@ir.com"]} validate={(t) => /.+@.+\..+/.test(t)} /></FieldControl>
+      <FieldControl>
+        <TagsInput
+          defaultValue={["ops@ir.com"]}
+          validate={(t) => /.+@.+\..+/.test(t)}
+        />
+      </FieldControl>
       <FieldDescription>Email addresses, separated by commas.</FieldDescription>
     </Field>
   ),
@@ -46,7 +65,9 @@ export const Chip: Story = {
     <div className="flex gap-2">
       <InputChip>Label</InputChip>
       <InputChip onRemove={() => {}}>Removable</InputChip>
-      <InputChip onRemove={() => {}} disabled>Disabled</InputChip>
+      <InputChip onRemove={() => {}} disabled>
+        Disabled
+      </InputChip>
     </div>
   ),
 };

@@ -59,7 +59,11 @@ export const WithALabel: Story = {
   render: () => (
     <div className="flex w-96 flex-col gap-6">
       <Progress value={42} label="Importing endpoints" />
-      <Progress value={42} label="Importing endpoints" valueLabel="420 of 1,000" />
+      <Progress
+        value={42}
+        label="Importing endpoints"
+        valueLabel="420 of 1,000"
+      />
     </div>
   ),
 };
@@ -85,7 +89,11 @@ export const Live: Story = {
     }, []);
     return (
       <div className="w-96">
-        <Progress value={v} label="Importing endpoints" valueLabel={`${v * 10} of 1,000`} />
+        <Progress
+          value={v}
+          label="Importing endpoints"
+          valueLabel={`${v * 10} of 1,000`}
+        />
       </div>
     );
   },

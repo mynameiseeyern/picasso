@@ -16,7 +16,10 @@ const meta: Meta<typeof Tabs> = {
     },
   },
   argTypes: {
-    variant: { control: "inline-radio", options: ["underline", "gray", "brand", "border", "minimal"] },
+    variant: {
+      control: "inline-radio",
+      options: ["underline", "gray", "brand", "border", "minimal"],
+    },
     size: { control: "inline-radio", options: ["sm", "md"] },
     fullWidth: { control: "boolean" },
   },
@@ -26,7 +29,11 @@ export default meta;
 type Story = StoryObj<typeof Tabs>;
 
 const PANELS = [
-  { value: "overview", label: "Overview", body: "Everything about this endpoint at a glance." },
+  {
+    value: "overview",
+    label: "Overview",
+    body: "Everything about this endpoint at a glance.",
+  },
   { value: "trunks", label: "Trunks", body: "12 trunks, 2 degraded." },
   { value: "alerts", label: "Alerts", body: "No alerts in the last 24 hours." },
 ];
@@ -36,7 +43,9 @@ export const Default: Story = {
     <Tabs defaultValue="overview" {...args}>
       <TabsList>
         {PANELS.map((p) => (
-          <TabsTrigger key={p.value} value={p.value}>{p.label}</TabsTrigger>
+          <TabsTrigger key={p.value} value={p.value}>
+            {p.label}
+          </TabsTrigger>
         ))}
       </TabsList>
       {PANELS.map((p) => (
@@ -53,18 +62,24 @@ export const Types: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="flex flex-col gap-8">
-      {(["underline", "gray", "brand", "border", "minimal"] as const).map((v) => (
-        <div key={v} className="flex flex-col gap-2">
-          <span className="text-label-sm text-content-neutral-subtle">{v}</span>
-          <Tabs defaultValue="overview" variant={v}>
-            <TabsList>
-              {PANELS.map((p) => (
-                <TabsTrigger key={p.value} value={p.value}>{p.label}</TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
-        </div>
-      ))}
+      {(["underline", "gray", "brand", "border", "minimal"] as const).map(
+        (v) => (
+          <div key={v} className="flex flex-col gap-2">
+            <span className="text-label-sm text-content-neutral-subtle">
+              {v}
+            </span>
+            <Tabs defaultValue="overview" variant={v}>
+              <TabsList>
+                {PANELS.map((p) => (
+                  <TabsTrigger key={p.value} value={p.value}>
+                    {p.label}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
+        ),
+      )}
     </div>
   ),
 };
@@ -77,7 +92,9 @@ export const Sizes: Story = {
         <Tabs key={s} defaultValue="overview" variant="gray" size={s}>
           <TabsList>
             {PANELS.map((p) => (
-              <TabsTrigger key={p.value} value={p.value}>{p.label}</TabsTrigger>
+              <TabsTrigger key={p.value} value={p.value}>
+                {p.label}
+              </TabsTrigger>
             ))}
           </TabsList>
         </Tabs>
@@ -97,13 +114,19 @@ export const Vertical: Story = {
         <TabsTrigger value="alerts">Alerting rules</TabsTrigger>
       </TabsList>
       <TabsContent value="overview">
-        <p className="text-body-md text-content-neutral-muted">General settings.</p>
+        <p className="text-body-md text-content-neutral-muted">
+          General settings.
+        </p>
       </TabsContent>
       <TabsContent value="trunks">
-        <p className="text-body-md text-content-neutral-muted">Trunk configuration.</p>
+        <p className="text-body-md text-content-neutral-muted">
+          Trunk configuration.
+        </p>
       </TabsContent>
       <TabsContent value="alerts">
-        <p className="text-body-md text-content-neutral-muted">Alerting rules.</p>
+        <p className="text-body-md text-content-neutral-muted">
+          Alerting rules.
+        </p>
       </TabsContent>
     </Tabs>
   ),
@@ -115,9 +138,18 @@ export const WithIcons: Story = {
   render: () => (
     <Tabs defaultValue="overview" variant="minimal">
       <TabsList>
-        <TabsTrigger value="overview"><Activity className="size-4" aria-hidden />Overview</TabsTrigger>
-        <TabsTrigger value="alerts"><Bell className="size-4" aria-hidden />Alerts</TabsTrigger>
-        <TabsTrigger value="settings"><Settings className="size-4" aria-hidden />Settings</TabsTrigger>
+        <TabsTrigger value="overview">
+          <Activity className="size-4" aria-hidden />
+          Overview
+        </TabsTrigger>
+        <TabsTrigger value="alerts">
+          <Bell className="size-4" aria-hidden />
+          Alerts
+        </TabsTrigger>
+        <TabsTrigger value="settings">
+          <Settings className="size-4" aria-hidden />
+          Settings
+        </TabsTrigger>
       </TabsList>
     </Tabs>
   ),
@@ -132,7 +164,9 @@ export const FullWidth: Story = {
       <Tabs defaultValue="overview" fullWidth>
         <TabsList>
           {PANELS.map((p) => (
-            <TabsTrigger key={p.value} value={p.value}>{p.label}</TabsTrigger>
+            <TabsTrigger key={p.value} value={p.value}>
+              {p.label}
+            </TabsTrigger>
           ))}
         </TabsList>
       </Tabs>

@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 import { Switch } from "./switch";
 
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+
 const meta: Meta<typeof Switch> = {
   title: "Components/Switch",
   component: Switch,
@@ -22,6 +25,8 @@ const meta: Meta<typeof Switch> = {
   },
   args: { "aria-label": "Send notifications" },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof Switch>;
 
@@ -68,7 +73,10 @@ export const WithLabel: Story = {
   render: () => (
     <div className="flex items-center gap-2.5">
       <Switch id="notifications" defaultChecked />
-      <label htmlFor="notifications" className="text-body-md text-content-neutral-emphasis">
+      <label
+        htmlFor="notifications"
+        className="text-body-md text-content-neutral-emphasis"
+      >
         Send notifications
       </label>
     </div>
@@ -77,40 +85,18 @@ export const WithLabel: Story = {
 
 /* ------------------------------------------------------------------ */
 
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 flex-1 min-w-72 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="min-h-20">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span className={isDo ? "text-content-success-emphasis" : "text-content-danger-emphasis"}>
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
-const Setting = ({ label, ...rest }: { label: string } & React.ComponentProps<typeof Switch>) => {
+const Setting = ({
+  label,
+  ...rest
+}: { label: string } & React.ComponentProps<typeof Switch>) => {
   const id = `sw-${React.useId()}`;
   return (
     <div className="flex items-center gap-2.5">
       <Switch id={id} {...rest} />
-      <label htmlFor={id} className="text-body-md text-content-neutral-emphasis">
+      <label
+        htmlFor={id}
+        className="text-body-md text-content-neutral-emphasis"
+      >
         {label}
       </label>
     </div>
@@ -121,51 +107,68 @@ export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8">
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Save and Cancel behind switches — Cancel cannot undo what already happened.">
-          <div className="flex flex-col gap-2.5">
-            <Setting label="Send notifications" defaultChecked />
-            <Setting label="Share usage data" />
-            <div className="mt-2 flex gap-2 text-label-sm text-content-neutral-muted">
-              <span className="rounded-sm border border-line-neutral-emphasis px-2 py-1">Cancel</span>
-              <span className="rounded-sm bg-surface-primary-emphasis px-2 py-1 text-content-on-primary-emphasis">
-                Save
-              </span>
+    <GuidanceStory>
+      <Guidance
+        pair={pair("no-save-button")}
+        dont={
+          <>
+            <div className="flex flex-col gap-2.5">
+              <Setting label="Send notifications" defaultChecked />
+              <Setting label="Share usage data" />
+              <div className="mt-2 flex gap-2 text-label-sm text-content-neutral-muted">
+                <span className="rounded-sm border border-line-neutral-emphasis px-2 py-1">
+                  Cancel
+                </span>
+                <span className="rounded-sm bg-surface-primary-emphasis px-2 py-1 text-content-on-primary-emphasis">
+                  Save
+                </span>
+              </div>
             </div>
-          </div>
-        </Guidance>
-        <Guidance variant="do" caption="Each flip applies straight away, so there is nothing to confirm.">
-          <div className="flex flex-col gap-2.5">
-            <Setting label="Send notifications" defaultChecked />
-            <Setting label="Share usage data" />
-          </div>
-        </Guidance>
-      </div>
+          </>
+        }
+        do={
+          <>
+            <div className="flex flex-col gap-2.5">
+              <Setting label="Send notifications" defaultChecked />
+              <Setting label="Share usage data" />
+            </div>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Two switches for one question — both can be on, which is impossible.">
-          <div className="flex flex-col gap-2.5">
-            <Setting label="Metric units" defaultChecked />
-            <Setting label="Imperial units" />
-          </div>
-        </Guidance>
-        <Guidance variant="do" caption="One switch per independent setting.">
-          <div className="flex flex-col gap-2.5">
-            <Setting label="Send notifications" defaultChecked />
-            <Setting label="Play a sound" />
-          </div>
-        </Guidance>
-      </div>
+      <Guidance
+        pair={pair("switch-is-not-a-choice")}
+        dont={
+          <>
+            <div className="flex flex-col gap-2.5">
+              <Setting label="Metric units" defaultChecked />
+              <Setting label="Imperial units" />
+            </div>
+          </>
+        }
+        do={
+          <>
+            <div className="flex flex-col gap-2.5">
+              <Setting label="Send notifications" defaultChecked />
+              <Setting label="Play a sound" />
+            </div>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="A negative label makes the on position mean off.">
-          <Setting label="Turn off notifications" defaultChecked />
-        </Guidance>
-        <Guidance variant="do" caption="Label the thing being switched, and let on mean on.">
-          <Setting label="Notifications" defaultChecked />
-        </Guidance>
-      </div>
-    </div>
+      <Guidance
+        pair={pair("label-the-thing-not-the-state")}
+        dont={
+          <>
+            <Setting label="Turn off notifications" defaultChecked />
+          </>
+        }
+        do={
+          <>
+            <Setting label="Notifications" defaultChecked />
+          </>
+        }
+      />
+    </GuidanceStory>
   ),
 };

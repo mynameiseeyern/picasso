@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 import { FileUpload, FileUploadItem } from "./file-upload";
-import { Field, FieldControl, FieldDescription, FieldLabel } from "../field/field";
+import {
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldLabel,
+} from "../field/field";
 
 const meta: Meta<typeof FileUpload> = {
   title: "Components/FileUpload",
@@ -16,8 +21,17 @@ const meta: Meta<typeof FileUpload> = {
     },
   },
   args: { "aria-label": "Import endpoints", accept: ".csv" },
-  argTypes: { size: { control: "inline-radio", options: ["sm", "md"] }, disabled: { control: "boolean" } },
-  decorators: [(S) => <div className="w-60"><S /></div>],
+  argTypes: {
+    size: { control: "inline-radio", options: ["sm", "md"] },
+    disabled: { control: "boolean" },
+  },
+  decorators: [
+    (S) => (
+      <div className="w-60">
+        <S />
+      </div>
+    ),
+  ],
 };
 export default meta;
 type Story = StoryObj<typeof FileUpload>;
@@ -40,11 +54,18 @@ export const WithFileRows: Story = {
       <div className="flex flex-col gap-3">
         <Field>
           <FieldLabel>Endpoints</FieldLabel>
-          <FieldControl><FileUpload accept=".csv" multiple onFilesChange={setFiles} /></FieldControl>
+          <FieldControl>
+            <FileUpload accept=".csv" multiple onFilesChange={setFiles} />
+          </FieldControl>
           <FieldDescription>CSV, up to 10 MB.</FieldDescription>
         </Field>
         {files.map((f) => (
-          <FileUploadItem key={f.name} name={f.name} size={f.size} onRemove={() => setFiles((xs) => xs.filter((x) => x !== f))} />
+          <FileUploadItem
+            key={f.name}
+            name={f.name}
+            size={f.size}
+            onRemove={() => setFiles((xs) => xs.filter((x) => x !== f))}
+          />
         ))}
       </div>
     );
@@ -54,8 +75,17 @@ export const WithFileRows: Story = {
 export const Item: Story = {
   render: () => (
     <div className="flex flex-col gap-3">
-      <FileUploadItem name="endpoints-export.csv" size={860160} progress={64} onRemove={() => {}} />
-      <FileUploadItem name="probes-2026-09.csv" size={2_411_724} onRemove={() => {}} />
+      <FileUploadItem
+        name="endpoints-export.csv"
+        size={860160}
+        progress={64}
+        onRemove={() => {}}
+      />
+      <FileUploadItem
+        name="probes-2026-09.csv"
+        size={2_411_724}
+        onRemove={() => {}}
+      />
     </div>
   ),
 };

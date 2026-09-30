@@ -1,7 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 import { Radio, RadioGroup } from "./radio-group";
-import { Field, FieldDescription, FieldError, FieldLabel } from "../field/field";
+import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "../field/field";
+
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 const meta: Meta<typeof Radio> = {
   title: "Components/Radio",
@@ -22,6 +30,8 @@ const meta: Meta<typeof Radio> = {
     disabled: { control: "boolean" },
   },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof Radio>;
 
@@ -73,7 +83,12 @@ export const Sizes: Story = {
       {(["md", "sm"] as const).map((size) => (
         <RadioGroup key={size} aria-label={size} defaultValue="medium">
           {OPTIONS.map((o) => (
-            <Labelled key={o.value} value={o.value} label={o.label} size={size} />
+            <Labelled
+              key={o.value}
+              value={o.value}
+              label={o.label}
+              size={size}
+            />
           ))}
         </RadioGroup>
       ))}
@@ -89,7 +104,11 @@ export const Sizes: Story = {
 export const Horizontal: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <RadioGroup aria-label="Severity" orientation="horizontal" defaultValue="low">
+    <RadioGroup
+      aria-label="Severity"
+      orientation="horizontal"
+      defaultValue="low"
+    >
       {OPTIONS.map((o) => (
         <Labelled key={o.value} value={o.value} label={o.label} />
       ))}
@@ -110,7 +129,9 @@ export const InAField: Story = {
               <Labelled key={o.value} value={o.value} label={o.label} />
             ))}
           </RadioGroup>
-          <FieldDescription>Sets how loudly the alert is delivered.</FieldDescription>
+          <FieldDescription>
+            Sets how loudly the alert is delivered.
+          </FieldDescription>
         </Field>
       </div>
       <div className="max-w-sm">
@@ -118,7 +139,12 @@ export const InAField: Story = {
           <FieldLabel required>Severity</FieldLabel>
           <RadioGroup aria-label="Severity">
             {OPTIONS.map((o) => (
-              <Labelled key={o.value} value={o.value} label={o.label} aria-invalid />
+              <Labelled
+                key={o.value}
+                value={o.value}
+                label={o.label}
+                aria-invalid
+              />
             ))}
           </RadioGroup>
           <FieldError>Choose a severity.</FieldError>
@@ -135,12 +161,18 @@ function Labelled({
   value,
   label,
   ...rest
-}: { value: string; label: string } & Omit<React.ComponentProps<typeof Radio>, "value">) {
+}: { value: string; label: string } & Omit<
+  React.ComponentProps<typeof Radio>,
+  "value"
+>) {
   const id = `radio-${React.useId()}`;
   return (
     <div className="flex items-center gap-2.5">
       <Radio id={id} value={value} {...rest} />
-      <label htmlFor={id} className="text-body-md text-content-neutral-emphasis">
+      <label
+        htmlFor={id}
+        className="text-body-md text-content-neutral-emphasis"
+      >
         {label}
       </label>
     </div>
@@ -152,7 +184,10 @@ function Solo({
   checked,
   label,
   ...rest
-}: { checked: boolean; label: string } & Omit<React.ComponentProps<typeof Radio>, "value">) {
+}: { checked: boolean; label: string } & Omit<
+  React.ComponentProps<typeof Radio>,
+  "value"
+>) {
   return (
     <RadioGroup aria-label={label} value={checked ? "on" : ""}>
       <Radio value="on" aria-label={label} {...rest} />
@@ -160,87 +195,73 @@ function Solo({
   );
 }
 
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 flex-1 min-w-72 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="min-h-20">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span className={isDo ? "text-content-success-emphasis" : "text-content-danger-emphasis"}>
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8">
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Nothing preselected and no way to choose nothing — the first click is permanent.">
-          <RadioGroup aria-label="Reminder">
-            <Labelled value="daily" label="Daily" />
-            <Labelled value="weekly" label="Weekly" />
-          </RadioGroup>
-        </Guidance>
-        <Guidance variant="do" caption='Preselect a default, or give "None" a radio of its own.'>
-          <RadioGroup aria-label="Reminder" defaultValue="none">
-            <Labelled value="none" label="None" />
-            <Labelled value="daily" label="Daily" />
-            <Labelled value="weekly" label="Weekly" />
-          </RadioGroup>
-        </Guidance>
-      </div>
+    <GuidanceStory>
+      <Guidance
+        pair={pair("no-way-back")}
+        dont={
+          <>
+            <RadioGroup aria-label="Reminder">
+              <Labelled value="daily" label="Daily" />
+              <Labelled value="weekly" label="Weekly" />
+            </RadioGroup>
+          </>
+        }
+        do={
+          <>
+            <RadioGroup aria-label="Reminder" defaultValue="none">
+              <Labelled value="none" label="None" />
+              <Labelled value="daily" label="Daily" />
+              <Labelled value="weekly" label="Weekly" />
+            </RadioGroup>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Options that can hold together at once are not one-of-many.">
-          <RadioGroup aria-label="Notify by">
-            <Labelled value="email" label="Email" />
-            <Labelled value="sms" label="SMS" />
-          </RadioGroup>
-        </Guidance>
-        <Guidance variant="do" caption="Any-of-many is a set of checkboxes; each one is its own question.">
-          <RadioGroup aria-label="Delivery" defaultValue="digest">
-            <Labelled value="digest" label="A daily digest" />
-            <Labelled value="each" label="Every alert as it happens" />
-          </RadioGroup>
-        </Guidance>
-      </div>
+      <Guidance
+        pair={pair("radio-vs-checkbox")}
+        dont={
+          <>
+            <RadioGroup aria-label="Notify by">
+              <Labelled value="email" label="Email" />
+              <Labelled value="sms" label="SMS" />
+            </RadioGroup>
+          </>
+        }
+        do={
+          <>
+            <RadioGroup aria-label="Delivery" defaultValue="digest">
+              <Labelled value="digest" label="A daily digest" />
+              <Labelled value="each" label="Every alert as it happens" />
+            </RadioGroup>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Ordered by whatever the API returned, so the scale has to be read twice.">
-          <RadioGroup aria-label="Severity (unordered)" defaultValue="low">
-            <Labelled value="medium" label="Medium" />
-            <Labelled value="high" label="High" />
-            <Labelled value="low" label="Low" />
-          </RadioGroup>
-        </Guidance>
-        <Guidance variant="do" caption="Ordered by meaning — least to most — so the shape is visible without reading.">
-          <RadioGroup aria-label="Severity (ordered)" defaultValue="low">
-            {OPTIONS.map((o) => (
-              <Labelled key={o.value} value={o.value} label={o.label} />
-            ))}
-          </RadioGroup>
-        </Guidance>
-      </div>
-
-    </div>
+      <Guidance
+        pair={pair("order-is-meaning")}
+        dont={
+          <>
+            <RadioGroup aria-label="Severity (unordered)" defaultValue="low">
+              <Labelled value="medium" label="Medium" />
+              <Labelled value="high" label="High" />
+              <Labelled value="low" label="Low" />
+            </RadioGroup>
+          </>
+        }
+        do={
+          <>
+            <RadioGroup aria-label="Severity (ordered)" defaultValue="low">
+              {OPTIONS.map((o) => (
+                <Labelled key={o.value} value={o.value} label={o.label} />
+              ))}
+            </RadioGroup>
+          </>
+        }
+      />
+    </GuidanceStory>
   ),
 };

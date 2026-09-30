@@ -15,7 +15,10 @@ const meta: Meta<typeof Meter> = {
     },
   },
   argTypes: {
-    status: { control: "inline-radio", options: ["healthy", "warning", "critical", "unknown"] },
+    status: {
+      control: "inline-radio",
+      options: ["healthy", "warning", "critical", "unknown"],
+    },
   },
   args: { value: 4, max: 5, status: "healthy" },
 };
@@ -37,7 +40,9 @@ export const Rounding: Story = {
     <div className="flex w-96 flex-col gap-2">
       {[0, 0.6, 1, 2.5, 3.2, 4, 5].map((v) => (
         <div key={v} className="flex items-center gap-3">
-          <span className="w-16 text-body-sm text-content-neutral-muted">{v} / 5</span>
+          <span className="w-16 text-body-sm text-content-neutral-muted">
+            {v} / 5
+          </span>
           <Meter value={v} max={5} status="healthy" />
         </div>
       ))}
@@ -51,12 +56,15 @@ export const Statuses: Story = {
     <div className="flex w-96 flex-col gap-2">
       {(["healthy", "warning", "critical", "unknown"] as const).map((s) => (
         <div key={s} className="flex items-center gap-3">
-          <span className="w-16 text-body-sm text-content-neutral-muted">{s}</span>
+          <span className="w-16 text-body-sm text-content-neutral-muted">
+            {s}
+          </span>
           <Meter value={3.5} max={5} status={s} />
         </div>
       ))}
       <p className="mt-2 text-body-sm text-content-neutral-muted">
-        Unknown lights nothing: no reading and a reading of zero are different facts.
+        Unknown lights nothing: no reading and a reading of zero are different
+        facts.
       </p>
     </div>
   ),

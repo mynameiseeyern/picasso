@@ -1,5 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Avatar, AvatarAddButton, AvatarFallback, AvatarGroup, AvatarImage, AvatarStatus } from "./avatar";
+import {
+  Avatar,
+  AvatarAddButton,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarImage,
+  AvatarStatus,
+} from "./avatar";
 
 const meta: Meta<typeof Avatar> = {
   title: "Components/Avatar",
@@ -49,10 +56,18 @@ export const Styles: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="flex items-center gap-4">
-      <Avatar><AvatarFallback>OR</AvatarFallback></Avatar>
-      <Avatar variant="inverse"><AvatarFallback>OR</AvatarFallback></Avatar>
-      <Avatar><AvatarFallback icon /></Avatar>
-      <Avatar variant="inverse"><AvatarFallback icon /></Avatar>
+      <Avatar>
+        <AvatarFallback>OR</AvatarFallback>
+      </Avatar>
+      <Avatar variant="inverse">
+        <AvatarFallback>OR</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarFallback icon />
+      </Avatar>
+      <Avatar variant="inverse">
+        <AvatarFallback icon />
+      </Avatar>
     </div>
   ),
 };
@@ -64,10 +79,15 @@ export const WithAnImage: Story = {
   render: () => (
     <div className="flex items-center gap-4">
       <Avatar>
-        <AvatarImage src="https://example.invalid/missing.png" alt="Orla Ryan" />
+        <AvatarImage
+          src="https://example.invalid/missing.png"
+          alt="Orla Ryan"
+        />
         <AvatarFallback>OR</AvatarFallback>
       </Avatar>
-      <span className="text-body-sm text-content-neutral-subtle">image fails → initials</span>
+      <span className="text-body-sm text-content-neutral-subtle">
+        image fails → initials
+      </span>
     </div>
   ),
 };
@@ -77,10 +97,22 @@ export const Status: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="flex items-center gap-4">
-      <Avatar><AvatarFallback>OR</AvatarFallback><AvatarStatus type="online" /></Avatar>
-      <Avatar><AvatarFallback>OR</AvatarFallback><AvatarStatus type="offline" /></Avatar>
-      <Avatar><AvatarFallback>OR</AvatarFallback><AvatarStatus type="verified" label="Verified tenant" /></Avatar>
-      <Avatar><AvatarFallback>OR</AvatarFallback><AvatarStatus type="count" count={8} /></Avatar>
+      <Avatar>
+        <AvatarFallback>OR</AvatarFallback>
+        <AvatarStatus type="online" />
+      </Avatar>
+      <Avatar>
+        <AvatarFallback>OR</AvatarFallback>
+        <AvatarStatus type="offline" />
+      </Avatar>
+      <Avatar>
+        <AvatarFallback>OR</AvatarFallback>
+        <AvatarStatus type="verified" label="Verified tenant" />
+      </Avatar>
+      <Avatar>
+        <AvatarFallback>OR</AvatarFallback>
+        <AvatarStatus type="count" count={8} />
+      </Avatar>
     </div>
   ),
 };
@@ -90,8 +122,12 @@ export const Ringed: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="flex items-center gap-4 rounded-lg bg-surface-neutral-emphasis p-4">
-      <Avatar ring><AvatarFallback>OR</AvatarFallback></Avatar>
-      <Avatar ring variant="inverse"><AvatarFallback>EN</AvatarFallback></Avatar>
+      <Avatar ring>
+        <AvatarFallback>OR</AvatarFallback>
+      </Avatar>
+      <Avatar ring variant="inverse">
+        <AvatarFallback>EN</AvatarFallback>
+      </Avatar>
     </div>
   ),
 };
@@ -102,11 +138,23 @@ export const Group: Story = {
   render: () => (
     <div className="flex flex-col gap-6">
       {(["xs", "sm", "md"] as const).map((s) => (
-        <AvatarGroup key={s} size={s} action={<AvatarAddButton label="Add to this incident" />}>
-          <Avatar><AvatarFallback>OR</AvatarFallback></Avatar>
-          <Avatar><AvatarFallback>EN</AvatarFallback></Avatar>
-          <Avatar><AvatarFallback>SK</AvatarFallback></Avatar>
-          <Avatar><AvatarFallback>VP</AvatarFallback></Avatar>
+        <AvatarGroup
+          key={s}
+          size={s}
+          action={<AvatarAddButton label="Add to this incident" />}
+        >
+          <Avatar>
+            <AvatarFallback>OR</AvatarFallback>
+          </Avatar>
+          <Avatar>
+            <AvatarFallback>EN</AvatarFallback>
+          </Avatar>
+          <Avatar>
+            <AvatarFallback>SK</AvatarFallback>
+          </Avatar>
+          <Avatar>
+            <AvatarFallback>VP</AvatarFallback>
+          </Avatar>
         </AvatarGroup>
       ))}
     </div>
@@ -119,9 +167,15 @@ export const GroupInverse: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <AvatarGroup variant="inverse" action={<AvatarAddButton />}>
-      <Avatar><AvatarFallback>OR</AvatarFallback></Avatar>
-      <Avatar><AvatarFallback>EN</AvatarFallback></Avatar>
-      <Avatar variant="default"><AvatarFallback>SK</AvatarFallback></Avatar>
+      <Avatar>
+        <AvatarFallback>OR</AvatarFallback>
+      </Avatar>
+      <Avatar>
+        <AvatarFallback>EN</AvatarFallback>
+      </Avatar>
+      <Avatar variant="default">
+        <AvatarFallback>SK</AvatarFallback>
+      </Avatar>
     </AvatarGroup>
   ),
 };
@@ -133,7 +187,9 @@ export const GroupOverflow: Story = {
   render: () => (
     <AvatarGroup max={4} action={<AvatarAddButton />}>
       {["OR", "EN", "SK", "VP", "AM", "JL", "TW"].map((t) => (
-        <Avatar key={t}><AvatarFallback>{t}</AvatarFallback></Avatar>
+        <Avatar key={t}>
+          <AvatarFallback>{t}</AvatarFallback>
+        </Avatar>
       ))}
     </AvatarGroup>
   ),

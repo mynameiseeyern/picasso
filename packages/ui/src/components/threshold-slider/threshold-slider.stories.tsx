@@ -3,6 +3,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 
 import { ThresholdSlider } from "./threshold-slider";
 
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+
 const meta: Meta<typeof ThresholdSlider> = {
   title: "Components/Threshold slider",
   component: ThresholdSlider,
@@ -18,6 +21,8 @@ const meta: Meta<typeof ThresholdSlider> = {
     },
   },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof ThresholdSlider>;
 
@@ -162,76 +167,42 @@ export const Disabled: Story = {
 
 /* ------------------------------------------------------------------ */
 
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 min-w-80 flex-1 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="flex min-h-20 items-center">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span
-          className={
-            isDo
-              ? "text-content-success-emphasis"
-              : "text-content-danger-emphasis"
-          }
-        >
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8 p-6">
-      <div className="flex flex-wrap gap-4">
-        <Guidance
-          variant="dont"
-          caption="Bare numbers. 70 what? −80 what? The unit is gone the moment the value is read anywhere else."
-        >
-          <div className="w-full">
-            <ThresholdSlider
-              aria-label="Without units"
-              min={-90}
-              max={-30}
-              critical={-80}
-              warning={-70}
-            />
-          </div>
-        </Guidance>
-        <Guidance
-          variant="do"
-          caption="`format` puts the unit on the value, where a screen reader and a summary both pick it up."
-        >
-          <div className="w-full">
-            <ThresholdSlider
-              aria-label="With units"
-              min={-90}
-              max={-30}
-              critical={-80}
-              warning={-70}
-              format={(v) => `${v} dBm`}
-            />
-          </div>
-        </Guidance>
-      </div>
-    </div>
+    <GuidanceStory>
+      <Guidance
+        pair={pair("units-belong-on-the-value")}
+        width="wide"
+        dont={
+          <>
+            <div className="w-full">
+              <ThresholdSlider
+                aria-label="Without units"
+                min={-90}
+                max={-30}
+                critical={-80}
+                warning={-70}
+              />
+            </div>
+          </>
+        }
+        do={
+          <>
+            <div className="w-full">
+              <ThresholdSlider
+                aria-label="With units"
+                min={-90}
+                max={-30}
+                critical={-80}
+                warning={-70}
+                format={(v) => `${v} dBm`}
+              />
+            </div>
+          </>
+        }
+      />
+    </GuidanceStory>
   ),
 };

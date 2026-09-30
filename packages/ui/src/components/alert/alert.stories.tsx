@@ -3,6 +3,9 @@ import * as React from "react";
 import { Alert, AlertDescription, AlertTitle } from "./alert";
 import { Button } from "../button/button";
 
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+
 const meta: Meta<typeof Alert> = {
   title: "Components/Alert",
   component: Alert,
@@ -17,10 +20,15 @@ const meta: Meta<typeof Alert> = {
     },
   },
   argTypes: {
-    variant: { control: "inline-radio", options: ["info", "destructive", "warning", "success"] },
+    variant: {
+      control: "inline-radio",
+      options: ["info", "destructive", "warning", "success"],
+    },
     icon: { control: "boolean" },
   },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof Alert>;
 
@@ -48,7 +56,9 @@ export const Tones: Story = {
       </Alert>
       <Alert variant="success">
         <AlertTitle>Probe restored</AlertTitle>
-        <AlertDescription>Sydney-01 has been reporting normally for 15 minutes.</AlertDescription>
+        <AlertDescription>
+          Sydney-01 has been reporting normally for 15 minutes.
+        </AlertDescription>
       </Alert>
       <Alert variant="warning">
         <AlertTitle>Disk nearly full</AlertTitle>
@@ -79,7 +89,9 @@ export const WithAnAction: Story = {
       }
     >
       <AlertTitle>Disk nearly full</AlertTitle>
-      <AlertDescription>Sydney-01 is at 91% of its allocation.</AlertDescription>
+      <AlertDescription>
+        Sydney-01 is at 91% of its allocation.
+      </AlertDescription>
     </Alert>
   ),
 };
@@ -89,9 +101,15 @@ export const Dismissible: Story = {
   render: function Render() {
     const [shown, setShown] = React.useState(true);
     return shown ? (
-      <Alert variant="success" onDismiss={() => setShown(false)} dismissLabel="Dismiss probe notice">
+      <Alert
+        variant="success"
+        onDismiss={() => setShown(false)}
+        dismissLabel="Dismiss probe notice"
+      >
         <AlertTitle>Probe restored</AlertTitle>
-        <AlertDescription>Sydney-01 has been reporting normally for 15 minutes.</AlertDescription>
+        <AlertDescription>
+          Sydney-01 has been reporting normally for 15 minutes.
+        </AlertDescription>
       </Alert>
     ) : (
       <Button variant="outline" size="sm" onClick={() => setShown(true)}>
@@ -114,103 +132,98 @@ export const TitleOnly: Story = {
 
 /* ------------------------------------------------------------------ */
 
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 flex-1 min-w-80 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="min-h-20">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span className={isDo ? "text-content-success-emphasis" : "text-content-danger-emphasis"}>
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8">
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Everything is destructive, so nothing is.">
-          <div className="flex flex-col gap-2">
-            <Alert variant="destructive">
-              <AlertTitle>Maintenance on Sunday</AlertTitle>
-            </Alert>
-            <Alert variant="destructive">
-              <AlertTitle>Disk at 91%</AlertTitle>
-            </Alert>
-            <Alert variant="destructive">
-              <AlertTitle>Collection stopped</AlertTitle>
-            </Alert>
-          </div>
-        </Guidance>
-        <Guidance variant="do" caption="One alert per state, and the tone tells you which is which.">
-          <div className="flex flex-col gap-2">
-            <Alert variant="info">
-              <AlertTitle>Maintenance on Sunday</AlertTitle>
-            </Alert>
-            <Alert variant="warning">
-              <AlertTitle>Disk at 91%</AlertTitle>
-            </Alert>
-            <Alert variant="destructive">
-              <AlertTitle>Collection stopped</AlertTitle>
-            </Alert>
-          </div>
-        </Guidance>
-      </div>
+    <GuidanceStory>
+      <Guidance
+        pair={pair("tone-means-something")}
+        width="wide"
+        dont={
+          <>
+            <div className="flex flex-col gap-2">
+              <Alert variant="destructive">
+                <AlertTitle>Maintenance on Sunday</AlertTitle>
+              </Alert>
+              <Alert variant="destructive">
+                <AlertTitle>Disk at 91%</AlertTitle>
+              </Alert>
+              <Alert variant="destructive">
+                <AlertTitle>Collection stopped</AlertTitle>
+              </Alert>
+            </div>
+          </>
+        }
+        do={
+          <>
+            <div className="flex flex-col gap-2">
+              <Alert variant="info">
+                <AlertTitle>Maintenance on Sunday</AlertTitle>
+              </Alert>
+              <Alert variant="warning">
+                <AlertTitle>Disk at 91%</AlertTitle>
+              </Alert>
+              <Alert variant="destructive">
+                <AlertTitle>Collection stopped</AlertTitle>
+              </Alert>
+            </div>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="States the problem and leaves the reader to guess.">
-          <Alert variant="destructive">
-            <AlertTitle>Connection failed</AlertTitle>
-          </Alert>
-        </Guidance>
-        <Guidance variant="do" caption="Says what happened, what it means, and what to do.">
-          <Alert
-            variant="destructive"
-            action={
-              <Button variant="outline" size="xs">
-                Retry
-              </Button>
-            }
-          >
-            <AlertTitle>Collection stopped</AlertTitle>
-            <AlertDescription>
-              Sydney-01 ran out of disk at 04:12. Calls since then were not recorded.
-            </AlertDescription>
-          </Alert>
-        </Guidance>
-      </div>
+      <Guidance
+        pair={pair("say-what-to-do")}
+        width="wide"
+        dont={
+          <>
+            <Alert variant="destructive">
+              <AlertTitle>Connection failed</AlertTitle>
+            </Alert>
+          </>
+        }
+        do={
+          <>
+            <Alert
+              variant="destructive"
+              action={
+                <Button variant="outline" size="xs">
+                  Retry
+                </Button>
+              }
+            >
+              <AlertTitle>Collection stopped</AlertTitle>
+              <AlertDescription>
+                Sydney-01 ran out of disk at 04:12. Calls since then were not
+                recorded.
+              </AlertDescription>
+            </Alert>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Dismissing a live condition only hides it — the disk is still full.">
-          <Alert variant="warning" onDismiss={() => {}}>
-            <AlertTitle>Disk at 91% and rising</AlertTitle>
-          </Alert>
-        </Guidance>
-        <Guidance variant="do" caption="Dismiss what has been acknowledged; leave a live condition until it clears.">
-          <Alert variant="success" onDismiss={() => {}} dismissLabel="Dismiss">
-            <AlertTitle>Probe restored</AlertTitle>
-          </Alert>
-        </Guidance>
-      </div>
-    </div>
+      <Guidance
+        pair={pair("dismissible-means-recoverable")}
+        width="wide"
+        dont={
+          <>
+            <Alert variant="warning" onDismiss={() => {}}>
+              <AlertTitle>Disk at 91% and rising</AlertTitle>
+            </Alert>
+          </>
+        }
+        do={
+          <>
+            <Alert
+              variant="success"
+              onDismiss={() => {}}
+              dismissLabel="Dismiss"
+            >
+              <AlertTitle>Probe restored</AlertTitle>
+            </Alert>
+          </>
+        }
+      />
+    </GuidanceStory>
   ),
 };

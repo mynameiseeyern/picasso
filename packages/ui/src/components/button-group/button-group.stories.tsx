@@ -1,8 +1,18 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
-import { Calendar, ChevronDown, Copy, Minus, Plus, RotateCcw } from "lucide-react";
+import {
+  Calendar,
+  ChevronDown,
+  Copy,
+  Minus,
+  Plus,
+  RotateCcw,
+} from "lucide-react";
 import { Button } from "../button/button";
 import { ButtonGroup } from "./button-group";
+
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 const meta: Meta<typeof ButtonGroup> = {
   title: "Components/Button group",
@@ -18,9 +28,14 @@ const meta: Meta<typeof ButtonGroup> = {
     },
   },
   argTypes: {
-    orientation: { control: "inline-radio", options: ["horizontal", "vertical"] },
+    orientation: {
+      control: "inline-radio",
+      options: ["horizontal", "vertical"],
+    },
   },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof ButtonGroup>;
 
@@ -120,105 +135,96 @@ export const IconsOnly: Story = {
 
 /* ------------------------------------------------------------------ */
 
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 flex-1 min-w-72 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="flex min-h-20 items-center">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span className={isDo ? "text-content-success-emphasis" : "text-content-danger-emphasis"}>
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8">
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Unrelated actions joined because they were adjacent — and Delete is now one pixel from Save.">
-          <ButtonGroup aria-label="Bad">
-            <Button variant="outline">Save</Button>
-            <Button variant="outline">Cancel</Button>
-            <Button variant="destructive">Delete</Button>
-          </ButtonGroup>
-        </Guidance>
-        <Guidance variant="do" caption="Variations of one job, so the shared edge means something.">
-          <ButtonGroup aria-label="Good">
-            <Button variant="outline">Day</Button>
-            <Button variant="outline">Week</Button>
-            <Button variant="outline">Month</Button>
-          </ButtonGroup>
-        </Guidance>
-      </div>
-
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Five primaries competing — no hierarchy left to offer.">
-          <ButtonGroup aria-label="Bad">
-            <Button>Day</Button>
-            <Button>Week</Button>
-            <Button>Month</Button>
-            <Button>Quarter</Button>
-            <Button>Year</Button>
-          </ButtonGroup>
-        </Guidance>
-        <Guidance variant="do" caption="Solid is for one action plus its options; peers are Outline.">
-          <div className="flex flex-col gap-3">
-            <ButtonGroup aria-label="Split">
-              <Button>Export</Button>
-              <Button size="icon-md" aria-label="Export options">
-                <ChevronDown />
-              </Button>
+    <GuidanceStory>
+      <Guidance
+        pair={pair("same-level-actions")}
+        dont={
+          <>
+            <ButtonGroup aria-label="Bad">
+              <Button variant="outline">Save</Button>
+              <Button variant="outline">Cancel</Button>
+              <Button variant="destructive">Delete</Button>
             </ButtonGroup>
-            <ButtonGroup aria-label="Peers">
+          </>
+        }
+        do={
+          <>
+            <ButtonGroup aria-label="Good">
               <Button variant="outline">Day</Button>
               <Button variant="outline">Week</Button>
               <Button variant="outline">Month</Button>
             </ButtonGroup>
-          </div>
-        </Guidance>
-      </div>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Bare icons with no names — nothing beside them to borrow meaning from.">
-          <ButtonGroup aria-label="Bad">
-            <Button variant="outline" size="icon-md">
-              <Calendar />
-            </Button>
-            <Button variant="outline" size="icon-md">
-              <Copy />
-            </Button>
-          </ButtonGroup>
-        </Guidance>
-        <Guidance variant="do" caption="Each icon button carries its own name, and the group carries theirs.">
-          <ButtonGroup aria-label="Row actions">
-            <Button variant="outline" size="icon-md" aria-label="Change date range">
-              <Calendar />
-            </Button>
-            <Button variant="outline" size="icon-md" aria-label="Duplicate">
-              <Copy />
-            </Button>
-          </ButtonGroup>
-        </Guidance>
-      </div>
-    </div>
+      <Guidance
+        pair={pair("one-primary")}
+        dont={
+          <>
+            <ButtonGroup aria-label="Bad">
+              <Button>Day</Button>
+              <Button>Week</Button>
+              <Button>Month</Button>
+              <Button>Quarter</Button>
+              <Button>Year</Button>
+            </ButtonGroup>
+          </>
+        }
+        do={
+          <>
+            <div className="flex flex-col gap-3">
+              <ButtonGroup aria-label="Split">
+                <Button>Export</Button>
+                <Button size="icon-md" aria-label="Export options">
+                  <ChevronDown />
+                </Button>
+              </ButtonGroup>
+              <ButtonGroup aria-label="Peers">
+                <Button variant="outline">Day</Button>
+                <Button variant="outline">Week</Button>
+                <Button variant="outline">Month</Button>
+              </ButtonGroup>
+            </div>
+          </>
+        }
+      />
+
+      <Guidance
+        pair={pair("icon-buttons-need-names")}
+        dont={
+          <>
+            <ButtonGroup aria-label="Bad">
+              <Button variant="outline" size="icon-md">
+                <Calendar />
+              </Button>
+              <Button variant="outline" size="icon-md">
+                <Copy />
+              </Button>
+            </ButtonGroup>
+          </>
+        }
+        do={
+          <>
+            <ButtonGroup aria-label="Row actions">
+              <Button
+                variant="outline"
+                size="icon-md"
+                aria-label="Change date range"
+              >
+                <Calendar />
+              </Button>
+              <Button variant="outline" size="icon-md" aria-label="Duplicate">
+                <Copy />
+              </Button>
+            </ButtonGroup>
+          </>
+        }
+      />
+    </GuidanceStory>
   ),
 };

@@ -3,7 +3,13 @@ import { Command } from "lucide-react";
 import { Button } from "../button/button";
 import { Kbd, KbdGroup } from "./kbd";
 
-const backgrounds = ["default", "neutral", "brand", "opaque", "on-emphasis"] as const;
+const backgrounds = [
+  "default",
+  "neutral",
+  "brand",
+  "opaque",
+  "on-emphasis",
+] as const;
 
 const meta: Meta<typeof Kbd> = {
   title: "Components/Kbd",

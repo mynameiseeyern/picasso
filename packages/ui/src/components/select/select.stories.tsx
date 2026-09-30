@@ -1,7 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 import { Select, type SelectOption } from "./select";
-import { Field, FieldControl, FieldDescription, FieldLabel } from "../field/field";
+import {
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldLabel,
+} from "../field/field";
 
 const actions: SelectOption[] = [
   { value: "probe.created", label: "Created", group: "Probe" },
@@ -13,7 +18,12 @@ const actions: SelectOption[] = [
   { value: "alert.resolved", label: "Resolved", group: "Alert" },
   { value: "user.signed_in", label: "Signed in", group: "Access" },
   { value: "user.signed_out", label: "Signed out", group: "Access" },
-  { value: "user.role_changed", label: "Role changed", group: "Access", disabled: true },
+  {
+    value: "user.role_changed",
+    label: "Role changed",
+    group: "Access",
+    disabled: true,
+  },
 ];
 
 const meta: Meta<typeof Select> = {
@@ -29,15 +39,26 @@ const meta: Meta<typeof Select> = {
     },
   },
   args: { label: "Filter actions…", options: actions },
-  argTypes: { size: { control: "inline-radio", options: ["sm", "md"] }, disabled: { control: "boolean" } },
-  decorators: [(S) => <div className="w-50"><S /></div>],
+  argTypes: {
+    size: { control: "inline-radio", options: ["sm", "md"] },
+    disabled: { control: "boolean" },
+  },
+  decorators: [
+    (S) => (
+      <div className="w-50">
+        <S />
+      </div>
+    ),
+  ],
 };
 export default meta;
 type Story = StoryObj<typeof Select>;
 
 export const Default: Story = {};
 
-export const WithASelection: Story = { args: { defaultValue: ["probe.created", "alert.fired", "alert.resolved"] } };
+export const WithASelection: Story = {
+  args: { defaultValue: ["probe.created", "alert.fired", "alert.resolved"] },
+};
 
 export const Controlled: Story = {
   render: (args) => {
@@ -45,7 +66,9 @@ export const Controlled: Story = {
     return (
       <div className="flex flex-col gap-3">
         <Select {...args} value={value} onValueChange={setValue} />
-        <p className="text-body-sm text-content-neutral-subtle">Applied: {value.length ? value.join(", ") : "nothing"}</p>
+        <p className="text-body-sm text-content-neutral-subtle">
+          Applied: {value.length ? value.join(", ") : "nothing"}
+        </p>
       </div>
     );
   },
@@ -64,10 +87,14 @@ export const InAField: Story = {
   render: (args) => (
     <Field>
       <FieldLabel>Event types</FieldLabel>
-      <FieldControl><Select {...args} /></FieldControl>
+      <FieldControl>
+        <Select {...args} />
+      </FieldControl>
       <FieldDescription>Only these appear in the audit log.</FieldDescription>
     </Field>
   ),
 };
 
-export const Disabled: Story = { args: { disabled: true, defaultValue: ["probe.created"] } };
+export const Disabled: Story = {
+  args: { disabled: true, defaultValue: ["probe.created"] },
+};

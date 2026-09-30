@@ -1,5 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./tooltip";
 import { Button } from "../button/button";
 
 const meta: Meta<typeof Tooltip> = {
@@ -25,7 +30,9 @@ export const Default: Story = {
       <TooltipTrigger asChild>
         <Button variant="outline">Threshold</Button>
       </TooltipTrigger>
-      <TooltipContent>Alerts fire when the value goes above this.</TooltipContent>
+      <TooltipContent>
+        Alerts fire when the value goes above this.
+      </TooltipContent>
     </Tooltip>
   ),
 };

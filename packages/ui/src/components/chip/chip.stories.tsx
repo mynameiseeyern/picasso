@@ -5,6 +5,9 @@ import { Chip } from "./chip";
 import { Badge } from "../badge/badge";
 import { Button } from "../button/button";
 
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+
 const meta: Meta<typeof Chip> = {
   title: "Components/Chip",
   component: Chip,
@@ -26,6 +29,8 @@ const meta: Meta<typeof Chip> = {
   },
   args: { children: "Sydney", selected: false, disabled: false },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof Chip>;
 
@@ -137,40 +142,6 @@ export const Disabled: Story = {
 
 /* ------------------------------------------------------------------ */
 
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 min-w-80 flex-1 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="min-h-20">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span
-          className={
-            isDo
-              ? "text-content-success-emphasis"
-              : "text-content-danger-emphasis"
-          }
-        >
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
 /**
  * The "don't" examples below are deliberately hand-rolled spans rather than
  * restyled Chips — `no-restyle` refuses a colour class on a Chip, which is
@@ -200,74 +171,77 @@ export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8">
-      <div className="flex flex-wrap gap-4">
-        <Guidance
-          variant="dont"
-          caption="Fill alone — and on hover it matches an unselected chip exactly."
-        >
-          <div className="flex gap-2">
-            <HandRolled className="border-line-neutral-muted bg-surface-neutral-muted">
-              Melbourne
-            </HandRolled>
-            <Chip>Sydney</Chip>
-          </div>
-        </Guidance>
-        <Guidance variant="do" caption="The check carries it, in every state.">
-          <div className="flex gap-2">
-            <Chip selected>Melbourne</Chip>
-            <Chip selected={false}>Sydney</Chip>
-          </div>
-        </Guidance>
-      </div>
+    <GuidanceStory>
+      <Guidance
+        pair={pair("check-not-colour")}
+        width="wide"
+        dont={
+          <>
+            <div className="flex gap-2">
+              <HandRolled className="border-line-neutral-muted bg-surface-neutral-muted">
+                Melbourne
+              </HandRolled>
+              <Chip>Sydney</Chip>
+            </div>
+          </>
+        }
+        do={
+          <>
+            <div className="flex gap-2">
+              <Chip selected>Melbourne</Chip>
+              <Chip selected={false}>Sydney</Chip>
+            </div>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance
-          variant="dont"
-          caption="A verb in a pill is a button that lost an argument with the grid."
-        >
-          <div className="flex gap-2">
-            <Chip>Export CSV</Chip>
-            <Chip>Delete endpoint</Chip>
-          </div>
-        </Guidance>
-        <Guidance
-          variant="do"
-          caption="Chips are values you filter by; commands are Buttons."
-        >
-          <div className="flex items-center gap-2">
-            <Chip selected>Degraded</Chip>
-            <Chip>Offline</Chip>
-            <Button size="sm">Export CSV</Button>
-          </div>
-        </Guidance>
-      </div>
+      <Guidance
+        pair={pair("chips-are-not-buttons")}
+        width="wide"
+        dont={
+          <>
+            <div className="flex gap-2">
+              <Chip>Export CSV</Chip>
+              <Chip>Delete endpoint</Chip>
+            </div>
+          </>
+        }
+        do={
+          <>
+            <div className="flex items-center gap-2">
+              <Chip selected>Degraded</Chip>
+              <Chip>Offline</Chip>
+              <Button size="sm">Export CSV</Button>
+            </div>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance
-          variant="dont"
-          caption="Recolouring a chip to carry status — that is a Badge's job."
-        >
-          <div className="flex gap-2">
-            <HandRolled className="border-line-danger-muted bg-surface-danger-subtle">
-              Offline
-            </HandRolled>
-            <HandRolled className="border-line-success-muted bg-surface-success-subtle">
-              Healthy
-            </HandRolled>
-          </div>
-        </Guidance>
-        <Guidance
-          variant="do"
-          caption="Badge says what something is; Chip says what you are filtering by."
-        >
-          <div className="flex items-center gap-2">
-            <Badge color="danger">Offline</Badge>
-            <Badge color="success">Healthy</Badge>
-            <Chip selected>Offline only</Chip>
-          </div>
-        </Guidance>
-      </div>
-    </div>
+      <Guidance
+        pair={pair("no-tone-variants")}
+        width="wide"
+        dont={
+          <>
+            <div className="flex gap-2">
+              <HandRolled className="border-line-danger-muted bg-surface-danger-subtle">
+                Offline
+              </HandRolled>
+              <HandRolled className="border-line-success-muted bg-surface-success-subtle">
+                Healthy
+              </HandRolled>
+            </div>
+          </>
+        }
+        do={
+          <>
+            <div className="flex items-center gap-2">
+              <Badge color="danger">Offline</Badge>
+              <Badge color="success">Healthy</Badge>
+              <Chip selected>Offline only</Chip>
+            </div>
+          </>
+        }
+      />
+    </GuidanceStory>
   ),
 };

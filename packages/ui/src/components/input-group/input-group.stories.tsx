@@ -1,8 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Calendar, Search } from "lucide-react";
 import {
-  InputGroup, InputGroupAddon, InputGroupCheck, InputGroupInput,
-  InputGroupSpinner, InputGroupText, InputGroupTooltip,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupCheck,
+  InputGroupInput,
+  InputGroupSpinner,
+  InputGroupText,
+  InputGroupTooltip,
 } from "./input-group";
 import { Button } from "../button/button";
 
@@ -29,7 +34,9 @@ type Story = StoryObj<typeof InputGroup>;
 export const Default: Story = {
   render: (args) => (
     <InputGroup {...args}>
-      <InputGroupAddon><Search /></InputGroupAddon>
+      <InputGroupAddon>
+        <Search />
+      </InputGroupAddon>
       <InputGroupInput aria-label="Search" placeholder="Search endpoints" />
     </InputGroup>
   ),
@@ -42,12 +49,16 @@ export const UnitsAndPrefixes: Story = {
   render: () => (
     <div className="flex flex-col gap-3">
       <InputGroup>
-        <InputGroupAddon><InputGroupText>https://</InputGroupText></InputGroupAddon>
+        <InputGroupAddon>
+          <InputGroupText>https://</InputGroupText>
+        </InputGroupAddon>
         <InputGroupInput aria-label="Host" defaultValue="ir.com" />
       </InputGroup>
       <InputGroup>
         <InputGroupInput aria-label="Threshold" defaultValue="250" />
-        <InputGroupAddon align="end"><InputGroupText>ms</InputGroupText></InputGroupAddon>
+        <InputGroupAddon align="end">
+          <InputGroupText>ms</InputGroupText>
+        </InputGroupAddon>
       </InputGroup>
     </div>
   ),
@@ -60,11 +71,15 @@ export const Feedback: Story = {
     <div className="flex flex-col gap-3">
       <InputGroup>
         <InputGroupInput aria-label="Host" defaultValue="probe-04.ir.com" />
-        <InputGroupAddon align="end"><InputGroupSpinner label="Checking host" /></InputGroupAddon>
+        <InputGroupAddon align="end">
+          <InputGroupSpinner label="Checking host" />
+        </InputGroupAddon>
       </InputGroup>
       <InputGroup>
         <InputGroupInput aria-label="Host" defaultValue="probe-04.ir.com" />
-        <InputGroupAddon align="end"><InputGroupCheck label="Host is reachable" /></InputGroupAddon>
+        <InputGroupAddon align="end">
+          <InputGroupCheck label="Host is reachable" />
+        </InputGroupAddon>
       </InputGroup>
     </div>
   ),
@@ -92,10 +107,14 @@ export const WithAButton: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <InputGroup>
-      <InputGroupAddon><Calendar /></InputGroupAddon>
+      <InputGroupAddon>
+        <Calendar />
+      </InputGroupAddon>
       <InputGroupInput aria-label="Range" defaultValue="Last 7 days" />
       <InputGroupAddon align="end">
-        <Button size="sm" variant="ghost">Change</Button>
+        <Button size="sm" variant="ghost">
+          Change
+        </Button>
       </InputGroupAddon>
     </InputGroup>
   ),
@@ -107,11 +126,19 @@ export const States: Story = {
   render: () => (
     <div className="flex flex-col gap-3">
       <InputGroup>
-        <InputGroupAddon><Search /></InputGroupAddon>
-        <InputGroupInput aria-label="Invalid" aria-invalid defaultValue="not a host" />
+        <InputGroupAddon>
+          <Search />
+        </InputGroupAddon>
+        <InputGroupInput
+          aria-label="Invalid"
+          aria-invalid
+          defaultValue="not a host"
+        />
       </InputGroup>
       <InputGroup>
-        <InputGroupAddon><Search /></InputGroupAddon>
+        <InputGroupAddon>
+          <Search />
+        </InputGroupAddon>
         <InputGroupInput aria-label="Disabled" disabled defaultValue="locked" />
       </InputGroup>
     </div>
@@ -124,7 +151,9 @@ export const Sizes: Story = {
     <div className="flex flex-col gap-3">
       {(["md", "sm"] as const).map((s) => (
         <InputGroup key={s} size={s}>
-          <InputGroupAddon><Search /></InputGroupAddon>
+          <InputGroupAddon>
+            <Search />
+          </InputGroupAddon>
           <InputGroupInput aria-label={s} placeholder={`Size ${s}`} />
         </InputGroup>
       ))}

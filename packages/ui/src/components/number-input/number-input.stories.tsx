@@ -1,6 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { NumberInput } from "./number-input";
-import { Field, FieldControl, FieldDescription, FieldError, FieldLabel } from "../field/field";
+import {
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "../field/field";
 
 const meta: Meta<typeof NumberInput> = {
   title: "Components/NumberInput",
@@ -15,8 +21,17 @@ const meta: Meta<typeof NumberInput> = {
     },
   },
   args: { defaultValue: 3, min: 0, max: 10, "aria-label": "Retries" },
-  argTypes: { size: { control: "inline-radio", options: ["sm", "md"] }, disabled: { control: "boolean" } },
-  decorators: [(S) => <div className="w-60"><S /></div>],
+  argTypes: {
+    size: { control: "inline-radio", options: ["sm", "md"] },
+    disabled: { control: "boolean" },
+  },
+  decorators: [
+    (S) => (
+      <div className="w-60">
+        <S />
+      </div>
+    ),
+  ],
 };
 export default meta;
 type Story = StoryObj<typeof NumberInput>;
@@ -30,7 +45,9 @@ export const Sizes: Story = {
     </div>
   ),
 };
-export const Decimals: Story = { args: { defaultValue: 0.5, step: 0.1, min: 0, max: 1, "aria-label": "Ratio" } };
+export const Decimals: Story = {
+  args: { defaultValue: 0.5, step: 0.1, min: 0, max: 1, "aria-label": "Ratio" },
+};
 export const AtTheBound: Story = { args: { defaultValue: 10 } };
 export const Disabled: Story = { args: { disabled: true } };
 export const InAField: Story = {
@@ -38,13 +55,19 @@ export const InAField: Story = {
     <div className="flex flex-col gap-6">
       <Field>
         <FieldLabel>Timeout (seconds)</FieldLabel>
-        <FieldControl><NumberInput defaultValue={30} min={5} max={300} step={5} /></FieldControl>
+        <FieldControl>
+          <NumberInput defaultValue={30} min={5} max={300} step={5} />
+        </FieldControl>
         <FieldDescription>Between 5 and 300.</FieldDescription>
       </Field>
       <Field invalid>
         <FieldLabel>Retries</FieldLabel>
-        <FieldControl><NumberInput defaultValue={0} min={0} max={5} /></FieldControl>
-        <FieldError>At least one retry is needed for flaky endpoints.</FieldError>
+        <FieldControl>
+          <NumberInput defaultValue={0} min={0} max={5} />
+        </FieldControl>
+        <FieldError>
+          At least one retry is needed for flaky endpoints.
+        </FieldError>
       </Field>
     </div>
   ),

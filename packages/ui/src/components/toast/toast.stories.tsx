@@ -14,6 +14,9 @@ import {
 } from "./toast";
 import { Button } from "../button/button";
 
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+
 const meta: Meta<typeof Toast> = {
   title: "Components/Toast",
   component: Toast,
@@ -37,6 +40,8 @@ const meta: Meta<typeof Toast> = {
   },
   args: { variant: "info", appearance: "subtle" },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof Toast>;
 
@@ -270,136 +275,102 @@ export const Interactive: Story = {
 
 /* ------------------------------------------------------------------ */
 
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 min-w-80 flex-1 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="min-h-20">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span
-          className={
-            isDo
-              ? "text-content-success-emphasis"
-              : "text-content-danger-emphasis"
-          }
-        >
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8">
-      <div className="flex flex-wrap gap-4">
-        <Guidance
-          variant="dont"
-          caption="Says nothing about what happened, to what."
-        >
-          <Screen>
-            <Sample variant="success" appearance="subtle" title="Success!" />
-          </Screen>
-        </Guidance>
-        <Guidance
-          variant="do"
-          caption="The object and the verb are the whole message."
-        >
-          <Screen>
-            <Sample
-              variant="success"
-              appearance="subtle"
-              title="Endpoint probe-04 deleted"
-              description="Data is kept for 30 days."
-            />
-          </Screen>
-        </Guidance>
-      </div>
+    <GuidanceStory>
+      <Guidance
+        pair={pair("say-what-happened")}
+        width="wide"
+        dont={
+          <>
+            <Screen>
+              <Sample variant="success" appearance="subtle" title="Success!" />
+            </Screen>
+          </>
+        }
+        do={
+          <>
+            <Screen>
+              <Sample
+                variant="success"
+                appearance="subtle"
+                title="Endpoint probe-04 deleted"
+                description="Data is kept for 30 days."
+              />
+            </Screen>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance
-          variant="dont"
-          caption="Destructive, and gone in four seconds with no way back."
-        >
-          <Screen>
-            <Sample
-              variant="destructive"
-              appearance="subtle"
-              title="Endpoint deleted"
-              description="probe-04 stopped collecting."
-            />
-          </Screen>
-        </Guidance>
-        <Guidance
-          variant="do"
-          caption="The moment after a mistake is the only cheap one."
-        >
-          <Screen>
-            <Sample
-              variant="destructive"
-              appearance="subtle"
-              title="Endpoint deleted"
-              description="probe-04 stopped collecting."
-              action="Undo"
-            />
-          </Screen>
-        </Guidance>
-      </div>
+      <Guidance
+        pair={pair("give-destructive-an-undo")}
+        width="wide"
+        dont={
+          <>
+            <Screen>
+              <Sample
+                variant="destructive"
+                appearance="subtle"
+                title="Endpoint deleted"
+                description="probe-04 stopped collecting."
+              />
+            </Screen>
+          </>
+        }
+        do={
+          <>
+            <Screen>
+              <Sample
+                variant="destructive"
+                appearance="subtle"
+                title="Endpoint deleted"
+                description="probe-04 stopped collecting."
+                action="Undo"
+              />
+            </Screen>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance
-          variant="dont"
-          caption="One toast per item buries the screen — and each one is read aloud in turn."
-        >
-          <Screen>
-            <Sample
-              variant="success"
-              appearance="subtle"
-              title="probe-01 archived"
-            />
-            <Sample
-              variant="success"
-              appearance="subtle"
-              title="probe-02 archived"
-            />
-            <Sample
-              variant="success"
-              appearance="subtle"
-              title="probe-03 archived"
-            />
-          </Screen>
-        </Guidance>
-        <Guidance
-          variant="do"
-          caption="Toast the operation, not each item in it."
-        >
-          <Screen>
-            <Sample
-              variant="success"
-              appearance="subtle"
-              title="12 endpoints archived"
-              description="Sydney collector, 09:14."
-            />
-          </Screen>
-        </Guidance>
-      </div>
-    </div>
+      <Guidance
+        pair={pair("do-not-queue-a-wall")}
+        width="wide"
+        dont={
+          <>
+            <Screen>
+              <Sample
+                variant="success"
+                appearance="subtle"
+                title="probe-01 archived"
+              />
+              <Sample
+                variant="success"
+                appearance="subtle"
+                title="probe-02 archived"
+              />
+              <Sample
+                variant="success"
+                appearance="subtle"
+                title="probe-03 archived"
+              />
+            </Screen>
+          </>
+        }
+        do={
+          <>
+            <Screen>
+              <Sample
+                variant="success"
+                appearance="subtle"
+                title="12 endpoints archived"
+                description="Sydney collector, 09:14."
+              />
+            </Screen>
+          </>
+        }
+      />
+    </GuidanceStory>
   ),
 };

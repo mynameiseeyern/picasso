@@ -29,6 +29,9 @@ import {
   SidebarTrigger,
 } from "../sidebar/sidebar";
 
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+
 const meta: Meta<typeof AppShell> = {
   title: "Components/App shell",
   component: AppShell,
@@ -46,6 +49,8 @@ const meta: Meta<typeof AppShell> = {
     },
   },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof AppShell>;
 
@@ -215,40 +220,6 @@ export const Scrolling: Story = {
 
 /* ------------------------------------------------------------------ */
 
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 min-w-80 flex-1 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="flex min-h-20 items-center">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span
-          className={
-            isDo
-              ? "text-content-success-emphasis"
-              : "text-content-danger-emphasis"
-          }
-        >
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
 /** A top bar, shown twice: overloaded, and as the Rules describe it. */
 function TopBar({ children }: { children: React.ReactNode }) {
   return (
@@ -273,65 +244,65 @@ export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8 p-6">
-      <div className="flex flex-wrap gap-4">
-        <Guidance
-          variant="dont"
-          caption="A title, a search and two actions, all in a 48 bar. The breadcrumb is the first thing to lose."
-        >
-          <div className="h-32 w-full">
-            <TopBar>
-              <SidebarTrigger />
-              <Crumbs page="Endpoints" />
-              <span className="ml-2 truncate text-label-md text-content-neutral-emphasis">
-                Endpoints
-              </span>
-              <span className="ml-auto flex items-center gap-2 text-body-sm text-content-neutral-muted">
-                <span className="rounded-md border border-line-neutral-muted px-2 py-1">
-                  Search
+    <GuidanceStory>
+      <Guidance
+        pair={pair("top-bar-is-not-a-header")}
+        width="wide"
+        dont={
+          <>
+            <div className="h-32 w-full">
+              <TopBar>
+                <SidebarTrigger />
+                <Crumbs page="Endpoints" />
+                <span className="ml-2 truncate text-label-md text-content-neutral-emphasis">
+                  Endpoints
                 </span>
-                <span className="rounded-md border border-line-neutral-muted px-2 py-1">
-                  Export
+                <span className="ml-auto flex items-center gap-2 text-body-sm text-content-neutral-muted">
+                  <span className="rounded-md border border-line-neutral-muted px-2 py-1">
+                    Search
+                  </span>
+                  <span className="rounded-md border border-line-neutral-muted px-2 py-1">
+                    Export
+                  </span>
                 </span>
-              </span>
-            </TopBar>
-          </div>
-        </Guidance>
-        <Guidance
-          variant="do"
-          caption="Toggle and breadcrumb. The title and the actions belong to the page."
-        >
-          <div className="h-32 w-full">
-            <TopBar>
-              <SidebarTrigger />
-              <Crumbs page="Endpoints" />
-            </TopBar>
-          </div>
-        </Guidance>
-      </div>
+              </TopBar>
+            </div>
+          </>
+        }
+        do={
+          <>
+            <div className="h-32 w-full">
+              <TopBar>
+                <SidebarTrigger />
+                <Crumbs page="Endpoints" />
+              </TopBar>
+            </div>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance
-          variant="dont"
-          caption="A reading column centred on the page: every line starts somewhere new as the window moves."
-        >
-          <div className="w-full text-body-md text-content-neutral-muted">
-            <div className="mx-auto max-w-80 rounded-md border border-line-neutral-muted p-3">
-              Notification settings
+      <Guidance
+        pair={pair("cap-the-column-not-the-page")}
+        width="wide"
+        dont={
+          <>
+            <div className="w-full text-body-md text-content-neutral-muted">
+              <div className="mx-auto max-w-80 rounded-md border border-line-neutral-muted p-3">
+                Notification settings
+              </div>
             </div>
-          </div>
-        </Guidance>
-        <Guidance
-          variant="do"
-          caption="Capped at 768 and left-aligned, so it lines up with the breadcrumb above it."
-        >
-          <div className="w-full text-body-md text-content-neutral-muted">
-            <div className="max-w-80 rounded-md border border-line-neutral-muted p-3">
-              Notification settings
+          </>
+        }
+        do={
+          <>
+            <div className="w-full text-body-md text-content-neutral-muted">
+              <div className="max-w-80 rounded-md border border-line-neutral-muted p-3">
+                Notification settings
+              </div>
             </div>
-          </div>
-        </Guidance>
-      </div>
-    </div>
+          </>
+        }
+      />
+    </GuidanceStory>
   ),
 };

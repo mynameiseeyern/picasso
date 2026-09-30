@@ -2,13 +2,30 @@ import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 import { ArrowDown, ArrowUp, MoreHorizontal, Search } from "lucide-react";
 import { Button } from "../button/button";
-import { Card, CardFooter, CardHeader, CardHeaderText, CardTitle } from "../card/card";
+import {
+  Card,
+  CardFooter,
+  CardHeader,
+  CardHeaderText,
+  CardTitle,
+} from "../card/card";
 import { Checkbox } from "../checkbox/checkbox";
 import { Input } from "../input/input";
 import {
-  Table, TableBody, TableCaption, TableCell, TableCol, TableColGroup,
-  TableFooter, TableHead, TableHeader, TableRow,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableCol,
+  TableColGroup,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "./table";
+
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 const meta: Meta<typeof Table> = {
   title: "Components/Table",
@@ -26,13 +43,33 @@ const meta: Meta<typeof Table> = {
   },
   argTypes: { size: { control: "inline-radio", options: ["md", "sm"] } },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof Table>;
 
 const rows = [
-  { id: 1, name: "Sydney trunk 01", status: "Healthy", mos: "4.2", calls: "1,284" },
-  { id: 2, name: "Melbourne trunk 02", status: "Warning", mos: "3.6", calls: "912" },
-  { id: 3, name: "Auckland trunk 01", status: "Critical", mos: "2.9", calls: "146" },
+  {
+    id: 1,
+    name: "Sydney trunk 01",
+    status: "Healthy",
+    mos: "4.2",
+    calls: "1,284",
+  },
+  {
+    id: 2,
+    name: "Melbourne trunk 02",
+    status: "Warning",
+    mos: "3.6",
+    calls: "912",
+  },
+  {
+    id: 3,
+    name: "Auckland trunk 01",
+    status: "Critical",
+    mos: "2.9",
+    calls: "146",
+  },
   { id: 4, name: "Perth trunk 03", status: "Unknown", mos: "—", calls: "0" },
 ];
 
@@ -149,7 +186,9 @@ export const Selectable: Story = {
               <Checkbox
                 size="sm"
                 checked={all ? true : sel.length ? "indeterminate" : false}
-                onCheckedChange={(v) => setSel(v === true ? rows.map((r) => r.id) : [])}
+                onCheckedChange={(v) =>
+                  setSel(v === true ? rows.map((r) => r.id) : [])
+                }
                 aria-label="Select all trunks"
               />
             </TableHead>
@@ -165,7 +204,9 @@ export const Selectable: Story = {
                   size="sm"
                   checked={sel.includes(r.id)}
                   onCheckedChange={(v) =>
-                    setSel((s) => (v ? [...s, r.id] : s.filter((x) => x !== r.id)))
+                    setSel((s) =>
+                      v ? [...s, r.id] : s.filter((x) => x !== r.id),
+                    )
                   }
                   aria-label={`Select ${r.name}`}
                 />
@@ -184,9 +225,13 @@ export const Selectable: Story = {
 export const Sortable: Story = {
   parameters: { controls: { disable: true } },
   render: function Render() {
-    const [dir, setDir] = React.useState<"ascending" | "descending">("ascending");
+    const [dir, setDir] = React.useState<"ascending" | "descending">(
+      "ascending",
+    );
     const sorted = [...rows].sort((a, b) =>
-      dir === "ascending" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name),
+      dir === "ascending"
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name),
     );
     return (
       <Table aria-label="Trunks, sorted">
@@ -196,7 +241,11 @@ export const Sortable: Story = {
               <button
                 type="button"
                 className="inline-flex items-center gap-1.5"
-                onClick={() => setDir((d) => (d === "ascending" ? "descending" : "ascending"))}
+                onClick={() =>
+                  setDir((d) =>
+                    d === "ascending" ? "descending" : "ascending",
+                  )
+                }
               >
                 Trunk
                 {dir === "ascending" ? (
@@ -240,7 +289,11 @@ export const InACard: Story = {
         </Button>
       </CardHeader>
       <div className="mt-4 flex items-center gap-3 px-4 pb-3">
-        <Input size="sm" placeholder="Search trunks" aria-label="Search trunks" />
+        <Input
+          size="sm"
+          placeholder="Search trunks"
+          aria-label="Search trunks"
+        />
         <Button variant="outline" size="sm">
           <Search />
           Filter
@@ -271,7 +324,9 @@ export const InACard: Story = {
         </TableFooter>
       </Table>
       <CardFooter>
-        <span className="text-body-sm text-content-neutral-muted">Showing 4 of 1,240</span>
+        <span className="text-body-sm text-content-neutral-muted">
+          Showing 4 of 1,240
+        </span>
       </CardFooter>
     </Card>
   ),
@@ -279,134 +334,132 @@ export const InACard: Story = {
 
 /* ------------------------------------------------------------------ */
 
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 min-w-80 flex-1 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="min-h-28">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span className={isDo ? "text-content-success-emphasis" : "text-content-danger-emphasis"}>
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8">
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Numbers left-aligned cannot be compared down the column.">
-          <Table size="sm" aria-label="Left aligned">
-            <TableBody>
-              {rows.slice(0, 3).map((r) => (
-                <TableRow key={r.id}>
-                  <TableCell>{r.name}</TableCell>
-                  <TableCell>{r.calls}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Guidance>
-        <Guidance variant="do" caption="Right-aligned and mono, so place values line up.">
-          <Table size="sm" aria-label="Right aligned">
-            <TableBody>
-              {rows.slice(0, 3).map((r) => (
-                <TableRow key={r.id}>
-                  <TableCell>{r.name}</TableCell>
-                  <TableCell numeric>{r.calls}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Guidance>
-      </div>
+    <GuidanceStory>
+      <Guidance
+        pair={pair("align-numbers-right")}
+        width="wide"
+        stage="tall"
+        dont={
+          <>
+            <Table size="sm" aria-label="Left aligned">
+              <TableBody>
+                {rows.slice(0, 3).map((r) => (
+                  <TableRow key={r.id}>
+                    <TableCell>{r.name}</TableCell>
+                    <TableCell>{r.calls}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </>
+        }
+        do={
+          <>
+            <Table size="sm" aria-label="Right aligned">
+              <TableBody>
+                {rows.slice(0, 3).map((r) => (
+                  <TableRow key={r.id}>
+                    <TableCell>{r.name}</TableCell>
+                    <TableCell numeric>{r.calls}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="A sentence in the header, read aloud on every cell in the column.">
-          <Table size="sm" aria-label="Long header">
-            <TableHeader>
-              <TableRow>
-                <TableHead>Trunk</TableHead>
-                <TableHead>MOS (calculated hourly, 0–5, higher is better)</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>Sydney trunk 01</TableCell>
-                <TableCell numeric>4.2</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </Guidance>
-        <Guidance variant="do" caption="Short header; the explanation goes in the caption.">
-          <Table size="sm" aria-label="Short header">
-            <TableCaption>MOS is calculated hourly, from 0 to 5. Higher is better.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Trunk</TableHead>
-                <TableHead numeric>MOS</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>Sydney trunk 01</TableCell>
-                <TableCell numeric>4.2</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </Guidance>
-      </div>
+      <Guidance
+        pair={pair("headers-say-what-not-how")}
+        width="wide"
+        stage="tall"
+        dont={
+          <>
+            <Table size="sm" aria-label="Long header">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Trunk</TableHead>
+                  <TableHead>
+                    MOS (calculated hourly, 0–5, higher is better)
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell>Sydney trunk 01</TableCell>
+                  <TableCell numeric>4.2</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </>
+        }
+        do={
+          <>
+            <Table size="sm" aria-label="Short header">
+              <TableCaption>
+                MOS is calculated hourly, from 0 to 5. Higher is better.
+              </TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Trunk</TableHead>
+                  <TableHead numeric>MOS</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell>Sydney trunk 01</TableCell>
+                  <TableCell numeric>4.2</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="A header with nothing under it — no data, no match or a failure all look alike.">
-          <Table size="sm" aria-label="Empty">
-            <TableHeader>
-              <TableRow>
-                <TableHead>Trunk</TableHead>
-                <TableHead>Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody />
-          </Table>
-        </Guidance>
-        <Guidance variant="do" caption="Say which of those it is, and what to do next.">
-          <Table size="sm" aria-label="Empty, explained">
-            <TableHeader>
-              <TableRow>
-                <TableHead>Trunk</TableHead>
-                <TableHead>Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell colSpan={2}>
-                  <span className="text-content-neutral-muted">
-                    No trunks match “auckland”. Clear the search to see all 1,240.
-                  </span>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </Guidance>
-      </div>
-    </div>
+      <Guidance
+        pair={pair("empty-is-a-state")}
+        width="wide"
+        stage="tall"
+        dont={
+          <>
+            <Table size="sm" aria-label="Empty">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Trunk</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody />
+            </Table>
+          </>
+        }
+        do={
+          <>
+            <Table size="sm" aria-label="Empty, explained">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Trunk</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={2}>
+                    <span className="text-content-neutral-muted">
+                      No trunks match “auckland”. Clear the search to see all
+                      1,240.
+                    </span>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </>
+        }
+      />
+    </GuidanceStory>
   ),
 };

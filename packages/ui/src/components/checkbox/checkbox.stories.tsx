@@ -1,7 +1,15 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 import { Checkbox } from "./checkbox";
-import { Field, FieldControl, FieldDescription, FieldLabel } from "../field/field";
+import {
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldLabel,
+} from "../field/field";
+
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 const meta: Meta<typeof Checkbox> = {
   title: "Components/Checkbox",
@@ -21,6 +29,8 @@ const meta: Meta<typeof Checkbox> = {
   },
   args: { "aria-label": "Send notifications" },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof Checkbox>;
 
@@ -32,7 +42,11 @@ export const States: Story = {
       {([false, true, "indeterminate"] as const).map((checked) => (
         <div key={String(checked)} className="flex items-center gap-6">
           <span className="w-28 text-label-sm text-content-neutral-muted">
-            {checked === "indeterminate" ? "indeterminate" : checked ? "checked" : "unchecked"}
+            {checked === "indeterminate"
+              ? "indeterminate"
+              : checked
+                ? "checked"
+                : "unchecked"}
           </span>
           <Checkbox checked={checked} aria-label="default" />
           <Checkbox checked={checked} aria-invalid aria-label="invalid" />
@@ -69,7 +83,9 @@ export const InAField: Story = {
           </FieldControl>
           <FieldLabel>Send notifications</FieldLabel>
         </div>
-        <FieldDescription>Sent to the address on your account.</FieldDescription>
+        <FieldDescription>
+          Sent to the address on your account.
+        </FieldDescription>
       </Field>
     </div>
   ),
@@ -90,7 +106,9 @@ export const ParentAndChildren: Story = {
             onCheckedChange={(v) => setProbes(probes.map(() => v === true))}
             aria-label="All probes"
           />
-          <span className="text-label-md text-content-neutral-emphasis">All probes</span>
+          <span className="text-label-md text-content-neutral-emphasis">
+            All probes
+          </span>
         </div>
         <div className="flex flex-col gap-2.5 pl-6">
           {["SYD-03", "MEL-01", "BNE-02"].map((name, i) => (
@@ -102,7 +120,9 @@ export const ParentAndChildren: Story = {
                 }
                 aria-label={name}
               />
-              <span className="text-body-md text-content-neutral-emphasis">{name}</span>
+              <span className="text-body-md text-content-neutral-emphasis">
+                {name}
+              </span>
             </div>
           ))}
         </div>
@@ -113,35 +133,10 @@ export const ParentAndChildren: Story = {
 
 /* ------------------------------------------------------------------ */
 
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 flex-1 min-w-72 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="min-h-20">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span className={isDo ? "text-content-success-emphasis" : "text-content-danger-emphasis"}>
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
-const Row = ({ label, ...rest }: { label: string } & React.ComponentProps<typeof Checkbox>) => (
+const Row = ({
+  label,
+  ...rest
+}: { label: string } & React.ComponentProps<typeof Checkbox>) => (
   <div className="flex items-center gap-2.5">
     <Checkbox aria-label={label} {...rest} />
     <span className="text-body-md text-content-neutral-emphasis">{label}</span>
@@ -151,30 +146,40 @@ const Row = ({ label, ...rest }: { label: string } & React.ComponentProps<typeof
 export const DoAndDont: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8">
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="A ticked box beside a negative is a double negative.">
-          <div className="flex flex-col gap-2.5">
-            <Row label="Do not send notifications" defaultChecked />
-            <Row label="Do not share usage data" />
-          </div>
-        </Guidance>
-        <Guidance variant="do" caption="Label the positive and let the tick mean yes.">
-          <div className="flex flex-col gap-2.5">
-            <Row label="Send notifications" />
-            <Row label="Share usage data" defaultChecked />
-          </div>
-        </Guidance>
-      </div>
+    <GuidanceStory>
+      <Guidance
+        pair={pair("state-the-positive")}
+        dont={
+          <>
+            <div className="flex flex-col gap-2.5">
+              <Row label="Do not send notifications" defaultChecked />
+              <Row label="Do not share usage data" />
+            </div>
+          </>
+        }
+        do={
+          <>
+            <div className="flex flex-col gap-2.5">
+              <Row label="Send notifications" />
+              <Row label="Share usage data" defaultChecked />
+            </div>
+          </>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="A disabled tick at full strength invites a click that does nothing.">
-          <Row label="Locked by policy" defaultChecked />
-        </Guidance>
-        <Guidance variant="do" caption="Disabled reads as disabled, ticked or not.">
-          <Row label="Locked by policy" defaultChecked disabled />
-        </Guidance>
-      </div>
-    </div>
+      <Guidance
+        pair={pair("disabled-still-reads")}
+        dont={
+          <>
+            <Row label="Locked by policy" defaultChecked />
+          </>
+        }
+        do={
+          <>
+            <Row label="Locked by policy" defaultChecked disabled />
+          </>
+        }
+      />
+    </GuidanceStory>
   ),
 };

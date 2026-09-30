@@ -15,8 +15,17 @@ const meta: Meta<typeof InputButton> = {
     },
   },
   args: { icon: <Calendar />, placeholder: "Pick a date" },
-  argTypes: { size: { control: "inline-radio", options: ["sm", "md"] }, disabled: { control: "boolean" } },
-  decorators: [(S) => <div className="w-60"><S /></div>],
+  argTypes: {
+    size: { control: "inline-radio", options: ["sm", "md"] },
+    disabled: { control: "boolean" },
+  },
+  decorators: [
+    (S) => (
+      <div className="w-60">
+        <S />
+      </div>
+    ),
+  ],
 };
 export default meta;
 type Story = StoryObj<typeof InputButton>;
@@ -26,4 +35,6 @@ export const WithAValue: Story = { args: { value: "28 Sep 2026" } };
 export const Open: Story = { args: { "aria-expanded": true } };
 export const Invalid: Story = { args: { "aria-invalid": true } };
 export const Disabled: Story = { args: { disabled: true } };
-export const AsAFilter: Story = { args: { icon: <Filter />, placeholder: "Filter actions…" } };
+export const AsAFilter: Story = {
+  args: { icon: <Filter />, placeholder: "Filter actions…" },
+};
