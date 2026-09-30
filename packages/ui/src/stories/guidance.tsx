@@ -33,12 +33,31 @@ export interface GuidancePair {
   dont: string;
   do: string;
   why: string;
+  /**
+   * `false` when the pair cannot be a figure — it is about behaviour, not
+   * appearance. "Don't make a badge clickable" is sound guidance and a
+   * pointless picture. Absent means it should have one, whether or not it
+   * does yet, so the gap is visible rather than assumed.
+   */
+  example?: boolean;
 }
 
 export interface GuidanceDoc {
   component: string;
   summary: string;
   pairs: GuidancePair[];
+  /**
+   * `"complete"` — the only meaningful value — once the story renders every pair that is not marked
+   * `example: false`. The test then holds it to that, so a new pair added
+   * later has to be either illustrated or declared unillustrable. It is a
+   * ratchet rather than a list: a component opts in when it is finished,
+   * and cannot quietly fall back out.
+   *
+   * Typed loosely because a JSON import widens a literal to `string`, and
+   * a `boolean` for `example`. The test is what holds both to their
+   * allowed values, which is where the enforcement belongs anyway.
+   */
+  examples?: string;
 }
 
 /**

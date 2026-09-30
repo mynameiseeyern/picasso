@@ -9,6 +9,9 @@ import {
   BreadcrumbTrigger,
 } from "./breadcrumb";
 
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+
 const meta: Meta<typeof Breadcrumb> = {
   title: "Components/Breadcrumb",
   component: Breadcrumb,
@@ -28,6 +31,8 @@ const meta: Meta<typeof Breadcrumb> = {
   },
   args: { size: "md" },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof Breadcrumb>;
 
@@ -106,5 +111,125 @@ export const Small: Story = {
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
+  ),
+};
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("last-is-not-a-link")}
+        width="wide"
+        dont={
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#m">Monitoring</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#s">Sydney-01</BreadcrumbLink>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        }
+        do={
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#m">Monitoring</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbPage>Sydney-01</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        }
+      />
+
+      <Guidance
+        pair={pair("not-a-history-trail")}
+        width="wide"
+        dont={
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#d">Dashboard</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#se">Search</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#f">Filtered results</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbPage>Sydney-01</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        }
+        do={
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#m">Monitoring</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#e">Endpoints</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbPage>Sydney-01</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        }
+      />
+
+      <Guidance
+        pair={pair("collapse-the-middle")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Breadcrumb>
+            <BreadcrumbList>
+              {[
+                "Monitoring",
+                "Regions",
+                "AU-East",
+                "Sites",
+                "Sydney",
+                "Racks",
+              ].map((c) => (
+                <BreadcrumbItem key={c}>
+                  <BreadcrumbLink href="#x">{c}</BreadcrumbLink>
+                </BreadcrumbItem>
+              ))}
+              <BreadcrumbItem>
+                <BreadcrumbPage>Sydney-01</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        }
+        do={
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#m">Monitoring</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbEllipsis />
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#r">Racks</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbPage>Sydney-01</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        }
+      />
+    </GuidanceStory>
   ),
 };

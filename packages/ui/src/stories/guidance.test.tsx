@@ -100,6 +100,20 @@ describe("every story's pair ids exist", () => {
     existsSync(join(root, d, "guidance.json")),
   );
 
+  function read(dir: string) {
+    const stories = readdirSync(join(root, dir)).find((f) =>
+      f.endsWith(".stories.tsx"),
+    );
+    const src = stories ? readFileSync(join(root, dir, stories), "utf8") : "";
+    return {
+      src,
+      rendered: [...src.matchAll(/pair\("([^"]+)"\)/g)].map((m) => m[1]),
+      doc: JSON.parse(
+        readFileSync(join(root, dir, "guidance.json"), "utf8"),
+      ) as GuidanceDoc,
+    };
+  }
+
   it("checks more than a handful of components", () => {
     expect(dirs.length).toBeGreaterThan(40);
   });
@@ -118,6 +132,47 @@ describe("every story's pair ids exist", () => {
     const known = new Set(doc.pairs.map((p) => p.id));
     for (const id of used)
       expect({ dir, id, known: [...known] }).toSatisfy(() => known.has(id));
+  });
+
+  it("uses only the values the schema allows", () => {
+    const bad: string[] = [];
+    for (const dir of dirs) {
+      const { doc } = read(dir);
+      if (doc.examples !== undefined && doc.examples !== "complete")
+        bad.push(`${dir}: examples=${JSON.stringify(doc.examples)}`);
+      for (const p of doc.pairs) {
+        // `example: true` would be redundant — absent already means "should
+        // have one". Only the explicit refusal carries information.
+        if (p.example !== undefined && p.example !== false)
+          bad.push(`${dir}/${p.id}: example=${JSON.stringify(p.example)}`);
+      }
+    }
+    expect(bad).toEqual([]);
+  });
+
+  it("never illustrates a pair it has declared unillustrable", () => {
+    const wrong: string[] = [];
+    for (const dir of dirs) {
+      const { rendered, doc } = read(dir);
+      for (const id of rendered) {
+        const p = doc.pairs.find((x) => x.id === id);
+        if (p?.example === false) wrong.push(`${dir}/${id}`);
+      }
+    }
+    expect(wrong).toEqual([]);
+  });
+
+  it("holds a component marked complete to covering every pair", () => {
+    const short: string[] = [];
+    for (const dir of dirs) {
+      const { rendered, doc } = read(dir);
+      if (doc.examples !== "complete") continue;
+      for (const p of doc.pairs) {
+        if (p.example === false) continue;
+        if (!rendered.includes(p.id)) short.push(`${dir}/${p.id}`);
+      }
+    }
+    expect(short).toEqual([]);
   });
 
   it("leaves no component with a local copy of the helper", () => {

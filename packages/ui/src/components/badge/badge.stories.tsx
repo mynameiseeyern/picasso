@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 import { Check, Clock } from "lucide-react";
 import { Badge } from "./badge";
+import { Chip } from "../chip/chip";
 
 import guidance from "./guidance.json";
 import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
@@ -212,6 +213,66 @@ export const DoAndDont: Story = {
               </Badge>
             </Row>
           </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("badge-is-not-a-control")}
+        dont={
+          <Row>
+            <Badge asChild color="info">
+              <button type="button">Region: AU-East ✕</button>
+            </Badge>
+          </Row>
+        }
+        do={
+          <Row>
+            <Chip onRemove={() => {}} removeLabel="Remove AU-East filter">
+              Region: AU-East
+            </Chip>
+          </Row>
+        }
+      />
+
+      <Guidance
+        pair={pair("keep-it-short")}
+        stage="tall"
+        dont={
+          <Row>
+            <Badge color="warning">
+              Probe has not reported in the last 15 minutes
+            </Badge>
+          </Row>
+        }
+        do={
+          <div className="flex flex-col gap-1">
+            <Row>
+              Sydney-01 <Badge color="warning">Stale</Badge>
+            </Row>
+            <span className="text-body-sm text-content-neutral-muted">
+              No reading in the last 15 minutes.
+            </span>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("outline-is-colourless")}
+        dont={
+          <Row>
+            <Badge variant="outline" color="danger">
+              Critical
+            </Badge>
+            <Badge variant="outline" color="success">
+              Healthy
+            </Badge>
+          </Row>
+        }
+        do={
+          <Row>
+            <Badge color="danger">Critical</Badge>
+            <Badge color="success">Healthy</Badge>
+          </Row>
         }
       />
     </GuidanceStory>

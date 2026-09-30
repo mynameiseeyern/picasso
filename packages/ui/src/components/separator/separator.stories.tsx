@@ -1,7 +1,11 @@
+import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Separator } from "./separator";
 import { Card, CardContent, CardHeader, CardTitle } from "../card/card";
 import { Button } from "../button/button";
+
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 const meta: Meta<typeof Separator> = {
   title: "Components/Separator",
@@ -23,6 +27,8 @@ const meta: Meta<typeof Separator> = {
     },
   },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof Separator>;
 
@@ -95,5 +101,118 @@ export const Semantic: Story = {
         Use it sparingly.
       </p>
     </div>
+  ),
+};
+
+const Line = ({ children }: { children: React.ReactNode }) => (
+  <div className="text-body-md text-content-neutral-emphasis">{children}</div>
+);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("one-surface-only")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="flex w-full flex-col gap-3">
+            <Card size="sm">
+              <CardContent>
+                <Line>Probe health</Line>
+              </CardContent>
+            </Card>
+            <Separator />
+            <Card size="sm">
+              <CardContent>
+                <Line>Billing contact</Line>
+              </CardContent>
+            </Card>
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Card size="sm">
+              <CardContent>
+                <Line>Probe health</Line>
+                <Separator />
+                <Line>Billing contact</Line>
+              </CardContent>
+            </Card>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("vertical-needs-height")}
+        width="wide"
+        dont={
+          <div className="w-full">
+            <span className="text-body-md">Sydney</span>
+            <Separator orientation="vertical" />
+            <span className="text-body-md">AU-East</span>
+          </div>
+        }
+        do={
+          <div className="flex h-6 items-center gap-3">
+            <span className="text-body-md">Sydney</span>
+            <Separator orientation="vertical" />
+            <span className="text-body-md">AU-East</span>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("not-a-divider-grid")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="flex w-full flex-col">
+            {["Sydney-01", "Sydney-02", "Melbourne-01", "Perth-01"].map(
+              (n, i) => (
+                <React.Fragment key={n}>
+                  {i > 0 && <Separator />}
+                  <Line>{n}</Line>
+                </React.Fragment>
+              ),
+            )}
+          </div>
+        }
+        do={
+          <div className="flex w-full flex-col gap-3">
+            <div className="flex flex-col gap-1">
+              <Line>Sydney-01</Line>
+              <Line>Sydney-02</Line>
+            </div>
+            <Separator />
+            <div className="flex flex-col gap-1">
+              <Line>Melbourne-01</Line>
+              <Line>Perth-01</Line>
+            </div>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("space-first")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="flex w-full flex-col">
+            <Line>Threshold</Line>
+            <Separator />
+            <Line>Notifications</Line>
+          </div>
+        }
+        do={
+          <div className="flex w-full flex-col gap-4">
+            <Line>Threshold</Line>
+            <Line>Notifications</Line>
+          </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

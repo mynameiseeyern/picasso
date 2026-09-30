@@ -1,7 +1,10 @@
 {
   "component": "Badge",
   "summary": "A short, static label on a thing — a status, a count, a category.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "383:41" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "383:41"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -41,5 +44,6 @@
       "do": "Use subtle for a quiet coloured badge; outline is deliberately neutral.",
       "why": "Outline renders identically for all five colours — neutral fill, neutral border, neutral text. Choosing it discards the colour rather than muting it."
     }
-  ]
+  ],
+  "examples": "complete"
 }

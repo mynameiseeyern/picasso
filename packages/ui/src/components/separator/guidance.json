@@ -1,7 +1,10 @@
 {
   "component": "Separator",
   "summary": "A 1px rule dividing related groups inside one surface.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2055:4783" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "2055:4783"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -21,7 +24,8 @@
       "id": "decorative-by-default",
       "dont": "Set decorative={false} on every rule so it is 'accessible'.",
       "do": "Leave it decorative unless the rule is the only boundary marker.",
-      "why": "Headings, lists and landmarks already carry the grouping. \"Separator\" announced between every section is noise, not access."
+      "why": "Headings, lists and landmarks already carry the grouping. \"Separator\" announced between every section is noise, not access.",
+      "example": false
     },
     {
       "id": "vertical-needs-height",
@@ -35,5 +39,6 @@
       "do": "Rule between groups, and let rows sit on spacing alone.",
       "why": "A line per row turns a list into a table and makes the one meaningful boundary impossible to find."
     }
-  ]
+  ],
+  "examples": "complete"
 }

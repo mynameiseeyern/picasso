@@ -1,7 +1,10 @@
 {
   "component": "Breadcrumb",
   "summary": "Where the current page sits in the hierarchy — every level but the last is a link.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2499:242" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "2499:242"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -27,13 +30,16 @@
       "id": "name-the-ellipsis",
       "dont": "Leave the collapsed crumb as three dots and nothing else.",
       "do": "Give it text only a screen reader hears.",
-      "why": "An ellipsis is a shape. Without words it is a control nobody can name or explain."
+      "why": "An ellipsis is a shape. Without words it is a control nobody can name or explain.",
+      "example": false
     },
     {
       "id": "sm-is-not-smaller-type",
       "dont": "Reach for sm expecting smaller text in a dense context.",
       "do": "Use sm to tighten the gaps — both sizes are body/md at 14px.",
-      "why": "Size moves the spacing only. If the type needs to shrink, that is a change to make in Figma first."
+      "why": "Size moves the spacing only. If the type needs to shrink, that is a change to make in Figma first.",
+      "example": false
     }
-  ]
+  ],
+  "examples": "complete"
 }
