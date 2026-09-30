@@ -1,0 +1,39 @@
+{
+  "component": "AppShell",
+  "summary": "The frame every product screen starts from — rail, top bar, page padding.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "40000390:30130" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "top-bar-is-not-a-header",
+      "dont": "Put the page title, search and page actions in the top bar.",
+      "do": "Keep it to the sidebar toggle and the breadcrumb; the page header lives in the content area.",
+      "why": "The bar is 48 high and it is the same bar on every screen. Everything added to it competes with the breadcrumb, which is the one thing that tells you where you are."
+    },
+    {
+      "id": "collapsed-is-a-choice-not-a-default",
+      "dont": "Ship the rail collapsed to win back 208px.",
+      "do": "Default to expanded from md up, and to collapsed only at sm where the content would drop under 720.",
+      "why": "An icon-only rail is a memory test for anyone who does not already know the product. The width is worth more to the person than to the layout."
+    },
+    {
+      "id": "padding-steps-at-1280",
+      "dont": "Write `lg:` for the Rules' \"lg and above\".",
+      "do": "Use `xl:` — IR's lg is 1280 and Tailwind's lg is 1024.",
+      "why": "The two scales share names and not numbers. `lg:p-6` looks like it matches the spec and puts 24px of padding on a 1024 screen, a whole breakpoint early."
+    },
+    {
+      "id": "cap-the-column-not-the-page",
+      "dont": "Centre a narrow content column on a wide screen.",
+      "do": "Cap reading-heavy pages at 768 and leave the column left-aligned.",
+      "why": "Centring moves the start of every line as the window resizes, and breaks the alignment with the rail and the breadcrumb above it. The eye starts in the same place on every page."
+    },
+    {
+      "id": "one-scroller",
+      "dont": "Let the shell scroll as well as the page.",
+      "do": "Keep the scroll in the content area so the rail and the top bar stay put.",
+      "why": "Two scrollbars is the most common app-shell bug and the hardest to notice in a screenshot: the top bar slides away and the breadcrumb goes with it."
+    }
+  ]
+}

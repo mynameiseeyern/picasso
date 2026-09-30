@@ -31,10 +31,18 @@ import { cn } from "@/lib/utils";
  * from one the pointer happens to be over. The parent button does not have
  * this problem: its Active is bg/primary/subtle. Built as drawn, and raised.
  */
-// 248 expanded and 48 collapsed, which is what the file draws: SidebarGroup
-// is 248×240 open and 48×208 closed, and 48 is exactly a 32 button inside the
-// group's 8 of padding.
-const SIDEBAR_WIDTH = "w-62";
+// 256 expanded and 48 collapsed. ⚠️ This was 248, and 248 was my mistake:
+// the Sidebar page draws SidebarGroup at 248, and the group is the rail's
+// *contents*, not the rail. App shell draws the rail itself — 256 wide with
+// 4 of padding, which is exactly the 248 group inside it — and the Rules
+// name the token: "Expanded is 256px (space/64); collapsed is 48px
+// (space/12)." So the rail is 256 and always was.
+//
+// The collapsed arithmetic does not close the same way: App shell wraps a
+// 48 rail around 4 of padding, which leaves 40 for a group whose button is
+// 32 inside 8 of padding — 48. The rail is the number the Rules state, so
+// the rail is 48 and the padding is the group's, not the shell's.
+const SIDEBAR_WIDTH = "w-64";
 const SIDEBAR_WIDTH_COLLAPSED = "w-12";
 
 interface SidebarContextValue {
@@ -106,7 +114,14 @@ export function Sidebar({
       className={cn(
         // No width transition: there are no motion tokens yet, and an
         // arbitrary one is what `no-arbitrary-values` exists to stop.
-        "flex shrink-0 flex-col bg-surface-sidebar",
+        // ⚠️ The right edge is drawn in Figma and is invisible in both
+        // themes: border/neutral/subtle is neutral-100, the same as
+        // bg/sidebar, in light; in dark both are neutral-900, and so is
+        // bg/app. Kept because the file draws it and the tokens are what
+        // need fixing — the moment border/neutral/subtle moves off the
+        // background value, the rail gets its edge with no code change.
+        "flex shrink-0 flex-col border-r border-line-neutral-subtle " +
+          "bg-surface-sidebar",
         collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH,
         className,
       )}

@@ -364,3 +364,11 @@ export {
   toastVariants,
   type ToastProps,
 } from "./components/toast/toast";
+export {
+  AppShell,
+  AppShellContent,
+  AppShellHeader,
+  AppShellMain,
+  appShellContentColumnVariants,
+  type AppShellContentProps,
+} from "./components/app-shell/app-shell";
