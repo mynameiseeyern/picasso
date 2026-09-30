@@ -45,7 +45,14 @@ const isLightToken = (t) =>
 
 // ── Brands ───────────────────────────────────────────────────────────
 import { readFileSync, writeFileSync } from "node:fs";
-import { BRANDS, DEFAULT_BRAND, presets, writeBrandArtifacts, toPx, scaleSpace } from "./brands.mjs";
+import {
+  BRANDS,
+  DEFAULT_BRAND,
+  presets,
+  writeBrandArtifacts,
+  toPx,
+  scaleSpace,
+} from "./brands.mjs";
 const CORE = resolve(TOKENS_DIR, "core.json");
 // Each brand's primitive layer is generated from brand.json + presets.json
 // (see brands.mjs) into dist/brands/<id>/layer.json, alongside the figma.json
@@ -56,7 +63,8 @@ const brandFile = (b) => ARTIFACTS[b].layerPath;
 // Figma effect styles, and are never emitted as CSS custom properties.
 const isInternal = (t) => t.path.some((p) => p.startsWith("_"));
 const isBrandToken = (t) =>
-  typeof t.filePath === "string" && t.filePath.replace(/\\/g, "/").includes("/brands/");
+  typeof t.filePath === "string" &&
+  t.filePath.replace(/\\/g, "/").includes("/brands/");
 
 // The radius ladder is NOT emitted as static values. Code derives it at
 // runtime from --radius in theme.css (calc), so the data-radius axis can
@@ -75,16 +83,69 @@ const isDerivedRadius = (t) =>
   const problems = [];
   for (const [step, tok] of Object.entries(core.radius)) {
     if (step.startsWith("$") || step === "none" || step === "full") continue;
-    const m = String(tok.$value).match(/^\{radius\.base\}(?:\s*\*\s*([\d.]+))?$/);
-    if (!m) { problems.push(`core radius.${step} = "${tok.$value}" is not {radius.base} * n`); continue; }
+    const m = String(tok.$value).match(
+      /^\{radius\.base\}(?:\s*\*\s*([\d.]+))?$/,
+    );
+    if (!m) {
+      problems.push(
+        `core radius.${step} = "${tok.$value}" is not {radius.base} * n`,
+      );
+      continue;
+    }
     const want = m[1] ? Number(m[1]) : 1;
     const line = themeCss.match(new RegExp(`--radius-${step}:\\s*([^;]+);`));
-    if (!line) { problems.push(`theme.css has no --radius-${step}`); continue; }
-    const c = line[1].trim().match(/^(?:calc\(var\(--radius\)\s*\*\s*([\d.]+)\)|var\(--radius\))$/);
+    if (!line) {
+      problems.push(`theme.css has no --radius-${step}`);
+      continue;
+    }
+    const c = line[1]
+      .trim()
+      .match(/^(?:calc\(var\(--radius\)\s*\*\s*([\d.]+)\)|var\(--radius\))$/);
     const got = c ? (c[1] ? Number(c[1]) : 1) : NaN;
-    if (got !== want) problems.push(`radius.${step}: tokens say ×${want}, theme.css says "${line[1].trim()}"`);
+    if (got !== want)
+      problems.push(
+        `radius.${step}: tokens say ×${want}, theme.css says "${line[1].trim()}"`,
+      );
   }
-  if (problems.length) throw new Error("Radius ladder drift:\n  " + problems.join("\n  "));
+  if (problems.length)
+    throw new Error("Radius ladder drift:\n  " + problems.join("\n  "));
+}
+
+// ── Drift gate: screen/desktop/* ⇔ theme.css --breakpoint-* ──────────
+// CSS cannot put a var() inside a media query, so the breakpoints are
+// stated twice: once in the tokens, once as literals in theme.css. Two
+// copies of one fact, so the build checks they agree. The names are
+// Tailwind's and so are the values — see the note in theme.css.
+{
+  const core = JSON.parse(readFileSync(CORE, "utf8"));
+  const themeCss = readFileSync(resolve(PKG_ROOT, "theme.css"), "utf8");
+  const problems = [];
+  for (const [step, tok] of Object.entries(core.screen.desktop)) {
+    if (step.startsWith("$")) continue;
+    const want = String(tok.$value).trim();
+    const line = themeCss.match(
+      new RegExp(`--breakpoint-${step}:\\s*([^;]+);`),
+    );
+    if (!line) {
+      problems.push(`theme.css has no --breakpoint-${step}`);
+      continue;
+    }
+    const got = line[1].trim();
+    if (got !== want)
+      problems.push(
+        `screen.desktop.${step}: tokens say ${want}, theme.css says ${got}`,
+      );
+  }
+  const declared = [...themeCss.matchAll(/--breakpoint-([\w.-]+):/g)].map(
+    (m) => m[1],
+  );
+  for (const name of declared)
+    if (!(name in core.screen.desktop))
+      problems.push(
+        `theme.css declares --breakpoint-${name}, which is not in screen/desktop/*`,
+      );
+  if (problems.length)
+    throw new Error("Breakpoint drift:\n  " + problems.join("\n  "));
 }
 
 // ── Name transform ───────────────────────────────────────────────────
@@ -157,7 +218,9 @@ StyleDictionary.registerFormat({
         // nothing), it sits outside the utilities layer so cascade order is by
         // source position, and tooling cannot see it. @utility makes each step
         // a first-class Tailwind utility.
-        typographyClasses.push(`@utility ${className} {\n${props.join("\n")}\n}`);
+        typographyClasses.push(
+          `@utility ${className} {\n${props.join("\n")}\n}`,
+        );
         return;
       }
 
@@ -183,7 +246,13 @@ StyleDictionary.registerFormat({
       else if (isDarkToken(token)) darkDecls.push(decl);
       else if (token.path[0] === "palette") rootDecls.push(decl);
       else if (token.path[0] === "type") rootDecls.push(decl);
-      else if (token.path[0] === "space" || token.path[0] === "radius") rootDecls.push(decl);
+      else if (token.path[0] === "space" || token.path[0] === "radius")
+        rootDecls.push(decl);
+      // screen/* used to fall through every branch and be silently dropped, so
+      // the breakpoints existed in the token file and nowhere else and every
+      // responsive rule was a hand translation. They go out as --screen-*, and
+      // theme.css binds --breakpoint-* to them.
+      else if (token.path[0] === "screen") rootDecls.push(decl);
       else if (token.path[0] === "shared") rootDecls.push(decl);
     });
 
@@ -250,7 +319,6 @@ export const typographyClasses: readonly IRTypographyClass[] = [
   },
 });
 
-
 // ── px → rem ─────────────────────────────────────────────────────────
 // Figma can only store unitless numbers, so a variables export writes raw
 // px into space/*, radius/* and type/size/*. This normalises them back to
@@ -265,7 +333,9 @@ StyleDictionary.registerTransform({
   filter: (token) => {
     const p = token.path;
     const isTarget =
-      p[0] === "space" || p[0] === "radius" || (p[0] === "type" && p[1] === "size");
+      p[0] === "space" ||
+      p[0] === "radius" ||
+      (p[0] === "type" && p[1] === "size");
     if (!isTarget) return false;
     const key = p.join(".");
     if (key === "space.px" || key === "radius.full") return false;
@@ -274,7 +344,8 @@ StyleDictionary.registerTransform({
   },
   transform: (token) => {
     const v = token.$value;
-    if (typeof v === "string" && (v.endsWith("rem") || v.includes("var("))) return v;
+    if (typeof v === "string" && (v.endsWith("rem") || v.includes("var(")))
+      return v;
     const num = typeof v === "number" ? v : parseFloat(v);
     if (!isFinite(num)) return v;
     if (num === 0) return "0";
@@ -288,14 +359,9 @@ StyleDictionary.registerTransform({
 // into one tree keyed by path, so feeding both to one build makes them collide
 // and the last source silently wins. They must be built in two passes.
 
-
 // Pass 1 — primitives (incl. typography) + light → :root (and a sentinel for .dark)
 const light = new StyleDictionary({
-  source: [
-    CORE,
-    brandFile(DEFAULT_BRAND),
-    resolve(TOKENS_DIR, "light.json"),
-  ],
+  source: [CORE, brandFile(DEFAULT_BRAND), resolve(TOKENS_DIR, "light.json")],
   preprocessors: ["tokens-studio"],
   platforms: {
     css: {
@@ -326,7 +392,8 @@ StyleDictionary.registerFormat({
             const x = sh.offsetX || "0";
             const y = sh.offsetY || "0";
             const blur = sh.blur || "0";
-            const spread = sh.spread && sh.spread !== "0" ? ` ${sh.spread}` : " 0";
+            const spread =
+              sh.spread && sh.spread !== "0" ? ` ${sh.spread}` : " 0";
             return `${inset}${x} ${y} ${blur}${spread} ${sh.color}`;
           })
           .join(", ");
@@ -368,7 +435,11 @@ for (const brand of BRANDS) {
         .filter((t) => isBrandToken(t) && !isDerivedRadius(t))
         .map((t) => `  --${t.name}: ${t.$value};`);
       const o = ARTIFACTS[brand].overrides;
-      const on = (m) => Object.entries(o[m]).map(([k, v]) => `  --fg-on-${k}: var(--${v.slice(1, -1).replaceAll(".", "-")});`);
+      const on = (m) =>
+        Object.entries(o[m]).map(
+          ([k, v]) =>
+            `  --fg-on-${k}: var(--${v.slice(1, -1).replaceAll(".", "-")});`,
+        );
       decls.push(...on("light"));
       let block = `[data-brand="${brand}"] {\n${decls.join("\n")}\n}`;
       if (on("dark").length)
@@ -383,9 +454,18 @@ for (const brand of BRANDS) {
     log: { verbosity: "silent" },
     platforms: {
       css: {
-        transforms: ["name/ir/css", "value/ir/css-var-references", "size/ir/rem"],
+        transforms: [
+          "name/ir/css",
+          "value/ir/css-var-references",
+          "size/ir/rem",
+        ],
         buildPath: DIST_DIR,
-        files: [{ destination: `.brand-${brand}.tmp`, format: `css/ir-brand-${brand}` }],
+        files: [
+          {
+            destination: `.brand-${brand}.tmp`,
+            format: `css/ir-brand-${brand}`,
+          },
+        ],
       },
     },
   });
@@ -395,9 +475,14 @@ for (const brand of BRANDS) {
 // AFTER the brand blocks, so an explicit axis beats the brand's default.
 const own = (o) => Object.entries(o).filter(([k]) => !k.startsWith("$"));
 const axisBlocks = [];
-for (const [k, v] of own(presets.radius)) axisBlocks.push(`[data-radius="${k}"] { --radius: ${v}; }`);
+for (const [k, v] of own(presets.radius))
+  axisBlocks.push(`[data-radius="${k}"] { --radius: ${v}; }`);
 for (const [k, ramp] of own(presets.neutral))
-  axisBlocks.push(`[data-neutral="${k}"] {\n${own(ramp).map(([s, c]) => `  --palette-neutral-${s}: ${c};`).join("\n")}\n}`);
+  axisBlocks.push(
+    `[data-neutral="${k}"] {\n${own(ramp)
+      .map(([s, c]) => `  --palette-neutral-${s}: ${c};`)
+      .join("\n")}\n}`,
+  );
 for (const [k, mult] of own(presets.spacing))
   axisBlocks.push(
     `[data-spacing="${k}"] {\n${own(presets.space)
@@ -407,10 +492,18 @@ for (const [k, mult] of own(presets.spacing))
       })
       .join("\n")}\n}`,
   );
-brandBlocks.push("/* ── Axes (presets.json) — after brands, so an explicit axis wins ── */", ...axisBlocks);
+brandBlocks.push(
+  "/* ── Axes (presets.json) — after brands, so an explicit axis wins ── */",
+  ...axisBlocks,
+);
 
 const css = readFileSync(DIST_DIR + "tokens.css", "utf8");
 writeFileSync(
   DIST_DIR + "tokens.css",
-  css.replace(/\n*$/, "\n\n/* ── Brands (default brand is also in :root) ── */\n" + brandBlocks.join("\n\n") + "\n"),
+  css.replace(
+    /\n*$/,
+    "\n\n/* ── Brands (default brand is also in :root) ── */\n" +
+      brandBlocks.join("\n\n") +
+      "\n",
+  ),
 );

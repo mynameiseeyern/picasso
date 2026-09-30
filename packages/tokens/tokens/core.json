@@ -488,30 +488,38 @@
     "desktop": {
       "sm": {
         "$type": "dimension",
+        "$value": "640px",
+        "$description": "Tailwind sm. Below IR’s supported floor — present so the ladder is complete, not a size we design for"
+      },
+      "md": {
+        "$type": "dimension",
         "$value": "768px",
         "$description": "Tablet portrait — floor for desktop layouts"
       },
-      "md": {
+      "lg": {
         "$type": "dimension",
         "$value": "1024px",
         "$description": "Tablet landscape / small laptop"
       },
-      "lg": {
+      "xl": {
         "$type": "dimension",
         "$value": "1280px",
         "$description": "Primary design canvas"
-      },
-      "xl": {
-        "$type": "dimension",
-        "$value": "1440px",
-        "$description": "Standard widescreen laptop"
       },
       "2xl": {
         "$type": "dimension",
         "$value": "1536px",
         "$description": "Wide monitors / NOC displays"
       }
-    }
+    },
+    "canvas": {
+      "laptop": {
+        "$type": "dimension",
+        "$value": "1440px",
+        "$description": "Standard widescreen laptop. A canvas size to design at, not a breakpoint — nothing in the layout changes at 1440"
+      }
+    },
+    "$description": "Breakpoints use Tailwind’s names and Tailwind’s values, so `lg:` means the same thing in a token file, a Figma page name and a class name. screen/canvas/* are sizes to draw at, not breakpoints."
   },
   "shared": {
     "text": {

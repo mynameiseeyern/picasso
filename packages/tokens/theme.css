@@ -15,6 +15,31 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ═══ Breakpoints ═════════════════════════════════════════════════════
+   IR's screen scale, stated once in tokens/core.json (screen/desktop/*)
+   and restated here because CSS cannot put a var() inside a media query.
+   The build fails if the two drift.
+
+   These are Tailwind's own names AND Tailwind's own values, deliberately.
+   IR's ladder used to be Tailwind's shifted up a step — IR's lg was 1280
+   where Tailwind's is 1024 — so "24px at lg and above" in a spec and
+   `lg:p-6` in a class meant two different screens, and every responsive
+   rule was a hand translation with a chance to be off by one. Every number
+   IR actually cared about (768, 1024, 1280, 1536) was already a Tailwind
+   breakpoint under a different name, so aligning cost nothing but names.
+
+   640 is below the product's supported floor and we never design at it;
+   it is here so the ladder is Tailwind's, entire. 1440 is a canvas size
+   rather than a breakpoint — nothing in the layout changes at 1440 — and
+   lives at screen/canvas/laptop.                                        */
+@theme {
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}
+
 @theme inline {
   /* ---- shadcn semantic aliases → IR semantic tokens ---- */
   --color-background: var(--bg-app);
@@ -54,7 +79,6 @@
   --color-sidebar-primary-foreground: var(--fg-on-primary-emphasis);
   --color-sidebar-border: var(--border-neutral-subtle);
   --color-sidebar-ring: var(--border-focused);
-
 
   /* ═══ IR semantics as utilities ═══════════════════════════════════
      Tailwind v4's --color-* namespace feeds bg-, text- AND border- from
@@ -98,7 +122,9 @@
   --color-surface-input-pressed: var(--bg-input-pressed);
   --color-surface-layer-emphasis: var(--bg-layer-emphasis);
   --color-surface-layer-muted: var(--bg-layer-muted);
-  --color-surface-layer-on-emphasis-emphasis: var(--bg-layer-on-emphasis-emphasis);
+  --color-surface-layer-on-emphasis-emphasis: var(
+    --bg-layer-on-emphasis-emphasis
+  );
   --color-surface-layer-on-emphasis-subtle: var(--bg-layer-on-emphasis-subtle);
   --color-surface-layer-subtle: var(--bg-layer-subtle);
   --color-surface-neutral-emphasis: var(--bg-neutral-emphasis);
@@ -235,14 +261,14 @@
      shadcn. sm/md/lg/xl use shadcn's own multipliers; the rest extend the
      same curve so one variable moves the entire system in proportion. */
   --radius-none: 0;
-  --radius-xs:   calc(var(--radius) * 0.2);
-  --radius-sm:   calc(var(--radius) * 0.6);
-  --radius-md:   calc(var(--radius) * 0.8);
-  --radius-lg:   var(--radius);
-  --radius-xl:   calc(var(--radius) * 1.4);
-  --radius-2xl:  calc(var(--radius) * 1.6);
-  --radius-3xl:  calc(var(--radius) * 2.4);
-  --radius-4xl:  calc(var(--radius) * 3.2);
+  --radius-xs: calc(var(--radius) * 0.2);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-3xl: calc(var(--radius) * 2.4);
+  --radius-4xl: calc(var(--radius) * 3.2);
   --radius-full: 9999px;
 
   --shadow-xs: var(--shadow-xs);
@@ -259,7 +285,6 @@
   --shadow-ring-focus: var(--ring-focus);
   --shadow-ring-focus-danger: var(--ring-focus-danger);
   --shadow-ring-focus-inset: var(--ring-focus-inset);
-
 
   /* ---- type scale ----
      Tailwind's own scale is cleared so there is ONE vocabulary. `text-md` is
@@ -389,41 +414,81 @@
    Source: Clarion loader handoffs; Figma "Loader" page.                  */
 @theme inline {
   --animate-loader-turn: loader-turn 3s linear infinite;
-  --animate-loader-reach: loader-reach 1.5s cubic-bezier(0.45, 0, 0.55, 1) var(--loader-delay, 0s) infinite;
+  --animate-loader-reach: loader-reach 1.5s cubic-bezier(0.45, 0, 0.55, 1)
+    var(--loader-delay, 0s) infinite;
   --animate-loader-fade: loader-fade 1.8s ease-in-out infinite alternate;
   --animate-loader-pulse-l: loader-pulse-l 1.3s ease-in-out infinite;
   --animate-loader-pulse-m: loader-pulse-m 1.3s ease-in-out infinite;
   --animate-loader-pulse-r: loader-pulse-r 1.3s ease-in-out infinite;
-  --animate-loader-pulse-fade: loader-pulse-fade 1.4s ease-in-out infinite alternate;
+  --animate-loader-pulse-fade: loader-pulse-fade 1.4s ease-in-out infinite
+    alternate;
 
   @keyframes loader-turn {
-    0% { transform: rotate(0deg) scale(1); }
-    50% { transform: rotate(180deg) scale(1.045); }
-    100% { transform: rotate(360deg) scale(1); }
+    0% {
+      transform: rotate(0deg) scale(1);
+    }
+    50% {
+      transform: rotate(180deg) scale(1.045);
+    }
+    100% {
+      transform: rotate(360deg) scale(1);
+    }
   }
   @keyframes loader-reach {
-    0%, 8% { transform: translateY(var(--loader-merge)); }
-    46%, 54% { transform: translateY(var(--loader-reach)); }
-    92%, 100% { transform: translateY(var(--loader-merge)); }
+    0%,
+    8% {
+      transform: translateY(var(--loader-merge));
+    }
+    46%,
+    54% {
+      transform: translateY(var(--loader-reach));
+    }
+    92%,
+    100% {
+      transform: translateY(var(--loader-merge));
+    }
   }
   @keyframes loader-fade {
-    from { opacity: 0.4; }
-    to { opacity: 1; }
+    from {
+      opacity: 0.4;
+    }
+    to {
+      opacity: 1;
+    }
   }
   @keyframes loader-pulse-l {
-    0%, 100% { transform: translateX(calc(var(--loader-spread) * -0.6)) scale(0.78); }
-    50% { transform: translateX(calc(var(--loader-spread) * -1)) scale(1.08); }
+    0%,
+    100% {
+      transform: translateX(calc(var(--loader-spread) * -0.6)) scale(0.78);
+    }
+    50% {
+      transform: translateX(calc(var(--loader-spread) * -1)) scale(1.08);
+    }
   }
   @keyframes loader-pulse-m {
-    0%, 100% { transform: scale(1.22); }
-    50% { transform: scale(0.82); }
+    0%,
+    100% {
+      transform: scale(1.22);
+    }
+    50% {
+      transform: scale(0.82);
+    }
   }
   @keyframes loader-pulse-r {
-    0%, 100% { transform: translateX(calc(var(--loader-spread) * 0.6)) scale(0.78); }
-    50% { transform: translateX(var(--loader-spread)) scale(1.08); }
+    0%,
+    100% {
+      transform: translateX(calc(var(--loader-spread) * 0.6)) scale(0.78);
+    }
+    50% {
+      transform: translateX(var(--loader-spread)) scale(1.08);
+    }
   }
   @keyframes loader-pulse-fade {
-    from { opacity: 0.35; }
-    to { opacity: 1; }
+    from {
+      opacity: 0.35;
+    }
+    to {
+      opacity: 1;
+    }
   }
 }

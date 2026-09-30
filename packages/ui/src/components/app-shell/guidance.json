@@ -1,7 +1,10 @@
 {
   "component": "AppShell",
   "summary": "The frame every product screen starts from — rail, top bar, page padding.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "40000390:30130" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "40000390:30130"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -19,9 +22,9 @@
     },
     {
       "id": "padding-steps-at-1280",
-      "dont": "Write `lg:` for the Rules' \"lg and above\".",
-      "do": "Use `xl:` — IR's lg is 1280 and Tailwind's lg is 1024.",
-      "why": "The two scales share names and not numbers. `lg:p-6` looks like it matches the spec and puts 24px of padding on a 1024 screen, a whole breakpoint early."
+      "dont": "Re-derive the breakpoint from a screen width quoted in a spec.",
+      "do": "Trust the named step — `xl:` is 1280 in the tokens, in Tailwind and in the class.",
+      "why": "IR's ladder used to be Tailwind's shifted up one, so `lg:` meant 1280 to a designer and 1024 to the browser. They are one ladder now, and the name is the thing to trust."
     },
     {
       "id": "cap-the-column-not-the-page",
