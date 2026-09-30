@@ -17,21 +17,22 @@ import { cn } from "@/lib/utils";
  * top bar's inline padding are 16 at sm and md, and 24 from lg up. Nothing
  * else moves. Widths, gaps and the 48 top bar are the same at every size.
  *
- * ⚠️ IR's screen scale and Tailwind's do not share names. IR's `lg` is
- * 1280, which is Tailwind's `xl`; IR's `sm` is 768, which is Tailwind's
- * `md`. The numbers below are right and the prefix looks wrong — `xl:p-6`
- * IS "24 from lg up". Reading "lg and above" in the Rules and writing
- * `lg:p-6` would fire at 1024, a whole breakpoint early. The real fix is to
- * put screen/desktop/* into the token pipeline as named breakpoints so the
- * names match; raised, not done here, because renaming `sm:` would move
- * every existing responsive class in the package, Dialog's included.
+ * The padding steps at 1280 — `xl:` in the tokens, in Tailwind and in this
+ * file, all the same number. That used to need a paragraph: IR's ladder was
+ * Tailwind's shifted up a step, so "lg and above" in the Rules meant 1280
+ * and `lg:p-6` in a class meant 1024. The scales are aligned now
+ * (@ir/tokens theme.css), and `screen/desktop/*` is the source of both.
  *
- * ⚠️ Dark mode has no visible chrome. bg/app, bg/sidebar and
- * border/neutral/subtle are all palette-neutral-900 in dark, so the sidebar,
- * the page and every edge between them are one colour: no rail, no top bar
- * rule. In light the sidebar tint reads but the borders still do not
- * (bg/sidebar and border/neutral/subtle are both neutral-100). Built as
- * drawn, because the tokens are the thing to fix, not the markup.
+ * ⚠️ Figma's `Screen` variant labels are still the old ladder — its `sm` is
+ * 768, which is now `md`. The widths it draws are right; the names on them
+ * are one step out and want renaming in the file.
+ *
+ * This component is also why three tokens moved. bg/app, bg/sidebar and
+ * border/neutral/subtle were all palette-neutral-900 in dark, so the
+ * sidebar, the page and every edge between them were one colour — no rail,
+ * no top bar rule, nothing. bg/sidebar is neutral-950 in dark now, one step
+ * recessed from the page exactly as it is in light, and subtle is retired
+ * into muted.
  *
  * Measured from the file: sidebar 256 expanded / 48 collapsed, top bar 48
  * high with 8 gap, content padding 16 / 24, no gap anywhere else. Overlay
@@ -97,7 +98,7 @@ export function AppShellHeader({
       data-slot="app-shell-header"
       className={cn(
         "flex h-12 shrink-0 items-center gap-2 border-b " +
-          "border-line-neutral-subtle px-4 xl:px-6",
+          "border-line-neutral-muted px-4 xl:px-6",
         className,
       )}
       {...props}
@@ -110,10 +111,10 @@ const appShellContentColumnVariants = cva("", {
     width: {
       // Fluid to 2xl, which is what the Screen variants draw.
       fluid: "",
-      // "Reading-heavy pages cap their content column at 768px
-      // (screen/desktop/sm) and stay left-aligned." The cap is on the column,
-      // inside the page padding — so max-w-192 sits on the inner element and
-      // the padding stays on the scroller.
+      // "Reading-heavy pages cap their content column at 768px and stay
+      // left-aligned." The cap is on the column, inside the page padding —
+      // so max-w-192 sits on the inner element and the padding stays on the
+      // scroller.
       prose: "max-w-192",
     },
   },

@@ -91,17 +91,17 @@ describe("AppShell", () => {
         "shrink-0",
         "gap-2",
         "border-b",
-        "border-line-neutral-subtle",
+        "border-line-neutral-muted",
       ]),
     );
   });
 
-  it("steps the page padding at IR's lg, which is Tailwind's xl", () => {
+  it("steps the page padding at 1280, which is xl", () => {
     const { container } = render(<Fixture />);
     const content = container.querySelector('[data-slot="app-shell-content"]')!;
     const header = screen.getByRole("banner");
-    // 16 at sm and md, 24 from lg (1280) up. Tailwind's xl is 1280; its lg
-    // is 1024 and would fire a breakpoint early.
+    // 16 below 1280, 24 from 1280 up. `xl` is 1280 in screen/desktop/* and
+    // in Tailwind; `lg` is 1024 in both and would fire a breakpoint early.
     expect(classes(content)).toEqual(expect.arrayContaining(["p-4", "xl:p-6"]));
     expect(classes(content)).not.toContain("lg:p-6");
     expect(classes(header)).toEqual(

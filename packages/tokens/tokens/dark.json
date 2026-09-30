@@ -18,7 +18,8 @@
     },
     "sidebar": {
       "$type": "color",
-      "$value": "{palette.neutral.900}"
+      "$value": "{palette.neutral.950}",
+      "$description": "One step recessed from bg/app, matching light (sidebar neutral-100 against app neutral-50). Was neutral-900, the same value as bg/app, so the rail was invisible in dark."
     },
     "scrim": {
       "$type": "color",
@@ -435,7 +436,8 @@
     "neutral": {
       "subtle": {
         "$type": "color",
-        "$value": "{palette.neutral.900}"
+        "$value": "{border.neutral.muted}",
+        "$description": "Deprecated — use border/neutral/muted. There is no room on the neutral ramp for a border below muted: in light the step below muted (neutral-100) is bg/sidebar and bg/canvas, and in dark (neutral-900) it is bg/app and bg/sidebar. A border token that equals a surface token is invisible on that surface, which is what this one was. Aliased to muted so existing bindings still resolve."
       },
       "muted": {
         "$type": "color",

@@ -8,15 +8,35 @@ describe("KpiTile", () => {
     const tile = screen.getByTestId("t");
     // Card is border/neutral/muted + shadow/xs; a tile sits in a grid of its
     // peers, so Figma gives it a lighter edge and no lift. Not a bug.
-    expect(tile).toHaveClass("border-line-neutral-subtle", "bg-surface-card", "rounded-xl");
+    expect(tile).toHaveClass(
+      "border-line-neutral-muted",
+      "bg-surface-card",
+      "rounded-xl",
+    );
     expect(tile.className).not.toContain("shadow");
   });
 
   it("puts the number in the metric face and the label in the quiet one", () => {
-    render(<KpiTile label="Conversion rate" value="3.5%" unit="of 5" data-testid="t" />);
-    expect(screen.getByText("Conversion rate")).toHaveClass("text-heading-sm", "text-content-neutral-muted");
-    expect(screen.getByText("3.5%")).toHaveClass("text-metric-xl", "text-content-neutral-emphasis");
-    expect(screen.getByText("of 5")).toHaveClass("text-body-md", "text-content-neutral-muted");
+    render(
+      <KpiTile
+        label="Conversion rate"
+        value="3.5%"
+        unit="of 5"
+        data-testid="t"
+      />,
+    );
+    expect(screen.getByText("Conversion rate")).toHaveClass(
+      "text-heading-sm",
+      "text-content-neutral-muted",
+    );
+    expect(screen.getByText("3.5%")).toHaveClass(
+      "text-metric-xl",
+      "text-content-neutral-emphasis",
+    );
+    expect(screen.getByText("of 5")).toHaveClass(
+      "text-body-md",
+      "text-content-neutral-muted",
+    );
   });
 
   it("says the status in words, not only in colour", () => {
@@ -33,7 +53,9 @@ describe("KpiTile", () => {
       ["critical", "Critical"],
       ["unknown", "Unknown"],
     ] as const) {
-      const { unmount } = render(<KpiTile label="MOS" value="4.0" status={status} />);
+      const { unmount } = render(
+        <KpiTile label="MOS" value="4.0" status={status} />,
+      );
       expect(screen.getByText(word)).toBeInTheDocument();
       unmount();
     }
@@ -41,14 +63,26 @@ describe("KpiTile", () => {
 
   it("has no badge when there is no status", () => {
     render(<KpiTile label="Conversion rate" value="3.5%" data-testid="t" />);
-    expect(screen.getByTestId("t").querySelector("[data-slot=badge]")).toBeNull();
+    expect(
+      screen.getByTestId("t").querySelector("[data-slot=badge]"),
+    ).toBeNull();
   });
 
   it("draws a meter only when one is asked for, and colours it with the status", () => {
-    const { rerender } = render(<KpiTile label="MOS" value="4.0" status="healthy" data-testid="t" />);
-    expect(screen.getByTestId("t").querySelector("[data-slot=meter]")).toBeNull();
+    const { rerender } = render(
+      <KpiTile label="MOS" value="4.0" status="healthy" data-testid="t" />,
+    );
+    expect(
+      screen.getByTestId("t").querySelector("[data-slot=meter]"),
+    ).toBeNull();
     rerender(
-      <KpiTile label="MOS" value="4.0" status="critical" meter={{ value: 1.2, max: 5 }} data-testid="t" />,
+      <KpiTile
+        label="MOS"
+        value="4.0"
+        status="critical"
+        meter={{ value: 1.2, max: 5 }}
+        data-testid="t"
+      />,
     );
     const meter = screen.getByTestId("t").querySelector("[data-slot=meter]");
     expect(meter).toHaveAttribute("data-status", "critical");
@@ -56,10 +90,21 @@ describe("KpiTile", () => {
   });
 
   it("opens the content gap when a meter is present", () => {
-    const { rerender } = render(<KpiTile label="MOS" value="4.0" data-testid="t" />);
-    const content = () => screen.getByTestId("t").querySelector("[data-slot=kpi-tile-content]");
+    const { rerender } = render(
+      <KpiTile label="MOS" value="4.0" data-testid="t" />,
+    );
+    const content = () =>
+      screen.getByTestId("t").querySelector("[data-slot=kpi-tile-content]");
     expect(content()).toHaveClass("gap-2");
-    rerender(<KpiTile label="MOS" value="4.0" status="healthy" meter={{ value: 4, max: 5 }} data-testid="t" />);
+    rerender(
+      <KpiTile
+        label="MOS"
+        value="4.0"
+        status="healthy"
+        meter={{ value: 4, max: 5 }}
+        data-testid="t"
+      />,
+    );
     expect(content()).toHaveClass("gap-3");
   });
 
@@ -76,7 +121,9 @@ describe("KpiTile", () => {
     );
     const tile = screen.getByTestId("t");
     expect(tile.querySelector("[data-slot=kpi-tile-action]")).not.toBeNull();
-    expect(tile.querySelector("[data-slot=kpi-tile-comparison]")).not.toBeNull();
+    expect(
+      tile.querySelector("[data-slot=kpi-tile-comparison]"),
+    ).not.toBeNull();
     expect(tile.querySelector("[data-slot=kpi-tile-footer]")).not.toBeNull();
   });
 });

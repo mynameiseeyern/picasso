@@ -435,7 +435,8 @@
     "neutral": {
       "subtle": {
         "$type": "color",
-        "$value": "{palette.neutral.100}"
+        "$value": "{border.neutral.muted}",
+        "$description": "Deprecated — use border/neutral/muted. There is no room on the neutral ramp for a border below muted: in light the step below muted (neutral-100) is bg/sidebar and bg/canvas, and in dark (neutral-900) it is bg/app and bg/sidebar. A border token that equals a surface token is invisible on that surface, which is what this one was. Aliased to muted so existing bindings still resolve."
       },
       "muted": {
         "$type": "color",

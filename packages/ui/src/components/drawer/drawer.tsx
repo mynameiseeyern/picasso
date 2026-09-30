@@ -154,7 +154,7 @@ export function DrawerContent({
 }
 
 const drawerHeaderVariants = cva(
-  "shrink-0 border-b border-line-neutral-subtle bg-surface-card",
+  "shrink-0 border-b border-line-neutral-muted bg-surface-card",
   {
     variants: {
       type: {

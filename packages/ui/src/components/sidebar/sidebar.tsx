@@ -114,13 +114,13 @@ export function Sidebar({
       className={cn(
         // No width transition: there are no motion tokens yet, and an
         // arbitrary one is what `no-arbitrary-values` exists to stop.
-        // ⚠️ The right edge is drawn in Figma and is invisible in both
-        // themes: border/neutral/subtle is neutral-100, the same as
-        // bg/sidebar, in light; in dark both are neutral-900, and so is
-        // bg/app. Kept because the file draws it and the tokens are what
-        // need fixing — the moment border/neutral/subtle moves off the
-        // background value, the rail gets its edge with no code change.
-        "flex shrink-0 flex-col border-r border-line-neutral-subtle " +
+        // The right edge is drawn in Figma as border/neutral/subtle, which
+        // was invisible in both themes — it was neutral-100 in light, the
+        // same as bg/sidebar, and neutral-900 in dark, the same as both
+        // bg/sidebar and bg/app. subtle has since been retired into muted
+        // (there is no room on the ramp for a border below muted that is
+        // not also a surface), so the edge reads in both themes now.
+        "flex shrink-0 flex-col border-r border-line-neutral-muted " +
           "bg-surface-sidebar",
         collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH,
         className,

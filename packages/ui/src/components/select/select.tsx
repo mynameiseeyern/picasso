@@ -5,7 +5,11 @@ import { cn } from "@/lib/utils";
 import { Button } from "../button/button";
 import { checkboxVariants } from "../checkbox/checkbox";
 import { InputButton } from "../input-button/input-button";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "../input-group/input-group";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "../input-group/input-group";
 import { Separator } from "../separator/separator";
 
 /**
@@ -43,8 +47,10 @@ export interface SelectOption {
   disabled?: boolean;
 }
 
-export interface SelectProps
-  extends Omit<React.ComponentProps<"button">, "value" | "defaultValue" | "onChange" | "children"> {
+export interface SelectProps extends Omit<
+  React.ComponentProps<"button">,
+  "value" | "defaultValue" | "onChange" | "children"
+> {
   options: SelectOption[];
   value?: string[];
   defaultValue?: string[];
@@ -65,9 +71,20 @@ export interface SelectProps
 export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
   (
     {
-      options, value, defaultValue = [], onValueChange, label, icon = <Filter />, size = "md",
-      searchPlaceholder = "Search…", emptyText = "No matches", clearLabel = "Clear", applyLabel = "Apply",
-      showDetail = true, disabled, ...triggerProps
+      options,
+      value,
+      defaultValue = [],
+      onValueChange,
+      label,
+      icon = <Filter />,
+      size = "md",
+      searchPlaceholder = "Search…",
+      emptyText = "No matches",
+      clearLabel = "Clear",
+      applyLabel = "Apply",
+      showDetail = true,
+      disabled,
+      ...triggerProps
     },
     ref,
   ) => {
@@ -85,18 +102,27 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
     const searchRef = React.useRef<HTMLInputElement>(null);
 
     const onOpenChange = (next: boolean) => {
-      if (next) { setDraft(selected); setQuery(""); setActive(null); }
+      if (next) {
+        setDraft(selected);
+        setQuery("");
+        setActive(null);
+      }
       setOpen(next);
     };
 
     const q = query.trim().toLowerCase();
     const visible = options.filter(
-      (o) => !q || [o.label, o.detail ?? "", o.value].some((s) => s.toLowerCase().includes(q)),
+      (o) =>
+        !q ||
+        [o.label, o.detail ?? "", o.value].some((s) =>
+          s.toLowerCase().includes(q),
+        ),
     );
     const groups: [string | undefined, SelectOption[]][] = [];
     for (const o of visible) {
       const g = groups.find(([name]) => name === o.group);
-      if (g) g[1].push(o); else groups.push([o.group, [o]]);
+      if (g) g[1].push(o);
+      else groups.push([o.group, [o]]);
     }
     const navigable = groups.flatMap(([, os]) => os).filter((o) => !o.disabled);
 
@@ -113,10 +139,17 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
       if (!navigable.length) return;
       const i = navigable.findIndex((o) => o.value === active);
       // Nothing highlighted yet: Down starts at the top, Up at the bottom.
-      const at = i < 0 ? (by > 0 ? 0 : navigable.length - 1) : (i + by + navigable.length) % navigable.length;
+      const at =
+        i < 0
+          ? by > 0
+            ? 0
+            : navigable.length - 1
+          : (i + by + navigable.length) % navigable.length;
       const next = navigable[at];
       setActive(next.value);
-      document.getElementById(optionId(next.value))?.scrollIntoView?.({ block: "nearest" });
+      document
+        .getElementById(optionId(next.value))
+        ?.scrollIntoView?.({ block: "nearest" });
     };
 
     const count = selected.length;
@@ -136,7 +169,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                   data-slot="select-count"
                   className={cn(
                     "inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full border px-1 tabular-nums",
-                    "border-line-neutral-subtle bg-surface-neutral-subtle text-label-sm text-content-neutral-emphasis",
+                    "border-line-neutral-muted bg-surface-neutral-subtle text-label-sm text-content-neutral-emphasis",
                   )}
                 >
                   <span aria-hidden>{count}</span>
@@ -152,12 +185,17 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
             align="start"
             sideOffset={8}
             data-slot="select-menu"
-            onOpenAutoFocus={(e) => { e.preventDefault(); searchRef.current?.focus(); }}
+            onOpenAutoFocus={(e) => {
+              e.preventDefault();
+              searchRef.current?.focus();
+            }}
             className="z-50 w-(--radix-popover-trigger-width) min-w-60 overflow-hidden rounded-xl border border-line-neutral-muted bg-surface-overlay shadow-md outline-none"
           >
             <div className="p-2">
               <InputGroup size="md">
-                <InputGroupAddon><Search aria-hidden /></InputGroupAddon>
+                <InputGroupAddon>
+                  <Search aria-hidden />
+                </InputGroupAddon>
                 <InputGroupInput
                   ref={searchRef}
                   role="combobox"
@@ -168,12 +206,24 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                   aria-activedescendant={active ? optionId(active) : undefined}
                   placeholder={searchPlaceholder}
                   value={query}
-                  onChange={(e) => { setQuery(e.target.value); setActive(null); }}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    setActive(null);
+                  }}
                   onKeyDown={(e) => {
-                    if (e.key === "ArrowDown") { e.preventDefault(); move(1); }
-                    else if (e.key === "ArrowUp") { e.preventDefault(); move(-1); }
-                    else if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); apply(); }
-                    else if (e.key === "Enter" && active) { e.preventDefault(); toggle(active); }
+                    if (e.key === "ArrowDown") {
+                      e.preventDefault();
+                      move(1);
+                    } else if (e.key === "ArrowUp") {
+                      e.preventDefault();
+                      move(-1);
+                    } else if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                      e.preventDefault();
+                      apply();
+                    } else if (e.key === "Enter" && active) {
+                      e.preventDefault();
+                      toggle(active);
+                    }
                   }}
                 />
               </InputGroup>
@@ -188,7 +238,10 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               className="max-h-80 overflow-y-auto p-1"
             >
               {groups.length === 0 ? (
-                <div role="presentation" className="px-1.5 py-4 text-center text-body-sm text-content-neutral-subtle">
+                <div
+                  role="presentation"
+                  className="px-1.5 py-4 text-center text-body-sm text-content-neutral-subtle"
+                >
                   {emptyText}
                 </div>
               ) : (
@@ -201,9 +254,16 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                           <Separator />
                         </div>
                       ) : null}
-                      <div role="group" aria-labelledby={name ? gid : undefined}>
+                      <div
+                        role="group"
+                        aria-labelledby={name ? gid : undefined}
+                      >
                         {name ? (
-                          <div id={gid} role="presentation" className="px-1.5 py-1 text-label-sm text-content-neutral-subtle">
+                          <div
+                            id={gid}
+                            role="presentation"
+                            className="px-1.5 py-1 text-label-sm text-content-neutral-subtle"
+                          >
                             {name}
                           </div>
                         ) : null}
@@ -219,7 +279,11 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                               data-active={active === o.value || undefined}
                               data-slot="select-option"
                               onMouseDown={(e) => e.preventDefault()}
-                              onMouseMove={() => !o.disabled && active !== o.value && setActive(o.value)}
+                              onMouseMove={() =>
+                                !o.disabled &&
+                                active !== o.value &&
+                                setActive(o.value)
+                              }
                               onClick={() => !o.disabled && toggle(o.value)}
                               className={cn(
                                 "flex min-h-7 cursor-pointer items-center gap-1.5 rounded-md px-1.5 py-1 text-body-md text-content-neutral-emphasis",
@@ -230,13 +294,20 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                               <span
                                 aria-hidden
                                 data-state={on ? "checked" : "unchecked"}
-                                className={cn(checkboxVariants({ size: "md" }), "inline-flex items-center justify-center")}
+                                className={cn(
+                                  checkboxVariants({ size: "md" }),
+                                  "inline-flex items-center justify-center",
+                                )}
                               >
                                 {on ? <Check strokeWidth={3} /> : null}
                               </span>
-                              <span className="min-w-0 flex-1 truncate">{o.label}</span>
+                              <span className="min-w-0 flex-1 truncate">
+                                {o.label}
+                              </span>
                               {showDetail ? (
-                                <span className="max-w-32 shrink-0 truncate text-body-xs text-content-neutral-subtle">{o.detail ?? o.value}</span>
+                                <span className="max-w-32 shrink-0 truncate text-body-xs text-content-neutral-subtle">
+                                  {o.detail ?? o.value}
+                                </span>
                               ) : null}
                             </div>
                           );
@@ -248,8 +319,16 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               )}
             </div>
             <Separator />
-            <div className="flex items-center justify-between gap-2 p-2" data-slot="select-footer">
-              <Button variant="ghost" size="sm" disabled={!draft.length} onClick={() => setDraft([])}>
+            <div
+              className="flex items-center justify-between gap-2 p-2"
+              data-slot="select-footer"
+            >
+              <Button
+                variant="ghost"
+                size="sm"
+                disabled={!draft.length}
+                onClick={() => setDraft([])}
+              >
                 {clearLabel}
               </Button>
               <Button size="sm" onClick={apply}>

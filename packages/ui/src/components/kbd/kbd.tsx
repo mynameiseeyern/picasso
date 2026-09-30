@@ -26,10 +26,14 @@ const kbdVariants = cva(
       background: {
         // Default and Neutral are identical in Figma today. Both are kept so a
         // design reads straight into props; collapse them together if Figma does.
-        default: "bg-surface-neutral-subtle border-line-inverse text-content-neutral-muted",
-        neutral: "bg-surface-neutral-subtle border-line-inverse text-content-neutral-muted",
-        brand: "bg-surface-primary-subtle border-line-focused text-content-primary-emphasis",
-        opaque: "bg-surface-primary-subtle border-line-neutral-subtle text-content-primary-emphasis",
+        default:
+          "bg-surface-neutral-subtle border-line-inverse text-content-neutral-muted",
+        neutral:
+          "bg-surface-neutral-subtle border-line-inverse text-content-neutral-muted",
+        brand:
+          "bg-surface-primary-subtle border-line-focused text-content-primary-emphasis",
+        opaque:
+          "bg-surface-primary-subtle border-line-neutral-muted text-content-primary-emphasis",
         // For use on a filled surface (e.g. inside a primary Button).
         "on-emphasis":
           "bg-surface-layer-on-emphasis-emphasis/18 border-surface-layer-on-emphasis-subtle/10 " +
@@ -41,8 +45,7 @@ const kbdVariants = cva(
 );
 
 export interface KbdProps
-  extends React.HTMLAttributes<HTMLElement>,
-    VariantProps<typeof kbdVariants> {}
+  extends React.HTMLAttributes<HTMLElement>, VariantProps<typeof kbdVariants> {}
 
 export const Kbd = React.forwardRef<HTMLElement, KbdProps>(
   ({ className, background, ...props }, ref) => (

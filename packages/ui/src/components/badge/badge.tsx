@@ -46,7 +46,8 @@ const badgeVariants = cva(
         subtle: "",
         emphasis: "border-transparent",
         // Colourless on purpose — see the note above.
-        outline: "bg-surface-neutral-muted border-line-neutral-muted text-content-neutral-emphasis",
+        outline:
+          "bg-surface-neutral-muted border-line-neutral-muted text-content-neutral-emphasis",
       },
       size: {
         md: "px-1 py-0.5 text-label-sm [&>svg]:size-3",
@@ -55,17 +56,62 @@ const badgeVariants = cva(
     },
     compoundVariants: [
       // Subtle: the colour carries fill, edge and text.
-      { variant: "subtle", color: "neutral", class: "bg-surface-neutral-subtle border-line-neutral-subtle text-content-neutral-emphasis" },
-      { variant: "subtle", color: "success", class: "bg-surface-success-subtle border-line-success-muted text-content-success-emphasis" },
-      { variant: "subtle", color: "warning", class: "bg-surface-warning-subtle border-line-warning-muted text-content-warning-emphasis" },
-      { variant: "subtle", color: "danger", class: "bg-surface-danger-subtle border-line-danger-muted text-content-danger-emphasis" },
-      { variant: "subtle", color: "info", class: "bg-surface-info-subtle border-line-info-muted text-content-info-emphasis" },
+      {
+        variant: "subtle",
+        color: "neutral",
+        class:
+          "bg-surface-neutral-subtle border-line-neutral-muted text-content-neutral-emphasis",
+      },
+      {
+        variant: "subtle",
+        color: "success",
+        class:
+          "bg-surface-success-subtle border-line-success-muted text-content-success-emphasis",
+      },
+      {
+        variant: "subtle",
+        color: "warning",
+        class:
+          "bg-surface-warning-subtle border-line-warning-muted text-content-warning-emphasis",
+      },
+      {
+        variant: "subtle",
+        color: "danger",
+        class:
+          "bg-surface-danger-subtle border-line-danger-muted text-content-danger-emphasis",
+      },
+      {
+        variant: "subtle",
+        color: "info",
+        class:
+          "bg-surface-info-subtle border-line-info-muted text-content-info-emphasis",
+      },
       // Emphasis: solid fill, and the ink that was measured to sit on it.
-      { variant: "emphasis", color: "neutral", class: "bg-surface-neutral-emphasis text-content-on-neutral-emphasis" },
-      { variant: "emphasis", color: "success", class: "bg-surface-success-emphasis text-content-on-success-emphasis" },
-      { variant: "emphasis", color: "warning", class: "bg-surface-warning-emphasis text-content-on-warning-emphasis" },
-      { variant: "emphasis", color: "danger", class: "bg-surface-danger-emphasis text-content-on-danger-emphasis" },
-      { variant: "emphasis", color: "info", class: "bg-surface-info-emphasis text-content-on-info-emphasis" },
+      {
+        variant: "emphasis",
+        color: "neutral",
+        class: "bg-surface-neutral-emphasis text-content-on-neutral-emphasis",
+      },
+      {
+        variant: "emphasis",
+        color: "success",
+        class: "bg-surface-success-emphasis text-content-on-success-emphasis",
+      },
+      {
+        variant: "emphasis",
+        color: "warning",
+        class: "bg-surface-warning-emphasis text-content-on-warning-emphasis",
+      },
+      {
+        variant: "emphasis",
+        color: "danger",
+        class: "bg-surface-danger-emphasis text-content-on-danger-emphasis",
+      },
+      {
+        variant: "emphasis",
+        color: "info",
+        class: "bg-surface-info-emphasis text-content-on-info-emphasis",
+      },
     ],
     defaultVariants: { color: "neutral", variant: "subtle", size: "md" },
   },
@@ -86,7 +132,8 @@ export interface BadgeProps
   // `color` is a legacy presentational HTML attribute, so the native one is
   // dropped — the same collision Input has with `size` and TableCell with
   // `align`. Old HTML attribute names and good variant names overlap a lot.
-  extends Omit<React.ComponentProps<"span">, "color">,
+  extends
+    Omit<React.ComponentProps<"span">, "color">,
     VariantProps<typeof badgeVariants> {
   /** Render as the child element, keeping Badge's styling. */
   asChild?: boolean;
@@ -115,7 +162,10 @@ export function Badge({
         <span
           data-slot="badge-dot"
           aria-hidden
-          className={cn("size-2 shrink-0 rounded-full", DOT[color ?? "neutral"])}
+          className={cn(
+            "size-2 shrink-0 rounded-full",
+            DOT[color ?? "neutral"],
+          )}
         />
       ) : null}
       {/* Slottable, not a bare {children}: with asChild the dot and the label

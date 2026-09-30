@@ -183,7 +183,7 @@ describe("Drawer", () => {
     await open(user);
     expect(document.querySelector("[data-slot=drawer-header]")).toHaveClass(
       "border-b",
-      "border-line-neutral-subtle",
+      "border-line-neutral-muted",
     );
     expect(document.querySelector("[data-slot=drawer-footer]")).toHaveClass(
       "border-t",

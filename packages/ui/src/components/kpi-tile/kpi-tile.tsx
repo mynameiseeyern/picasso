@@ -32,14 +32,20 @@ import { Meter, type MeterStatus } from "../meter/meter";
  */
 export type KpiStatus = "none" | MeterStatus;
 
-const BADGE: Record<MeterStatus, { color: "success" | "warning" | "danger" | "neutral"; label: string }> = {
+const BADGE: Record<
+  MeterStatus,
+  { color: "success" | "warning" | "danger" | "neutral"; label: string }
+> = {
   healthy: { color: "success", label: "Healthy" },
   warning: { color: "warning", label: "Warning" },
   critical: { color: "danger", label: "Critical" },
   unknown: { color: "neutral", label: "Unknown" },
 };
 
-export interface KpiTileProps extends Omit<React.ComponentProps<"div">, "title"> {
+export interface KpiTileProps extends Omit<
+  React.ComponentProps<"div">,
+  "title"
+> {
   /** What the number is. heading/sm, muted — the number is the loud part. */
   label: React.ReactNode;
   /** The headline number. metric/xl. */
@@ -83,13 +89,19 @@ export function KpiTile({
       data-slot="kpi-tile"
       data-status={status}
       className={cn(
-        "flex flex-col rounded-xl border border-line-neutral-subtle bg-surface-card",
+        "flex flex-col rounded-xl border border-line-neutral-muted bg-surface-card",
         className,
       )}
       {...props}
     >
-      <div data-slot="kpi-tile-header" className="flex items-center gap-4 px-4 pt-4">
-        <div data-slot="kpi-tile-label" className="min-w-0 flex-1 text-heading-sm text-content-neutral-muted">
+      <div
+        data-slot="kpi-tile-header"
+        className="flex items-center gap-4 px-4 pt-4"
+      >
+        <div
+          data-slot="kpi-tile-label"
+          className="min-w-0 flex-1 text-heading-sm text-content-neutral-muted"
+        >
           {label}
         </div>
         {badge && showStatusBadge ? (
@@ -97,7 +109,11 @@ export function KpiTile({
             {statusLabel ?? badge.label}
           </Badge>
         ) : null}
-        {action ? <div data-slot="kpi-tile-action" className="shrink-0">{action}</div> : null}
+        {action ? (
+          <div data-slot="kpi-tile-action" className="shrink-0">
+            {action}
+          </div>
+        ) : null}
       </div>
 
       <div
@@ -105,23 +121,36 @@ export function KpiTile({
         className={cn("flex flex-col p-4", meter ? "gap-3" : "gap-2")}
       >
         <div className="flex items-baseline gap-1">
-          <span data-slot="kpi-tile-value" className="text-metric-xl text-content-neutral-emphasis">
+          <span
+            data-slot="kpi-tile-value"
+            className="text-metric-xl text-content-neutral-emphasis"
+          >
             {value}
           </span>
           {unit ? (
-            <span data-slot="kpi-tile-unit" className="text-body-md text-content-neutral-muted">
+            <span
+              data-slot="kpi-tile-unit"
+              className="text-body-md text-content-neutral-muted"
+            >
               {unit}
             </span>
           ) : null}
           {comparison ? (
-            <div data-slot="kpi-tile-comparison" className="ms-auto flex items-center">
+            <div
+              data-slot="kpi-tile-comparison"
+              className="ms-auto flex items-center"
+            >
               {comparison}
             </div>
           ) : null}
         </div>
 
         {meter ? (
-          <Meter value={meter.value} max={meter.max} status={tone ?? "unknown"} />
+          <Meter
+            value={meter.value}
+            max={meter.max}
+            status={tone ?? "unknown"}
+          />
         ) : null}
 
         {footer ? <div data-slot="kpi-tile-footer">{footer}</div> : null}

@@ -4,10 +4,22 @@ import { Alert, AlertDescription, AlertTitle } from "../components/alert/alert";
 import { Badge } from "../components/badge/badge";
 import { Button } from "../components/button/button";
 import {
-  Card, CardAction, CardContent, CardDescription, CardFooter,
-  CardHeader, CardHeaderText, CardTitle,
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardHeaderText,
+  CardTitle,
 } from "../components/card/card";
-import { Field, FieldControl, FieldDescription, FieldError, FieldLabel } from "../components/field/field";
+import {
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "../components/field/field";
 import { KpiTile } from "../components/kpi-tile/kpi-tile";
 import { Input } from "../components/input/input";
 import { Textarea } from "../components/textarea/textarea";
@@ -44,20 +56,39 @@ const statusClass = {
 } as const;
 
 const kpis = [
-  { label: "Endpoints online", value: "3,412", unit: undefined, delta: <Badge color="success">+2.1%</Badge> },
-  { label: "Mean MOS", value: "4.1", unit: "/ 5", delta: <Badge color="warning">−0.1</Badge> },
-  { label: "Open alerts", value: "7", unit: "of 1,240", delta: <Badge color="danger">3 critical</Badge> },
+  {
+    label: "Endpoints online",
+    value: "3,412",
+    unit: undefined,
+    delta: <Badge color="success">+2.1%</Badge>,
+  },
+  {
+    label: "Mean MOS",
+    value: "4.1",
+    unit: "/ 5",
+    delta: <Badge color="warning">−0.1</Badge>,
+  },
+  {
+    label: "Open alerts",
+    value: "7",
+    unit: "of 1,240",
+    delta: <Badge color="danger">3 critical</Badge>,
+  },
 ] as const;
 
 function Preview() {
   return (
     <div className="min-h-screen bg-surface-app text-content-neutral-emphasis font-sans">
       {/* Top bar */}
-      <header className="flex items-center gap-4 border-b border-line-neutral-subtle bg-surface-card px-6 py-3">
+      <header className="flex items-center gap-4 border-b border-line-neutral-muted bg-surface-card px-6 py-3">
         <span className="text-lg font-semibold">Fleet</span>
         <nav className="hidden items-center gap-1 sm:flex">
           {["Overview", "Endpoints", "Alerts", "Reports"].map((item, i) => (
-            <Button key={item} variant={i === 0 ? "secondary" : "ghost"} size="sm">
+            <Button
+              key={item}
+              variant={i === 0 ? "secondary" : "ghost"}
+              size="sm"
+            >
               {item}
             </Button>
           ))}
@@ -88,7 +119,13 @@ function Preview() {
             A tile is deliberately quieter than a Card: border/neutral/subtle
             and no shadow, because it lives in a row of its peers. */}
         {kpis.map((k) => (
-          <KpiTile key={k.label} label={k.label} value={k.value} unit={k.unit} comparison={k.delta} />
+          <KpiTile
+            key={k.label}
+            label={k.label}
+            value={k.value}
+            unit={k.unit}
+            comparison={k.delta}
+          />
         ))}
 
         {/* Table — header from the card, the table itself edge to edge */}
@@ -99,7 +136,11 @@ function Preview() {
                 <CardTitle>Trunks</CardTitle>
               </CardHeaderText>
               <CardAction>
-                <Input placeholder="Search trunks" size="sm" aria-label="Search trunks" />
+                <Input
+                  placeholder="Search trunks"
+                  size="sm"
+                  aria-label="Search trunks"
+                />
                 <Button variant="outline" size="sm">
                   <Download />
                   Export
@@ -117,16 +158,26 @@ function Preview() {
               </thead>
               <tbody>
                 {rows.map((r) => (
-                  <tr key={r.name} className="border-t border-line-neutral-subtle hover:bg-surface-neutral-subtle-hovered">
+                  <tr
+                    key={r.name}
+                    className="border-t border-line-neutral-muted hover:bg-surface-neutral-subtle-hovered"
+                  >
                     <td className="px-4 py-2.5 font-medium">{r.name}</td>
                     <td className="px-4 py-2.5">
                       <span className="inline-flex items-center gap-2">
-                        <span className={`size-2 rounded-full ${statusClass[r.status]}`} aria-hidden />
+                        <span
+                          className={`size-2 rounded-full ${statusClass[r.status]}`}
+                          aria-hidden
+                        />
                         <span className="capitalize">{r.status}</span>
                       </span>
                     </td>
-                    <td className="px-4 py-2.5 text-right font-mono">{r.mos}</td>
-                    <td className="px-4 py-2.5 text-right font-mono">{r.calls}</td>
+                    <td className="px-4 py-2.5 text-right font-mono">
+                      {r.mos}
+                    </td>
+                    <td className="px-4 py-2.5 text-right font-mono">
+                      {r.calls}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -139,7 +190,9 @@ function Preview() {
           <CardHeader>
             <CardHeaderText>
               <CardTitle>Alert threshold</CardTitle>
-              <CardDescription>Raise an alert when MOS falls below this value.</CardDescription>
+              <CardDescription>
+                Raise an alert when MOS falls below this value.
+              </CardDescription>
             </CardHeaderText>
           </CardHeader>
           <CardContent>
@@ -148,7 +201,9 @@ function Preview() {
               <FieldControl>
                 <Input placeholder="3.6" />
               </FieldControl>
-              <FieldDescription>MOS is measured to one decimal.</FieldDescription>
+              <FieldDescription>
+                MOS is measured to one decimal.
+              </FieldDescription>
             </Field>
             <Field invalid>
               <FieldLabel>Notify</FieldLabel>
