@@ -29,14 +29,17 @@
    breakpoint under a different name, so aligning cost nothing but names.
 
    640 is below the product's supported floor and we never design at it;
-   it is here so the ladder is Tailwind's, entire. 1440 is a canvas size
-   rather than a breakpoint — nothing in the layout changes at 1440 — and
-   lives at screen/canvas/laptop.                                        */
+   it is here so the ladder is Tailwind's, entire. 1440 is the one number
+   IR cares about that Tailwind has no rung for — there is nothing between
+   xl and 2xl — so it keeps its own name rather than a fake t-shirt size:
+   `laptop:`. Tailwind sorts breakpoints by value, not by declaration, so
+   it lands between xl and 2xl in the cascade. Verified in the browser.   */
 @theme {
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
+  --breakpoint-laptop: 1440px;
   --breakpoint-2xl: 1536px;
 }
 

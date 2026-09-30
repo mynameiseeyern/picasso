@@ -506,17 +506,15 @@
         "$value": "1280px",
         "$description": "Primary design canvas"
       },
+      "laptop": {
+        "$type": "dimension",
+        "$value": "1440px",
+        "$description": "Standard widescreen laptop. Not on Tailwind’s t-shirt ladder — there is no rung between xl and 2xl — so it carries its own name: `laptop:`."
+      },
       "2xl": {
         "$type": "dimension",
         "$value": "1536px",
         "$description": "Wide monitors / NOC displays"
-      }
-    },
-    "canvas": {
-      "laptop": {
-        "$type": "dimension",
-        "$value": "1440px",
-        "$description": "Standard widescreen laptop. A canvas size to design at, not a breakpoint — nothing in the layout changes at 1440"
       }
     },
     "$description": "Breakpoints use Tailwind’s names and Tailwind’s values, so `lg:` means the same thing in a token file, a Figma page name and a class name. screen/canvas/* are sizes to draw at, not breakpoints."
