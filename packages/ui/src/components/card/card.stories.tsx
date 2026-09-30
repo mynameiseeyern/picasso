@@ -5,9 +5,18 @@ import { Button } from "../button/button";
 import { Field, FieldLabel } from "../field/field";
 import { Input } from "../input/input";
 import {
-  Card, CardAction, CardContent, CardDescription, CardFooter,
-  CardHeader, CardHeaderText, CardTitle,
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardHeaderText,
+  CardTitle,
 } from "./card";
+
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 const meta: Meta<typeof Card> = {
   title: "Components/Card",
@@ -24,34 +33,38 @@ const meta: Meta<typeof Card> = {
   },
   argTypes: { size: { control: "inline-radio", options: ["default", "sm"] } },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof Card>;
 
 export const Default: Story = {
   render: (args) => (
     <div className="w-96">
-    <Card {...args}>
-      <CardHeader>
-        <CardHeaderText>
-          <CardTitle>Sydney-01</CardTitle>
-          <CardDescription>Probe reporting normally</CardDescription>
-        </CardHeaderText>
-        <CardAction>
-          <Button variant="ghost" size="icon-sm" aria-label="Probe options">
-            <MoreHorizontal />
+      <Card {...args}>
+        <CardHeader>
+          <CardHeaderText>
+            <CardTitle>Sydney-01</CardTitle>
+            <CardDescription>Probe reporting normally</CardDescription>
+          </CardHeaderText>
+          <CardAction>
+            <Button variant="ghost" size="icon-sm" aria-label="Probe options">
+              <MoreHorizontal />
+            </Button>
+          </CardAction>
+        </CardHeader>
+        <CardContent>
+          <p className="text-body-md text-content-neutral-emphasis">
+            Last call recorded 14 seconds ago. Disk at 38% of its allocation.
+          </p>
+        </CardContent>
+        <CardFooter>
+          <Button variant="outline" size="sm">
+            View calls
           </Button>
-        </CardAction>
-      </CardHeader>
-      <CardContent>
-        <p className="text-body-md text-content-neutral-emphasis">
-          Last call recorded 14 seconds ago. Disk at 38% of its allocation.
-        </p>
-      </CardContent>
-      <CardFooter>
-        <Button variant="outline" size="sm">View calls</Button>
-        <Button size="sm">Open probe</Button>
-      </CardFooter>
-    </Card>
+          <Button size="sm">Open probe</Button>
+        </CardFooter>
+      </Card>
     </div>
   ),
 };
@@ -87,7 +100,9 @@ export const Sections: Story = {
     <div className="flex flex-wrap gap-6 [&>*]:w-64">
       <Card>
         <CardContent>
-          <p className="text-body-md text-content-neutral-emphasis">Content only.</p>
+          <p className="text-body-md text-content-neutral-emphasis">
+            Content only.
+          </p>
         </CardContent>
       </Card>
       <Card>
@@ -100,10 +115,14 @@ export const Sections: Story = {
       </Card>
       <Card>
         <CardHeader>
-          <CardHeaderText><CardTitle>Header and footer</CardTitle></CardHeaderText>
+          <CardHeaderText>
+            <CardTitle>Header and footer</CardTitle>
+          </CardHeaderText>
         </CardHeader>
         <CardFooter>
-          <Button size="sm" variant="outline">Dismiss</Button>
+          <Button size="sm" variant="outline">
+            Dismiss
+          </Button>
         </CardFooter>
       </Card>
     </div>
@@ -116,60 +135,34 @@ export const AsAForm: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="w-96">
-    <Card>
-      <CardHeader>
-        <CardHeaderText>
-          <CardTitle>Sign in</CardTitle>
-          <CardDescription>Use your Integrated Research account.</CardDescription>
-        </CardHeaderText>
-      </CardHeader>
-      <CardContent>
-        <Field>
-          <FieldLabel required>Email</FieldLabel>
-          <Input type="email" placeholder="you@ir.com" />
-        </Field>
-        <Field>
-          <FieldLabel required>Password</FieldLabel>
-          <Input type="password" />
-        </Field>
-      </CardContent>
-      <CardFooter>
-        <Button>Sign in</Button>
-      </CardFooter>
-    </Card>
+      <Card>
+        <CardHeader>
+          <CardHeaderText>
+            <CardTitle>Sign in</CardTitle>
+            <CardDescription>
+              Use your Integrated Research account.
+            </CardDescription>
+          </CardHeaderText>
+        </CardHeader>
+        <CardContent>
+          <Field>
+            <FieldLabel required>Email</FieldLabel>
+            <Input type="email" placeholder="you@ir.com" />
+          </Field>
+          <Field>
+            <FieldLabel required>Password</FieldLabel>
+            <Input type="password" />
+          </Field>
+        </CardContent>
+        <CardFooter>
+          <Button>Sign in</Button>
+        </CardFooter>
+      </Card>
     </div>
   ),
 };
 
 /* ------------------------------------------------------------------ */
-
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 flex-1 min-w-80 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="min-h-28">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span className={isDo ? "text-content-success-emphasis" : "text-content-danger-emphasis"}>
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
 
 const Line = ({ children }: { children: React.ReactNode }) => (
   <p className="text-body-md text-content-neutral-emphasis">{children}</p>
@@ -179,18 +172,23 @@ export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8">
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="A card inside a card says “unit” twice about the same content.">
+    <GuidanceStory>
+      <Guidance
+        pair={pair("no-nesting")}
+        width="wide"
+        stage="tall"
+        dont={
           <Card>
             <CardContent>
               <Card size="sm">
-                <CardContent><Line>Nested</Line></CardContent>
+                <CardContent>
+                  <Line>Nested</Line>
+                </CardContent>
               </Card>
             </CardContent>
           </Card>
-        </Guidance>
-        <Guidance variant="do" caption="One border; divide the inside with a rule or a heading.">
+        }
+        do={
           <Card>
             <CardContent>
               <Line>First section</Line>
@@ -198,11 +196,14 @@ export const DoAndDont: Story = {
               <Line>Second section</Line>
             </CardContent>
           </Card>
-        </Guidance>
-      </div>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Three unrelated things sharing one border, which now claims they belong together.">
+      <Guidance
+        pair={pair("one-thing-per-card")}
+        width="wide"
+        stage="tall"
+        dont={
           <Card>
             <CardContent>
               <Line>Probe health</Line>
@@ -210,50 +211,83 @@ export const DoAndDont: Story = {
               <Line>Release notes</Line>
             </CardContent>
           </Card>
-        </Guidance>
-        <Guidance variant="do" caption="One card per thing, so the border earns its keep.">
+        }
+        do={
           <div className="flex flex-col gap-2">
-            <Card size="sm"><CardContent><Line>Probe health</Line></CardContent></Card>
-            <Card size="sm"><CardContent><Line>Billing contact</Line></CardContent></Card>
+            <Card size="sm">
+              <CardContent>
+                <Line>Probe health</Line>
+              </CardContent>
+            </Card>
+            <Card size="sm">
+              <CardContent>
+                <Line>Billing contact</Line>
+              </CardContent>
+            </Card>
           </div>
-        </Guidance>
-      </div>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Actions in four places — the header, the body, and the footer.">
+      <Guidance
+        pair={pair("actions-belong-together")}
+        width="wide"
+        stage="tall"
+        dont={
           <Card size="sm">
             <CardHeader>
-              <CardHeaderText><CardTitle>Sydney-01</CardTitle></CardHeaderText>
-              <CardAction><Button size="xs" variant="ghost">Edit</Button></CardAction>
+              <CardHeaderText>
+                <CardTitle>Sydney-01</CardTitle>
+              </CardHeaderText>
+              <CardAction>
+                <Button size="xs" variant="ghost">
+                  Edit
+                </Button>
+              </CardAction>
             </CardHeader>
             <CardContent>
               <Line>Reporting normally.</Line>
               <div className="flex gap-2">
-                <Button size="xs" variant="outline">Restart</Button>
-                <Button size="xs" variant="outline">Logs</Button>
+                <Button size="xs" variant="outline">
+                  Restart
+                </Button>
+                <Button size="xs" variant="outline">
+                  Logs
+                </Button>
               </div>
             </CardContent>
-            <CardFooter><Button size="xs">Open</Button></CardFooter>
+            <CardFooter>
+              <Button size="xs">Open</Button>
+            </CardFooter>
           </Card>
-        </Guidance>
-        <Guidance variant="do" caption="Per-card actions in the header; the ones that finish the job in the footer.">
+        }
+        do={
           <Card size="sm">
             <CardHeader>
-              <CardHeaderText><CardTitle>Sydney-01</CardTitle></CardHeaderText>
+              <CardHeaderText>
+                <CardTitle>Sydney-01</CardTitle>
+              </CardHeaderText>
               <CardAction>
-                <Button size="icon-sm" variant="ghost" aria-label="Probe options">
+                <Button
+                  size="icon-sm"
+                  variant="ghost"
+                  aria-label="Probe options"
+                >
                   <MoreHorizontal />
                 </Button>
               </CardAction>
             </CardHeader>
-            <CardContent><Line>Reporting normally.</Line></CardContent>
+            <CardContent>
+              <Line>Reporting normally.</Line>
+            </CardContent>
             <CardFooter>
-              <Button size="xs" variant="outline">Logs</Button>
+              <Button size="xs" variant="outline">
+                Logs
+              </Button>
               <Button size="xs">Open probe</Button>
             </CardFooter>
           </Card>
-        </Guidance>
-      </div>
-    </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

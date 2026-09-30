@@ -1,7 +1,10 @@
 {
   "component": "Button",
   "summary": "Triggers an action. Verb first, naming the outcome.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "22:267" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "22:267"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "shadcn",
   "pairs": [
@@ -45,6 +48,12 @@
       "do": "Leave it at its variant height.",
       "why": "Its vertical padding is inert, so a HUG instance collapses to 16–18px. This broke 22 instances once already.",
       "source": "audit §17.1"
+    },
+    {
+      "id": "one-primary-per-row",
+      "dont": "Put two primary buttons side by side.",
+      "do": "One primary; everything else a step quieter.",
+      "why": "Primary means “this is the next thing to do”. Two of them means neither is, and the reader has to work out the hierarchy the design was supposed to give them."
     },
     {
       "id": "submit-and-ok",

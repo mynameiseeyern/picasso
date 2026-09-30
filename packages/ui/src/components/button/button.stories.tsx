@@ -2,7 +2,18 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Download, Plus, Trash2 } from "lucide-react";
 import { Button } from "./button";
 
-const variants = ["default", "neutral", "secondary", "outline", "ghost", "destructive", "link"] as const;
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+
+const variants = [
+  "default",
+  "neutral",
+  "secondary",
+  "outline",
+  "ghost",
+  "destructive",
+  "link",
+] as const;
 const textSizes = ["xs", "sm", "md", "lg"] as const;
 const iconSizes = ["icon-xs", "icon-sm", "icon-md", "icon-lg"] as const;
 
@@ -26,6 +37,8 @@ const meta: Meta<typeof Button> = {
   },
   args: { children: "Save changes", variant: "default", size: "md" },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof Button>;
 
@@ -94,95 +107,81 @@ export const States: Story = {
 /* Guidance — rendered, so it breaks when the component does           */
 /* ------------------------------------------------------------------ */
 
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 flex-1 min-w-64 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="flex min-h-16 items-center gap-3">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span className={isDo ? "text-content-success-emphasis" : "text-content-danger-emphasis"}>
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
-const Pair = ({ children }: { children: React.ReactNode }) => (
-  <div className="flex flex-wrap gap-4">{children}</div>
-);
-
 export const DoAndDont: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8">
-      <Pair>
-        <Guidance variant="dont" caption="“Submit” names the mechanism, not the outcome.">
-          <Button>Submit</Button>
-          <Button variant="secondary">Cancel</Button>
-        </Guidance>
-        <Guidance variant="do" caption="Verb first, naming what happens.">
-          <Button>Save changes</Button>
-          <Button variant="secondary">Cancel</Button>
-        </Guidance>
-      </Pair>
+    <GuidanceStory>
+      <Guidance
+        pair={pair("submit-and-ok")}
+        width="narrow"
+        stage="short"
+        dont={
+          <>
+            <Button>Submit</Button>
+            <Button variant="secondary">Cancel</Button>
+          </>
+        }
+        do={
+          <>
+            <Button>Save changes</Button>
+            <Button variant="secondary">Cancel</Button>
+          </>
+        }
+      />
 
-      <Pair>
-        <Guidance
-          variant="dont"
-          caption="Two primaries in one row — nothing is the obvious next step."
-        >
-          <Button>Save changes</Button>
-          <Button>Export CSV</Button>
-        </Guidance>
-        <Guidance variant="do" caption="One primary; everything else recedes.">
-          <Button>Save changes</Button>
-          <Button variant="ghost">Export CSV</Button>
-        </Guidance>
-      </Pair>
+      <Guidance
+        pair={pair("one-primary-per-row")}
+        width="narrow"
+        stage="short"
+        dont={
+          <>
+            <Button>Save changes</Button>
+            <Button>Export CSV</Button>
+          </>
+        }
+        do={
+          <>
+            <Button>Save changes</Button>
+            <Button variant="ghost">Export CSV</Button>
+          </>
+        }
+      />
 
-      <Pair>
-        <Guidance
-          variant="dont"
-          caption="Ghost with a resting fill reads as Outline — the hierarchy collapses."
-        >
-          <Button variant="outline">Filter</Button>
-          <Button variant="outline">Sort</Button>
-          <Button variant="outline">Group</Button>
-        </Guidance>
-        <Guidance variant="do" caption="Ghost stays transparent until hover.">
-          <Button variant="ghost">Filter</Button>
-          <Button variant="ghost">Sort</Button>
-          <Button variant="ghost">Group</Button>
-        </Guidance>
-      </Pair>
+      <Guidance
+        pair={pair("ghost-resting-fill")}
+        width="narrow"
+        stage="short"
+        dont={
+          <>
+            <Button variant="outline">Filter</Button>
+            <Button variant="outline">Sort</Button>
+            <Button variant="outline">Group</Button>
+          </>
+        }
+        do={
+          <>
+            <Button variant="ghost">Filter</Button>
+            <Button variant="ghost">Sort</Button>
+            <Button variant="ghost">Group</Button>
+          </>
+        }
+      />
 
-      <Pair>
-        <Guidance variant="dont" caption="Icon-only with no accessible name announces nothing.">
+      <Guidance
+        pair={pair("icon-only-needs-label")}
+        width="narrow"
+        stage="short"
+        dont={
           <Button size="icon-md">
             <Trash2 />
           </Button>
-        </Guidance>
-        <Guidance variant="do" caption="aria-label on every icon-* size.">
+        }
+        do={
           <Button size="icon-md" aria-label="Delete probe">
             <Trash2 />
           </Button>
-        </Guidance>
-      </Pair>
-    </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

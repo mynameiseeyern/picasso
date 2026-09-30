@@ -3,6 +3,9 @@ import * as React from "react";
 import { Check, Clock } from "lucide-react";
 import { Badge } from "./badge";
 
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+
 const meta: Meta<typeof Badge> = {
   title: "Components/Badge",
   component: Badge,
@@ -17,13 +20,21 @@ const meta: Meta<typeof Badge> = {
     },
   },
   argTypes: {
-    color: { control: "inline-radio", options: ["neutral", "success", "warning", "danger", "info"] },
-    variant: { control: "inline-radio", options: ["subtle", "emphasis", "outline"] },
+    color: {
+      control: "inline-radio",
+      options: ["neutral", "success", "warning", "danger", "info"],
+    },
+    variant: {
+      control: "inline-radio",
+      options: ["subtle", "emphasis", "outline"],
+    },
     size: { control: "inline-radio", options: ["md", "lg"] },
     dot: { control: "boolean" },
   },
   args: { children: "Healthy", color: "success" },
 };
+const pair = pairOf(guidance);
+
 export default meta;
 type Story = StoryObj<typeof Badge>;
 
@@ -37,7 +48,9 @@ export const Colors: Story = {
     <div className="flex flex-col gap-4">
       {(["subtle", "emphasis", "outline"] as const).map((variant) => (
         <div key={variant} className="flex items-center gap-3">
-          <span className="w-20 text-label-sm text-content-neutral-muted">{variant}</span>
+          <span className="w-20 text-label-sm text-content-neutral-muted">
+            {variant}
+          </span>
           {COLORS.map((color) => (
             <Badge key={color} variant={variant} color={color}>
               {color}
@@ -46,8 +59,8 @@ export const Colors: Story = {
         </div>
       ))}
       <p className="max-w-lg text-body-sm text-content-neutral-muted">
-        Outline is deliberately colourless — all five render the same. Use subtle for a quiet
-        coloured badge.
+        Outline is deliberately colourless — all five render the same. Use
+        subtle for a quiet coloured badge.
       </p>
     </div>
   ),
@@ -110,34 +123,6 @@ export const AsALink: Story = {
 
 /* ------------------------------------------------------------------ */
 
-function Guidance({
-  variant,
-  caption,
-  children,
-}: {
-  variant: "do" | "dont";
-  caption: string;
-  children: React.ReactNode;
-}) {
-  const isDo = variant === "do";
-  return (
-    <figure
-      className={
-        "m-0 min-w-72 flex-1 rounded-md border-2 p-4 " +
-        (isDo ? "border-line-success-emphasis" : "border-line-danger-emphasis")
-      }
-    >
-      <div className="flex min-h-20 items-center">{children}</div>
-      <figcaption className="mt-4 text-label-sm">
-        <span className={isDo ? "text-content-success-emphasis" : "text-content-danger-emphasis"}>
-          {isDo ? "✓ Do" : "✗ Don't"}
-        </span>
-        <span className="text-content-neutral-muted"> — {caption}</span>
-      </figcaption>
-    </figure>
-  );
-}
-
 const Row = ({ children }: { children: React.ReactNode }) => (
   <div className="flex items-center gap-2 text-body-md text-content-neutral-emphasis">
     {children}
@@ -148,58 +133,71 @@ export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="space-y-8">
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Status by colour alone — unreadable if you cannot separate the hues.">
+    <GuidanceStory>
+      <Guidance
+        pair={pair("never-colour-alone")}
+        dont={
           <Row>
             Sydney-01
             <Badge color="danger" variant="emphasis" aria-label="Critical">
               {" "}
             </Badge>
           </Row>
-        </Guidance>
-        <Guidance variant="do" caption="The word is the signal; the colour reinforces it.">
+        }
+        do={
           <Row>
             Sydney-01
             <Badge color="danger" dot>
               Critical
             </Badge>
           </Row>
-        </Guidance>
-      </div>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Three badges competing on one object.">
+      <Guidance
+        pair={pair("one-badge")}
+        dont={
           <Row>
             Sydney-01
             <Badge color="danger">Critical</Badge>
             <Badge color="info">v13.3</Badge>
             <Badge color="neutral">AU-East</Badge>
           </Row>
-        </Guidance>
-        <Guidance variant="do" caption="The one that changes what happens next.">
+        }
+        do={
           <Row>
             Sydney-01
             <Badge color="danger">Critical</Badge>
           </Row>
-        </Guidance>
-      </div>
+        }
+      />
 
-      <div className="flex flex-wrap gap-4">
-        <Guidance variant="dont" caption="Emphasis on every row, so the exception has nowhere left to go.">
+      <Guidance
+        pair={pair("emphasis-is-for-one-thing")}
+        stage="tall"
+        dont={
           <div className="flex flex-col gap-2">
             <Row>
-              Sydney-01 <Badge color="success" variant="emphasis">Healthy</Badge>
+              Sydney-01{" "}
+              <Badge color="success" variant="emphasis">
+                Healthy
+              </Badge>
             </Row>
             <Row>
-              Melbourne-02 <Badge color="success" variant="emphasis">Healthy</Badge>
+              Melbourne-02{" "}
+              <Badge color="success" variant="emphasis">
+                Healthy
+              </Badge>
             </Row>
             <Row>
-              Auckland-01 <Badge color="danger" variant="emphasis">Critical</Badge>
+              Auckland-01{" "}
+              <Badge color="danger" variant="emphasis">
+                Critical
+              </Badge>
             </Row>
           </div>
-        </Guidance>
-        <Guidance variant="do" caption="Subtle for the rest; emphasis earns attention.">
+        }
+        do={
           <div className="flex flex-col gap-2">
             <Row>
               Sydney-01 <Badge color="success">Healthy</Badge>
@@ -208,11 +206,14 @@ export const DoAndDont: Story = {
               Melbourne-02 <Badge color="success">Healthy</Badge>
             </Row>
             <Row>
-              Auckland-01 <Badge color="danger" variant="emphasis">Critical</Badge>
+              Auckland-01{" "}
+              <Badge color="danger" variant="emphasis">
+                Critical
+              </Badge>
             </Row>
           </div>
-        </Guidance>
-      </div>
-    </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };
