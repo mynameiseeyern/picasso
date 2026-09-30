@@ -372,3 +372,7 @@ export {
   appShellContentColumnVariants,
   type AppShellContentProps,
 } from "./components/app-shell/app-shell";
+export {
+  ThresholdSlider,
+  type ThresholdSliderProps,
+} from "./components/threshold-slider/threshold-slider";

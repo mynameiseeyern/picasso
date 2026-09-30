@@ -1,0 +1,39 @@
+{
+  "component": "ThresholdSlider",
+  "summary": "Two numbers that decide when a metric stops being fine — and the bands they create.",
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1106:40" },
+  "structureFrom": "figma",
+  "measurementsFrom": "figma",
+  "pairs": [
+    {
+      "id": "direction-is-the-numbers",
+      "dont": "Add a `direction` prop, or flip the bands by hand.",
+      "do": "Put the thresholds in the order the metric means and let the bands follow.",
+      "why": "`critical < warning` is what \"low is bad\" means. A separate flag is a second source of truth that can disagree with the numbers, and the disagreement is invisible until someone is paged."
+    },
+    {
+      "id": "colour-is-not-the-only-signal",
+      "dont": "Rely on the red, amber and green bands to say which is which.",
+      "do": "Keep the Critical and Warning labels above the thumbs.",
+      "why": "The bands are three hues along one bar, which is the hardest case for anyone with a red-green deficiency. The label over each thumb is what survives; the colour reinforces it."
+    },
+    {
+      "id": "thresholds-meet-not-cross",
+      "dont": "Let one threshold pass the other, or clamp silently to the track ends.",
+      "do": "Bound each thumb by its twin, and say so with aria-valuemin and aria-valuemax.",
+      "why": "Crossed thresholds invert the bands and mean nothing. A screen reader that is told the range is 0–100 when the real bound is 85 gives an answer the control will not honour."
+    },
+    {
+      "id": "units-belong-on-the-value",
+      "dont": "Show bare numbers and put the unit in the field label.",
+      "do": "Pass `format` so −80 reads as −80 dBm and 70 as 70%.",
+      "why": "Thresholds get read out of context — in a summary, an alert, a screen reader. A number with no unit is a number someone has to go and look up."
+    },
+    {
+      "id": "not-a-value-slider",
+      "dont": "Use it to report where a metric currently sits.",
+      "do": "Keep it for setting the two boundaries; show the live reading elsewhere.",
+      "why": "It is a configuration control. Putting the current value on the same bar makes the thing you are editing and the thing you are watching look like one control."
+    }
+  ]
+}
