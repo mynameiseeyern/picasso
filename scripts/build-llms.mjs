@@ -55,6 +55,35 @@ const pages = walk(join(ROOT, "docs")).sort().map((path) => {
   };
 });
 
+/* ---- repo-root pages ---------------------------------------------------
+ * AGENTS.md and CHANGELOG.md are read in the repo, not served by the site, so
+ * the walk above never saw them — which is how section 6's RTL rules came to
+ * be absent from every generated file while still being the law of the repo.
+ * They are listed by path, because nothing serves them a URL.
+ */
+
+const firstSentence = (body) => {
+  for (const line of body.split("\n")) {
+    const t = line.trim();
+    if (!t || t.startsWith("#") || t.startsWith("---")) continue;
+    return t.replace(/[*`]/g, "").split(/(?<=\.)\s/)[0];
+  }
+  return "";
+};
+
+const repoPages = ["AGENTS.md", "CHANGELOG.md"]
+  .filter((rel) => existsSync(join(ROOT, rel)))
+  .map((rel) => {
+    const [meta, body] = frontmatter(readFileSync(join(ROOT, rel), "utf8"));
+    const trimmed = body.trim();
+    return {
+      rel,
+      title: meta.title ?? rel,
+      description: meta.description ?? firstSentence(trimmed),
+      body: trimmed,
+    };
+  });
+
 /* ---- components ------------------------------------------------------- */
 
 const compDir = join(ROOT, "packages/ui/src/components");
@@ -141,6 +170,11 @@ const index = [
       : [];
   }),
   components.length ? `## components\n\n${components.map((c) => `- ${c.component}: ${c.summary}`).join("\n")}\n` : "",
+  repoPages.length
+    ? `## in the repo\n\nNot served by the site. Read them where they live.\n\n${repoPages
+        .map((p) => `- \`${p.rel}\` — ${p.description}`)
+        .join("\n")}\n`
+    : "",
   `## other files\n`,
   `- ${SITE}/llms-full.txt — everything, concatenated`,
   `- ${SITE}/llms-foundations.txt — grid, spacing, radius, typography, colour, content`,
@@ -153,7 +187,8 @@ const section = (names) =>
 
 const files = {
   "llms.txt": index,
-  "llms-full.txt": header("full documentation") + "\n" + pages.map((p) => p.body).join("\n\n---\n\n") +
+  "llms-full.txt": header("full documentation") + "\n" +
+    [...pages, ...repoPages].map((p) => p.body).join("\n\n---\n\n") +
     (components.length ? "\n\n---\n\n# Components\n\n" + components.map(componentText).join("\n\n") : "") +
     "\n\n---\n\n# Tokens\n\n" + tokenLines.join("\n"),
   "llms-foundations.txt": header("foundations and content") + "\n" + section(["foundations", "content"]),
@@ -168,6 +203,6 @@ for (const [name, body] of Object.entries(files)) {
 
 console.log(
   `${Object.keys(files).length} files → public/\n` +
-  `  ${pages.length} doc pages, ${components.length} components, ` +
+  `  ${pages.length} doc pages, ${repoPages.length} repo pages, ${components.length} components, ` +
   `${tokenLines.filter((l) => l.startsWith("| ")).length - 5} tokens`,
 );
