@@ -21,6 +21,25 @@ function at(container: HTMLElement, which: string) {
   return el.style.getPropertyValue("--at");
 }
 
+function labelAt(container: HTMLElement, which: string) {
+  const el = container.querySelector<HTMLElement>(
+    `[data-slot="threshold-slider-label-${which}"]`,
+  );
+  return el ? el.style.getPropertyValue("--at") : null;
+}
+
+/**
+ * jsdom reports every box as 0 wide, so the label-collision logic — the only
+ * part of this component that depends on real geometry — needs a track width
+ * handed to it.
+ */
+function withTrackWidth(width: number) {
+  const spy = vi
+    .spyOn(Element.prototype, "getBoundingClientRect")
+    .mockReturnValue({ width, height: 8, top: 0, left: 0 } as DOMRect);
+  return () => spy.mockRestore();
+}
+
 describe("ThresholdSlider", () => {
   it("reads low-is-bad from the order of the thresholds", () => {
     // Network MOS: 1–5, critical 3, warning 4. Higher is better.
@@ -182,6 +201,79 @@ describe("ThresholdSlider", () => {
     expect(warn).toHaveAttribute("aria-disabled", "true");
     await userEvent.keyboard("{ArrowRight}");
     expect(onChange).not.toHaveBeenCalled();
+  });
+
+  it("leaves each label on its own thumb when they are far apart", () => {
+    const restore = withTrackWidth(800);
+    try {
+      // 70% and 85% of 800 are 560 and 680 — 120 apart, well clear of the 64
+      // the pair needs, so neither label is pushed.
+      const { container } = render(
+        <ThresholdSlider min={0} max={100} warning={70} critical={85} />,
+      );
+      expect(labelAt(container, "warning")).toBe("70%");
+      expect(labelAt(container, "critical")).toBe("85%");
+    } finally {
+      restore();
+    }
+  });
+
+  it("pushes the labels to either side when the thumbs close in", () => {
+    const restore = withTrackWidth(400);
+    try {
+      // 80% and 85% of 400 are 320 and 340: 20 apart, so the pair separates
+      // about its midpoint of 330 and lands 64 apart, at 298 and 362.
+      const { container } = render(
+        <ThresholdSlider min={0} max={100} warning={80} critical={85} />,
+      );
+      expect(labelAt(container, "warning")).toBe("298px");
+      expect(labelAt(container, "critical")).toBe("362px");
+      // The thumbs themselves do not move.
+      expect(at(container, "warning")).toBe("80%");
+      expect(at(container, "critical")).toBe("85%");
+    } finally {
+      restore();
+    }
+  });
+
+  it("slides the pushed pair back inside the track at the ends", () => {
+    const restore = withTrackWidth(400);
+    try {
+      // Both thumbs sit near the maximum, so separating them about their
+      // midpoint would put the higher label past the right edge. The pair is
+      // slid back until it fits: 306 and 370, with 370 + 30 = 400.
+      const { container } = render(
+        <ThresholdSlider min={0} max={100} warning={96} critical={99} />,
+      );
+      expect(labelAt(container, "warning")).toBe("306px");
+      expect(labelAt(container, "critical")).toBe("370px");
+    } finally {
+      restore();
+    }
+  });
+
+  it("drops the critical label when the thumbs meet", () => {
+    const restore = withTrackWidth(400);
+    try {
+      // Equal thresholds mean no warning band, and two labels reading the
+      // same number. The warning one survives, on the boundary.
+      const { container } = render(
+        <ThresholdSlider min={0} max={100} warning={70} critical={70} />,
+      );
+      expect(labelAt(container, "critical")).toBeNull();
+      expect(labelAt(container, "warning")).toBe("70%");
+      // Both thumbs stay: each is still separately settable.
+      expect(
+        screen.getByRole("slider", { name: "Critical threshold" }),
+      ).toBeInTheDocument();
+      expect(bands(container)).toEqual([
+        { tone: "critical", span: "70%" },
+        { tone: "warning", span: "0%" },
+        { tone: "healthy", span: "30%" },
+      ]);
+    } finally {
+      restore();
+    }
   });
 
   it("does not fire onChange when a key would not move anything", async () => {

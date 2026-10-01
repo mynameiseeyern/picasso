@@ -27,6 +27,14 @@ import { cn } from "@/lib/utils";
  * w70/c85 gives 487/105/104; Memory w75/c90 gives 522/104/70; Disk c5/w15
  * gives 35/69/592. Platform MOS is Network MOS again, number for number.
  *
+ * ⭐ The labels move, the thumbs do not. Two 60px labels over thumbs 20px
+ * apart are unreadable, so once they would overlap they separate symmetrically
+ * about their midpoint — the lower one left, the higher one right — and the
+ * pair slides back inside the track if that pushed an end off it. When the
+ * thumbs meet exactly there is no warning band at all and both labels would
+ * carry the same number, so the critical one is dropped and the warning one
+ * stays on the boundary.
+ *
  * ⚠️ The two Figma sets disagree on the thumb colour. The preset gallery
  * binds `status/warning` and `status/critical`; the state set binds
  * `bg/warning/emphasis` and `bg/danger/emphasis`, which are warning-500 and
@@ -44,6 +52,13 @@ import { cn } from "@/lib/utils";
  * Clarion says so — so they live in the stories and in Metrics, not in this
  * package. A design system should not ship a company's alert thresholds.
  */
+
+/**
+ * Label geometry in px, because the overlap is a px problem: `w-15` is 60, and
+ * 4 of air keeps the two numbers from touching at the seam.
+ */
+const LABEL_W = 60;
+const MIN_SEP = LABEL_W + 4;
 
 /** Positions and a label, as a percentage along the track. */
 function pct(value: number, min: number, max: number) {
@@ -105,6 +120,41 @@ export function ThresholdSlider({
 
   const cPct = pct(critical, min, max);
   const wPct = pct(warning, min, max);
+
+  // The thumbs have met, so the warning band has no width and both labels
+  // would read the same number. Only the warning one is drawn.
+  const coincident = warning === critical;
+
+  // The track is measured because the labels are a fixed pixel width and the
+  // track is fluid: whether 3 and 4 on a 1–5 scale collide depends entirely on
+  // how wide the control happens to be.
+  const [trackW, setTrackW] = React.useState(0);
+  React.useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    setTrackW(el.getBoundingClientRect().width);
+    const ro = new ResizeObserver((entries) => {
+      setTrackW(entries[0].contentRect.width);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // Null means each label sits on its own thumb, which is the common case.
+  const labelX = React.useMemo(() => {
+    if (!trackW || coincident) return null;
+    const half = LABEL_W / 2;
+    const loX = (Math.min(cPct, wPct) / 100) * trackW;
+    const hiX = (Math.max(cPct, wPct) / 100) * trackW;
+    if (hiX - loX >= MIN_SEP) return null;
+    let lo = (loX + hiX) / 2 - MIN_SEP / 2;
+    if (lo < half) lo = half;
+    if (lo + MIN_SEP + half > trackW) lo = trackW - half - MIN_SEP;
+    const hi = lo + MIN_SEP;
+    return cPct < wPct
+      ? { critical: lo, warning: hi }
+      : { critical: hi, warning: lo };
+  }, [trackW, coincident, cPct, wPct]);
 
   const bands = higherIsBetter
     ? [
@@ -215,31 +265,37 @@ export function ThresholdSlider({
           height of a label over a value rather than measured from an
           absolutely-positioned child, which would collapse it to nothing. */}
       <div className="relative h-8.5">
-        {thumbs.map(({ which, value, label, at }) => (
-          <span
-            key={which}
-            data-slot={`threshold-slider-label-${which}`}
-            // A custom property plus Tailwind's `left-(--var)` shorthand is
-            // the house pattern for a dynamic value — an inline `left` is
-            // refused by no-inline-styles and a calc() by no-arbitrary-values.
-            style={{ "--at": `${at}%` } as React.CSSProperties}
-            className="absolute top-0 flex w-15 -translate-x-1/2 flex-col items-center left-(--at)"
-          >
-            <span className="text-label-sm text-content-neutral-muted">
-              {label}
-            </span>
+        {thumbs
+          .filter(({ which }) => !(coincident && which === "critical"))
+          .map(({ which, value, label, at }) => (
             <span
-              className={cn(
-                "text-code-xs",
-                which === "critical"
-                  ? "text-content-danger-emphasis"
-                  : "text-content-warning-emphasis",
-              )}
+              key={which}
+              data-slot={`threshold-slider-label-${which}`}
+              // A custom property plus Tailwind's `left-(--var)` shorthand is
+              // the house pattern for a dynamic value — an inline `left` is
+              // refused by no-inline-styles and a calc() by no-arbitrary-values.
+              style={
+                {
+                  "--at": labelX ? `${labelX[which]}px` : `${at}%`,
+                } as React.CSSProperties
+              }
+              className="absolute top-0 flex w-15 -translate-x-1/2 flex-col items-center left-(--at)"
             >
-              {format(value)}
+              <span className="text-label-sm text-content-neutral-muted">
+                {label}
+              </span>
+              <span
+                className={cn(
+                  "text-code-xs",
+                  which === "critical"
+                    ? "text-content-danger-emphasis"
+                    : "text-content-warning-emphasis",
+                )}
+              >
+                {format(value)}
+              </span>
             </span>
-          </span>
-        ))}
+          ))}
       </div>
 
       <div ref={trackRef} className="relative h-2">
