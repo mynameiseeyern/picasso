@@ -229,6 +229,9 @@ const KPIS = [
   { label: "Jitter", value: "18", unit: "ms", status: "warning" },
   { label: "Packet loss", value: "0.4", unit: "%", status: "healthy" },
   { label: "Failed calls", value: "12", status: "critical" },
+  { label: "Calls per second", value: "42" },
+  { label: "Registered endpoints", value: "3,906" },
+  { label: "Trunk utilisation", value: "71", unit: "%", status: "healthy" },
 ] as const;
 
 const ROWS = [
@@ -622,7 +625,7 @@ export const DoAndDont: Story = {
         width="wide"
         stage="tall"
         dont={
-          <svg viewBox="0 0 400 100" preserveAspectRatio="none" aria-hidden className="block aspect-video w-full rounded-md bg-surface-neutral-subtle">
+          <svg viewBox="0 0 400 100" preserveAspectRatio="none" aria-hidden className="block aspect-video w-2/3 rounded-md bg-surface-neutral-subtle">
             <path d="M0 70 L80 66 L160 48 L240 44 L320 52 L400 34" fill="none" className="stroke-chart-1" strokeWidth={2} vectorEffect="non-scaling-stroke" />
           </svg>
         }
