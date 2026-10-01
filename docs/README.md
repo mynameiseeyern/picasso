@@ -63,6 +63,12 @@ decided it, not what it was before.
 
 A reader arrives mid-task with a question. Answer that question.
 
+**Link by file, the way GitHub does.** `[Colour](colour.md)` from a page in the
+same folder, `[Content](../content/)` for a section, `[AGENTS.md](../../AGENTS.md)`
+for a file outside `docs/`. The site rewrites each one to its page — or to the
+file on GitHub — when it builds, and a link to a page that does not exist fails
+the build.
+
 ## Direction of truth
 
 **The repo is the source of truth for the design system.** Figma is a consumer:
