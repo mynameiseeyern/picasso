@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { Meter, litSegments } from "./meter";
 
-const lit = (el: HTMLElement) => [...el.children].filter((c) => (c as HTMLElement).dataset.lit).length;
+const lit = (el: HTMLElement) =>
+  [...el.children].filter((c) => (c as HTMLElement).dataset.lit).length;
 
 describe("Meter", () => {
   it("moves in 20% steps and always rounds up", () => {
@@ -51,5 +52,29 @@ describe("Meter", () => {
     // Figma: "Decorative on its own — always pair with a visible value."
     // The number beside it is what gets read; announcing both says it twice.
     expect(screen.getByTestId("m")).toHaveAttribute("aria-hidden");
+  });
+
+  it("lights a neutral meter in grey — a value nobody is grading", () => {
+    // Figma's Status=Neutral at 60% lights six segments in fg/neutral/muted.
+    // It used to be unreachable: KpiTile sent status="none" through as
+    // "unknown", so a tile with a perfectly good reading showed an empty bar.
+    const { container } = render(
+      <Meter value={60} max={100} status="neutral" />,
+    );
+    const segs = [...container.querySelector('[data-slot="meter"]')!.children];
+    const lit = segs.filter((s) =>
+      s.className.includes("bg-content-neutral-muted"),
+    );
+    expect(lit).toHaveLength(6);
+  });
+
+  it("keeps unknown empty, which is not the same as neutral", () => {
+    const { container } = render(
+      <Meter value={60} max={100} status="unknown" />,
+    );
+    const segs = [...container.querySelector('[data-slot="meter"]')!.children];
+    expect(
+      segs.filter((s) => s.className.includes("bg-content-neutral-muted")),
+    ).toHaveLength(0);
   });
 });

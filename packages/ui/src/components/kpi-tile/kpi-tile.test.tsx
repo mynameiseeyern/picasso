@@ -126,4 +126,22 @@ describe("KpiTile", () => {
     ).not.toBeNull();
     expect(tile.querySelector("[data-slot=kpi-tile-footer]")).not.toBeNull();
   });
+
+  it("sends status=none to the meter as neutral, not unknown", () => {
+    const { container } = render(
+      <KpiTile
+        label="JITTER"
+        value="12"
+        unit="ms"
+        meter={{ value: 60, max: 100 }}
+      />,
+    );
+    const meter = container.querySelector('[data-slot="meter"]')!;
+    expect(meter).toHaveAttribute("data-status", "neutral");
+    expect(
+      [...meter.children].filter((s) =>
+        s.className.includes("bg-content-neutral-muted"),
+      ),
+    ).toHaveLength(6);
+  });
 });

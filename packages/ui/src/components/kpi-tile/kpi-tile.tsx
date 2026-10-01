@@ -39,6 +39,9 @@ const BADGE: Record<
   healthy: { color: "success", label: "Healthy" },
   warning: { color: "warning", label: "Warning" },
   critical: { color: "danger", label: "Critical" },
+  // A value nobody is grading still gets a word, so the grey meter is not
+  // the only thing saying so.
+  neutral: { color: "neutral", label: "No threshold" },
   unknown: { color: "neutral", label: "Unknown" },
 };
 
@@ -149,7 +152,9 @@ export function KpiTile({
           <Meter
             value={meter.value}
             max={meter.max}
-            status={tone ?? "unknown"}
+            // `none` is Figma's Status=Neutral — a value with no thresholds,
+            // whose meter still lights, in grey. It is not "no reading".
+            status={tone ?? "neutral"}
           />
         ) : null}
 

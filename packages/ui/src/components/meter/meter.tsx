@@ -25,19 +25,33 @@ import { cn } from "@/lib/utils";
 const SEGMENTS = 10;
 const STEP = 20; // percent per step; two segments
 
-export type MeterStatus = "healthy" | "warning" | "critical" | "unknown";
+export type MeterStatus =
+  "healthy" | "warning" | "critical" | "neutral" | "unknown";
 
 const LIT: Record<MeterStatus, string> = {
   healthy: "bg-status-healthy",
   warning: "bg-status-warning",
   critical: "bg-status-critical",
-  // No reading — the bar stays empty rather than showing a grey "amount".
+  // Figma's `Status=Neutral`: a metric with a value and no thresholds. It
+  // lights in fg/neutral/muted — the reading is real, it just is not being
+  // judged. This was missing, so a status-less tile showed an empty bar.
+  neutral: "bg-content-neutral-muted",
+  // ⚠️ Not in Figma. `unknown` is no reading at all, which is a different
+  // thing from a reading nobody grades, and the file has no variant for it.
+  // The bar stays empty, because a grey "amount" would be a number we do
+  // not have. Added deliberately; raised rather than assumed.
   unknown: "bg-line-neutral-muted",
 };
 
 /** Segments lit for a value, in 20% steps, rounded up. Exported for tests. */
 export function litSegments(value: number, max: number) {
-  if (!Number.isFinite(value) || !Number.isFinite(max) || max <= 0 || value <= 0) return 0;
+  if (
+    !Number.isFinite(value) ||
+    !Number.isFinite(max) ||
+    max <= 0 ||
+    value <= 0
+  )
+    return 0;
   const pct = Math.min(100, (value / max) * 100);
   return Math.min(SEGMENTS, Math.ceil(pct / STEP) * (SEGMENTS / (100 / STEP)));
 }
@@ -49,7 +63,13 @@ export interface MeterProps extends React.ComponentProps<"div"> {
   status?: MeterStatus;
 }
 
-export function Meter({ className, value, max = 100, status = "healthy", ...props }: MeterProps) {
+export function Meter({
+  className,
+  value,
+  max = 100,
+  status = "healthy",
+  ...props
+}: MeterProps) {
   const lit = status === "unknown" ? 0 : litSegments(value, max);
   return (
     <div
