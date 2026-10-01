@@ -39,7 +39,7 @@ const buttonGroupVariants = cva(
     "[&>*]:rounded-none " +
     // A focused or hovered button lifts above its neighbours, so its ring is
     // drawn in full instead of being painted over by the next button.
-    "[&>*:hover]:z-10 [&>*:focus-visible]:z-10 [&>*:focus-within]:z-10",
+    "[&>*:hover]:z-raised [&>*:focus-visible]:z-raised [&>*:focus-within]:z-raised",
   {
     variants: {
       orientation: {

@@ -32,7 +32,7 @@ import { cn } from "@/lib/utils";
  * the non-anchored cases.
  */
 const overlaySurfaceVariants = cva(
-  "z-50 flex flex-col border border-line-neutral-muted bg-surface-card outline-none",
+  "z-modal flex flex-col border border-line-neutral-muted bg-surface-card outline-none",
   {
     variants: {
       density: {
@@ -79,7 +79,7 @@ export function OverlaySurface({
  * dialog a dialog, not the dimming. A scrim that announces itself is one more
  * thing between the person and the content.
  */
-const overlayScrimVariants = cva("fixed inset-0 z-50 bg-surface-scrim");
+const overlayScrimVariants = cva("fixed inset-0 z-overlay bg-surface-scrim");
 
 export function OverlayScrim({
   className,

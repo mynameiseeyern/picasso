@@ -44,7 +44,7 @@ import { overlayScrimVariants } from "../overlay/overlay";
  * a token, not a one-off keyframe here.
  */
 const drawerPanelVariants = cva(
-  "fixed z-50 flex flex-col bg-surface-card shadow-lg outline-none",
+  "fixed z-modal flex flex-col bg-surface-card shadow-lg outline-none",
   {
     variants: {
       side: {

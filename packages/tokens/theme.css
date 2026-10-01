@@ -289,6 +289,13 @@
   --shadow-ring-focus-danger: var(--ring-focus-danger);
   --shadow-ring-focus-inset: var(--ring-focus-inset);
 
+  /* ---- layer (z-index) ----
+     The values live in core.json and arrive as --layer-*; the utilities are
+     written out below as @utility rules rather than bound here, because
+     Tailwind v4 has no --z-index-* namespace to bind to. Without them the
+     only ways to reach a layer are `z-[1600]`, which no-arbitrary-values
+     refuses, and a bare `z-50`, which is a number nobody agreed. */
+
   /* ---- type scale ----
      Tailwind's own scale is cleared so there is ONE vocabulary. `text-md` is
      IR's 14px, not Tailwind's `text-base` 16px. Every size and its paired
@@ -367,6 +374,15 @@
   --spacing-2\.5: var(--space-2-5);
   --spacing-3\.5: var(--space-3-5);
 
+  /* ---- content width ----
+     size/content/* caps the page content column inside App shell:
+     max-w-content-reading (768) and max-w-content-standard (1280). Under
+     --max-width-*, not --container-*, on purpose: a --container-* key would
+     also mint an @content-reading: container variant, and a container
+     query cannot read a var(), so that variant would be emitted broken. */
+  --max-width-content-reading: var(--size-content-reading);
+  --max-width-content-standard: var(--size-content-standard);
+
   /* ---- fonts ---- */
   --font-sans: var(--type-family-sans);
   --font-mono: var(--type-family-mono);
@@ -396,6 +412,30 @@
   [dir="rtl"] .rtl-mirror {
     transform: scaleX(-1);
   }
+}
+
+/* ═══ Layer (z-index) ═══════════════════════════════════════════════════
+   Six rungs, GovTech's scale, from core.json's layer/*. See
+   docs/foundations/elevation.md for why floating sits above modal.
+   `base` gets no utility — the page is z-index 0 already.               */
+@utility z-raised {
+  z-index: var(--layer-raised);
+}
+
+@utility z-overlay {
+  z-index: var(--layer-overlay);
+}
+
+@utility z-modal {
+  z-index: var(--layer-modal);
+}
+
+@utility z-floating {
+  z-index: var(--layer-floating);
+}
+
+@utility z-notification {
+  z-index: var(--layer-notification);
 }
 
 /* ═══ Loader motion ═══════════════════════════════════════════════════

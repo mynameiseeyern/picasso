@@ -47,7 +47,7 @@ const otpSlotVariants = cva(
       },
       active: {
         true:
-          "z-10 border-line-input-focused ring-2 ring-line-focused " +
+          "z-raised border-line-input-focused ring-2 ring-line-focused " +
           "ring-offset-2 ring-offset-surface-app",
         false: "",
       },

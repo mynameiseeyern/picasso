@@ -34,7 +34,7 @@ import { overlayScrimVariants } from "../overlay/overlay";
  * 'Close'"*. Pass `close={false}` for the rare dialog that must be answered.
  */
 const dialogContentVariants = cva(
-  "fixed top-1/2 left-1/2 z-50 flex w-full max-w-full -translate-x-1/2 -translate-y-1/2 " +
+  "fixed top-1/2 left-1/2 z-modal flex w-full max-w-full -translate-x-1/2 -translate-y-1/2 " +
     "flex-col rounded-xl border border-line-neutral-muted bg-surface-card outline-none",
   {
     variants: {

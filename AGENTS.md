@@ -52,6 +52,10 @@ missing an entry.** Add it to `packages/tokens/theme.css`, don't escape.
 **Radius is one knob.** `--radius` drives all eight steps proportionally; never
 hard-code a corner. `rounded-md` is 8px, `rounded-lg` 10px at the default.
 
+**Z-index is a token.** `z-raised` · `z-overlay` · `z-modal` · `z-floating` ·
+`z-notification` — never a bare `z-50` and never `z-[1600]`. The scale and why
+floating outranks modal are in `docs/foundations/elevation.md`.
+
 ---
 
 ## 4. Typography

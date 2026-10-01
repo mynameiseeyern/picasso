@@ -54,26 +54,53 @@ Use `shadow-ring-focus-danger` on a control that is both focused and invalid.
 The rule for which control gets which is in
 [Accessibility](accessibility.md) — boxes take a border, marks take a ring.
 
-## Z-index has no scale yet
+## Layers are tokens too
 
-What the library actually uses today:
+Six rungs, from `layer/*` in `core.json`:
 
-| Value | Where |
-|---|---|
-| `z-10` | Within a component — the active OTP slot, a ButtonGroup sibling lifted on hover or focus |
-| `z-50` | Drawer, Dialog, Tooltip, Popover, Select content, Overlay **and its scrim** |
-| `z-100` | The Toast viewport |
+| Token | Value | Utility | Who uses it |
+|---|---|---|---|
+| `layer/base` | 0 | — | The page. It is already 0 |
+| `layer/raised` | 100 | `z-raised` | The active OTP slot; a ButtonGroup member lifted on hover or focus |
+| `layer/overlay` | 800 | `z-overlay` | The scrim |
+| `layer/modal` | 1600 | `z-modal` | Dialog and Drawer panels |
+| `layer/floating` | 2000 | `z-floating` | Tooltip, Popover, Select and DropdownMenu content |
+| `layer/notification` | 3200 | `z-notification` | The Toast viewport |
 
-That is a de-facto ladder — component-internal, overlay, notification — and it
-works. But the scrim sits at the same `z-50` as the dialog it dims, so correct
-stacking depends on DOM order rather than on the number, and `z-100` is a lone
-value with nothing between it and 50.
+The scale is GovTech's Singapore Design System — 0 / 100 / 400 / 800 / 1600 —
+chosen because it leaves room between rungs instead of counting 1 to 10. Its
+400 (global floating) is unused here, for the reason below.
 
-**This is an open decision, not a documented rule.** The proposal on the table
-is GovTech's scale — 0 / 100 / 400 / 800 / 1600 — plus a rung above `modal`
-for notifications, because a toast has to clear a modal's internal stacking
-and GovTech's own local layers already run to 2400. Until it lands, do not
-invent a new z-index: reuse one of the three above, and say so in review.
+### Why floating sits above modal
+
+GovTech puts floating *below* modal, which is right when a popover is scoped
+to the parent that owns it. Radix portals ours to `document.body`, so a select
+menu opened inside a dialog has no parent to be scoped by — at 400 it would
+render behind the dialog that opened it. 2000 is GovTech's own
+`local-layer-floating`, and a menu inside a modal is exactly that case.
+
+Measured in a browser, with a dialog open and its select open inside it:
+
+```
+ 3200  toast-viewport
+ 2000  select menu        ← portalled to body, above the dialog that opened it
+ 1600  dialog-content
+  800  dialog-overlay (the scrim)
+```
+
+### What this fixed
+
+The scrim used to carry `z-50`, the same value as the dialog it dims. The
+stacking was correct only because the scrim comes first in the DOM. It now
+sits 800 below the panel and the order is in the number.
+
+### Never write a number
+
+`z-[1600]` is refused by `no-arbitrary-values`, and a bare `z-50` is a number
+nobody agreed. The five utilities are the whole vocabulary; if something needs
+a rung that is not there, it goes in `core.json` under `layer/*` and gets an
+`@utility` in `theme.css` — Tailwind v4 has no `--z-index-*` namespace to bind
+to, which is why these are written out rather than generated.
 
 ## Where the values are
 

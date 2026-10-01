@@ -11,7 +11,7 @@ description: The scales everything else is built from.
 | [Grid, spacing and radius](grid-spacing-and-radius.md) | ✅ |
 | [Typography](typography.md) | ✅ |
 | [Colour](colour.md) | ✅ brand ramp settled on the repo values (`brand/600` #007FAB) |
-| [Elevation](elevation.md) | ⚠️ shadows settled; the z-index ladder is still de facto |
+| [Elevation](elevation.md) | ✅ five shadow steps and six layer tokens |
 | [Motion](motion.md) | ⚠️ colour transitions only — no duration or easing scale yet |
 | [Icons](icons.md) | ✅ Lucide, one scale — `.rtl-mirror` is defined but unused |
 | [Accessibility](accessibility.md) | ✅ WCAG 2.1 AA, gated by `npm test` |

@@ -253,7 +253,20 @@ StyleDictionary.registerFormat({
       // responsive rule was a hand translation. They go out as --screen-*, and
       // theme.css binds --breakpoint-* to them.
       else if (token.path[0] === "screen") rootDecls.push(decl);
+      // size/* is a new top-level group, and a new group is exactly what fell
+      // through here before (see screen/* above). Listed explicitly; the
+      // build fails below if a group reaches this point unhandled.
+      else if (token.path[0] === "size") rootDecls.push(decl);
+      // layer/* is the z-index scale. It emits as --layer-*; theme.css wraps
+      // each one in an @utility, because Tailwind v4 has no --z-index-*
+      // namespace to bind to the way --breakpoint-* binds to screen/*.
+      else if (token.path[0] === "layer") rootDecls.push(decl);
       else if (token.path[0] === "shared") rootDecls.push(decl);
+      else
+        throw new Error(
+          `css/ir-tokens: no branch for ${token.path.join("/")} — ` +
+            "a token group nothing emits is a token that does not exist.",
+        );
     });
 
     return `/**

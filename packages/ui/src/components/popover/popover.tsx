@@ -107,7 +107,7 @@ export function PopoverContent({
           className={cn(
             surface
               ? cn(overlaySurfaceVariants({ density: "comfortable" }), "w-72")
-              : "z-50",
+              : "z-floating",
             className,
           )}
           {...props}

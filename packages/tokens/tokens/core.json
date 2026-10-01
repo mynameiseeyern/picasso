@@ -519,6 +519,21 @@
     },
     "$description": "Breakpoints use Tailwind’s names and Tailwind’s values, so `lg:` means the same thing in a token file, a Figma page name and a class name. screen/canvas/* are sizes to draw at, not breakpoints."
   },
+  "size": {
+    "$description": "Layout measurements that are not breakpoints. content/* caps the page content column inside App shell — a max width, never a viewport width. Fluid pages have no cap and no token.",
+    "content": {
+      "reading": {
+        "$type": "dimension",
+        "$value": "768px",
+        "$description": "Reading width. Caps forms, settings and prose. Left-aligned to the rail, never centred. AppShellContent width=\"reading\"."
+      },
+      "standard": {
+        "$type": "dimension",
+        "$value": "1280px",
+        "$description": "Standard width. Caps detail, settings and mixed pages; only bites on viewports above 1584 (1280 + 256 rail + 48 padding). AppShellContent width=\"standard\"."
+      }
+    }
+  },
   "shared": {
     "text": {
       "heading": {
@@ -744,5 +759,38 @@
       }
     }
   },
-  "$description": "Primitives every brand shares: status and vis ramps, the type scale, the radius ladder (as multiples of radius.base), breakpoints and text styles. Per-brand primitives come from brands/<brand>/brand.json + presets.json."
+  "$description": "Primitives every brand shares: status and vis ramps, the type scale, the radius ladder (as multiples of radius.base), breakpoints and text styles. Per-brand primitives come from brands/<brand>/brand.json + presets.json.",
+  "layer": {
+    "$description": "Stacking order. GovTech's Singapore Design System scale, which leaves room between rungs rather than counting 1..10. Floating sits ABOVE modal, which inverts GovTech's global order on purpose: Radix portals a tooltip, popover or select menu to document.body, so one opened from inside a dialog has no parent to be scoped by and would render behind it. 2000 is GovTech's own local-layer-floating, used here for exactly that case.",
+    "base": {
+      "$type": "number",
+      "$value": 0,
+      "$description": "The page. Nothing needs a utility for this."
+    },
+    "raised": {
+      "$type": "number",
+      "$value": 100,
+      "$description": "A control lifted above its own siblings — an active OTP slot, a hovered button in a group."
+    },
+    "overlay": {
+      "$type": "number",
+      "$value": 800,
+      "$description": "The scrim. Below the thing it dims, so stacking does not depend on DOM order."
+    },
+    "modal": {
+      "$type": "number",
+      "$value": 1600,
+      "$description": "Dialog and Drawer panels."
+    },
+    "floating": {
+      "$type": "number",
+      "$value": 2000,
+      "$description": "Tooltip, Popover, Select and DropdownMenu content. Above modal so a menu opened inside a dialog is visible."
+    },
+    "notification": {
+      "$type": "number",
+      "$value": 3200,
+      "$description": "Toast. Clears a modal and anything floating above it; GovTech's local layers run to 2400, so 3200 leaves the gap intact."
+    }
+  }
 }

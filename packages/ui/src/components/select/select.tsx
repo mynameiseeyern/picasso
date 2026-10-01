@@ -189,7 +189,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
               e.preventDefault();
               searchRef.current?.focus();
             }}
-            className="z-50 w-(--radix-popover-trigger-width) min-w-60 overflow-hidden rounded-xl border border-line-neutral-muted bg-surface-overlay shadow-md outline-none"
+            className="z-floating w-(--radix-popover-trigger-width) min-w-60 overflow-hidden rounded-xl border border-line-neutral-muted bg-surface-overlay shadow-md outline-none"
           >
             <div className="p-2">
               <InputGroup size="md">
