@@ -7,6 +7,22 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### ⚠️ Changed (visual)
 
+- **Light `bg/neutral/muted-hovered` is neutral-100 and `muted-pressed` is
+  neutral-200**, each one step darker. Hover was neutral-50 — the value of
+  `bg/app` — so a Chip, a ghost or outline Button and an Avatar showed no hover
+  on the page. Light `muted` and `subtle` now share a ladder from hover onward;
+  dark is unchanged and keeps them a step apart. Skeleton, which rests on
+  `muted-pressed`, is a step darker in light and now reads on the sidebar too.
+  **Figma impact** — the two Semantic variables' Light values, already applied.
+- **The sidebar has its own hover and pressed.** `bg/sidebar-hovered` (200
+  light, 900 dark) and `bg/sidebar-pressed` (300 light, 800 dark), reached
+  through `bg-surface-sidebar-hovered` / `-pressed`. The rail is neutral-100 in
+  light, which is what `bg/neutral/subtle-hovered` resolves to, so hover on a
+  menu button, sub-item, group action or the trigger painted the rail's own
+  colour. Sidebar items also gain a pressed state they did not have. Dark hover
+  is the same value as before. **Figma impact** — two new Semantic variables,
+  and the Sidebar menu page's Hover variants rebound to them.
+
 - **Z-index is a token.** Six rungs on GovTech's scale — `layer/base` 0,
   `raised` 100, `overlay` 800, `modal` 1600, `floating` 2000, `notification`
   3200 — reached through `z-raised` … `z-notification`. Floating sits above

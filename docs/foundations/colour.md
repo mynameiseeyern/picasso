@@ -28,7 +28,7 @@ word that reads correctly with its own prefix:
 
 | Token family | Utility word | Example |
 |---|---|---|
-| `bg/*` (67) | **surface** | `hover:bg-surface-danger-subtle-hovered` |
+| `bg/*` (69) | **surface** | `hover:bg-surface-danger-subtle-hovered` |
 | `fg/*` (31) | **content** | `text-content-on-primary-emphasis` |
 | `border/*` (21) | **line** | `border-line-input-invalid` |
 | `status/*` (5) | status | `text-status-critical` |
@@ -49,6 +49,26 @@ bg / danger / subtle / hovered
 
 `fg/on/<surface>` is the foreground guaranteed to pass contrast on that surface —
 `text-content-on-primary-emphasis` sits on `bg-surface-primary-emphasis`.
+
+## Hover and pressed step away from the surface
+
+A hover is one palette step past the surface it sits on, and pressed is one
+step past that. The neutral ladders in light:
+
+| | rest | hover | pressed |
+|---|---|---|---|
+| `bg/neutral/subtle` | 50 | 100 | 200 |
+| `bg/neutral/muted` | white | 100 | 200 |
+| `bg/sidebar` | 100 | 200 | 300 |
+
+`muted` skips 50 on purpose: `bg/app` is neutral-50, so a hover that landed
+there was invisible on the page. The cost is that light `muted` and `subtle`
+share a ladder from hover onward while dark keeps them one step apart
+(900 → 800 → 700 against 950 → 900 → 800).
+
+**Anything on the sidebar takes `bg/sidebar-hovered` and `bg/sidebar-pressed`**,
+never the neutral pair. The rail is neutral-100 in light, which is the value
+both neutral hovers resolve to — a hover that equals its surface cannot render.
 
 ## Dark mode is free
 

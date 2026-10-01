@@ -42,7 +42,7 @@ neutral-800 in dark.
 
 | Family | Count | Tailwind utility |
 |---|---|---|
-| `bg/*` | 67 | `surface-*` |
+| `bg/*` | 69 | `surface-*` |
 | `fg/*` | 31 | `content-*` |
 | `border/*` | 21 | `line-*` |
 | `status/*` | 5 | `status-*` |

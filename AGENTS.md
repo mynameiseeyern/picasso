@@ -31,7 +31,7 @@ one pool and the three families would otherwise collide:
 
 | Token | Utility | Example |
 |---|---|---|
-| `bg/*` (67) | **surface** | `bg-surface-danger-subtle-hovered` |
+| `bg/*` (69) | **surface** | `bg-surface-danger-subtle-hovered` |
 | `fg/*` (31) | **content** | `text-content-on-primary-emphasis` |
 | `border/*` (21) | **line** | `border-line-input-invalid` |
 | `status/*` (5) | status | `text-status-critical` |

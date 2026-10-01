@@ -100,7 +100,7 @@
      semantic has a real utility, which is what makes `no-arbitrary-values`
      enforceable and gives agents a vocabulary they can complete against. */
 
-  /* bg/* → surface-* (67) */
+  /* bg/* → surface-* (69) */
   --color-surface-app: var(--bg-app);
   --color-surface-canvas: var(--bg-canvas);
   --color-surface-card: var(--bg-card);
