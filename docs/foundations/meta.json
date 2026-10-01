@@ -1,1 +1,13 @@
-{"pages": ["index", "tokens-and-brands", "grid-spacing-and-radius", "typography", "colour"]}
+{
+  "pages": [
+    "index",
+    "tokens-and-brands",
+    "grid-spacing-and-radius",
+    "typography",
+    "colour",
+    "elevation",
+    "motion",
+    "icons",
+    "accessibility"
+  ]
+}
