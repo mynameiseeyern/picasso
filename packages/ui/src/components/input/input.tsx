@@ -11,11 +11,12 @@ import { cn } from "@/lib/utils";
  *
  * Two deliberate departures from the Figma component:
  *
- * 1. Figma's `Type` axis (Default · Password · Number stepper · Button · Tags ·
- *    File upload · Select trigger) is not a prop. Password, Number and File are
- *    the native `type` attribute; Tags, Number stepper and Select trigger are
- *    separate components composed from this one. Figma models them as variants
- *    because Figma has no input element — code does.
+ * 1. There is no `Type` prop, and since 1 Oct 2026 no `Type` axis in Figma
+ *    either. Figma's Input was one set of seven Types; it is now six sets —
+ *    Input, Password input, Number input, Input button, Tags input and File
+ *    upload — one per code component, which is how the code always had them.
+ *    The native `type` attribute still covers what the browser owns (email,
+ *    search, url); it is not a way to reach the sibling components.
  *
  * 2. Figma's `State` axis (Hover · Focus · Filled · Invalid · Disabled) is not a
  *    prop either. Hover, focus and filled are CSS states; invalid is

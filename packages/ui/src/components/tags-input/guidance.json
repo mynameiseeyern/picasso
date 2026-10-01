@@ -1,7 +1,7 @@
 {
   "component": "TagsInput",
   "summary": "A field that turns entries into removable chips — hosts, emails, labels.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "720:2119" },
+  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "40000625:567" },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [

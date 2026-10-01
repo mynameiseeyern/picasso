@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "../button/button";
 
 /**
- * FileUpload — Figma Input `Type=File upload`: the field reads the chosen
+ * FileUpload — Figma's `File upload` set (40000625:568): the field reads the chosen
  * file's name (or the placeholder), with a Secondary sm "Browse" button inside
  * on the right (4px end padding, per Figma).
  *

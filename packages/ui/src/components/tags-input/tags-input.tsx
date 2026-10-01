@@ -3,7 +3,7 @@ import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * TagsInput — Figma Input `Type=Tags`, with Input chip (646:219) for each tag.
+ * TagsInput — Figma's `Tags input` set (40000625:567), with Input chip (646:219) for each tag.
  *
  * - Enter or comma adds what has been typed; pasting "a, b, c" adds three.
  * - Backspace in an empty field removes the last tag.

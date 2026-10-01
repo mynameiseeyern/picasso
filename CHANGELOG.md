@@ -5,6 +5,19 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ## Unreleased
 
+### ⚠️ Changed (Figma structure)
+
+- **Figma's Input is six sets, not one set with a `Type` axis.** `Input` (14
+  variants, `State` × `Size`), `Password input` (14, with a `Shown` axis),
+  `Number input` (12), `Input button` (24, `Type` = Button | Select trigger),
+  `Tags input` (12) and `File upload` (12) — one per code component. The
+  variants were moved, not rebuilt, so every component key and every existing
+  instance carried across; an instance that was `Type=Password` is now an
+  instance of `Password input`. **Code impact** — none to behaviour.
+  `guidance.json` for the five siblings points at the new sets. To change an
+  Input into a Password input in a design, swap the instance rather than
+  switching `Type`.
+
 ### ⚠️ Changed (visual)
 
 - **Light `bg/neutral/muted-hovered` is neutral-100 and `muted-pressed` is

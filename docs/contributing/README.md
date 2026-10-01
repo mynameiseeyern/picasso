@@ -8,6 +8,7 @@ description: How to add a component, and what "done" means.
 | Page | |
 |---|---|
 | [Adding a component](adding-a-component.md) | The full walkthrough, Button as the worked example |
+| [How Figma maps to code](figma-to-code-mapping.md) | The four places the two cannot share a shape, and the rule for each |
 | [Component checklist](component-checklist.md) | What "done" means — copy it into the PR |
 | [Reporting off-system output](reporting-off-system-output.md) | When an agent writes code that breaks the rules |
 

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { InputGroup, InputGroupAddon, InputGroupInput, type InputGroupInputProps } from "../input-group/input-group";
 
 /**
- * PasswordInput — Figma Input `Type=Password`: the field plus a trailing eye
+ * PasswordInput — Figma's `Password input` set (40000625:564): the field plus a trailing eye
  * that shows and hides the value.
  *
  * The eye is a real button with aria-pressed, so its state is announced

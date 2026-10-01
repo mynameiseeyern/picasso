@@ -4,7 +4,7 @@ import { Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * NumberInput — Figma Input `Type=Number stepper`: − | value | +, the
+ * NumberInput — Figma's `Number input` set (40000625:565): − | value | +, the
  * steppers divided from the value by border/input/default.
  *
  * Not `<input type="number">`. The native one swallows the scroll wheel,

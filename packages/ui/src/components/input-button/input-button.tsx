@@ -4,8 +4,8 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * InputButton — Figma Input `Type=Button` and `Type=Select trigger`: a button
- * dressed as a field, for things that open a picker rather than take typing
+ * InputButton — Figma's `Input button` set (40000625:566), whose `Type` axis is
+ * Button | Select trigger: a button dressed as a field, for things that open a picker rather than take typing
  * (a date, a filter, a select).
  *
  * It is a <button>, not a read-only input. It does one thing — open something

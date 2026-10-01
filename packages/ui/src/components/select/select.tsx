@@ -26,7 +26,7 @@ import { Separator } from "../separator/separator";
  * contract as Cancel in a dialog.
  *
  * Structure and a11y:
- * - Trigger: InputButton (Figma Input `Type=Select trigger`), aria-expanded.
+ * - Trigger: InputButton (Figma `Input button`, `Type=Select trigger`), aria-expanded.
  * - Search: role="combobox" that owns the list via aria-activedescendant, so
  *   focus never leaves the search box. ArrowUp/Down move, Enter ticks,
  *   Ctrl/⌘+Enter applies, Escape closes.

@@ -25,6 +25,11 @@ Structure comes from Figma: which variants, sizes and states exist, and which
 semantic token each one uses. **Mirror the names exactly** so a design reads
 straight into props. Button's `Variant`, `Size` and `State` axes are its props.
 
+Four things do not read straight across — a `Type` axis that is really several
+components, a continuous value, a presence boolean, and several sets that are
+one component. [How Figma maps to code](./figma-to-code-mapping.md) has the
+rule for each.
+
 ## 2. Take shadcn's measurements
 
 Heights, padding, gaps and radius come from shadcn — that is what "shadcn base
