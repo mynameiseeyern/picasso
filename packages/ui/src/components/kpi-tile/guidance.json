@@ -1,7 +1,10 @@
 {
   "component": "KpiTile",
   "summary": "One headline number, with just enough around it to say what it is and whether it is a problem.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "40000388:23522" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "40000388:23522"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -41,5 +44,9 @@
       "do": "Use them in a row or grid of peers, at equal width.",
       "why": "The quiet border and missing shadow are tuned for a set. A single tile on a page reads as an unfinished card."
     }
+  ],
+  "a11y": [
+    "The meter is aria-hidden decoration. The number and the status badge are the accessible content — which is why the badge's word is not optional, and why status never relies on the meter's colour alone.",
+    "The label is a <div>, not a heading. A grid of tiles that should appear in the page outline needs headings supplied around them."
   ]
 }

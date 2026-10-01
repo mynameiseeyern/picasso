@@ -1,7 +1,10 @@
 {
   "component": "Calendar",
   "summary": "A month grid for picking a date or a span of them.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2506:3284" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "2506:3284"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,10 @@
       "do": "Let the locale decide.",
       "why": "People read the grid by shape as much as by number, and a week starting on the wrong day is misread rather than re-read."
     }
+  ],
+  "a11y": [
+    "react-day-picker owns the grid semantics, the roving focus and arrow-key movement. Do not re-implement them.",
+    "Only the chevron glyph is overridden, and it is aria-hidden — the navigation buttons take their names from react-day-picker, so changing its locale changes them.",
+    "Disabled days keep pointer-events-none and fg/disabled but stay in the accessibility tree, which is what lets someone discover a date is unavailable rather than just failing to reach it."
   ]
 }

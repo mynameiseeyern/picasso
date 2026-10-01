@@ -1,7 +1,10 @@
 {
   "component": "Overlay",
   "summary": "The floating card every anchored or modal panel is built on.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "40000241:48" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "40000241:48"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,9 @@
       "do": "Save the scrim for dialogs and drawers.",
       "why": "A scrim says \"finish this first\". A menu you can dismiss by looking away is not making that demand."
     }
+  ],
+  "a11y": [
+    "The scrim is aria-hidden. It is a dimming surface, not a control, and the dialog or drawer above it owns the modal semantics.",
+    "Overlay supplies no roles of its own. Everything built on it — Dialog, Drawer — brings its own Radix primitive and its own accessible name."
   ]
 }

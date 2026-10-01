@@ -44,8 +44,10 @@ brand. The inner ring is the offset, and it is what makes the indicator read
 on a card, on a toolbar, and on a coloured surface alike. See
 [Elevation](elevation.md) for why it lives in the shadow namespace.
 
-`switch.tsx` still ships `border border-transparent`, which suppresses its
-ring. That is a known defect, not a pattern to copy.
+Switch is worth reading as the example: its track border goes transparent
+when the switch is on (`data-[state=checked]:border-transparent`), and the
+focus ring is a separate `focus-visible:ring-2` that is unaffected by it. The
+border is decoration; the ring is the indicator. Keep them independent.
 
 ## Invalid: boxes take a border, marks take a ring
 

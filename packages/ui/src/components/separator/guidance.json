@@ -40,5 +40,9 @@
       "why": "A line per row turns a list into a table and makes the one meaningful boundary impossible to find."
     }
   ],
-  "examples": "complete"
+  "examples": "complete",
+  "a11y": [
+    "decorative defaults to true, so the separator is hidden from assistive technology. That is right for a line that only groups things visually.",
+    "Pass decorative={false} only when the line genuinely divides two things a screen reader should hear are separate. A role=\"separator\" between every pair of sections is noise."
+  ]
 }

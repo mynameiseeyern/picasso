@@ -1,7 +1,10 @@
 {
   "component": "DropdownMenu",
   "summary": "Actions on a thing, opened from a control.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1146:3028" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "1146:3028"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,12 @@
       "do": "Flatten, or open a dialog for the complicated case.",
       "why": "Each level is another hover corridor to keep the pointer inside, and each one loses people."
     }
+  ],
+  "a11y": [
+    "Radix supplies the menu and menuitem roles, typeahead and arrow-key movement. Do not add roles of your own.",
+    "Disabled items use data-[disabled] rather than the disabled attribute — they keep pointer-events-none and 50% opacity but stay in the menu, so their existence is still discoverable.",
+    "Hover and keyboard focus are one state here, because Radix drives both through data-highlighted. There is no separate :focus-visible treatment to add.",
+    "The submenu chevron is aria-hidden; the item's text is its name.",
+    "CheckboxItem and RadioItem are deliberately not wrapped — use Radix's directly when a menu needs them, and they bring their own menuitemcheckbox and menuitemradio semantics."
   ]
 }

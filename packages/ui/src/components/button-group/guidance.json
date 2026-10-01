@@ -1,7 +1,10 @@
 {
   "component": "ButtonGroup",
   "summary": "Several buttons that belong to one decision, joined into a single control.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "667:1703" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "667:1703"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -41,5 +44,9 @@
       "do": "Give each an aria-label, and a tooltip if the icon is not obvious.",
       "why": "An icon in a joined bar has no label beside it to borrow meaning from, so the name has to come from the button itself."
     }
+  ],
+  "a11y": [
+    "role=\"group\", so the set is announced as one thing — but it needs an aria-label: \"Zoom\", \"View as\", \"Export\". Without one a screen reader reads six buttons with nothing to say what they share.",
+    "Hover and focus lift a member to z-10 so its focus ring is not clipped by the neighbour's edge."
   ]
 }

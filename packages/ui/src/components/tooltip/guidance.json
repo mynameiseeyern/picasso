@@ -1,7 +1,10 @@
 {
   "component": "Tooltip",
   "summary": "A short explanation attached to a control, on hover or focus.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "426:8325" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "426:8325"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,10 @@
       "do": "Say what saving will do, or say nothing.",
       "why": "A tooltip that repeats the label teaches people that tooltips are not worth opening."
     }
+  ],
+  "a11y": [
+    "Radix points the trigger's aria-describedby at the content, so the tooltip describes the control rather than naming it.",
+    "A tooltip is never the only place something is said. It does not appear on touch, and it is not reachable as content — an icon-only button still needs its own aria-label.",
+    "The 300ms default delay is on the Provider. Lowering it per-tooltip makes a toolbar flicker as the pointer crosses it."
   ]
 }

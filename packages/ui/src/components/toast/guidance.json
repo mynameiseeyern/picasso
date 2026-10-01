@@ -1,7 +1,10 @@
 {
   "component": "Toast",
   "summary": "Transient confirmation that something already happened.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "94:59093" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "94:59093"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -41,5 +44,10 @@
       "do": "Keep Destructive for failures and losses.",
       "why": "If the loud tone is used for ordinary outcomes, nothing is left to mark the outcomes that matter."
     }
+  ],
+  "a11y": [
+    "Radix Toast owns the live region, the swipe-to-dismiss and the timing. The viewport is rendered once, near the end of the document.",
+    "The close button takes label as its aria-label; the X and the status icon are both aria-hidden.",
+    "A toast carries an action or a close, never both — two ways out of the same message is one more decision than it is worth."
   ]
 }

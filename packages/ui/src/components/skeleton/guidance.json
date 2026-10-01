@@ -7,7 +7,7 @@
   },
   "structureFrom": "figma",
   "measurementsFrom": "code",
-  "note": "Built in code first \u2014 Picasso had no Skeleton. The Figma component set was drawn afterwards to match (28 Sept), so structure is shared but sizes still come from the instance rather than the file.",
+  "note": "Built in code first — Picasso had no Skeleton. The Figma component set was drawn afterwards to match (28 Sept), so structure is shared but sizes still come from the instance rather than the file.",
   "pairs": [
     {
       "id": "match-the-real-thing",
@@ -39,5 +39,10 @@
       "do": "Render the frame for real and skeleton only what is loading.",
       "why": "Chrome is already known at render time. Greying it out makes the whole page look broken rather than busy."
     }
+  ],
+  "a11y": [
+    "Always aria-hidden. A skeleton is a picture of content, and a screen reader reading twelve grey boxes has been told nothing.",
+    "The container announces the wait once instead — aria-busy on the region, or a single polite live region saying \"Loading dashboards\". The skeletons stay silent underneath it.",
+    "The pulse stops under prefers-reduced-motion via motion-reduce:animate-none, and the test asserts it."
   ]
 }

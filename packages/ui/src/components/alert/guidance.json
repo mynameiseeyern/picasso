@@ -1,7 +1,10 @@
 {
   "component": "Alert",
   "summary": "Something the page needs to say about itself, in place — and that stays there.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "79:8042" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "79:8042"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -47,5 +50,10 @@
       "do": "Keep the title to a short phrase and put the rest in the description.",
       "why": "The title shares its row with the icon and the dismiss. A wrapping title pushes them apart and stops the row reading as one thing."
     }
+  ],
+  "a11y": [
+    "No role by default, deliberately. role=\"alert\" interrupts a screen reader mid-sentence — use it only for something that has just gone wrong, and role=\"status\" for something that merely changed.",
+    "The leading icon is aria-hidden. Severity has to be in the words; colour and icon alone reach nobody using a screen reader.",
+    "The dismiss button's accessible name comes from dismissLabel. An X with no label announces nothing."
   ]
 }

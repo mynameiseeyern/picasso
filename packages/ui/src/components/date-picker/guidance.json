@@ -1,7 +1,10 @@
 {
   "component": "DatePicker",
   "summary": "A field-shaped trigger that opens a calendar.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2506:230" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "2506:230"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,10 @@
       "do": "Put the rule in the field's description.",
       "why": "People try the date they want first. If it will not take, they need to know why before they start hunting."
     }
+  ],
+  "a11y": [
+    "The trigger is a <button>, not a text input. There is no typed-date path — Enter or Space opens the calendar, which autofocuses, so focus lands where the next keystroke is expected.",
+    "The calendar icon is aria-hidden; the trigger's text is its accessible name, so an empty picker needs placeholder text that says what it selects.",
+    "In range mode the popover stays open after the first date, because a range is not a complete answer until both ends are in."
   ]
 }

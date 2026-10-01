@@ -1,7 +1,10 @@
 {
   "component": "ThresholdSlider",
   "summary": "Two numbers that decide when a metric stops being fine — and the bands they create.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1106:40" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "1106:40"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,11 @@
       "do": "Keep it for setting the two boundaries; show the live reading elsewhere.",
       "why": "It is a configuration control. Putting the current value on the same bar makes the thing you are editing and the thing you are watching look like one control."
     }
+  ],
+  "a11y": [
+    "Two thumbs, each role=\"slider\" with its own aria-label, aria-valuenow and an aria-valuetext that is the formatted value — \"-80 dBm\", not \"-80\".",
+    "Each thumb's aria-valuemin and aria-valuemax are bounded by its twin as well as by the track, so the announced range always matches what the thumb can actually do.",
+    "Disabled sets aria-disabled and tabIndex -1 but leaves the thumbs in the accessibility tree. A disabled control is still something you may need to read.",
+    "Arrow keys move by step, Page by ten steps, Home and End to the bounds."
   ]
 }

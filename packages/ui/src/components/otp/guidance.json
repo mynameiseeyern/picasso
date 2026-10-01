@@ -1,7 +1,10 @@
 {
   "component": "OtpInput",
   "summary": "A one-time code, entered as one field behind a row of boxes.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "673:24" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "673:24"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,11 @@
       "do": "Show them.",
       "why": "A one-time code is short-lived and is being copied from another screen. Masking it removes the only way to check it was typed correctly."
     }
+  ],
+  "a11y": [
+    "Active is a data state rather than :focus-visible, because the real focus lives on a single hidden input while the visible slot that should look active is a different element.",
+    "invalid sets aria-invalid on the input as well as the treatment, so the error reaches assistive technology and not only the eye.",
+    "A disabled field has no active slot at all — there is nothing to point at when nothing is editable.",
+    "The caret is aria-hidden. Position is conveyed by the input's own selection, not by the drawn bar."
   ]
 }

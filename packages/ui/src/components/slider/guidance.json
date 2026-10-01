@@ -1,7 +1,10 @@
 {
   "component": "Slider",
   "summary": "Pick a value, or a span of values, where the approximate position matters more than the number.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1106:40" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "1106:40"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,10 @@
       "do": "Let the disabled treatment show.",
       "why": "The file draws them identically today. People drag a control that cannot move and conclude the page is broken."
     }
+  ],
+  "a11y": [
+    "Radix supplies role=\"slider\", the aria-value* attributes and arrow, Page and Home/End keys on every thumb.",
+    "A range slider has two thumbs and therefore needs two names: pass thumbLabels, or both announce the same thing.",
+    "Disabled removes the hover and focus effects as well as the pointer. A disabled control that still looks live is the same defect as one that looks disabled and is not."
   ]
 }

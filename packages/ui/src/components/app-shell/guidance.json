@@ -38,5 +38,9 @@
       "do": "Keep the scroll in the content area so the rail and the top bar stay put.",
       "why": "Two scrollbars is the most common app-shell bug and the hardest to notice in a screenshot: the top bar slides away and the breadcrumb goes with it."
     }
+  ],
+  "a11y": [
+    "AppShellMain is a plain <div>, never <main>. It contains the top bar, and chrome inside the main landmark both pollutes it and strips the <header> of its banner role — a <header> carries that role only when it is not inside main, aside, nav or section.",
+    "AppShellHeader is the <header> and therefore the page's banner; AppShellContent is the document's <main>. One of each per page."
   ]
 }

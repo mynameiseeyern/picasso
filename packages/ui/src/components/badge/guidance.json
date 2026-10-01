@@ -45,5 +45,9 @@
       "why": "Outline renders identically for all five colours — neutral fill, neutral border, neutral text. Choosing it discards the colour rather than muting it."
     }
   ],
-  "examples": "complete"
+  "examples": "complete",
+  "a11y": [
+    "The dot is aria-hidden. A badge's meaning is its text — colour and dot are reinforcement, never the signal.",
+    "Badge is not a live region. A count that changes while the page is open announces nothing unless the surrounding component says so."
+  ]
 }

@@ -1,7 +1,10 @@
 {
   "component": "Meter",
   "summary": "A ten-segment bar for a value against a known ceiling.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1462:1192" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "1462:1192"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -29,5 +32,10 @@
       "do": "Pass status unknown, so nothing lights and the value reads \"—\".",
       "why": "A meter at zero says the measurement is zero. No reading and a reading of nothing are different facts."
     }
+  ],
+  "a11y": [
+    "The meter is aria-hidden and carries no ARIA value of its own, because it is drawn beside a number that already says the value.",
+    "For a standalone meter with no visible number, give it role=\"meter\" and the aria-value* attributes yourself. The component does not guess.",
+    "The unknown and neutral statuses are a colour difference only. If the distinction matters, the surrounding component has to say it in words."
   ]
 }

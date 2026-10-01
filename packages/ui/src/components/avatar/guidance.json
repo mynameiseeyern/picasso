@@ -35,7 +35,7 @@
     {
       "id": "size-with-the-row",
       "dont": "Mix avatar sizes down one list.",
-      "do": "Pick the size from the row it sits in \u2014 xs in dense tables, md in headers.",
+      "do": "Pick the size from the row it sits in — xs in dense tables, md in headers.",
       "why": "The avatar sets the row's optical height. Changing it mid-list makes the whole list look misaligned."
     },
     {
@@ -44,5 +44,10 @@
       "do": "Cap with max and let the +N carry the rest.",
       "why": "Past about five, the faces stop identifying anyone and the row just eats width."
     }
+  ],
+  "a11y": [
+    "AvatarStatus carries role=\"img\" with an aria-label — \"online\", \"3 unread\", or whatever label says. A dot that silently turns green tells a screen reader nothing.",
+    "The User fallback icon and the verified badge are both aria-hidden; the status wrapper's label is the only text in it.",
+    "The overflow \"+N\" button takes an explicit label. It is an icon and a number with no sentence of its own."
   ]
 }

@@ -41,5 +41,10 @@
       "do": "Use the button's loading state.",
       "why": "The action and its progress belong in the same place."
     }
+  ],
+  "a11y": [
+    "A loader with text is role=\"status\" with aria-live=\"polite\" and the text in an sr-only span. A loader without text is aria-hidden, because an unlabelled live region announces an interruption that says nothing.",
+    "Every animation stops under prefers-reduced-motion — but substitutes rather than deletes. Travel becomes a fade, because a spinner that simply stops looks broken rather than busy.",
+    "The SVG filter that gives Fuse its gooey merge is aria-hidden and its id is generated with useId, so two loaders on one page cannot collide."
   ]
 }

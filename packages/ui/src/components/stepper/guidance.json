@@ -1,7 +1,10 @@
 {
   "component": "Stepper",
   "summary": "Where someone is in a linear flow, and how much of it is left.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1065:653" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "1065:653"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,9 @@
       "do": "Use Progress for continuous work; a stepper counts discrete stages.",
       "why": "Steps are places a person stands. A percentage is a machine's estimate, and they do not mean the same thing."
     }
+  ],
+  "a11y": [
+    "The current step sets aria-current=\"step\".",
+    "The connectors and the state glyphs are aria-hidden — a completed step has to say \"completed\" in its text or its label, because a tick is a picture."
   ]
 }

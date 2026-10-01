@@ -1,7 +1,10 @@
 {
   "component": "Popover",
   "summary": "A small panel of content or controls, anchored to what opened it.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2298:11200" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "2298:11200"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,10 @@
       "do": "Put the second step in the same panel, or use a dialog.",
       "why": "Stacked dismiss-on-outside-click layers make Escape ambiguous and strand focus."
     }
+  ],
+  "a11y": [
+    "The panel points aria-labelledby and aria-describedby at its title and description, but only when those parts are actually present. A popover with neither is unnamed, which is correct for one that holds a single control.",
+    "Both ids come from useId, so two popovers on a page never collide.",
+    "Radix handles focus movement into the panel and back to the trigger on close; do not manage focus yourself."
   ]
 }

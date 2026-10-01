@@ -1,7 +1,10 @@
 {
   "component": "Tabs",
   "summary": "Switch between sibling views of the same object.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "966:33657" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "966:33657"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,9 @@
       "do": "Give the panel a stable minimum height where the content varies.",
       "why": "The tabs move under the pointer if the page reflows, and the next click lands on the wrong one."
     }
+  ],
+  "a11y": [
+    "Radix supplies the tablist, tab and tabpanel roles and arrow-key movement between tabs.",
+    "The panel is focusable and carries its own ring, so keyboard users reach the content after the tab strip rather than tabbing through every tab first."
   ]
 }

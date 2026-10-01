@@ -1,7 +1,10 @@
 {
   "component": "Table",
   "summary": "Rows of the same kind of thing, compared column by column.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "40000377:22464" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "40000377:22464"
+  },
   "structureFrom": "code",
   "measurementsFrom": "figma",
   "note": "Figma models a table as columns side by side; HTML has no column element, so the code is row-oriented. Figma's column Types are cell content here, not variants.",
@@ -48,5 +51,9 @@
       "do": "Use sm when a table is a supporting panel, and md when it is the page.",
       "why": "Shrinking the row height does not create horizontal room. If columns do not fit, the answer is fewer columns or a scroll, not tighter rows."
     }
+  ],
+  "a11y": [
+    "aria-selected belongs on the row, not on the checkbox inside it. The checkbox says what it does; the row says what it is.",
+    "Selection is a fill plus aria-selected, never the fill alone."
   ]
 }

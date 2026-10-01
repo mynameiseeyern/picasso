@@ -1,7 +1,10 @@
 {
   "component": "Progress",
   "summary": "Work in flight, with an end — an upload, an import, a scan.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "2298:15158" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "2298:15158"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,9 @@
       "do": "Show one bar for the batch, and per-item state as text.",
       "why": "Fifty animating bars are a texture, not information, and they cost more to render than the work being measured."
     }
+  ],
+  "a11y": [
+    "Radix puts role=\"progressbar\" and the aria-value* attributes on the root, and omits aria-valuenow when value is null — which is exactly how an indeterminate progress bar should read.",
+    "Pass null rather than 0 for work of unknown length. Zero means \"started, nothing done\"; null means \"no idea\", and they announce differently."
   ]
 }

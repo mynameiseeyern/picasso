@@ -1,7 +1,10 @@
 {
   "component": "Sidebar",
   "summary": "The app's primary navigation rail — where you are, and what else there is.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1137:443" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "1137:443"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,11 @@
       "do": "Keep it to counts of things waiting.",
       "why": "A number in a nav row reads as \"this many need you\". A word reads as part of the label and makes the row ambiguous."
     }
+  ],
+  "a11y": [
+    "The active item sets aria-current=\"page\" as well as the treatment, so \"current\" survives when colour does not.",
+    "The collapse toggle carries aria-expanded and an aria-label that changes with state — \"Expand sidebar\" or \"Collapse sidebar\" — because the icon alone never says which way it goes.",
+    "The PanelLeft glyph is aria-hidden; the button's label is its name.",
+    "Collapsing changes width with no transition, deliberately: there are no motion tokens yet, so the change is instant rather than arbitrarily timed."
   ]
 }

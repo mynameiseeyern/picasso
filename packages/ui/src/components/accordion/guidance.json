@@ -1,7 +1,10 @@
 {
   "component": "Accordion",
   "summary": "Sections that expand in place, for content most people will not need to read.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1136:1487" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "1136:1487"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,10 @@
       "do": "Put the divider above each item after the first.",
       "why": "The rule separates items. A trailing one draws a line under nothing."
     }
+  ],
+  "a11y": [
+    "Radix sets aria-expanded and aria-controls on the trigger and the region on the panel. Do not add your own.",
+    "The chevron is aria-hidden, so the trigger's text is its entire accessible name — a trigger with only an icon has none.",
+    "Focus is a 2px ring offset against bg/app. :focus-visible clears the browser outline globally, so a trigger without the ring has no focus indicator at all."
   ]
 }

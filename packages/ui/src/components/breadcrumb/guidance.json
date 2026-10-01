@@ -41,5 +41,11 @@
       "example": false
     }
   ],
-  "examples": "complete"
+  "examples": "complete",
+  "a11y": [
+    "The <nav> carries aria-label=\"Breadcrumb\". That is what distinguishes it from every other nav on the page.",
+    "The current page takes aria-current=\"page\" and is not a link.",
+    "Separators and the ellipsis glyph are aria-hidden, so the trail reads as a list of names rather than \"slash\" between each one.",
+    "The ellipsis ships an sr-only label, \"Show hidden levels\" by default. Replace the text, not the mechanism."
+  ]
 }

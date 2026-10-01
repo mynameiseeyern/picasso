@@ -56,5 +56,11 @@
       "do": "Replace the content in place, or step with previous and next.",
       "why": "Two focus traps and two Escape handlers, and nobody can tell which layer they are answering."
     }
+  ],
+  "a11y": [
+    "Built on Radix Dialog, so it is a modal: focus is trapped, Escape closes, and the page behind is inert.",
+    "label renders an sr-only DialogTitle. Without it Radix has no accessible name for the drawer and warns in development, so pass it even when the header already shows the name visually.",
+    "Every header control — previous, next, expand, close — is an icon-only button taking its own label. The glyphs are all aria-hidden.",
+    "The divider between header controls is aria-hidden; it is a drawn line, not a separator anyone needs announced."
   ]
 }

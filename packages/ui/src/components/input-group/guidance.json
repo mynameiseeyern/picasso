@@ -1,7 +1,10 @@
 {
   "component": "InputGroup",
   "summary": "An input with things beside it — an icon, a unit, a spinner, a button.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "958:666" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "958:666"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -35,5 +38,12 @@
       "do": "Keep one thing per side, and move the rest out of the field.",
       "why": "The field shrinks to fit whatever you put beside it, and a 60px input is not a field any more."
     }
+  ],
+  "a11y": [
+    "The group is role=\"group\" and the control inside it is bare. The group reads the inner control's aria-invalid and :disabled through :has(), so the border, the ring and the disabled tokens all follow the real control rather than a prop someone can forget.",
+    "This is where invalid lives for Input, Select, Textarea, Number and Password: has-[[aria-invalid=true]]:border-line-input-invalid on the group. The controls themselves add nothing.",
+    "Clicking the group focuses the control — but only when the click did not land on a button, link or another field, and only when the control is not disabled.",
+    "The spinner is role=\"status\" with an sr-only label, so a busy field announces itself. The check mark has one too.",
+    "InputGroupInfo is an icon-only button; its label becomes the aria-label and the Info glyph is aria-hidden."
   ]
 }

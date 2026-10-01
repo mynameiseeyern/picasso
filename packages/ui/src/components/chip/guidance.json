@@ -1,7 +1,10 @@
 {
   "component": "Chip",
   "summary": "A compact token — a filter you toggle, a suggestion you take, or a value you remove.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "635:291" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "635:291"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -41,5 +44,10 @@
       "do": "Use a Badge when the point is what something is, not what you are filtering by.",
       "why": "Chip is deliberately one neutral ramp. Status lives in Badge, which has the tones and the semantics for it."
     }
+  ],
+  "a11y": [
+    "A selectable chip sets aria-pressed — it is a toggle button, not a checkbox, so it announces \"pressed\" rather than \"checked\".",
+    "The remove button is a separate control with removeLabel as its aria-label: reachable by keyboard without activating the chip itself.",
+    "Disabled sets pointer-events-none on the chip and on its remove button, so neither is clickable while both stay readable."
   ]
 }
