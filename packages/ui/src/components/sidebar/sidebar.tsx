@@ -23,11 +23,20 @@ import { cn } from "@/lib/utils";
  *
  * Measured: button 32 tall at radius/md, 8 padding, 8 gap; sub-item 28 tall
  * at 0/8; group padding 8; group label label/sm at xs and 32 tall; the
- * collapsed rail is a 32 square. Hover is bg/neutral/subtle-hovered,
- * Focused is bg/sidebar with a border/primary/emphasis edge and ring/focus.
+ * collapsed rail is a 32 square. Focused is bg/sidebar with a
+ * border/primary/emphasis edge and ring/focus.
+ *
+ * ⭐ Hover is bg/sidebar-hovered and pressed is bg/sidebar-pressed — the
+ * rail's own pair, not bg/neutral/subtle-hovered. The rail is neutral-100
+ * in light, which is exactly what subtle-hovered (and, since 1 Oct,
+ * muted-hovered) resolves to, so the standard hover painted the rail's own
+ * colour and nothing moved. The sidebar pair is one step past the rail in
+ * both themes: 200 then 300 in light, 900 then 800 in dark. Anything that
+ * sits on bg/sidebar takes this pair. Figma draws subtle-hovered; this is a
+ * correction under rule 2 (a hover that equals its surface cannot render).
  *
  * ⚠️ On `SidebarMenuSubItem`, Hover and Active are the same fill —
- * bg/neutral/subtle-hovered — so a selected sub-item is indistinguishable
+ * bg/sidebar-hovered — so a selected sub-item is indistinguishable
  * from one the pointer happens to be over. The parent button does not have
  * this problem: its Active is bg/primary/subtle. Built as drawn, and raised.
  */
@@ -216,7 +225,7 @@ export function SidebarGroupAction({
       className={cn(
         "flex size-5 shrink-0 cursor-pointer items-center justify-center rounded-md " +
           "text-content-neutral-muted outline-none transition-colors " +
-          "hover:bg-surface-neutral-subtle-hovered " +
+          "hover:bg-surface-sidebar-hovered active:bg-surface-sidebar-pressed " +
           "focus-visible:ring-2 focus-visible:ring-line-focused " +
           "[&_svg]:size-4",
         className,
@@ -255,7 +264,7 @@ export function SidebarMenuItem({
 const sidebarMenuButtonVariants = cva(
   "group/menu-button flex w-full cursor-pointer items-center gap-2 rounded-md p-2 " +
     "text-left text-content-neutral-emphasis outline-none transition-colors " +
-    "hover:bg-surface-neutral-subtle-hovered " +
+    "hover:bg-surface-sidebar-hovered active:bg-surface-sidebar-pressed " +
     "focus-visible:border-line-primary-emphasis focus-visible:bg-surface-sidebar " +
     "focus-visible:ring-2 focus-visible:ring-line-focused " +
     "disabled:pointer-events-none disabled:text-content-disabled " +
@@ -407,12 +416,12 @@ export function SidebarMenuSubButton({
       className={cn(
         "flex h-7 w-full cursor-pointer items-center gap-2 rounded-md px-2 " +
           "text-body-md text-content-neutral-emphasis outline-none transition-colors " +
-          "hover:bg-surface-neutral-subtle-hovered " +
+          "hover:bg-surface-sidebar-hovered active:bg-surface-sidebar-pressed " +
           "focus-visible:ring-2 focus-visible:ring-line-focused " +
           "[&_svg]:size-4 [&_svg]:shrink-0",
         // As drawn: the same fill as hover, so a selected sub-item and a
         // hovered one are the same picture. Raised.
-        active && "bg-surface-neutral-subtle-hovered",
+        active && "bg-surface-sidebar-hovered",
         className,
       )}
       {...(asChild ? {} : { type: "button" as const })}
@@ -438,7 +447,7 @@ export function SidebarTrigger({
       className={cn(
         "flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md " +
           "text-content-neutral-muted outline-none transition-colors " +
-          "hover:bg-surface-neutral-subtle-hovered " +
+          "hover:bg-surface-sidebar-hovered active:bg-surface-sidebar-pressed " +
           "focus-visible:ring-2 focus-visible:ring-line-focused " +
           "[&_svg]:size-4",
         className,

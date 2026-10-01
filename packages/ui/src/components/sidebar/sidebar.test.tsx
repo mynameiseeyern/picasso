@@ -127,9 +127,28 @@ describe("Sidebar", () => {
   it("gives a sub-item the same fill for active and hover, as drawn", () => {
     render(<Fixture />);
     const sub = document.querySelector("[data-slot=sidebar-menu-sub-button]");
-    // Both are bg/neutral/subtle-hovered in the file, so a selected sub-item
-    // and a hovered one are the same picture.
-    expect(sub).toHaveClass("hover:bg-surface-neutral-subtle-hovered");
+    // One fill for both, so a selected sub-item and a hovered one are the
+    // same picture.
+    expect(sub).toHaveClass("hover:bg-surface-sidebar-hovered");
+  });
+
+  it("hovers and presses on the rail's own pair, never the page's", () => {
+    // bg/sidebar is neutral-100 in light — the value subtle-hovered and
+    // muted-hovered both resolve to — so the standard hover is invisible here.
+    render(<Fixture />);
+    for (const slot of [
+      "sidebar-menu-button",
+      "sidebar-menu-sub-button",
+      "sidebar-trigger",
+    ]) {
+      const classes = (
+        document.querySelector(`[data-slot=${slot}]`)?.className ?? ""
+      ).split(/\s+/);
+      expect(classes).toContain("hover:bg-surface-sidebar-hovered");
+      expect(classes).toContain("active:bg-surface-sidebar-pressed");
+      expect(classes).not.toContain("hover:bg-surface-neutral-subtle-hovered");
+      expect(classes).not.toContain("hover:bg-surface-neutral-muted-hovered");
+    }
   });
 
   it("takes its measurements from the file", () => {

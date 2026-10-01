@@ -76,7 +76,7 @@
   /* sidebar chrome */
   --color-sidebar: var(--bg-sidebar);
   --color-sidebar-foreground: var(--fg-neutral-muted);
-  --color-sidebar-accent: var(--bg-neutral-subtle-hovered);
+  --color-sidebar-accent: var(--bg-sidebar-hovered);
   --color-sidebar-accent-foreground: var(--fg-neutral-emphasis);
   --color-sidebar-primary: var(--bg-primary-emphasis);
   --color-sidebar-primary-foreground: var(--fg-on-primary-emphasis);
@@ -156,6 +156,8 @@
   --color-surface-selected-subtle-hovered: var(--bg-selected-subtle-hovered);
   --color-surface-selected-subtle-pressed: var(--bg-selected-subtle-pressed);
   --color-surface-sidebar: var(--bg-sidebar);
+  --color-surface-sidebar-hovered: var(--bg-sidebar-hovered);
+  --color-surface-sidebar-pressed: var(--bg-sidebar-pressed);
   --color-surface-success-emphasis: var(--bg-success-emphasis);
   --color-surface-success-emphasis-hovered: var(--bg-success-emphasis-hovered);
   --color-surface-success-emphasis-pressed: var(--bg-success-emphasis-pressed);

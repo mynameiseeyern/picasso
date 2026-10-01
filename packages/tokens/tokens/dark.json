@@ -21,6 +21,16 @@
       "$value": "{palette.neutral.950}",
       "$description": "One step recessed from bg/app, matching light (sidebar neutral-100 against app neutral-50). Was neutral-900, the same value as bg/app, so the rail was invisible in dark."
     },
+    "sidebar-hovered": {
+      "$type": "color",
+      "$value": "{palette.neutral.900}",
+      "$description": "Hover for anything sitting on bg/sidebar. One step past the rail, the same value the rail's items already hovered to in dark."
+    },
+    "sidebar-pressed": {
+      "$type": "color",
+      "$value": "{palette.neutral.800}",
+      "$description": "Pressed for anything sitting on bg/sidebar. One step past bg/sidebar-hovered."
+    },
     "scrim": {
       "$type": "color",
       "$value": "#000000b3"

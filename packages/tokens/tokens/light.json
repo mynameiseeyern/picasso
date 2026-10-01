@@ -20,6 +20,16 @@
       "$type": "color",
       "$value": "{palette.neutral.100}"
     },
+    "sidebar-hovered": {
+      "$type": "color",
+      "$value": "{palette.neutral.200}",
+      "$description": "Hover for anything sitting on bg/sidebar. The rail is neutral-100, which is what bg/neutral/subtle-hovered and muted-hovered both resolve to, so the standard hover is invisible on it. One step past the rail, as every other hover is one step past its surface."
+    },
+    "sidebar-pressed": {
+      "$type": "color",
+      "$value": "{palette.neutral.300}",
+      "$description": "Pressed for anything sitting on bg/sidebar. One step past bg/sidebar-hovered."
+    },
     "scrim": {
       "$type": "color",
       "$value": "#16161880"
@@ -43,11 +53,13 @@
       },
       "muted-hovered": {
         "$type": "color",
-        "$value": "{palette.neutral.50}"
+        "$value": "{palette.neutral.100}",
+        "$description": "Was neutral-50, the same value as bg/app, so hover on a Chip, a ghost or outline Button and an Avatar was invisible on the page. Light muted and light subtle now share a ladder from hover onward; dark keeps them one step apart. Decided 1 Oct 2026 with that cost stated."
       },
       "muted-pressed": {
         "$type": "color",
-        "$value": "{palette.neutral.100}"
+        "$value": "{palette.neutral.200}",
+        "$description": "Moved with muted-hovered, which would otherwise have landed on the same value."
       },
       "emphasis": {
         "$type": "color",
