@@ -242,7 +242,8 @@ write code here*; `docs/` is *what the system is*.
 
 - Copy rules — casing, errors, empty states, numbers, button labels — are in
   `docs/content/`. Follow them when you write any user-facing string.
-- Foundations — the grid, the radius ladder, the type ramp — are in
+- Foundations — the grid, the radius ladder, the type ramp, the shadow steps
+  and the layer scale, motion, icons and accessibility — are in
   `docs/foundations/`.
 - Adding a component: `docs/contributing/adding-a-component.md`, and copy
   `docs/contributing/component-checklist.md` into the PR.

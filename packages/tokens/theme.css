@@ -383,6 +383,13 @@
   --max-width-content-reading: var(--size-content-reading);
   --max-width-content-standard: var(--size-content-standard);
 
+  /* ---- page gutter ----
+     p-gutter / px-gutter / gap-gutter. One number for the App shell's page
+     padding AND the gap of every grid inside it — the Rules say the gutter
+     always equals the page padding, so they share a variable rather than
+     agreeing by coincidence. 16 below xl, 24 from xl (1280); set below. */
+  --spacing-gutter: var(--page-gutter);
+
   /* ---- fonts ---- */
   --font-sans: var(--type-family-sans);
   --font-mono: var(--type-family-mono);
@@ -406,9 +413,12 @@
     outline: none;
   }
   /* RTL: components must use logical properties (ps-/pe-/ms-/me-/start-/end-).
-     `no-physical-properties` in .oxlintrc.json enforces it. Icons that encode
-     direction (chevrons, arrows, back/forward) mirror; clocks, checkmarks,
-     logos and media controls do not. */
+     ⚠️ NOTHING ENFORCES THIS. `no-physical-properties` lived in .oxlintrc.json
+     and was lost when the repo moved from oxlint to ESLint; @shadcn/lint has
+     no equivalent rule. Drawer, Accordion, Calendar and Toast have drifted
+     since. Treat it as a review item until a rule exists.
+     Icons that encode direction (chevrons, arrows, back/forward) mirror;
+     clocks, checkmarks, logos and media controls do not. */
   [dir="rtl"] .rtl-mirror {
     transform: scaleX(-1);
   }
@@ -436,6 +446,29 @@
 
 @utility z-notification {
   z-index: var(--layer-notification);
+}
+
+/* ═══ Page gutter and dashboard grids ═════════════════════════════════
+   --page-gutter steps with the VIEWPORT, because it is the shell's padding
+   and the shell is the one thing that answers to the viewport. Everything
+   inside the content area answers to its container (@3xl:, @7xl:) instead.
+   @variant, not a literal media query, so it cannot drift from xl.       */
+@layer base {
+  :root {
+    --page-gutter: var(--space-4);
+
+    @variant xl {
+      --page-gutter: var(--space-6);
+    }
+  }
+}
+
+/* KPI rows on fluid pages add tiles as they widen rather than stretching
+   them. 224 (space/56) is the tile as Figma's App shell draws it, four
+   across a 976 column at 1280. min(100%, …) so one tile still fits a
+   column narrower than the minimum instead of overflowing it. */
+@utility grid-cols-tiles {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--space-56)), 1fr));
 }
 
 /* ═══ Loader motion ═══════════════════════════════════════════════════

@@ -73,6 +73,13 @@ attached is one people remember:
 }
 ```
 
+Add an `a11y` array in the same file for what the `.tsx` cannot be read for —
+a deliberate absence (Alert ships no `role` on purpose), a decision made
+elsewhere (Skeleton is `aria-hidden` because the container announces the
+wait), or a number with a reason (Button's disabled contrast is 2.24:1, which
+SC 1.4.3 exempts). It is published to `/llms-components.txt`, so a component
+that says nothing there is one a model will guess about.
+
 ## 5. Render the guidance as a story
 
 A Do / Don't pair written only in JSON goes stale silently. Rendered as a

@@ -7,6 +7,14 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### ⚠️ Changed (visual)
 
+- **Z-index is a token.** Six rungs on GovTech's scale — `layer/base` 0,
+  `raised` 100, `overlay` 800, `modal` 1600, `floating` 2000, `notification`
+  3200 — reached through `z-raised` … `z-notification`. Floating sits above
+  modal because Radix portals menus to `document.body`, where one opened
+  inside a dialog has no parent to be scoped by. The scrim moves from `z-50`
+  to 800, so it no longer shares a value with the dialog it dims and the
+  stacking stops depending on DOM order. **Figma impact** — `layer/*` arrives
+  as Primitives on the next Picasso Sync; nothing moves on canvas.
 - **`data-spacing="comfortable"` is now `relaxed`**, and scales the whole
   ladder ×1.25 instead of moving the base to 6px.
 - **Tokens Studio removed.** `$themes.json` / `$metadata.json` are gone and

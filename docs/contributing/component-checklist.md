@@ -28,9 +28,11 @@ description: Copy this into the pull request.
 - [ ] Icon-only variants require an accessible name
 - [ ] Keyboard behaviour matches the Radix primitive's
 - [ ] Storybook's a11y addon passes
+- [ ] `guidance.json` has an `a11y` array saying what the `.tsx` cannot be read for
 
 ## Proof
 - [ ] `guidance.json` with Do / Don't pairs drawn from real defects
+- [ ] No bare `z-50` — a layer utility, or a new rung in `layer/*`
 - [ ] A rendered Do / Don't story
 - [ ] Tests covering the defects the rules exist to prevent
 - [ ] `type-check`, `test` and `build-storybook` all pass
