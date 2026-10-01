@@ -7,10 +7,9 @@ description: Lucide, sized by the parent, hidden from screen readers unless they
 
 ## One library
 
-**Lucide, and nothing else.** 40 of the 46 component files import from
-`lucide-react`. A second icon library means two stroke weights, two grid
-sizes and two ideas of what a chevron looks like, and the seam shows in every
-toolbar.
+**Lucide, and nothing else.** A second icon library means two stroke weights,
+two grid sizes and two ideas of what a chevron looks like, and the seam shows
+in every toolbar.
 
 In Figma the library is the `Lucide Icon/*` component set, and the name maps
 straight through: `Lucide Icon/AArrowDown` is `<AArrowDown />`. There is
@@ -28,8 +27,7 @@ Icons are sized by the component that holds them, not by the icon:
 <ChevronDown className="size-4" />
 ```
 
-`[&_svg]:size-4` appears on 15 component roots, `size-3.5` on 4, `size-3` on
-one. That is the whole scale:
+Three sizes, and that is the whole scale:
 
 | Size | px | Where |
 |---|---|---|
@@ -37,16 +35,14 @@ one. That is the whole scale:
 | `size-3.5` | 14 | Dense controls where 16 crowds the text |
 | `size-3` | 12 | Inline marks inside a small control |
 
-A size outside this set means the icon is doing something the system has not
-agreed to yet.
+A size outside this set is outside the system.
 
 ## Stroke weight is Lucide's, with one exception
 
-Never set `strokeWidth` — except on a check mark. It is overridden exactly
-four times in the library, all of them a `Check` at `strokeWidth={3}`
-(Checkbox, InputGroup, Select). At 12–16px a tick drawn at Lucide's default 2
-reads as a smudge rather than a confirmation, and this is the one glyph where
-that matters.
+Never set `strokeWidth` — except on a check mark, which takes
+`strokeWidth={3}`. At 12–16px a tick drawn at Lucide's default 2 reads as a
+smudge rather than a confirmation, and it is the one glyph where that
+matters.
 
 ## Every icon is hidden unless it is the label
 
@@ -75,7 +71,6 @@ The mechanism is `.rtl-mirror`, defined in `packages/tokens/theme.css`:
 [dir="rtl"] .rtl-mirror { transform: scaleX(-1); }
 ```
 
-⚠️ **No component uses it yet.** The class exists and the rule is written down
-in AGENTS.md section 6, but not one directional icon in the library carries
-it. Add it as you touch each component; a chevron in an Accordion, a
-Breadcrumb separator and a Drawer's back arrow all need it.
+Put it on the icon itself, not on a wrapper — the transform mirrors the glyph,
+not the space around it. An Accordion chevron, a Breadcrumb separator and a
+Drawer's back arrow all take it.

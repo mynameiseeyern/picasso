@@ -18,7 +18,9 @@ fleet. These are ours, so they need defining.
 **Never explain theirs.** Assume SIP, jitter, MOS, SBC and packet loss need no
 gloss.
 
-## Open question
+## One word has no answer yet
 
-⚠️ The **tenant / customer / organisation** choice is not yet settled. Flag it in
-review until it is.
+**Tenant**, **customer** and **organisation** all appear, and none of them is
+the agreed word. Do not pick one in a draft — use whichever the surrounding
+screen already uses, and flag it in review so the choice is made once rather
+than per screen.

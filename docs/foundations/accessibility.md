@@ -13,21 +13,13 @@ text is checked on `bg/app` and `bg/card`. The focus ring is checked at 3:1,
 because a focus indicator is a UI component and SC 1.4.11 asks for 3:1 rather
 than 4.5:1.
 
-A brand's ramp and its on-colours are generated, so this is the gate that
-proves the generator right. It exists because the amber flip was found by
-hand, in an audit, after it had already shipped.
+A brand's ramp and its on-colours are generated, so the gate is what proves
+the generator right. It also asserts that it found 24 pairs: a token renamed
+out of coverage is a gate that passes while checking nothing.
 
-The test also asserts that it found 24 pairs. If a token is renamed and the
-gate quietly stops covering it, that is worse than failing.
-
-## Why 2.1 and not APCA
-
-APCA models saturated colour better than WCAG 2.1 does, and 2.1 genuinely
-mis-ranks some of our brand pairs. But APCA is not a standard, and it is not
-what an accessibility obligation names.
-
-So: **comply with 2.1, and where 2.1 says pass and the screen says otherwise,
-darken.** Never the reverse. The eye overrides upward only.
+The standard is WCAG 2.1, not APCA. **Comply with 2.1, and where 2.1 says pass
+and the screen says otherwise, darken.** Never the reverse — the eye overrides
+upward only.
 
 ## Focus is a ring, and the ring is the only indicator
 
@@ -44,10 +36,10 @@ brand. The inner ring is the offset, and it is what makes the indicator read
 on a card, on a toolbar, and on a coloured surface alike. See
 [Elevation](elevation.md) for why it lives in the shadow namespace.
 
-Switch is worth reading as the example: its track border goes transparent
-when the switch is on (`data-[state=checked]:border-transparent`), and the
-focus ring is a separate `focus-visible:ring-2` that is unaffected by it. The
-border is decoration; the ring is the indicator. Keep them independent.
+Keep the ring independent of the border. Switch is the pattern: its track
+border goes transparent when the switch is on, and the focus ring is a
+separate layer that is unaffected. The border is decoration; the ring is the
+indicator.
 
 ## Invalid: boxes take a border, marks take a ring
 
@@ -85,5 +77,5 @@ never removed, that `loading` sets `aria-busy` and must not stay activatable,
 and why its disabled contrast is 2.24:1.
 
 Those notes are published to `/llms-components.txt`, so they reach a model
-writing code as well as a person reading Storybook. **A new component is not
+writing code as well as a person reading Storybook. **A component is not
 finished until its `a11y` array says something true.**

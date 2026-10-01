@@ -27,8 +27,8 @@ folder drifts; a doc in the same folder gets reviewed.
 
 ## Where a rule lives
 
-The same rule used to exist in five places. Five copies of a rule is zero copies
-of a rule, so each one now has exactly one home:
+Five copies of a rule are zero copies of a rule. Each one has exactly one
+home:
 
 | Home | Role |
 |---|---|
@@ -42,6 +42,26 @@ of a rule, so each one now has exactly one home:
 
 If you find a rule stated in two places, one of them is wrong. Fix the source
 and delete the copy.
+
+## How these pages are written
+
+**A page describes the system as it is.** Present tense, no history. What the
+rule is, where it applies, what to reach for — not what it replaced, not who
+decided it, not what it was before.
+
+- **No change history.** "The radius ladder moved from Tailwind's to shadcn's"
+  belongs in `CHANGELOG.md`. The page says `rounded-md` is 8px.
+- **No decision record.** Which alternatives were weighed, and why this one
+  won, is not what a reader needs at the moment they are reaching for a token.
+- **No status.** "Not settled yet", "nothing uses this one", "coming later" —
+  a page that tracks its own progress goes stale the week after it is written.
+  Open work is tracked where open work lives, not on the page.
+- **Keep the *why* that is an instruction.** "Floating outranks modal because a
+  portalled menu has to clear the dialog that opened it" tells you where to put
+  the next floating thing. That earns its place. "We chose GovTech's scale
+  after comparing three" does not.
+
+A reader arrives mid-task with a question. Answer that question.
 
 ## Direction of truth
 

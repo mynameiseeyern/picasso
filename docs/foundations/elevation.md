@@ -14,53 +14,7 @@ usually needs one or the other, and a few need both.
 Six rungs. Every one of them is a token in `core.json` under `layer/*`, and a
 utility in `theme.css`.
 
-<svg viewBox="0 0 740 392" role="img" aria-labelledby="layer-stack-title" style={{width:'100%',height:'auto'}} xmlns="http://www.w3.org/2000/svg">
-  <title id="layer-stack-title">The six Picasso layers, from the page at 0 up to notification at 3200</title>
-  <g fill="none" stroke="currentColor" strokeOpacity="0.35">
-    <path d="M14 356 L14 24" strokeWidth="1.25" />
-    <path d="M9.5 29 L14 20 L18.5 29" strokeWidth="1.25" />
-  </g>
-  <text x="28" y="22" fill="currentColor" fillOpacity="0.55" fontSize="11" fontFamily="ui-sans-serif, system-ui, sans-serif" letterSpacing="0.06em">ABOVE</text>
-
-  <g fontFamily="ui-sans-serif, system-ui, sans-serif">
-    <g transform="translate(0,36)">
-      <text x="118" y="28" textAnchor="end" fill="currentColor" fillOpacity="0.55" fontSize="13" fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">3200</text>
-      <rect x="132" y="4" width="594" height="40" rx="7" fill="currentColor" fillOpacity="0.1" stroke="currentColor" strokeOpacity="0.26" />
-      <text x="150" y="29" fill="currentColor" fontSize="14" fontWeight="600">notification</text>
-      <text x="300" y="29" fill="currentColor" fillOpacity="0.62" fontSize="13">Toast</text>
-    </g>
-    <g transform="translate(0,92)">
-      <text x="118" y="28" textAnchor="end" fill="currentColor" fillOpacity="0.55" fontSize="13" fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">2000</text>
-      <rect x="132" y="4" width="594" height="40" rx="7" fill="currentColor" fillOpacity="0.09" stroke="currentColor" strokeOpacity="0.24" />
-      <text x="150" y="29" fill="currentColor" fontSize="14" fontWeight="600">floating</text>
-      <text x="300" y="29" fill="currentColor" fillOpacity="0.62" fontSize="13">Tooltip · Popover · Select · DropdownMenu</text>
-    </g>
-    <g transform="translate(0,148)">
-      <text x="118" y="28" textAnchor="end" fill="currentColor" fillOpacity="0.55" fontSize="13" fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">1600</text>
-      <rect x="132" y="4" width="594" height="40" rx="7" fill="currentColor" fillOpacity="0.08" stroke="currentColor" strokeOpacity="0.22" />
-      <text x="150" y="29" fill="currentColor" fontSize="14" fontWeight="600">modal</text>
-      <text x="300" y="29" fill="currentColor" fillOpacity="0.62" fontSize="13">Dialog · Drawer</text>
-    </g>
-    <g transform="translate(0,204)">
-      <text x="118" y="28" textAnchor="end" fill="currentColor" fillOpacity="0.55" fontSize="13" fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">800</text>
-      <rect x="132" y="4" width="594" height="40" rx="7" fill="currentColor" fillOpacity="0.06" stroke="currentColor" strokeOpacity="0.2" />
-      <text x="150" y="29" fill="currentColor" fontSize="14" fontWeight="600">overlay</text>
-      <text x="300" y="29" fill="currentColor" fillOpacity="0.62" fontSize="13">The scrim</text>
-    </g>
-    <g transform="translate(0,260)">
-      <text x="118" y="28" textAnchor="end" fill="currentColor" fillOpacity="0.55" fontSize="13" fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">100</text>
-      <rect x="132" y="4" width="594" height="40" rx="7" fill="currentColor" fillOpacity="0.04" stroke="currentColor" strokeOpacity="0.18" />
-      <text x="150" y="29" fill="currentColor" fontSize="14" fontWeight="600">raised</text>
-      <text x="300" y="29" fill="currentColor" fillOpacity="0.62" fontSize="13">The active OTP slot · a ButtonGroup member on hover</text>
-    </g>
-    <g transform="translate(0,316)">
-      <text x="118" y="28" textAnchor="end" fill="currentColor" fillOpacity="0.55" fontSize="13" fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">0</text>
-      <rect x="132" y="4" width="594" height="40" rx="7" fill="none" stroke="currentColor" strokeOpacity="0.3" strokeDasharray="4 4" />
-      <text x="150" y="29" fill="currentColor" fontSize="14" fontWeight="600">base</text>
-      <text x="300" y="29" fill="currentColor" fillOpacity="0.62" fontSize="13">The page</text>
-    </g>
-  </g>
-</svg>
+![The six Picasso layers, from the page at 0 up to notification at 3200](/diagrams/foundations/elevation-layers.svg)
 
 | Token | Value | Utility |
 |---|---|---|
@@ -71,7 +25,7 @@ utility in `theme.css`.
 | `layer/floating` | 2000 | `z-floating` |
 | `layer/notification` | 3200 | `z-notification` |
 
-The gaps are the point. Anything that needs to sit between two rungs has room
+The gaps are the point: anything that needs to sit between two rungs has room
 to, without renumbering what is already there.
 
 ### Floating outranks modal
@@ -83,8 +37,8 @@ thing you opened it from. Floating is therefore above modal, not below it.
 
 ### The scrim is below the thing it dims
 
-`overlay` at 800 sits under `modal` at 1600. Stacking does not depend on which
-of them the browser happens to paint first.
+`overlay` at 800 sits under `modal` at 1600, so a dialog covers its own scrim
+by number rather than by which of them the browser paints first.
 
 ### Reaching a layer
 
