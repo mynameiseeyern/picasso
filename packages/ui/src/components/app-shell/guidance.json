@@ -17,7 +17,7 @@
     {
       "id": "collapsed-is-a-choice-not-a-default",
       "dont": "Ship the rail collapsed to win back 208px.",
-      "do": "Default to expanded from md up, and to collapsed only at sm where the content would drop under 720.",
+      "do": "Default to expanded from lg (1024) up, and to collapsed only at md (768) where the content would drop under 720.",
       "why": "An icon-only rail is a memory test for anyone who does not already know the product. The width is worth more to the person than to the layout."
     },
     {
@@ -27,10 +27,34 @@
       "why": "IR's ladder used to be Tailwind's shifted up one, so `lg:` meant 1280 to a designer and 1024 to the browser. They are one ladder now, and the name is the thing to trust."
     },
     {
+      "id": "dashboards-add-columns",
+      "dont": "Stretch four tiles across a wide screen.",
+      "do": "Let a dashboard add columns as it widens.",
+      "why": "A KPI tile stretched to 500 wide carries the same number in twice the space, and the eye has further to travel between them. On a fluid page the spare width becomes more tiles per row — an auto-fill grid with a 224 minimum — and charts go from one across to two at 768 of content and three at 1280."
+    },
+    {
+      "id": "cap-forms-at-reading-width",
+      "dont": "Let a field span the content area.",
+      "do": "Cap forms and prose at the reading width.",
+      "why": "A 1600-wide text field gives no sense of what length of answer is expected, and a line of prose that long is hard to track back to its start. width=\"reading\" caps the column at 768 (size/content/reading)."
+    },
+    {
       "id": "cap-the-column-not-the-page",
-      "dont": "Centre a narrow content column on a wide screen.",
-      "do": "Cap reading-heavy pages at 768 and leave the column left-aligned.",
-      "why": "Centring moves the start of every line as the window resizes, and breaks the alignment with the rail and the breadcrumb above it. The eye starts in the same place on every page."
+      "dont": "Centre capped content.",
+      "do": "Keep capped content aligned to the rail.",
+      "why": "Centring moves the start of every line as the window resizes, and breaks the alignment with the rail and the breadcrumb above it. Left-aligned, the page heading starts in the same place whether the page is fluid, standard or reading."
+    },
+    {
+      "id": "grids-follow-the-container",
+      "dont": "Use viewport breakpoints inside the content area.",
+      "do": "Size dashboard grids to their container.",
+      "why": "The viewport does not know about the rail, the padding, a cap or a drawer. The same grid sits in a 976 column at 1280 with the rail open and a 1184 one with it collapsed. Use the @-variants (@3xl:, @7xl:); viewport breakpoints are for the shell — rail collapse and padding."
+    },
+    {
+      "id": "charts-have-a-height-range",
+      "dont": "Lock a chart to an aspect ratio.",
+      "do": "Give charts a fixed height range.",
+      "why": "An aspect ratio makes a chart grow taller as the screen widens, so on a 2560 monitor one chart fills the screen and pushes everything under it out of view. Width is where the extra time range goes; height stays between 240 and 320."
     },
     {
       "id": "one-scroller",

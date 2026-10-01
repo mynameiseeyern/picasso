@@ -7,14 +7,14 @@ import { cn } from "@/lib/utils";
  * AppShell — Figma's App shell page, `Layout / App shell` 40000390:30130.
  *
  * Ten variants across Screen × Sidebar, but only one of those axes survives
- * the trip into code. Screen (sm 768, md 1024, lg 1280, xl 1440, 2xl 1536)
+ * the trip into code. Screen (md 768, lg 1024, xl 1280, laptop 1440, 2xl 1536)
  * is Figma drawing breakpoints the only way it can — as variants — and the
  * browser does that itself. Strip it out and the ten collapse to two
  * structures, which the Sidebar's own collapsed state already carries. So
  * AppShell has no variants at all: it is chrome, and the chrome is fixed.
  *
  * What the Screen axis actually says, once decoded: the page padding and the
- * top bar's inline padding are 16 at sm and md, and 24 from lg up. Nothing
+ * top bar's inline padding are 16 below xl, and 24 from xl (1280) up. Nothing
  * else moves. Widths, gaps and the 48 top bar are the same at every size.
  *
  * The padding steps at 1280 — `xl:` in the tokens, in Tailwind and in this
@@ -23,9 +23,9 @@ import { cn } from "@/lib/utils";
  * and `lg:p-6` in a class meant 1024. The scales are aligned now
  * (@ir/tokens theme.css), and `screen/desktop/*` is the source of both.
  *
- * ⚠️ Figma's `Screen` variant labels are still the old ladder — its `sm` is
- * 768, which is now `md`. The widths it draws are right; the names on them
- * are one step out and want renaming in the file.
+ * Figma's `Screen` labels were renamed to this ladder on 1 Oct (md 768,
+ * lg 1024, xl 1280, laptop 1440, 2xl 1536) and each variant's width is bound
+ * to the `screen/desktop/*` variable of the same name.
  *
  * This component is also why three tokens moved. bg/app, bg/sidebar and
  * border/neutral/subtle were all palette-neutral-900 in dark, so the
@@ -98,7 +98,7 @@ export function AppShellHeader({
       data-slot="app-shell-header"
       className={cn(
         "flex h-12 shrink-0 items-center gap-2 border-b " +
-          "border-line-neutral-muted px-4 xl:px-6",
+          "border-line-neutral-muted px-gutter",
         className,
       )}
       {...props}
@@ -106,20 +106,37 @@ export function AppShellHeader({
   );
 }
 
-const appShellContentColumnVariants = cva("", {
-  variants: {
-    width: {
-      // Fluid to 2xl, which is what the Screen variants draw.
-      fluid: "",
-      // "Reading-heavy pages cap their content column at 768px and stay
-      // left-aligned." The cap is on the column, inside the page padding —
-      // so max-w-192 sits on the inner element and the padding stays on the
-      // scroller.
-      prose: "max-w-192",
+/**
+ * Content width — three modes, set per page. The cap sits on the column,
+ * inside the page padding, and the column stays left-aligned to the rail in
+ * every mode, so the start of the page heading does not move when a page
+ * switches between fluid and capped.
+ *
+ * | mode       | max width | for                              |
+ * |------------|-----------|----------------------------------|
+ * | `fluid`    | none      | dashboards, tables, log viewer   |
+ * | `standard` | 1280      | detail, settings, mixed pages    |
+ * | `reading`  | 768       | forms and prose                  |
+ *
+ * `standard` only bites above a 1584 viewport (1280 + 256 rail + 48
+ * padding), so it is a wide-screen rule. The numbers are `size/content/*`.
+ */
+const appShellContentColumnVariants = cva(
+  // The column is the query container, so `@3xl:` and friends inside a page
+  // answer to the content width — the rail, the padding and the cap already
+  // taken off — not to the viewport. Viewport breakpoints are the shell's.
+  "@container",
+  {
+    variants: {
+      width: {
+        fluid: "",
+        standard: "max-w-content-standard",
+        reading: "max-w-content-reading",
+      },
     },
+    defaultVariants: { width: "fluid" },
   },
-  defaultVariants: { width: "fluid" },
-});
+);
 
 export interface AppShellContentProps
   extends
@@ -128,7 +145,11 @@ export interface AppShellContentProps
 
 /**
  * The scrolling page area, and the document's `<main>`.
- * Padding is 16 at sm and md, 24 from lg up.
+ *
+ * Padding is `p-gutter`: 16 below xl and 24 from xl (1280) up, from
+ * `--page-gutter` in @ir/tokens' theme.css. The Rules make the grid gap equal
+ * to the page padding, so a dashboard grid writes `gap-gutter` and follows
+ * the shell without a viewport breakpoint of its own.
  */
 export function AppShellContent({
   className,
@@ -139,7 +160,11 @@ export function AppShellContent({
   return (
     <main
       data-slot="app-shell-content"
-      className={cn("min-h-0 flex-1 overflow-y-auto p-4 xl:p-6", className)}
+      data-width={width ?? "fluid"}
+      className={cn(
+        "min-h-0 flex-1 overflow-y-auto p-gutter",
+        className,
+      )}
       {...props}
     >
       <div

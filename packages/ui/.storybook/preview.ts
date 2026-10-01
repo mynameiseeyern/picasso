@@ -12,8 +12,32 @@ const axes = {
   spacing: { name: "Spacing", options: ["default", "compact", "relaxed"] },
 } as const;
 
+/* Viewport presets named for the breakpoint ladder (screen/desktop/*), so
+ * the toolbar speaks the same words as the tokens, the classes and Figma's
+ * App shell `Screen` labels. sm (640) is left out: it is below the
+ * supported floor and nothing is designed at it.
+ *
+ * The last two are NOT breakpoints. Nothing in Picasso changes at 1920 or
+ * 2560 — they are here to check the wide-screen rule (fluid pages add
+ * columns; standard caps at 1280) on the monitors people actually have. */
+const desktop = (name: string, width: number) => ({
+  name,
+  styles: { width: `${width}px`, height: "900px" },
+  type: "desktop" as const,
+});
+const viewports = {
+  md: desktop("md — 768", 768),
+  lg: desktop("lg — 1024", 1024),
+  xl: desktop("xl — 1280", 1280),
+  laptop: desktop("laptop — 1440", 1440),
+  "2xl": desktop("2xl — 1536", 1536),
+  test1920: desktop("1920 — test only, not a breakpoint", 1920),
+  test2560: desktop("2560 — test only, not a breakpoint", 2560),
+};
+
 const preview: Preview = {
   parameters: {
+    viewport: { options: viewports },
     controls: {
       matchers: { color: /(background|color)$/i, date: /Date$/i },
     },

@@ -167,6 +167,7 @@ const SCOPES = [
   [/^paragraphSpacing\//, ["PARAGRAPH_SPACING"]],
   [/^paragraphIndent\//, ["PARAGRAPH_INDENT"]],
   [/^screen\//, ["WIDTH_HEIGHT"]],
+  [/^size\//, ["WIDTH_HEIGHT"]],
 ];
 const scopesFor = (name) => (SCOPES.find(([re]) => re.test(name)) ?? [null, []])[1];
 const figmaName = (path) => path.replaceAll(".", "/");

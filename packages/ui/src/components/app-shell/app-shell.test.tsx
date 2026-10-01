@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 
@@ -23,7 +25,7 @@ function Fixture({
   width,
 }: {
   collapsed?: boolean;
-  width?: "fluid" | "prose";
+  width?: "fluid" | "standard" | "reading";
 }) {
   return (
     <SidebarProvider defaultCollapsed={collapsed}>
@@ -96,18 +98,29 @@ describe("AppShell", () => {
     );
   });
 
-  it("steps the page padding at 1280, which is xl", () => {
+  it("pads the page and the top bar with the gutter", () => {
     const { container } = render(<Fixture />);
     const content = container.querySelector('[data-slot="app-shell-content"]')!;
     const header = screen.getByRole("banner");
-    // 16 below 1280, 24 from 1280 up. `xl` is 1280 in screen/desktop/* and
-    // in Tailwind; `lg` is 1024 in both and would fire a breakpoint early.
-    expect(classes(content)).toEqual(expect.arrayContaining(["p-4", "xl:p-6"]));
-    expect(classes(content)).not.toContain("lg:p-6");
-    expect(classes(header)).toEqual(
-      expect.arrayContaining(["px-4", "xl:px-6"]),
+    // One variable for padding and grid gap — the Rules say they are equal.
+    expect(classes(content)).toContain("p-gutter");
+    expect(classes(header)).toContain("px-gutter");
+    // No breakpoint of its own: the step lives in --page-gutter.
+    expect(classes(content).some((c) => /^\w+:p-/.test(c))).toBe(false);
+  });
+
+  it("steps the gutter at 1280, which is xl", () => {
+    // jsdom cannot evaluate a media query, so read the rule itself. 16 below
+    // 1280, 24 from 1280 up. `xl` is 1280 in screen/desktop/* and in
+    // Tailwind; `lg` is 1024 in both and would fire the step early.
+    const css = readFileSync(
+      resolve(__dirname, "../../../../tokens/theme.css"),
+      "utf8",
+    ).replace(/\s+/g, " ");
+    expect(css).toContain("--spacing-gutter: var(--page-gutter);");
+    expect(css).toContain(
+      ":root { --page-gutter: var(--space-4); @variant xl { --page-gutter: var(--space-6); } }",
     );
-    expect(classes(header)).not.toContain("lg:px-6");
   });
 
   it("scrolls the content area, not the shell", () => {
@@ -119,12 +132,21 @@ describe("AppShell", () => {
   });
 
   it("caps the reading column at 768 and leaves it left-aligned", () => {
-    const { container } = render(<Fixture width="prose" />);
+    const { container } = render(<Fixture width="reading" />);
     const column = container.querySelector(
       '[data-slot="app-shell-content-column"]',
     )!;
-    expect(classes(column)).toContain("max-w-192");
+    expect(classes(column)).toContain("max-w-content-reading");
     // Left-aligned: the Rules say the column stays put rather than centring.
+    expect(classes(column)).not.toContain("mx-auto");
+  });
+
+  it("caps the standard column at 1280 and leaves it left-aligned", () => {
+    const { container } = render(<Fixture width="standard" />);
+    const column = container.querySelector(
+      '[data-slot="app-shell-content-column"]',
+    )!;
+    expect(classes(column)).toContain("max-w-content-standard");
     expect(classes(column)).not.toContain("mx-auto");
   });
 
@@ -133,19 +155,34 @@ describe("AppShell", () => {
     const column = container.querySelector(
       '[data-slot="app-shell-content-column"]',
     )!;
-    expect(classes(column)).not.toContain("max-w-192");
+    expect(classes(column).some((c) => c.startsWith("max-w-"))).toBe(false);
+    expect(
+      container.querySelector('[data-slot="app-shell-content"]'),
+    ).toHaveAttribute("data-width", "fluid");
+  });
+
+  it("makes the column the query container in every mode", () => {
+    for (const width of ["fluid", "standard", "reading"] as const) {
+      const { container } = render(<Fixture width={width} />);
+      const column = container.querySelector(
+        '[data-slot="app-shell-content-column"]',
+      )!;
+      // Layout inside the page answers to the content width, not the
+      // viewport — so the container is the column, inside the padding.
+      expect(classes(column)).toContain("@container");
+    }
   });
 
   it("keeps the padding outside the capped column", () => {
-    const { container } = render(<Fixture width="prose" />);
+    const { container } = render(<Fixture width="reading" />);
     const content = container.querySelector('[data-slot="app-shell-content"]')!;
     const column = container.querySelector(
       '[data-slot="app-shell-content-column"]',
     )!;
     // The cap is on the column, the padding on the scroller — otherwise a
     // 768 cap yields a 720 column.
-    expect(classes(content)).toContain("p-4");
-    expect(classes(column)).not.toContain("p-4");
+    expect(classes(content)).toContain("p-gutter");
+    expect(classes(column)).not.toContain("p-gutter");
   });
 
   it("carries the rail width from the sidebar's own state", () => {
