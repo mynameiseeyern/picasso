@@ -114,7 +114,11 @@ export function BreadcrumbLink({
     <Comp
       data-slot="breadcrumb-link"
       className={cn(
-        "text-body-md text-content-neutral-subtle transition-colors hover:text-content-neutral-emphasis",
+        // inline-flex with a 24 floor: the text is 21 tall, and in the
+        // collapsed breadcrumb the links sit close enough together that the
+        // 2.5.8 spacing exception does not cover them. The row is already
+        // taller than this, so nothing moves.
+        "inline-flex min-h-6 items-center text-body-md text-content-neutral-subtle transition-colors hover:text-content-neutral-emphasis",
         focusRing,
         className,
       )}

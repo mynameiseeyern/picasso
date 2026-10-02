@@ -36,6 +36,13 @@ import { cn } from "@/lib/utils";
  */
 const radioVariants = cva(
   "group aspect-square shrink-0 rounded-full border transition-colors outline-none " +
+    // A bare control is its own target. 16px square is under the 24 floor
+    // (WCAG 2.2 AA, 2.5.8), and a Checkbox in a table cell or a states
+    // matrix has no label row to inherit — FieldOption covers the ones
+    // that do. The hit area grows, the box does not. 24 and not 44:
+    // a table row cannot spare 44, and where there is room there is a
+    // FieldOption giving 44 already.
+    "relative after:absolute after:-inset-1.5 " +
     "bg-surface-input-default border-line-neutral-emphasis " +
     "hover:bg-surface-input-hovered " +
     "focus-visible:ring-2 focus-visible:ring-line-focused " +

@@ -315,12 +315,10 @@ export function ToastClose({
       data-slot="toast-close"
       aria-label={label}
       className={cn(
-        // ⚠️ 16 square, under the 24 floor. The expanded-hit-area trick the
-        // other dismissers use cannot work here: the Toast clips its own
-        // content (overflow-hidden for the swipe), so a ::after reaching past
-        // the button is cut off at the edge. Fixing it means giving the
-        // button a real box, which changes the Toast's header row. Raised.
-        "flex size-4 shrink-0 cursor-pointer items-center justify-center self-start rounded-xs " +
+        // The Toast clips its own content for the swipe, so the expanded-hit-
+        // area trick the other dismissers use is cut off at the edge — this
+        // one grows a real box instead. The icon stays 16; 24 is the floor.
+        "flex size-6 shrink-0 cursor-pointer items-center justify-center self-start rounded-xs " +
           "outline-none focus-visible:ring-2 focus-visible:ring-line-focused " +
           "focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card",
         appearance === "subtle" && "text-content-neutral-emphasis",
