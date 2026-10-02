@@ -309,15 +309,57 @@ describe('Sidebar mobile="fullscreen" (phones)', () => {
     );
   }
 
-  it("draws no inline rail on a phone; the trigger opens the nav full screen", async () => {
+  it("draws no inline rail on a phone; the trigger opens the nav over the page", async () => {
     setPhone(true);
     render(<Phone />);
     expect(screen.queryByText("Endpoints")).toBeNull();
     const trigger = screen.getByRole("button", { name: "Open navigation" });
     await userEvent.click(trigger);
     const dialog = screen.getByRole("dialog", { name: "Navigation" });
-    expect(dialog.className).toContain("inset-0");
+    // a panel from the inline start, not the whole screen — the strip left
+    // at the end is scrim, and tapping it is the way out
+    expect(dialog.className).toContain("start-0");
+    expect(dialog.className).toContain("end-14");
+    expect(dialog.className).not.toContain("inset-0");
     expect(trigger).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("keeps a nav a product opened on mount", () => {
+    setPhone(true);
+    // hasMobile is registered by an effect in the child, so on the first pass
+    // the provider does not yet know there is a phone nav. The guard that
+    // closes a stale overlay must not fire in that window.
+    render(
+      <SidebarProvider mobileOpen>
+        <Sidebar mobile="drawer" mobileLabel="Navigation">
+          <SidebarContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  <SidebarMenuLabel>Endpoints</SidebarMenuLabel>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarContent>
+        </Sidebar>
+      </SidebarProvider>,
+    );
+    expect(
+      screen.getByRole("dialog", { name: "Navigation" }),
+    ).toBeInTheDocument();
+  });
+
+  it("leaves a scrim behind the panel, so there is a page to go back to", async () => {
+    setPhone(true);
+    const { baseElement } = render(<Phone />);
+    await userEvent.click(
+      screen.getByRole("button", { name: "Open navigation" }),
+    );
+    expect(
+      baseElement.querySelector(
+        '[data-slot="overlay-scrim"], .bg-surface-scrim',
+      ),
+    ).not.toBeNull();
   });
 
   it("puts a collapse button on the plate, and it closes the nav", async () => {

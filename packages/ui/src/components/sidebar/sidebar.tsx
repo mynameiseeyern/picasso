@@ -4,6 +4,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { PanelLeft, PanelLeftClose } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { overlayScrimVariants } from "../overlay/overlay";
 
 /**
  * Sidebar — Figma's Sidebar menu page, thirteen sets over one navigation
@@ -135,10 +136,17 @@ export function SidebarProvider({
   );
 
   const phone = isPhone && hasMobile;
-  // Crossing back up to md closes the phone nav, so it never reopens as a stale overlay.
+  /* Crossing back up to md closes the phone nav, so it never reopens as a
+     stale overlay.
+     ⚠️ The guard is `hasMobile && !isPhone`, not `!phone`. `hasMobile` is set
+     by an effect in the Sidebar child, which runs AFTER this one on the first
+     pass — so `phone` is false on mount even on a phone, and `!phone` would
+     close a nav that a product opened on mount before anyone saw it. Waiting
+     for `hasMobile` means the guard only fires once there is something to
+     guard. */
   React.useEffect(() => {
-    if (!phone && mobileOpen) setMobileOpen(false);
-  }, [phone, mobileOpen, setMobileOpen]);
+    if (hasMobile && !isPhone && mobileOpen) setMobileOpen(false);
+  }, [hasMobile, isPhone, mobileOpen, setMobileOpen]);
   const ctx = React.useMemo<SidebarContextValue>(
     () => ({
       collapsed: value,
@@ -168,13 +176,17 @@ export function SidebarProvider({
 
 export interface SidebarProps extends React.ComponentProps<"aside"> {
   /**
-   * Figma: `Sidebar / Phone nav (full screen)` 40000659:33057.
-   * `"fullscreen"`: below md the rail is not drawn inline — SidebarTrigger
-   * opens the same tree full screen over the page instead, with a collapse
-   * button on the brand plate, 44-tall items, and picking an item closes it.
-   * From md up nothing changes. Opt-in for now; see guidance `phone-nav`.
+   * Figma: `Sidebar / Phone nav` 40000659:33057.
+   * `"drawer"`: below md the rail is not drawn inline — SidebarTrigger opens
+   * the same tree over the page instead, as a panel from the inline start
+   * with a strip of scrim left at the end. 44-tall items, a close on the
+   * brand plate, and picking an item closes it. From md up nothing changes.
+   * Opt-in for now; see guidance `phone-nav`.
+   *
+   * `"fullscreen"` is the old name for the same thing, from when the panel
+   * covered the whole screen. It still works.
    */
-  mobile?: "fullscreen";
+  mobile?: "drawer" | "fullscreen";
   /** Accessible name of the phone nav dialog. */
   mobileLabel?: string;
 }
@@ -189,22 +201,28 @@ export function Sidebar({
   const ctx = useSidebar();
   const { collapsed, registerMobile } = ctx;
   React.useEffect(() => {
-    if (mobile !== "fullscreen") return;
+    if (!mobile) return;
     registerMobile(true);
     return () => registerMobile(false);
   }, [mobile, registerMobile]);
 
-  if (mobile === "fullscreen" && ctx.phone) {
+  if (mobile && ctx.phone) {
     return (
       <DialogPrimitive.Root
         open={ctx.mobileOpen}
         onOpenChange={ctx.setMobileOpen}
       >
         <DialogPrimitive.Portal>
+          {/* The strip of scrim at the end is the way out that needs no
+              instruction: it shows there is a page behind, and tapping it
+              closes. A panel that covers the whole screen reads as a new
+              place rather than something over the page, and leaves Escape —
+              a key a phone does not have — as the only exit. */}
+          <DialogPrimitive.Overlay className={overlayScrimVariants()} />
           <DialogPrimitive.Content
             data-slot="sidebar-mobile"
             aria-describedby={undefined}
-            className="fixed inset-0 z-modal flex outline-none"
+            className="fixed inset-y-0 start-0 end-14 z-modal flex outline-none"
           >
             <DialogPrimitive.Title className="sr-only">
               {mobileLabel}
