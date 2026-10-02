@@ -81,7 +81,7 @@ export function Calendar({
       // Caption left, arrows together on the right.
       month_caption: "flex h-8 items-center",
       caption_label: "text-label-lg text-content-neutral-emphasis",
-      nav: "absolute top-3 right-3 flex h-8 items-center gap-1",
+      nav: "absolute top-3 end-3 flex h-8 items-center gap-1",
       button_previous:
         "inline-flex size-8 cursor-pointer items-center justify-center rounded-md " +
         "bg-surface-card text-content-neutral-emphasis outline-none transition-colors " +
@@ -133,8 +133,8 @@ export function Calendar({
         "[&:not(.range-middle)_button]:hover:bg-surface-primary-emphasis-hovered",
       // The run between the ends is one continuous block: the cell is
       // filled and its button is square and transparent so no gaps show.
-      range_start: "rounded-l-md bg-surface-primary-subtle",
-      range_end: "rounded-r-md bg-surface-primary-subtle",
+      range_start: "rounded-s-md bg-surface-primary-subtle",
+      range_end: "rounded-e-md bg-surface-primary-subtle",
       range_middle:
         "range-middle bg-surface-primary-subtle [&_button]:rounded-none [&_button]:bg-transparent " +
         "[&_button]:text-content-neutral-muted [&_button]:hover:bg-surface-primary-subtle-hovered",

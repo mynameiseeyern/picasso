@@ -94,13 +94,13 @@ describe("Accordion", () => {
     // 24 for the icon plus the row's 16 gap.
     expect(
       document.querySelector("[data-slot=accordion-content] > div"),
-    ).toHaveClass("pr-10");
+    ).toHaveClass("pe-10");
     unmount();
     render(<Fixture iconPosition="left" />);
     await user.click(screen.getByRole("button"));
     expect(
       document.querySelector("[data-slot=accordion-content] > div"),
-    ).toHaveClass("pl-10");
+    ).toHaveClass("ps-10");
   });
 
   it("draws the divider above an item, so a list has no trailing rule", () => {

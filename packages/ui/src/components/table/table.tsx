@@ -69,7 +69,7 @@ export function Table({ className, size = "md", ...props }: TableProps) {
           data-slot="table"
           data-size={size}
           className={cn(
-            "w-full caption-bottom border-collapse text-left",
+            "w-full caption-bottom border-collapse text-start",
             className,
           )}
           {...props}

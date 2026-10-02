@@ -80,10 +80,10 @@ describe("Calendar", () => {
     );
     expect(filled).toHaveLength(5);
     expect(
-      container.querySelector("[role=gridcell].rounded-l-md"),
+      container.querySelector("[role=gridcell].rounded-s-md"),
     ).not.toBeNull();
     expect(
-      container.querySelector("[role=gridcell].rounded-r-md"),
+      container.querySelector("[role=gridcell].rounded-e-md"),
     ).not.toBeNull();
   });
 

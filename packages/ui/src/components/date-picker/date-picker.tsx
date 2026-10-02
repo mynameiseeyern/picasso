@@ -129,7 +129,7 @@ export function DatePicker({
           )}
         >
           {iconPosition === "left" ? icon : null}
-          <span className="flex-1 truncate text-left">
+          <span className="flex-1 truncate text-start">
             {text ?? placeholder}
           </span>
           {iconPosition === "right" ? icon : null}

@@ -93,7 +93,7 @@ function Preview() {
             </Button>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ms-auto flex items-center gap-2">
           <Button variant="outline" size="icon-md" aria-label="Notifications">
             <Bell />
           </Button>
@@ -149,11 +149,11 @@ function Preview() {
             </CardHeader>
             <table className="mt-4 w-full text-body-sm">
               <thead>
-                <tr className="text-left text-label-xs text-content-neutral-muted">
+                <tr className="text-start text-label-xs text-content-neutral-muted">
                   <th className="px-4 py-2">Trunk</th>
                   <th className="px-4 py-2">Status</th>
-                  <th className="px-4 py-2 text-right">MOS</th>
-                  <th className="px-4 py-2 text-right">Calls</th>
+                  <th className="px-4 py-2 text-end">MOS</th>
+                  <th className="px-4 py-2 text-end">Calls</th>
                 </tr>
               </thead>
               <tbody>
@@ -172,10 +172,10 @@ function Preview() {
                         <span className="capitalize">{r.status}</span>
                       </span>
                     </td>
-                    <td className="px-4 py-2.5 text-right font-mono">
+                    <td className="px-4 py-2.5 text-end font-mono">
                       {r.mos}
                     </td>
-                    <td className="px-4 py-2.5 text-right font-mono">
+                    <td className="px-4 py-2.5 text-end font-mono">
                       {r.calls}
                     </td>
                   </tr>
@@ -220,7 +220,7 @@ function Preview() {
             </Field>
           </CardContent>
           <CardFooter>
-            <div className="ml-auto flex gap-2">
+            <div className="ms-auto flex gap-2">
               <Button variant="ghost">Cancel</Button>
               <Button>Save changes</Button>
             </div>

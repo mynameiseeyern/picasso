@@ -520,10 +520,10 @@ export const DoAndDont: Story = {
               <TopBar>
                 <SidebarTrigger />
                 <Crumbs page="Endpoints" />
-                <span className="ml-2 truncate text-label-md text-content-neutral-emphasis">
+                <span className="ms-2 truncate text-label-md text-content-neutral-emphasis">
                   Endpoints
                 </span>
-                <span className="ml-auto flex items-center gap-2 text-body-sm text-content-neutral-muted">
+                <span className="ms-auto flex items-center gap-2 text-body-sm text-content-neutral-muted">
                   <span className="rounded-md border border-line-neutral-muted px-2 py-1">
                     Search
                   </span>

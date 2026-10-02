@@ -125,9 +125,29 @@ describe("Toast", () => {
     render(<Fixture />);
     expect(document.querySelector("[data-slot=toast-viewport]")).toHaveClass(
       "fixed",
-      "right-0",
+      "end-0",
       "bottom-0",
       "max-h-screen",
+    );
+  });
+
+  it("arrives and leaves on the motion tokens, and not at all under reduced motion", () => {
+    render(<Fixture />);
+    expect(document.querySelector("[data-slot=toast]")).toHaveClass(
+      "motion-safe:data-[state=open]:animate-toast-in",
+      "motion-safe:data-[state=closed]:animate-toast-out",
+    );
+  });
+
+  it("follows a swipe, and only the settle back is motion", () => {
+    render(<Fixture />);
+    const toast = document.querySelector("[data-slot=toast]")!;
+    // Following the finger is direct manipulation, so it is not gated.
+    expect(toast).toHaveClass(
+      "data-[swipe=move]:translate-x-(--radix-toast-swipe-move-x)",
+      "data-[swipe=end]:translate-x-(--radix-toast-swipe-end-x)",
+      "data-[swipe=cancel]:translate-x-0",
+      "motion-safe:data-[swipe=cancel]:transition-transform",
     );
   });
 });

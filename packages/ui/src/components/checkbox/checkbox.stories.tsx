@@ -110,7 +110,7 @@ export const ParentAndChildren: Story = {
             All probes
           </span>
         </div>
-        <div className="flex flex-col gap-2.5 pl-6">
+        <div className="flex flex-col gap-2.5 ps-6">
           {["SYD-03", "MEL-01", "BNE-02"].map((name, i) => (
             <div key={name} className="flex items-center gap-2.5">
               <Checkbox

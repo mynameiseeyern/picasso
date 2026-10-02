@@ -49,6 +49,14 @@ const drawerPanelVariants = cva(
   "fixed z-modal flex flex-col bg-surface-card shadow-lg outline-none",
   {
     variants: {
+      /* ⚠️ `side` is physical on purpose, for now. Converting these four
+         classes to logical would silently move a `side="right"` drawer to
+         the left in an RTL locale while the prop still said "right" — the
+         API would be lying. Doing it properly means renaming the variants to
+         `start` / `end`, which is a breaking change and a decision, not a
+         class swap. Raised; until then the rule is disabled here and
+         nowhere else. */
+      /* eslint-disable picasso/no-physical-properties */
       side: {
         right:
           "inset-y-0 right-0 border-l border-line-neutral-muted " +
@@ -56,6 +64,7 @@ const drawerPanelVariants = cva(
         left:
           "inset-y-0 left-0 border-r border-line-neutral-muted " +
           "motion-safe:data-[state=open]:animate-drawer-in-left motion-safe:data-[state=closed]:animate-drawer-out-left",
+        /* eslint-enable picasso/no-physical-properties */
         // Inset on all four sides; size does not apply.
         expanded:
           "inset-x-20 inset-y-10 rounded-2xl border border-line-neutral-muted " +
@@ -289,7 +298,7 @@ export function DrawerCounter({
     <div
       data-slot="drawer-counter"
       className={cn(
-        "flex items-center gap-0 pl-1.5 text-label-sm text-content-neutral-muted [&_svg]:size-4",
+        "flex items-center gap-0 ps-1.5 text-label-sm text-content-neutral-muted [&_svg]:size-4",
         className,
       )}
       {...props}
@@ -345,7 +354,7 @@ export function DrawerHeading({
   return (
     <div
       data-slot="drawer-heading"
-      className={cn("flex items-start gap-3 py-4 pr-3 pl-5", className)}
+      className={cn("flex items-start gap-3 py-4 pe-3 ps-5", className)}
       {...props}
     />
   );

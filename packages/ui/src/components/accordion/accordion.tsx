@@ -149,7 +149,7 @@ export function AccordionTrigger({
       <AccordionPrimitive.Trigger
         data-slot="accordion-trigger"
         className={cn(
-          "group/trigger flex flex-1 cursor-pointer items-start gap-4 rounded-xs text-left " +
+          "group/trigger flex flex-1 cursor-pointer items-start gap-4 rounded-xs text-start " +
             "text-heading-xs text-content-neutral-emphasis outline-none " +
             "focus-visible:ring-2 focus-visible:ring-line-focused focus-visible:ring-offset-2 " +
             "focus-visible:ring-offset-surface-app",
@@ -185,7 +185,7 @@ export function AccordionContent({
       )}
       {...props}
     >
-      <div className={cn("pt-1", iconPosition === "left" ? "pl-10" : "pr-10")}>
+      <div className={cn("pt-1", iconPosition === "left" ? "ps-10" : "pe-10")}>
         {children}
       </div>
     </AccordionPrimitive.Content>

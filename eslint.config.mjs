@@ -1,4 +1,5 @@
 import { plugin as shadcn } from "@shadcn/lint";
+import noPhysicalProperties from "./tools/eslint-rules/no-physical-properties.mjs";
 import tsParser from "@typescript-eslint/parser";
 import { defineConfig, globalIgnores } from "eslint/config";
 
@@ -28,7 +29,13 @@ export default defineConfig([
       parser: tsParser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
-    plugins: { shadcn },
+    plugins: {
+      shadcn,
+      /* One local rule, because @shadcn/lint has no equivalent and the thing
+         it guards — a component that reads correctly in both directions — is
+         invisible in every LTR screenshot. */
+      picasso: { rules: { "no-physical-properties": noPhysicalProperties } },
+    },
     settings: {
       shadcn: {
         ui: "packages/ui/src/components",
@@ -42,6 +49,7 @@ export default defineConfig([
       },
     },
     rules: {
+      "picasso/no-physical-properties": "error",
       "shadcn/no-raw-colors": "error",
       "shadcn/no-arbitrary-values": "error",
       /**

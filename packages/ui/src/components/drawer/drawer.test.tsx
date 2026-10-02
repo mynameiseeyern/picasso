@@ -138,6 +138,9 @@ describe("Drawer", () => {
   // Whole classes, not substrings — `border-line-neutral-muted` contains "border-l".
   const classes = (s: string) => s.split(/\s+/);
 
+  /* eslint-disable picasso/no-physical-properties --
+     asserts Drawer's deliberately physical `side` classes; the decision to
+     rename the variants to start/end lives in drawer.tsx */
   it("puts the border on the inner edge, and nowhere else", () => {
     expect(classes(drawerPanelVariants({ side: "right" }))).toContain(
       "border-l",
@@ -152,6 +155,7 @@ describe("Drawer", () => {
       "border-l",
     );
   });
+  /* eslint-enable picasso/no-physical-properties */
 
   it("sizes the side panels 480 and 640, and insets the expanded one instead", () => {
     expect(drawerPanelVariants({ side: "right", size: "default" })).toContain(
@@ -213,8 +217,8 @@ describe("Drawer", () => {
       "items-start",
       "gap-3",
       "py-4",
-      "pr-3",
-      "pl-5",
+      "pe-3",
+      "ps-5",
     );
   });
 

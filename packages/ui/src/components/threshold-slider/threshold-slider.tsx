@@ -279,6 +279,10 @@ export function ThresholdSlider({
                   "--at": labelX ? `${labelX[which]}px` : `${at}%`,
                 } as React.CSSProperties
               }
+              /* eslint-disable-next-line picasso/no-physical-properties --
+                 `--at` is measured from the inline start in JS; swapping the
+                 class alone would put the label and the maths on opposite
+                 sides. Both move together or neither does. */
               className="absolute top-0 flex w-15 -translate-x-1/2 flex-col items-center left-(--at)"
             >
               <span className="text-label-sm text-content-neutral-muted">
@@ -351,6 +355,7 @@ export function ThresholdSlider({
                   "cursor-grab touch-none rounded-full border-3 bg-surface-card " +
                   "shadow-sm outline-none focus-visible:ring-2 " +
                   "focus-visible:ring-line-focused active:cursor-grabbing " +
+                  // eslint-disable-next-line picasso/no-physical-properties -- see the label above: `--at` is measured from the inline start in JS
                   "left-(--at)",
                 which === "critical"
                   ? "border-status-critical"
