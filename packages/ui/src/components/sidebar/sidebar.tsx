@@ -358,7 +358,7 @@ export function SidebarBrand({
             src={image}
             alt=""
             aria-hidden
-            className="absolute inset-0 -z-20 size-full object-cover"
+            className="absolute inset-0 -z-20 size-full object-cover object-left"
           />
           {/* The scrim is what makes an arbitrary bitmap safe to put a
               wordmark on. Everywhere else the system solves ink against a
@@ -391,7 +391,12 @@ export function SidebarBrand({
         </>
       ) : null}
       {collapsed ? (
-        (mark ?? children)
+        /* Same type as the wordmark: at 48 the mark IS the wordmark, and a
+           letter set in body text beside one set in heading/sm reads as two
+           different brands. */
+        <span data-slot="sidebar-brand-wordmark" className="text-heading-sm">
+          {mark ?? children}
+        </span>
       ) : (
         <>
           <span data-slot="sidebar-brand-wordmark" className="text-heading-sm">
