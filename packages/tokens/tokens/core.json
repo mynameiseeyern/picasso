@@ -506,10 +506,10 @@
         "$value": "1280px",
         "$description": "Primary design canvas"
       },
-      "laptop": {
+      "wide-laptop": {
         "$type": "dimension",
         "$value": "1440px",
-        "$description": "Standard widescreen laptop. Not on Tailwind’s t-shirt ladder — there is no rung between xl and 2xl — so it carries its own name: `laptop:`."
+        "$description": "Wide laptop — the widescreen step above xl. Not on Tailwind’s t-shirt ladder — there is no rung between xl and 2xl — so it carries its own name: `wide-laptop:`. Not plain `laptop`: 1024 and 1280 are laptop widths too."
       },
       "2xl": {
         "$type": "dimension",

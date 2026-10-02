@@ -3,9 +3,11 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   Sidebar,
+  SidebarBrand,
   SidebarContent,
   SidebarGroup,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarInset,
   SidebarMenu,
   SidebarMenuBadge,
@@ -165,5 +167,75 @@ describe("Sidebar", () => {
     expect(
       document.querySelector("[data-slot=sidebar-group-label]"),
     ).toHaveClass("h-8", "text-label-sm");
+  });
+});
+
+describe("SidebarBrand", () => {
+  const plate = (ui: React.ReactNode, collapsed = false) =>
+    render(
+      <SidebarProvider defaultCollapsed={collapsed}>
+        <Sidebar>
+          <SidebarHeader variant="plate">{ui}</SidebarHeader>
+        </Sidebar>
+      </SidebarProvider>,
+    );
+
+  it("drops the header's padding so the plate can bleed", () => {
+    const { container } = plate(<SidebarBrand>Clarion</SidebarBrand>);
+    const header = container.querySelector('[data-slot="sidebar-header"]')!;
+    expect(header.className).toContain("p-0");
+    expect(header.className).not.toContain("p-2");
+  });
+
+  it("paints the rail's own surface when there is no image", () => {
+    const { container } = plate(<SidebarBrand>Vantage</SidebarBrand>);
+    const brand = container.querySelector('[data-slot="sidebar-brand"]')!;
+    expect(brand.className).toContain("bg-surface-sidebar");
+    // Nothing to measure a bitmap against, so the neutral case takes neutral ink.
+    expect(brand.className).toContain("text-content-neutral-emphasis");
+    expect(container.querySelector("img")).toBeNull();
+  });
+
+  it("covers the plate with a decorative image, and flips the ink", () => {
+    const { container } = plate(
+      <SidebarBrand image="/brand.png">Clarion</SidebarBrand>,
+    );
+    const brand = container.querySelector('[data-slot="sidebar-brand"]')!;
+    expect(brand.className).toContain("text-content-on-primary-emphasis");
+    expect(brand.className).not.toContain("bg-surface-sidebar");
+    const img = container.querySelector("img")!;
+    // Decorative: an empty alt and aria-hidden, so it is never announced.
+    expect(img).toHaveAttribute("alt", "");
+    expect(img).toHaveAttribute("aria-hidden");
+  });
+
+  it("takes on-light ink for a pale asset, which nothing can measure for us", () => {
+    const { container } = plate(
+      <SidebarBrand image="/pale.png" ink="on-light">
+        Clarion
+      </SidebarBrand>,
+    );
+    expect(
+      container.querySelector('[data-slot="sidebar-brand"]')!.className,
+    ).toContain("text-content-neutral-emphasis");
+  });
+
+  it("shows the wordmark and its second line when expanded", () => {
+    plate(<SidebarBrand subtitle="powered by Iris">CLARION</SidebarBrand>);
+    expect(screen.getByText("CLARION")).toBeInTheDocument();
+    expect(screen.getByText("powered by Iris")).toBeInTheDocument();
+  });
+
+  it("drops to the mark alone when the rail is collapsed", () => {
+    plate(
+      <SidebarBrand subtitle="powered by Iris" mark="C">
+        CLARION
+      </SidebarBrand>,
+      true,
+    );
+    expect(screen.getByText("C")).toBeInTheDocument();
+    expect(screen.queryByText("CLARION")).toBeNull();
+    // 48px of rail cannot carry a second line either.
+    expect(screen.queryByText("powered by Iris")).toBeNull();
   });
 });

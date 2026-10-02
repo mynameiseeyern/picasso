@@ -37,12 +37,39 @@
       "dont": "Use the badge slot for status words.",
       "do": "Keep it to counts of things waiting.",
       "why": "A number in a nav row reads as \"this many need you\". A word reads as part of the label and makes the row ambiguous."
+    },
+    {
+      "id": "plate-padding-by-class",
+      "dont": "Cancel the header's padding with a class so the brand block can bleed.",
+      "do": "Use <SidebarHeader variant=\"plate\">.",
+      "why": "no-restyle refuses the class, and it should — padding is the header's own decision. The plate bleeds to three edges in both products, so the header offers that shape itself rather than being argued out of its own."
+    },
+    {
+      "id": "plate-without-artwork",
+      "dont": "Hold a new brand's plate back until someone draws its artwork.",
+      "do": "Ship it with no image — the plate paints the rail's own surface.",
+      "why": "A brand with no asset reads as a quiet header, which is honest. An empty coloured box nobody designed is worse than no plate at all."
+    },
+    {
+      "id": "plate-image-contrast",
+      "dont": "Assume the wordmark reads on whatever image the product supplies.",
+      "do": "Look at the asset, and pass ink=\"on-light\" when it is pale.",
+      "why": "On a token surface fg/on/* is solved by measurement. Nothing can measure a bitmap, so an image is the one place in the system where contrast is the product's responsibility."
+    },
+    {
+      "id": "plate-subtitle-opacity",
+      "dont": "Dim the second line with opacity.",
+      "do": "Let size and weight carry the hierarchy.",
+      "why": "There is no on-primary ink below emphasis to reach for, and opacity on text produces a contrast ratio nobody has measured. body/xs under heading/sm separates them without inventing a colour."
     }
   ],
   "a11y": [
     "The active item sets aria-current=\"page\" as well as the treatment, so \"current\" survives when colour does not.",
     "The collapse toggle carries aria-expanded and an aria-label that changes with state — \"Expand sidebar\" or \"Collapse sidebar\" — because the icon alone never says which way it goes.",
     "The PanelLeft glyph is aria-hidden; the button's label is its name.",
-    "Collapsing changes width with no transition, deliberately: there are no motion tokens yet, so the change is instant rather than arbitrarily timed."
+    "Collapsing changes width with no transition, deliberately: there are no motion tokens yet, so the change is instant rather than arbitrarily timed.",
+    "The plate's image is decorative — empty alt and aria-hidden. The wordmark is the accessible text, so a plate whose wordmark is itself artwork needs real text beside it or a label.",
+    "Collapsed to 48 the wordmark is replaced by `mark`, so the mark has to still identify the product. A letter does; an abstract glyph on its own does not.",
+    "The plate is not a control. If it should navigate home, the product wraps it in a link — it does not become one by sitting at the top."
   ]
 }

@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
  * AppShell — Figma's App shell page, `Layout / App shell` 40000390:30130.
  *
  * Ten variants across Screen × Sidebar, but only one of those axes survives
- * the trip into code. Screen (md 768, lg 1024, xl 1280, laptop 1440, 2xl 1536)
+ * the trip into code. Screen (md 768, lg 1024, xl 1280, wide-laptop 1440, 2xl 1536)
  * is Figma drawing breakpoints the only way it can — as variants — and the
  * browser does that itself. Strip it out and the ten collapse to two
  * structures, which the Sidebar's own collapsed state already carries. So
@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
  * (@ir/tokens theme.css), and `screen/desktop/*` is the source of both.
  *
  * Figma's `Screen` labels were renamed to this ladder on 1 Oct (md 768,
- * lg 1024, xl 1280, laptop 1440, 2xl 1536) and each variant's width is bound
+ * lg 1024, xl 1280, wide-laptop 1440, 2xl 1536) and each variant's width is bound
  * to the `screen/desktop/*` variable of the same name.
  *
  * This component is also why three tokens moved. bg/app, bg/sidebar and

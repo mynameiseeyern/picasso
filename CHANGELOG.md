@@ -20,6 +20,14 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### ⚠️ Changed (visual)
 
+- **The 1440 breakpoint is `wide-laptop`, not `laptop`.** 1024 and 1280 are
+  laptop widths too, so the plain name did not say which it meant. Token
+  `screen/desktop/wide-laptop`, `--breakpoint-wide-laptop`, class
+  `wide-laptop:`. Same value, same place in the cascade (between `xl` and
+  `2xl`, measured). Nothing in `@ir/ui` used `laptop:`, so no component
+  changes. **Figma impact** — the variable and the App shell `Screen` label
+  are renamed to match.
+
 - **`bg/layer/*` is the neutral ramp for fills that must be seen**; resting
   `bg/neutral/subtle` and `muted` are fills that match the page and the card.
   Four components move onto it: **Progress** and **Slider** tracks and

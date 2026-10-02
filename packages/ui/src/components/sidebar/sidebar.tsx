@@ -139,16 +139,124 @@ export function Sidebar({
   );
 }
 
+const sidebarHeaderVariants = cva("flex flex-col", {
+  variants: {
+    // `plate` exists for one reason: the brand block in Clarion and Iris runs
+    // edge to edge and hard against the top, and padding is what stops it. A
+    // product cannot cancel that padding from outside — no-restyle refuses the
+    // class — so the header has to offer the shape itself.
+    variant: { default: "gap-2 p-2", plate: "gap-0 p-0" },
+  },
+  defaultVariants: { variant: "default" },
+});
+
+export interface SidebarHeaderProps
+  extends
+    React.ComponentProps<"div">,
+    VariantProps<typeof sidebarHeaderVariants> {}
+
 export function SidebarHeader({
   className,
+  variant,
   ...props
-}: React.ComponentProps<"div">) {
+}: SidebarHeaderProps) {
   return (
     <div
       data-slot="sidebar-header"
-      className={cn("flex flex-col gap-2 p-2", className)}
+      className={cn(sidebarHeaderVariants({ variant }), className)}
       {...props}
     />
+  );
+}
+
+/**
+ * The brand plate — the product's identity at the top of the rail.
+ *
+ * Put it inside `<SidebarHeader variant="plate">`. 80 tall, bleeding to all
+ * three edges, with the wordmark as children so each product brings its own:
+ * Iris sets one word, Clarion sets a lockup over "powered by Iris".
+ *
+ * ⭐ Without an `image` it paints the rail's own surface, so a brand that has
+ * not had a plate drawn yet reads as a quiet header rather than an empty
+ * coloured box. The image is the normal path, not the exception — a new brand
+ * supplies one asset and the plate is done.
+ *
+ * ⚠️ Nothing can measure the contrast of a bitmap. On a token surface
+ * `fg/on/*` is solved for us; over an `image` the asset is the product's
+ * responsibility, and `ink="on-light"` is there for a pale one.
+ */
+const sidebarBrandVariants = cva(
+  "relative isolate flex h-20 shrink-0 flex-col justify-center overflow-hidden px-5",
+  {
+    variants: {
+      ink: {
+        "on-dark": "text-content-on-primary-emphasis",
+        "on-light": "text-content-neutral-emphasis",
+      },
+    },
+    defaultVariants: { ink: "on-dark" },
+  },
+);
+
+export interface SidebarBrandProps
+  extends
+    React.ComponentProps<"div">,
+    VariantProps<typeof sidebarBrandVariants> {
+  /** The brand artwork. Covers the plate; decorative, so it carries no name. */
+  image?: string;
+  /** A second line under the wordmark — Clarion's "powered by Iris". */
+  subtitle?: React.ReactNode;
+  /** Shown instead of the wordmark when the rail is collapsed to 48. */
+  mark?: React.ReactNode;
+}
+
+export function SidebarBrand({
+  className,
+  ink,
+  image,
+  subtitle,
+  mark,
+  children,
+  ...props
+}: SidebarBrandProps) {
+  const { collapsed } = useSidebar();
+  return (
+    <div
+      data-slot="sidebar-brand"
+      data-collapsed={collapsed || undefined}
+      className={cn(
+        sidebarBrandVariants({ ink: image ? ink : "on-light" }),
+        !image && "bg-surface-sidebar",
+        collapsed && "items-center px-0",
+        className,
+      )}
+      {...props}
+    >
+      {image ? (
+        <img
+          src={image}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 -z-10 size-full object-cover"
+        />
+      ) : null}
+      {collapsed ? (
+        (mark ?? children)
+      ) : (
+        <>
+          <span data-slot="sidebar-brand-wordmark" className="text-heading-sm">
+            {children}
+          </span>
+          {/* Dimmer by size and weight, never by opacity — there is no
+              on-primary ink below emphasis to reach for. */}
+          {subtitle ? (
+            <span data-slot="sidebar-brand-subtitle" className="text-body-xs">
+              {subtitle}
+            </span>
+          ) : null}
+        </>
+      )}
+    </div>
   );
 }
 

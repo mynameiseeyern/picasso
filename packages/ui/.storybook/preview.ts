@@ -29,7 +29,7 @@ const viewports = {
   md: desktop("md — 768", 768),
   lg: desktop("lg — 1024", 1024),
   xl: desktop("xl — 1280", 1280),
-  laptop: desktop("laptop — 1440", 1440),
+  "wide-laptop": desktop("wide-laptop — 1440", 1440),
   "2xl": desktop("2xl — 1536", 1536),
   test1920: desktop("1920 — test only, not a breakpoint", 1920),
   test2560: desktop("2560 — test only, not a breakpoint", 2560),

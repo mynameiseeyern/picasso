@@ -16,6 +16,7 @@ import {
   SidebarGroup,
   SidebarGroupAction,
   SidebarGroupLabel,
+  SidebarBrand,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
@@ -179,6 +180,112 @@ export const SubmenuVariants: Story = {
         </Sidebar>
         <SidebarInset />
       </SidebarProvider>
+    </div>
+  ),
+};
+
+/* An obvious stand-in, not anyone's artwork: the real plates are brand assets
+   that each product ships. */
+const PLACEHOLDER_PLATE =
+  "data:image/svg+xml," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="256" height="80">' +
+      '<defs><linearGradient id="g" x1="0" y1="1" x2="1" y2="0">' +
+      '<stop offset="0" stop-color="#1D4ED8"/>' +
+      '<stop offset="1" stop-color="#9333EA"/>' +
+      "</linearGradient></defs>" +
+      '<rect width="256" height="80" fill="url(#g)"/></svg>',
+  );
+
+function PlateRail({
+  caption,
+  children,
+  collapsed,
+}: {
+  caption: string;
+  children: React.ReactNode;
+  collapsed?: boolean;
+}) {
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="text-label-sm text-content-neutral-muted">{caption}</p>
+      <div className="h-80">
+        <SidebarProvider defaultCollapsed={collapsed}>
+          <Sidebar>
+            <SidebarHeader variant="plate">{children}</SidebarHeader>
+            <SidebarContent>
+              <SidebarGroup>
+                <SidebarMenu>
+                  {NAV.slice(0, 3).map((item, i) => (
+                    <SidebarMenuItem key={item.label}>
+                      <SidebarMenuButton active={i === 1}>
+                        <item.icon aria-hidden />
+                        <SidebarMenuLabel>{item.label}</SidebarMenuLabel>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroup>
+            </SidebarContent>
+            <SidebarFooter>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton>
+                    <Settings aria-hidden />
+                    <SidebarMenuLabel>Settings</SidebarMenuLabel>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarFooter>
+          </Sidebar>
+        </SidebarProvider>
+      </div>
+    </div>
+  );
+}
+
+export const BrandPlate: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "The plate bleeds to three edges, so the header drops its padding " +
+          "rather than a product cancelling it from outside. Without an image " +
+          "it paints the rail's own surface — a brand with no artwork yet " +
+          "reads as a quiet header, not an empty coloured box.",
+      },
+    },
+  },
+  render: () => (
+    <div className="flex flex-wrap gap-6 p-6">
+      <PlateRail caption="Lockup over a second line">
+        <SidebarBrand
+          image={PLACEHOLDER_PLATE}
+          subtitle="powered by Iris"
+          mark="C"
+        >
+          CLARION
+        </SidebarBrand>
+      </PlateRail>
+      <PlateRail caption="One word">
+        <SidebarBrand image={PLACEHOLDER_PLATE} mark="I">
+          Iris
+        </SidebarBrand>
+      </PlateRail>
+      <PlateRail caption="No image — the neutral default">
+        <SidebarBrand subtitle="powered by Iris" mark="V">
+          Vantage
+        </SidebarBrand>
+      </PlateRail>
+      <PlateRail caption="Collapsed to 48" collapsed>
+        <SidebarBrand
+          image={PLACEHOLDER_PLATE}
+          subtitle="powered by Iris"
+          mark="C"
+        >
+          CLARION
+        </SidebarBrand>
+      </PlateRail>
     </div>
   ),
 };

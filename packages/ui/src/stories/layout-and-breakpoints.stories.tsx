@@ -77,7 +77,7 @@ const COLUMN = [
   { vp: 768, note: "md, rail collapsed", rail: 48, pad: 16 },
   { vp: 1024, note: "lg", rail: 256, pad: 16 },
   { vp: 1280, note: "xl", rail: 256, pad: 24 },
-  { vp: 1440, note: "laptop", rail: 256, pad: 24 },
+  { vp: 1440, note: "wide-laptop", rail: 256, pad: 24 },
   { vp: 1536, note: "2xl", rail: 256, pad: 24 },
   { vp: 1920, note: "test only", rail: 256, pad: 24 },
   { vp: 2560, note: "test only", rail: 256, pad: 24 },
@@ -112,7 +112,7 @@ export const LayoutAndBreakpoints: Story = {
       <H2>The ladder</H2>
       <P>
         Tailwind&apos;s names and Tailwind&apos;s values, plus{" "}
-        <Code>laptop</Code> for 1440, which Tailwind has no rung for. One
+        <Code>wide-laptop</Code> for 1440, which Tailwind has no rung for. One
         source: <Code>screen/desktop/*</Code>, with a build gate against{" "}
         <Code>--breakpoint-*</Code>. 1920 and 2560 are in the viewport
         toolbar for testing; they are not breakpoints.
@@ -124,7 +124,7 @@ export const LayoutAndBreakpoints: Story = {
           ["md", 768, "Floor for desktop layouts. Rail collapsed by default"],
           ["lg", 1024, "Small laptop. Rail expanded from here"],
           ["xl", 1280, "Primary design canvas. Page padding steps 16 → 24"],
-          ["laptop", 1440, "Standard widescreen laptop"],
+          ["wide-laptop", 1440, "Wide laptop. Named so because 1024 and 1280 are laptop widths too"],
           ["2xl", 1536, "Wide monitors, NOC displays"],
         ]}
       />
