@@ -474,6 +474,15 @@
   grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--space-56)), 1fr));
 }
 
+/* A control and its label as one row: the control column is as wide as the
+   control — 16 for a checkbox, 44 for a switch — and the label takes the
+   rest. Written here because the shape is structural and has no token to
+   stand on, and because a description under the label has to line up with
+   the label rather than with a number someone guessed. */
+@utility grid-cols-option {
+  grid-template-columns: auto 1fr;
+}
+
 /* ═══ Loader motion ═══════════════════════════════════════════════════
    @ir/ui ships no CSS, so the keyframes the Loader component needs live
    here, where every consuming app already imports. Declared inside @theme

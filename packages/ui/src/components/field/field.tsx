@@ -189,6 +189,116 @@ export function FieldControl({ children, required }: FieldControlProps) {
   return <Slot {...forwarded}>{children}</Slot>;
 }
 
+const optionVariants = cva(
+  // items-start so a label that wraps keeps its control on the first line.
+  "cursor-pointer items-start",
+  {
+    variants: { size: { sm: "text-label-sm", md: "text-label-md" } },
+    defaultVariants: { size: "md" },
+  },
+);
+
+export interface FieldOptionProps
+  extends
+    Omit<React.ComponentProps<"label">, "children">,
+    VariantProps<typeof optionVariants> {
+  /** The control the row belongs to — a Checkbox, a Radio, a Switch. */
+  control: React.ReactElement;
+  /** The label. */
+  children: React.ReactNode;
+  /** A second line under the label. Outside the <label>, so it describes the
+   *  control rather than becoming part of its name. */
+  description?: React.ReactNode;
+  disabled?: boolean;
+}
+
+/**
+ * FieldOption — a control and its label as one row, and one target.
+ *
+ * ⭐ The row is the target. A Checkbox is 16px square and a Radio 16px round,
+ * which is under the 24px floor on its own (WCAG 2.2 AA, 2.5.8) and nowhere
+ * near a thumb. Wrapping both the control and its text in a single `<label>`
+ * makes the whole row clickable without changing what the control looks like,
+ * so the hit area grows and the design does not.
+ *
+ * Height is `min-h-6` (24) everywhere and `min-h-11` (44) where the pointer is
+ * coarse — a phone or a touch monitor — so desktop density is untouched and a
+ * thumb still gets 44. See docs/foundations/responsive.md.
+ *
+ * ⚠️ A row is one target, so it holds one control and its words. A second
+ * button inside it — a help tooltip, a remove — would have its click forwarded
+ * to the control by the `<label>`; put it beside the row, as FieldLabel does
+ * with `help`.
+ */
+export function FieldOption({
+  className,
+  control,
+  children,
+  description,
+  disabled,
+  size,
+  ...props
+}: FieldOptionProps) {
+  const id = React.useId();
+  const descriptionId = `${id}-description`;
+  return (
+    /* A grid so the description lines up under the label's text whatever the
+       control is — a 16 checkbox, a 20 radio, a 44 switch. The label spans
+       both columns and borrows them with subgrid, so the row is still one
+       target rather than two cells that happen to sit together. */
+    <div
+      data-slot="field-option"
+      data-disabled={disabled || undefined}
+      className="grid grid-cols-option gap-x-2.5"
+    >
+      <label
+        htmlFor={id}
+        data-slot="field-option-label"
+        className={cn(
+          optionVariants({ size }),
+          "col-span-2 grid grid-cols-subgrid min-h-6 pointer-coarse:min-h-11",
+          disabled && "cursor-not-allowed text-content-disabled",
+          className,
+        )}
+        {...props}
+      >
+        {/* the control centres on the first line, not on the whole row */}
+        <span className="flex min-h-6 shrink-0 items-center pointer-coarse:min-h-11">
+          {/* Same cast as FieldControl, for the same reason: Slot's props are
+              typed as HTMLAttributes, which has no `disabled`, but the child
+              here is a form control. */}
+          <Slot
+            {...({
+              id,
+              "aria-describedby": description ? descriptionId : undefined,
+              disabled: disabled || undefined,
+              "data-slot": "field-option-control",
+            } as React.ComponentPropsWithoutRef<typeof Slot>)}
+          >
+            {control}
+          </Slot>
+        </span>
+        <span className="flex min-h-6 items-center pointer-coarse:min-h-11">
+          {children}
+        </span>
+      </label>
+      {description ? (
+        <p
+          id={descriptionId}
+          data-slot="field-option-description"
+          className={cn(
+            "col-start-2 text-content-neutral-muted",
+            size === "sm" ? "text-body-xs" : "text-body-sm",
+            disabled && "text-content-disabled",
+          )}
+        >
+          {description}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
 const messageVariants = cva("", {
   variants: { size: { sm: "text-body-xs", md: "text-body-sm" } },
   defaultVariants: { size: "md" },

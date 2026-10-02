@@ -7,8 +7,10 @@ import {
   FieldDescription,
   FieldError,
   FieldLabel,
+  FieldOption,
 } from "./field";
 import { Input } from "../input/input";
+import { Checkbox } from "../checkbox/checkbox";
 
 const Example = (props: {
   invalid?: boolean;
@@ -109,5 +111,65 @@ describe("Field", () => {
     expect(await screen.findByRole("tooltip")).toHaveTextContent(
       "Probes report every 30 seconds.",
     );
+  });
+});
+
+describe("FieldOption", () => {
+  it("makes the whole row the target, not the 16px control", async () => {
+    render(
+      <FieldOption control={<Checkbox />}>Email me when it trips</FieldOption>,
+    );
+    const box = screen.getByRole("checkbox");
+    expect(box).not.toBeChecked();
+    // clicking the WORDS is the point — a label that only wraps the control
+    // leaves the text dead, which is the thing this component exists to fix
+    await userEvent.click(screen.getByText("Email me when it trips"));
+    expect(box).toBeChecked();
+  });
+
+  it("names the control from the label", () => {
+    render(<FieldOption control={<Checkbox />}>Page the on-call</FieldOption>);
+    expect(
+      screen.getByRole("checkbox", { name: "Page the on-call" }),
+    ).toBeInTheDocument();
+  });
+
+  it("describes rather than renames, when there is a second line", () => {
+    render(
+      <FieldOption control={<Checkbox />} description="Weekdays only.">
+        Send a digest
+      </FieldOption>,
+    );
+    const box = screen.getByRole("checkbox", { name: "Send a digest" });
+    expect(box).toHaveAccessibleDescription("Weekdays only.");
+  });
+
+  it("carries 24 everywhere and 44 where the pointer is coarse", () => {
+    const { container } = render(
+      <FieldOption control={<Checkbox />}>A row</FieldOption>,
+    );
+    const label = container.querySelector('[data-slot="field-option-label"]')!;
+    // 24 is the WCAG 2.2 AA floor (2.5.8); 44 is what a thumb wants.
+    expect(label.className).toContain("min-h-6");
+    expect(label.className).toContain("pointer-coarse:min-h-11");
+  });
+
+  it("disables the control from the row", () => {
+    render(
+      <FieldOption control={<Checkbox />} disabled>
+        Page the on-call
+      </FieldOption>,
+    );
+    expect(screen.getByRole("checkbox")).toBeDisabled();
+  });
+
+  it("does not click through when disabled", async () => {
+    render(
+      <FieldOption control={<Checkbox />} disabled>
+        Page the on-call
+      </FieldOption>,
+    );
+    await userEvent.click(screen.getByText("Page the on-call"));
+    expect(screen.getByRole("checkbox")).not.toBeChecked();
   });
 });

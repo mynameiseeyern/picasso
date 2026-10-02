@@ -56,12 +56,26 @@
       "dont": "Put what someone needs to answer in the help tooltip.",
       "do": "Use help for background, and the hint for anything needed to fill the field in.",
       "why": "A tooltip is hidden until someone thinks to open it, and not at all on touch. The hint is always there."
+    },
+    {
+      "id": "option-row-is-the-target",
+      "dont": "Lay a Checkbox or Radio beside its label by hand.",
+      "do": "Use FieldOption.",
+      "why": "A hand-laid row leaves the words dead: the control is 16px square, which is under the 24px floor (WCAG 2.2 AA, 2.5.8) and nowhere near a thumb. FieldOption wraps both in one <label>, so the whole row is the target without the control looking any different."
+    },
+    {
+      "id": "option-row-holds-one-control",
+      "dont": "Put a help button or a remove control inside an option row.",
+      "do": "Put it beside the row.",
+      "why": "The row is a <label>, so it forwards every click inside it to its control — a second button there would toggle the checkbox instead of doing its own job. FieldLabel's `help` sits outside the label for the same reason."
     }
   ],
   "a11y": [
     "The label is a real <label htmlFor>, so clicking it focuses the control and the hit target includes the text.",
     "FieldError carries role=\"alert\", so the failure is announced when it appears rather than when focus happens to reach the control.",
     "aria-describedby points at the hint while valid and at the error while invalid — never at both, and never at a node that is not rendered.",
-    "The required asterisk is aria-hidden; aria-required on the control is what assistive tech reads."
+    "The required asterisk is aria-hidden; aria-required on the control is what assistive tech reads.",
+    "The label names the control; a `description` is wired with aria-describedby instead, so a second line explains the option rather than becoming part of its name.",
+    "Row height is 24 everywhere and 44 under (pointer: coarse), so a thumb gets a 44px target without desktop density changing. See docs/foundations/responsive.md."
   ]
 }

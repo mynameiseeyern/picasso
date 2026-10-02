@@ -24,10 +24,12 @@ export {
   FieldDescription,
   FieldError,
   FieldLabel,
+  FieldOption,
   fieldVariants,
   type FieldProps,
   type FieldLabelProps,
   type FieldControlProps,
+  type FieldOptionProps,
 } from "./components/field/field";
 export {
   Radio,

@@ -5,8 +5,12 @@ import {
   FieldDescription,
   FieldError,
   FieldLabel,
+  FieldOption,
 } from "./field";
 import { Input } from "../input/input";
+import { Checkbox } from "../checkbox/checkbox";
+import { Radio, RadioGroup } from "../radio-group/radio-group";
+import { Switch } from "../switch/switch";
 
 import guidance from "./guidance.json";
 import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
@@ -215,5 +219,49 @@ export const DoAndDont: Story = {
         }
       />
     </GuidanceStory>
+  ),
+};
+
+export const Options: Story = {
+  name: "Option rows",
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "A control and its label as one row, and one target. The row is 24 " +
+          "tall everywhere and 44 where the pointer is coarse, so a thumb gets " +
+          "44 without desktop density changing. Click the words, not just the box.",
+      },
+    },
+  },
+  render: () => (
+    <div className="flex max-w-100 flex-col gap-1">
+      <FieldOption control={<Checkbox defaultChecked />}>
+        Email me when a threshold trips
+      </FieldOption>
+      <FieldOption
+        control={<Checkbox />}
+        description="Weekdays only, 9am to 6pm Sydney time."
+      >
+        Send a digest instead of individual alerts
+      </FieldOption>
+      <FieldOption control={<Checkbox />} disabled>
+        Page the on-call engineer
+      </FieldOption>
+      <RadioGroup defaultValue="every">
+        <FieldOption control={<Radio value="every" />}>
+          Every occurrence
+        </FieldOption>
+        <FieldOption
+          control={<Radio value="first" />}
+          description="One alert, however many times it trips."
+        >
+          First occurrence only
+        </FieldOption>
+      </RadioGroup>
+      <FieldOption control={<Switch />}>
+        Mute during maintenance windows
+      </FieldOption>
+    </div>
   ),
 };
