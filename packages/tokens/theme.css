@@ -571,3 +571,64 @@
     }
   }
 }
+
+/* ═══ Illustration motion ═════════════════════════════════════════════
+   The third thing Picasso animates, after colour and the Loader, and for
+   the same reason it lives here: @ir/ui ships no CSS.
+
+   Three mechanics, one per kind of response. See docs/foundations/motion.md.
+
+   Lift: a discrete state change. Shapes slide to make room, on one curve,
+   600ms, staggered by --illustration-delay (50ms a step, set per shape).
+   The curve starts fast and settles long, so the move reads as a response
+   to the pointer rather than as a performance.
+
+   Sequence: a stepped loop. One ring is lit for a quarter of 2.4s, then the
+   next; `step-end`, so nothing fades. The dashes on the connectors travel
+   one dash period (2.4 + 3) every 0.9s.
+
+   Magnify is a spring and runs in script (illustration.tsx), because a
+   spring cannot be written as a transition.
+
+   Float is the Spotkit drop shadow under a raised card. It is a filter, not
+   a box-shadow, because the card is an SVG shape; the colours are the
+   shadow steps' own (neutral-900 at 14%, black at 55% in dark).           */
+@theme inline {
+  --animate-illustration-check: illustration-check 2.4s step-end
+    var(--illustration-delay, 0s) infinite;
+  --animate-illustration-flow: illustration-flow 0.9s linear infinite;
+
+  @keyframes illustration-check {
+    0% {
+      opacity: 1;
+    }
+    25%,
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes illustration-flow {
+    to {
+      stroke-dashoffset: -5.4;
+    }
+  }
+}
+
+@utility transition-illustration {
+  transition-property: translate, fill, stroke, color, filter;
+  transition-duration: 600ms;
+  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  transition-delay: var(--illustration-delay, 0s);
+}
+
+@utility illustration-float {
+  filter: drop-shadow(
+    0 2px 2.5px color-mix(in srgb, var(--palette-neutral-900) 14%, transparent)
+  );
+
+  @variant dark {
+    filter: drop-shadow(
+      0 2px 2.5px color-mix(in srgb, var(--palette-black) 55%, transparent)
+    );
+  }
+}

@@ -379,3 +379,8 @@ export {
   ThresholdSlider,
   type ThresholdSliderProps,
 } from "./components/threshold-slider/threshold-slider";
+export {
+  Illustration,
+  type IllustrationName,
+  type IllustrationProps,
+} from "./components/illustration/illustration";

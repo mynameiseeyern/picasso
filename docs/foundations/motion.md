@@ -1,12 +1,12 @@
 ---
 title: Motion
-description: Colour transitions, the Loader, and nothing else. Reduced motion substitutes rather than deletes.
+description: Colour transitions, the Loader and illustrations, and nothing else. Reduced motion substitutes rather than deletes.
 ---
 
 # Motion
 
-Picasso animates two things: colour, and the Loader. Everything else changes
-instantly.
+Picasso animates three things: colour, the Loader, and illustrations.
+Everything else changes instantly.
 
 ## Colour transitions
 
@@ -35,10 +35,46 @@ a bounce, which is a different component.
 
 Skeleton pulses through Tailwind's own `animate-pulse`.
 
+## Illustrations
+
+Product illustrations answer the pointer. It is the one place Picasso moves
+something because a person pointed at it, and it stays outside the console:
+marketing pages and docs, not empty states or cards. Inside the product an
+`Illustration` takes `interactive={false}` and stays still.
+
+There are three mechanics, one per kind of response. A drawing carries one.
+
+| Mechanic | What happens | Timing |
+|---|---|---|
+| **Lift** | A discrete change. The gap follows the pointer and shapes slide to make room. | `transition-illustration`: 600ms `cubic-bezier(0.32, 0.72, 0, 1)`, 50ms stagger |
+| **Magnify** | A continuous one. Each shape swells by its distance from the pointer. | A spring per shape: stiffness 170, damping 22, mass 1 |
+| **Sequence** | A stepped loop while the pointer is over the picture. One shape is lit at a time. | `animate-illustration-check`: 2.4s `step-end`, a quarter each · `animate-illustration-flow`: 0.9s linear |
+
+Lift and sequence are CSS, declared in `packages/tokens/theme.css` beside the
+Loader's. Magnify is a spring, which cannot be written as a transition, so it
+runs in `illustration.tsx` and writes one attribute per shape per frame.
+
+Three rules hold all of them together:
+
+- **The layer that listens never moves.** Hover is read from a still,
+  transparent layer and resolved against where the shapes now are. A handler
+  on a shape that slides out from under the pointer flickers at every edge.
+- **One accent, and it moves.** The open alert, the nearest endpoint, the
+  check that is running. It never spreads to several shapes.
+- **Nothing is said only on hover.** The picture is decoration; the heading
+  beside it carries the meaning.
+
+Under reduced motion nothing travels. Lift changes state without the slide,
+magnify moves the accent and leaves the sizes alone, and sequence does not
+run — the drawing at rest already says what it means.
+
 ## There is no duration or easing scale
 
-No `--duration-fast`, no `--ease-standard`, and no transition on anything but
-colour. A Drawer opens instantly; a Sidebar collapses instantly.
+No `--duration-fast`, no `--ease-standard`, and no transition on a control
+but colour. A Drawer opens instantly; a Sidebar collapses instantly. The
+Loader's and the illustrations' timings are authored for those two things and
+are not a scale to borrow from: `transition-illustration` on a Dialog is as
+off-system as `duration-300`.
 
 So a component that wants motion uses `transition-colors` or does without, and
 says which in a comment. Do not reach for `duration-300` or an arbitrary

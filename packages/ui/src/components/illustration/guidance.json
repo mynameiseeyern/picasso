@@ -1,0 +1,60 @@
+{
+  "component": "Illustration",
+  "summary": "Product spot illustrations that answer the pointer: lift for a list, magnify for a field of things, sequence for steps that run in order.",
+  "figma": "None yet — built in code first, from the Spotkit spots in IR Brand/illustrations/product-illustrations",
+  "structureFrom": "code",
+  "measurementsFrom": "code",
+  "pairs": [
+    {
+      "id": "mechanic-not-look",
+      "dont": "Borrow another product's isometric or 3D drawing style to make a figure feel alive.",
+      "do": "Keep the flat Spotkit drawing and give it one of the three mechanics.",
+      "why": "What makes a figure feel alive is that it answers the pointer, not how it is drawn. IR's illustration rule excludes isometric and 3D art, and the mechanics carry across without it.",
+      "source": "IR Brand design.md §7.2",
+      "example": false
+    },
+    {
+      "id": "one-accent-moves",
+      "dont": "Light several shapes in the accent as the pointer passes, or let them accumulate.",
+      "do": "Move the one accent: the open alert, the nearest endpoint, the check that is running.",
+      "why": "Spotkit allows the accent on two shapes at most. An accent that spreads stops meaning 'this one'.",
+      "source": "IR product illustrations README — rules that don't bend",
+      "example": false
+    },
+    {
+      "id": "listen-on-a-still-layer",
+      "dont": "Put the hover handler on the shape that moves.",
+      "do": "Listen on a layer that stays put, and work out which shape the pointer is on from where the shapes now are.",
+      "why": "A shape that slides out from under the pointer ends the hover that moved it, and the figure flickers between two states at every edge.",
+      "example": false
+    },
+    {
+      "id": "hover-is-decoration",
+      "dont": "Show something on hover that the page does not say anywhere else.",
+      "do": "Say it in the heading and the sentence beside the picture; let the hover only reward a closer look.",
+      "why": "Nothing in the picture can be reached by keyboard or by touch without a pointer, so anything said only there is said to some people and not others.",
+      "example": false
+    },
+    {
+      "id": "still-inside-the-product",
+      "dont": "Leave the hover response on for a picture inside the console — an empty state, a card, a dialog.",
+      "do": "Pass interactive={false} there. Keep the response for marketing pages and docs.",
+      "why": "Inside the product a thing that moves under the pointer reads as a control. Picasso's rule is that the console changes colour and nothing else.",
+      "source": "docs/foundations/motion.md",
+      "example": false
+    },
+    {
+      "id": "no-fourth-curve",
+      "dont": "Give a new drawing its own duration or easing.",
+      "do": "Use transition-illustration for anything that slides, the spring constants in illustration.tsx for anything that swells, and step-end for anything that loops.",
+      "why": "Three figures side by side read as one set because they move alike. A fourth curve is the first thing the eye picks out.",
+      "example": false
+    }
+  ],
+  "a11y": [
+    "The picture is role=\"img\" with an aria-label naming the feature. With label={null} it is aria-hidden, for when the heading beside it already says the same thing.",
+    "The hover response is decoration. Nothing inside the picture is focusable and nothing is conveyed only by it, so a keyboard or screen-reader user misses nothing.",
+    "Under prefers-reduced-motion nothing travels: lift changes state without the slide, magnify moves the accent and leaves the radii alone, and sequence does not run. The drawing at rest already says what it means.",
+    "The glyphs inside are aria-hidden — the label speaks for the whole picture."
+  ]
+}

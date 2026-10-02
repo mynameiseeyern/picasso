@@ -5,6 +5,22 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ## Unreleased
 
+### Added
+
+- **`Illustration` — product spot illustrations that answer the pointer.**
+  Three drawings, redrawn from the Spotkit spots on Picasso semantics with
+  Lucide glyphs: `issue-alerts`, `fleet-health`, `call-readiness`. Each
+  carries one mechanic — **lift** (the gap follows the pointer), **magnify**
+  (each shape swells by its distance from the pointer, on a spring) and
+  **sequence** (steps light one at a time while hovered). `interactive={false}`
+  keeps a picture still for use inside the product. **Not in Figma yet** —
+  built in code first.
+- **Illustration motion in `@ir/tokens/theme.css`:** `transition-illustration`,
+  `animate-illustration-check`, `animate-illustration-flow` and
+  `illustration-float`. Motion is now three things — colour, the Loader and
+  illustrations — and `docs/foundations/motion.md` says where the third stops:
+  outside the console, and never as a duration scale for controls.
+
 ### ⚠️ Changed (Figma structure)
 
 - **Figma's Input is six sets, not one set with a `Type` axis.** `Input` (14
