@@ -356,9 +356,11 @@ export function ThresholdSlider({
                 // absolutely-positioned box is its own containing block, so
                 // the ::after has what it needs.
                 "absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 " +
-                  // the grab area is 44 tall and 24 wide; the thumb stays 16,
-                  // and two thumbs that converge barely overlap
-                  "after:absolute after:-inset-y-3.5 after:-inset-x-1 " +
+                  // the grab area clears 44 tall and 24 wide; the thumb stays
+                  // 16, and two thumbs that converge barely overlap. The
+                  // insets look large because border-3 leaves a 10px padding
+                  // box for them to grow from.
+                  "after:absolute after:-inset-y-5 after:-inset-x-2 " +
                   "cursor-grab touch-none rounded-full border-3 bg-surface-card " +
                   "shadow-sm outline-none focus-visible:ring-2 " +
                   "focus-visible:ring-line-focused active:cursor-grabbing " +
