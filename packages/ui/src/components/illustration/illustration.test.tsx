@@ -38,11 +38,17 @@ describe("Illustration", () => {
   });
 
   it("listens on nothing when it is not interactive", () => {
-    for (const name of ["issue-alerts", "fleet-health", "call-readiness"] as const) {
+    for (const name of [
+      "issue-alerts",
+      "fleet-health",
+      "call-readiness",
+    ] as const) {
       const { container, unmount } = render(
         <Illustration name={name} interactive={false} />,
       );
-      expect(container.querySelector("[data-slot=illustration-hit]")).toBeNull();
+      expect(
+        container.querySelector("[data-slot=illustration-hit]"),
+      ).toBeNull();
       expect(container.innerHTML).not.toContain("group-hover/illustration:");
       unmount();
     }
@@ -50,7 +56,11 @@ describe("Illustration", () => {
 
   it("keeps the accent to two shapes at rest", () => {
     // Spotkit's limit. A glyph and the tint behind it are one mark.
-    for (const name of ["issue-alerts", "fleet-health", "call-readiness"] as const) {
+    for (const name of [
+      "issue-alerts",
+      "fleet-health",
+      "call-readiness",
+    ] as const) {
       const { container, unmount } = render(<Illustration name={name} />);
       const marks = container.querySelectorAll(
         ".text-content-primary-muted, .fill-surface-primary-emphasis",
@@ -112,7 +122,9 @@ describe("lift — issue alerts", () => {
     const { container } = render(<Illustration name="issue-alerts" />);
     const { hit } = layOut(container);
     fireEvent.pointerMove(hit, { clientX: 80, clientY: 115 });
-    expect(container.querySelectorAll(".text-content-primary-muted")).toHaveLength(1);
+    expect(
+      container.querySelectorAll(".text-content-primary-muted"),
+    ).toHaveLength(1);
     expect(
       cards(container)[2].querySelector(".text-content-primary-muted"),
     ).not.toBeNull();
@@ -141,13 +153,17 @@ describe("lift — issue alerts", () => {
   it("drops the slide under reduced motion but keeps the state change", () => {
     const { container } = render(<Illustration name="issue-alerts" />);
     for (const card of cards(container))
-      expect(card.getAttribute("class")).toContain("motion-reduce:transition-none");
+      expect(card.getAttribute("class")).toContain(
+        "motion-reduce:transition-none",
+      );
   });
 });
 
 describe("magnify — fleet health", () => {
   const dots = (c: HTMLElement) =>
-    [...c.querySelectorAll("[data-slot=illustration-dot]")] as SVGCircleElement[];
+    [
+      ...c.querySelectorAll("[data-slot=illustration-dot]"),
+    ] as SVGCircleElement[];
   const focus = (c: HTMLElement) =>
     dots(c).findIndex((dot) => dot.hasAttribute("data-focus"));
 
@@ -158,7 +174,9 @@ describe("magnify — fleet health", () => {
       "matchMedia",
       () => ({ matches: reduce }) as unknown as MediaQueryList,
     );
-    vi.useFakeTimers({ toFake: ["requestAnimationFrame", "cancelAnimationFrame", "performance"] });
+    vi.useFakeTimers({
+      toFake: ["requestAnimationFrame", "cancelAnimationFrame", "performance"],
+    });
   });
   afterEach(() => {
     vi.useRealTimers();
@@ -231,7 +249,9 @@ describe("sequence — call readiness", () => {
   it("lights the four checks a quarter-loop apart, so only one is lit", () => {
     const { container } = render(<Illustration name="call-readiness" />);
     const delays = [
-      ...container.querySelectorAll<SVGGElement>("[data-slot=illustration-check]"),
+      ...container.querySelectorAll<SVGGElement>(
+        "[data-slot=illustration-check]",
+      ),
     ].map((check) => check.style.getPropertyValue("--illustration-delay"));
     // The loop is 2.4s and each ring is lit for 25% of it (theme.css).
     expect(delays).toEqual(["0ms", "600ms", "1200ms", "1800ms"]);
@@ -260,7 +280,9 @@ describe("sequence — call readiness", () => {
     expect(animated).toHaveLength(8);
     for (const el of animated) {
       const cls = el.getAttribute("class")!;
-      expect(cls).toMatch(/motion-safe:group-hover\/illustration:animate-illustration-/);
+      expect(cls).toMatch(
+        /motion-safe:group-hover\/illustration:animate-illustration-/,
+      );
       expect(cls).not.toMatch(/(^|\s)group-hover\/illustration:animate-/);
     }
   });

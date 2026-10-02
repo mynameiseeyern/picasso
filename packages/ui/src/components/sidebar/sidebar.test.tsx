@@ -278,7 +278,7 @@ describe("SidebarBrand", () => {
   });
 });
 
-describe("Sidebar mobile=\"fullscreen\" (phones)", () => {
+describe('Sidebar mobile="fullscreen" (phones)', () => {
   const setPhone = (phone: boolean) => {
     window.matchMedia = ((q: string) => ({
       matches: phone && q.includes("max-width"),
@@ -291,11 +291,15 @@ describe("Sidebar mobile=\"fullscreen\" (phones)", () => {
     return (
       <SidebarProvider>
         <Sidebar mobile="fullscreen">
-          <SidebarHeader variant="plate"><SidebarBrand>CLARION</SidebarBrand></SidebarHeader>
+          <SidebarHeader variant="plate">
+            <SidebarBrand>CLARION</SidebarBrand>
+          </SidebarHeader>
           <SidebarContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton onClick={onPick}><SidebarMenuLabel>Endpoints</SidebarMenuLabel></SidebarMenuButton>
+                <SidebarMenuButton onClick={onPick}>
+                  <SidebarMenuLabel>Endpoints</SidebarMenuLabel>
+                </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarContent>
@@ -319,8 +323,12 @@ describe("Sidebar mobile=\"fullscreen\" (phones)", () => {
   it("puts a collapse button on the plate, and it closes the nav", async () => {
     setPhone(true);
     render(<Phone />);
-    await userEvent.click(screen.getByRole("button", { name: "Open navigation" }));
-    await userEvent.click(screen.getByRole("button", { name: "Collapse navigation" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Open navigation" }),
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Collapse navigation" }),
+    );
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 
@@ -328,7 +336,9 @@ describe("Sidebar mobile=\"fullscreen\" (phones)", () => {
     setPhone(true);
     const onPick = vi.fn();
     render(<Phone onPick={onPick} />);
-    await userEvent.click(screen.getByRole("button", { name: "Open navigation" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Open navigation" }),
+    );
     const item = screen.getByRole("button", { name: "Endpoints" });
     expect(item.className).toContain("h-11");
     await userEvent.click(item);
@@ -340,6 +350,8 @@ describe("Sidebar mobile=\"fullscreen\" (phones)", () => {
     setPhone(false);
     render(<Phone />);
     expect(screen.getByText("Endpoints")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Collapse sidebar" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Collapse sidebar" }),
+    ).toBeInTheDocument();
   });
 });

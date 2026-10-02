@@ -45,7 +45,11 @@ import { cn } from "@/lib/utils";
 type Variant = "underline" | "brand" | "gray" | "border" | "minimal" | "line";
 type Size = "sm" | "md";
 
-const TabsContext = React.createContext<{ variant: Variant; size: Size; fullWidth: boolean }>({
+const TabsContext = React.createContext<{
+  variant: Variant;
+  size: Size;
+  fullWidth: boolean;
+}>({
   variant: "underline",
   size: "md",
   fullWidth: false,
@@ -58,8 +62,10 @@ const tabsListVariants = cva("flex", {
       line: "",
       gray: "gap-1",
       brand: "gap-1",
-      border: "gap-1 rounded-xl border border-line-neutral-muted bg-surface-app p-1.5",
-      minimal: "gap-0.5 rounded-md border border-line-neutral-muted bg-surface-app",
+      border:
+        "gap-1 rounded-xl border border-line-neutral-muted bg-surface-app p-1.5",
+      minimal:
+        "gap-0.5 rounded-md border border-line-neutral-muted bg-surface-app",
     },
     orientation: {
       horizontal: "flex-row items-center",
@@ -69,11 +75,24 @@ const tabsListVariants = cva("flex", {
   },
   compoundVariants: [
     // The rule under the row, which the current tab's 2px indicator sits on.
-    { variant: "underline", orientation: "horizontal", class: "gap-3 border-b" },
-    { variant: "underline", orientation: "horizontal", fullWidth: true, class: "gap-4" },
+    {
+      variant: "underline",
+      orientation: "horizontal",
+      class: "gap-3 border-b",
+    },
+    {
+      variant: "underline",
+      orientation: "horizontal",
+      fullWidth: true,
+      class: "gap-4",
+    },
     { variant: "line", orientation: "vertical", class: "gap-2" },
   ],
-  defaultVariants: { variant: "underline", orientation: "horizontal", fullWidth: false },
+  defaultVariants: {
+    variant: "underline",
+    orientation: "horizontal",
+    fullWidth: false,
+  },
 });
 
 const tabsTriggerVariants = cva(
@@ -138,58 +157,89 @@ const tabsTriggerVariants = cva(
   },
 );
 
-export interface TabsProps extends React.ComponentProps<typeof TabsPrimitive.Root> {
+export interface TabsProps extends React.ComponentProps<
+  typeof TabsPrimitive.Root
+> {
   variant?: Variant;
   size?: Size;
   /** Stretch the tabs to fill the row. Figma's `Full width`. */
   fullWidth?: boolean;
 }
 
-export function Tabs({ className, variant = "underline", size = "md", fullWidth = false, orientation = "horizontal", ...props }: TabsProps) {
+export function Tabs({
+  className,
+  variant = "underline",
+  size = "md",
+  fullWidth = false,
+  orientation = "horizontal",
+  ...props
+}: TabsProps) {
   return (
     <TabsContext.Provider value={{ variant, size, fullWidth }}>
       <TabsPrimitive.Root
         data-slot="tabs"
         orientation={orientation}
-        className={cn(orientation === "vertical" ? "flex gap-6" : "flex flex-col gap-4", className)}
+        className={cn(
+          orientation === "vertical" ? "flex gap-6" : "flex flex-col gap-4",
+          className,
+        )}
         {...props}
       />
     </TabsContext.Provider>
   );
 }
 
-export function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.List>) {
+export function TabsList({
+  className,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.List>) {
   const { variant, fullWidth } = React.useContext(TabsContext);
   const orientation = variant === "line" ? "vertical" : "horizontal";
   return (
     <TabsPrimitive.List
       data-slot="tabs-list"
-      className={cn(tabsListVariants({ variant, orientation, fullWidth }), className)}
+      className={cn(
+        tabsListVariants({ variant, orientation, fullWidth }),
+        className,
+      )}
       {...props}
     />
   );
 }
 
 export interface TabsTriggerProps
-  extends React.ComponentProps<typeof TabsPrimitive.Trigger>,
-    Omit<VariantProps<typeof tabsTriggerVariants>, "variant" | "size" | "fullWidth"> {}
+  extends
+    React.ComponentProps<typeof TabsPrimitive.Trigger>,
+    Omit<
+      VariantProps<typeof tabsTriggerVariants>,
+      "variant" | "size" | "fullWidth"
+    > {}
 
 export function TabsTrigger({ className, ...props }: TabsTriggerProps) {
   const { variant, size, fullWidth } = React.useContext(TabsContext);
   return (
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
-      className={cn(tabsTriggerVariants({ variant, size, fullWidth }), className)}
+      className={cn(
+        tabsTriggerVariants({ variant, size, fullWidth }),
+        className,
+      )}
       {...props}
     />
   );
 }
 
-export function TabsContent({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Content>) {
+export function TabsContent({
+  className,
+  ...props
+}: React.ComponentProps<typeof TabsPrimitive.Content>) {
   return (
     <TabsPrimitive.Content
       data-slot="tabs-content"
-      className={cn("flex-1 outline-none focus-visible:ring-2 focus-visible:ring-line-focused", className)}
+      className={cn(
+        "flex-1 outline-none focus-visible:ring-2 focus-visible:ring-line-focused",
+        className,
+      )}
       {...props}
     />
   );

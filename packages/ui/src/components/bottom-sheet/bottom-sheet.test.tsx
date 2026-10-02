@@ -23,7 +23,9 @@ function Fixture({ handle }: { handle?: boolean }) {
           <BottomSheetCloseButton />
         </BottomSheetHeader>
         <BottomSheetBody>
-          <BottomSheetItem><input type="checkbox" /> Critical</BottomSheetItem>
+          <BottomSheetItem>
+            <input type="checkbox" /> Critical
+          </BottomSheetItem>
         </BottomSheetBody>
         <BottomSheetFooter>
           <button type="button">Clear</button>
@@ -45,7 +47,15 @@ describe("BottomSheet", () => {
     render(<Fixture />);
     await userEvent.click(screen.getByText("Open"));
     const c = screen.getByRole("dialog").className;
-    for (const cls of ["fixed", "inset-x-0", "bottom-0", "max-h-5/6", "rounded-t-2xl", "z-modal"]) expect(c).toContain(cls);
+    for (const cls of [
+      "fixed",
+      "inset-x-0",
+      "bottom-0",
+      "max-h-5/6",
+      "rounded-t-2xl",
+      "z-modal",
+    ])
+      expect(c).toContain(cls);
   });
 
   it("always draws a labelled close button, and it closes", async () => {
@@ -71,7 +81,9 @@ describe("BottomSheet", () => {
     unmount();
     render(<Fixture handle={false} />);
     await userEvent.click(screen.getByText("Open"));
-    expect(document.querySelector("[data-slot='bottom-sheet-handle']")).toBeNull();
+    expect(
+      document.querySelector("[data-slot='bottom-sheet-handle']"),
+    ).toBeNull();
   });
 
   it("makes each item a 48-tall label so the whole row is the target", async () => {
@@ -85,6 +97,8 @@ describe("BottomSheet", () => {
   it("shares the footer width between its buttons", async () => {
     render(<Fixture />);
     await userEvent.click(screen.getByText("Open"));
-    expect(document.querySelector("[data-slot='bottom-sheet-footer']")!.className).toContain("*:flex-1");
+    expect(
+      document.querySelector("[data-slot='bottom-sheet-footer']")!.className,
+    ).toContain("*:flex-1");
   });
 });

@@ -73,7 +73,8 @@ export interface InputProps
   // `size` is a native input attribute (a character count) and also our variant
   // name. Ours wins; the native one is not something a design system should
   // expose, since it sets width in ex units.
-  extends Omit<React.ComponentProps<"input">, "size">,
+  extends
+    Omit<React.ComponentProps<"input">, "size">,
     VariantProps<typeof inputVariants> {}
 
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(

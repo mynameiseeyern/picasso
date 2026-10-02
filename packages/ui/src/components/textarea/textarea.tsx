@@ -51,7 +51,8 @@ const textareaVariants = cva(
 export interface TextareaProps
   // `size` is not a native textarea attribute, but omitting it keeps the type
   // identical in shape to Input's, which matters when Field wraps either.
-  extends Omit<React.ComponentProps<"textarea">, "size">,
+  extends
+    Omit<React.ComponentProps<"textarea">, "size">,
     VariantProps<typeof textareaVariants> {}
 
 export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(

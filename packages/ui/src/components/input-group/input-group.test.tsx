@@ -3,8 +3,13 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Search } from "lucide-react";
 import {
-  InputGroup, InputGroupAddon, InputGroupCheck, InputGroupInput,
-  InputGroupSpinner, InputGroupText, InputGroupTooltip,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupCheck,
+  InputGroupInput,
+  InputGroupSpinner,
+  InputGroupText,
+  InputGroupTooltip,
 } from "./input-group";
 
 describe("InputGroup", () => {
@@ -12,7 +17,9 @@ describe("InputGroup", () => {
     const user = userEvent.setup();
     render(
       <InputGroup data-testid="grp">
-        <InputGroupAddon><Search /></InputGroupAddon>
+        <InputGroupAddon>
+          <Search />
+        </InputGroupAddon>
         <InputGroupInput aria-label="Search" />
       </InputGroup>,
     );
@@ -57,17 +64,28 @@ describe("InputGroup", () => {
     expect(grp).toHaveAttribute("role", "group");
     // The invalid edge is a has-[] selector, so the group needs no prop and
     // cannot disagree with the control it wraps.
-    expect(grp.className).toContain("has-[[aria-invalid=true]]:border-line-input-invalid");
-    expect(screen.getByLabelText("Threshold")).toHaveAttribute("aria-invalid", "true");
+    expect(grp.className).toContain(
+      "has-[[aria-invalid=true]]:border-line-input-invalid",
+    );
+    expect(screen.getByLabelText("Threshold")).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
   });
 
   it("matches Input's metrics at each size", () => {
     const { rerender } = render(
-      <InputGroup data-testid="grp"><InputGroupInput aria-label="a" /></InputGroup>,
+      <InputGroup data-testid="grp">
+        <InputGroupInput aria-label="a" />
+      </InputGroup>,
     );
     expect(screen.getByTestId("grp").className).toContain("h-9");
     expect(screen.getByTestId("grp").className).toContain("px-3");
-    rerender(<InputGroup data-testid="grp" size="sm"><InputGroupInput aria-label="a" /></InputGroup>);
+    rerender(
+      <InputGroup data-testid="grp" size="sm">
+        <InputGroupInput aria-label="a" />
+      </InputGroup>,
+    );
     expect(screen.getByTestId("grp").className).toContain("h-8");
     expect(screen.getByTestId("grp").className).toContain("px-2.5");
   });
@@ -76,7 +94,9 @@ describe("InputGroup", () => {
     render(
       <InputGroup>
         <InputGroupInput aria-label="Host" />
-        <InputGroupAddon align="end"><InputGroupSpinner label="Checking host" /></InputGroupAddon>
+        <InputGroupAddon align="end">
+          <InputGroupSpinner label="Checking host" />
+        </InputGroupAddon>
       </InputGroup>,
     );
     expect(screen.getByRole("status")).toHaveTextContent("Checking host");
@@ -86,7 +106,9 @@ describe("InputGroup", () => {
     render(
       <InputGroup>
         <InputGroupInput aria-label="Host" />
-        <InputGroupAddon align="end"><InputGroupCheck label="Host is reachable" /></InputGroupAddon>
+        <InputGroupAddon align="end">
+          <InputGroupCheck label="Host is reachable" />
+        </InputGroupAddon>
       </InputGroup>,
     );
     expect(screen.getByText("Host is reachable")).toHaveClass("sr-only");
@@ -98,7 +120,9 @@ describe("InputGroup", () => {
       <InputGroup>
         <InputGroupInput aria-label="Threshold" />
         <InputGroupAddon align="end">
-          <InputGroupTooltip label="About the threshold">Alerts fire above this.</InputGroupTooltip>
+          <InputGroupTooltip label="About the threshold">
+            Alerts fire above this.
+          </InputGroupTooltip>
         </InputGroupAddon>
       </InputGroup>,
     );
@@ -106,14 +130,18 @@ describe("InputGroup", () => {
     await user.tab();
     await user.tab();
     expect(btn).toHaveFocus();
-    expect(await screen.findByRole("tooltip")).toHaveTextContent("Alerts fire above this.");
+    expect(await screen.findByRole("tooltip")).toHaveTextContent(
+      "Alerts fire above this.",
+    );
   });
 
   it("sets a unit in mono, so it reads as syntax rather than as a value", () => {
     render(
       <InputGroup>
         <InputGroupInput aria-label="Threshold" />
-        <InputGroupAddon align="end"><InputGroupText>ms</InputGroupText></InputGroupAddon>
+        <InputGroupAddon align="end">
+          <InputGroupText>ms</InputGroupText>
+        </InputGroupAddon>
       </InputGroup>,
     );
     expect(screen.getByText("ms").className).toContain("text-code-md");

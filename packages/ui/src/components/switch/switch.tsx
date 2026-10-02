@@ -53,9 +53,11 @@ const switchVariants = cva(
   {
     variants: {
       size: {
-        sm: "h-5 w-9 [&_[data-slot=switch-thumb]]:size-4 " +
+        sm:
+          "h-5 w-9 [&_[data-slot=switch-thumb]]:size-4 " +
           "[&_[data-slot=switch-thumb]]:data-[state=checked]:translate-x-4",
-        md: "h-6 w-11 [&_[data-slot=switch-thumb]]:size-5 " +
+        md:
+          "h-6 w-11 [&_[data-slot=switch-thumb]]:size-5 " +
           "[&_[data-slot=switch-thumb]]:data-[state=checked]:translate-x-5",
       },
     },
@@ -64,7 +66,8 @@ const switchVariants = cva(
 );
 
 export interface SwitchProps
-  extends React.ComponentProps<typeof SwitchPrimitive.Root>,
+  extends
+    React.ComponentProps<typeof SwitchPrimitive.Root>,
     VariantProps<typeof switchVariants> {}
 
 export function Switch({ className, size, ...props }: SwitchProps) {

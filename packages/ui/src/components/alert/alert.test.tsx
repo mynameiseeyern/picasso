@@ -11,7 +11,10 @@ describe("Alert", () => {
       </Alert>,
     );
     const alert = screen.getByTestId("a");
-    expect(alert).toHaveClass("bg-surface-warning-subtle", "border-line-warning-emphasis");
+    expect(alert).toHaveClass(
+      "bg-surface-warning-subtle",
+      "border-line-warning-emphasis",
+    );
     // Figma paints all four tone icons fg/neutral/emphasis. Tinting the icon
     // would double the signal and leave the surface doing nothing.
     // The icon inherits the title row's ink and carries no tone of its own.
@@ -44,14 +47,18 @@ describe("Alert", () => {
         <AlertTitle>Quiet</AlertTitle>
       </Alert>,
     );
-    expect(screen.getByTestId("a").querySelector("[data-slot=alert-icon]")).toBeNull();
+    expect(
+      screen.getByTestId("a").querySelector("[data-slot=alert-icon]"),
+    ).toBeNull();
   });
 
   it("puts the icon and the dismiss inside the title row, as Figma does", () => {
     render(
       <Alert onDismiss={() => {}} data-testid="a">
         <AlertTitle data-testid="t">Disk nearly full</AlertTitle>
-        <AlertDescription>Two lines, and the icon still sits on the first.</AlertDescription>
+        <AlertDescription>
+          Two lines, and the icon still sits on the first.
+        </AlertDescription>
       </Alert>,
     );
     const title = screen.getByTestId("t");
@@ -116,7 +123,13 @@ describe("Alert", () => {
         <AlertDescription data-testid="d">Description</AlertDescription>
       </Alert>,
     );
-    expect(screen.getByTestId("t")).toHaveClass("text-label-lg", "text-content-neutral-emphasis");
-    expect(screen.getByTestId("d")).toHaveClass("text-body-md", "text-content-neutral-muted");
+    expect(screen.getByTestId("t")).toHaveClass(
+      "text-label-lg",
+      "text-content-neutral-emphasis",
+    );
+    expect(screen.getByTestId("d")).toHaveClass(
+      "text-body-md",
+      "text-content-neutral-muted",
+    );
   });
 });

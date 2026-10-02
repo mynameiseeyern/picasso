@@ -32,9 +32,17 @@ describe("Button", () => {
         </Button>,
       );
       const el = screen.getByRole("button", { name: "Learn more" });
-      expect(el, size).toHaveClass("bg-transparent", "border-0", "rounded-none", "size-auto", "p-0");
+      expect(el, size).toHaveClass(
+        "bg-transparent",
+        "border-0",
+        "rounded-none",
+        "size-auto",
+        "p-0",
+      );
       const resting = el.className.split(/\s+/).filter((c) => !c.includes(":"));
-      const box = resting.filter((c) => /^(h|w|size|px|py|pt|pb|pl|pr)-\d/.test(c));
+      const box = resting.filter((c) =>
+        /^(h|w|size|px|py|pt|pb|pl|pr)-\d/.test(c),
+      );
       expect(box, size).toEqual([]);
       unmount();
     }
@@ -48,7 +56,9 @@ describe("Button", () => {
         </Button>,
       );
       const el = screen.getByRole("button", { name: "Filter" });
-      expect(el.className, variant).toContain("[&:disabled:not([data-loading])]:bg-transparent");
+      expect(el.className, variant).toContain(
+        "[&:disabled:not([data-loading])]:bg-transparent",
+      );
       expect(el.className, variant).not.toContain(
         "[&:disabled:not([data-loading])]:bg-surface-disabled",
       );
@@ -90,6 +100,8 @@ describe("Button", () => {
         <svg />
       </Button>,
     );
-    expect(screen.getByRole("button", { name: "Delete probe" })).toHaveClass("size-9");
+    expect(screen.getByRole("button", { name: "Delete probe" })).toHaveClass(
+      "size-9",
+    );
   });
 });

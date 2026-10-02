@@ -12,13 +12,18 @@ describe("Loader", () => {
 
   it("names the work when given a label", () => {
     render(<Loader variant="fuse" label="Bringing your fleet online" />);
-    expect(screen.getByRole("status")).toHaveTextContent("Bringing your fleet online");
+    expect(screen.getByRole("status")).toHaveTextContent(
+      "Bringing your fleet online",
+    );
   });
 
   it("is hidden from assistive tech with label={null}", () => {
     const { container } = render(<Loader label={null} />);
     expect(screen.queryByRole("status")).toBeNull();
-    expect(container.querySelector("[data-slot=loader]")).toHaveAttribute("aria-hidden", "true");
+    expect(container.querySelector("[data-slot=loader]")).toHaveAttribute(
+      "aria-hidden",
+      "true",
+    );
   });
 
   it("pulse waits 400ms before appearing", () => {
@@ -40,7 +45,9 @@ describe("Loader", () => {
   });
 
   it("pulse steps the lead blue down on a tinted surface", () => {
-    const { container, rerender } = render(<Loader variant="pulse" delay={0} />);
+    const { container, rerender } = render(
+      <Loader variant="pulse" delay={0} />,
+    );
     const lead = () => container.querySelector("[data-slot=loader-pulse] i")!;
     expect(lead().className).toContain("bg-chart-4");
     rerender(<Loader variant="pulse" delay={0} onTint />);

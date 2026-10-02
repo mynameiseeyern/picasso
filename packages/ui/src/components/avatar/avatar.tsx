@@ -69,14 +69,25 @@ export const useAvatarSize = () => React.useContext(SizeContext);
  * every child follows them, so in code the group supplies the default and an
  * individual Avatar can still override it.
  */
-const GroupContext = React.createContext<{ size: Size; variant: Style; ring: boolean } | null>(null);
+const GroupContext = React.createContext<{
+  size: Size;
+  variant: Style;
+  ring: boolean;
+} | null>(null);
 export const useAvatarGroup = () => React.useContext(GroupContext);
 
 export interface AvatarProps
-  extends React.ComponentProps<typeof AvatarPrimitive.Root>,
+  extends
+    React.ComponentProps<typeof AvatarPrimitive.Root>,
     VariantProps<typeof avatarVariants> {}
 
-export function Avatar({ className, size, variant, ring, ...props }: AvatarProps) {
+export function Avatar({
+  className,
+  size,
+  variant,
+  ring,
+  ...props
+}: AvatarProps) {
   const group = React.useContext(GroupContext);
   const s = size ?? group?.size ?? "md";
   const v = variant ?? group?.variant ?? "default";
@@ -85,14 +96,20 @@ export function Avatar({ className, size, variant, ring, ...props }: AvatarProps
     <SizeContext.Provider value={s}>
       <AvatarPrimitive.Root
         data-slot="avatar"
-        className={cn(avatarVariants({ size: s, variant: v, ring: r }), className)}
+        className={cn(
+          avatarVariants({ size: s, variant: v, ring: r }),
+          className,
+        )}
         {...props}
       />
     </SizeContext.Provider>
   );
 }
 
-export function AvatarImage({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Image>) {
+export function AvatarImage({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Image>) {
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"
@@ -106,8 +123,9 @@ export function AvatarImage({ className, ...props }: React.ComponentProps<typeof
 
 const ICON = { xs: "size-4", sm: "size-4", md: "size-6" } as const;
 
-export interface AvatarFallbackProps
-  extends React.ComponentProps<typeof AvatarPrimitive.Fallback> {
+export interface AvatarFallbackProps extends React.ComponentProps<
+  typeof AvatarPrimitive.Fallback
+> {
   /** Show the generic person icon instead of initials. Figma's `Placeholder icon`. */
   icon?: boolean;
 }
@@ -116,12 +134,20 @@ export interface AvatarFallbackProps
  * Initials, or the generic person. Radix waits for the image to fail before
  * showing this, so there is no flash of initials behind a picture that loads.
  */
-export function AvatarFallback({ className, icon, children, ...props }: AvatarFallbackProps) {
+export function AvatarFallback({
+  className,
+  icon,
+  children,
+  ...props
+}: AvatarFallbackProps) {
   const size = useAvatarSize();
   return (
     <AvatarPrimitive.Fallback
       data-slot="avatar-fallback"
-      className={cn("flex size-full items-center justify-center rounded-full", className)}
+      className={cn(
+        "flex size-full items-center justify-center rounded-full",
+        className,
+      )}
       {...props}
     >
       {icon ? <User aria-hidden className={ICON[size]} /> : children}
@@ -132,7 +158,9 @@ export function AvatarFallback({ className, icon, children, ...props }: AvatarFa
 const DOT = { xs: "size-2.5", sm: "size-3", md: "size-3.5" } as const;
 const TONE = {
   online: "bg-surface-success-emphasis",
-  offline: "bg-surface-neutral-subtle-pressed",
+  // Figma's Status icon draws offline on fg/neutral/subtle. It was resting on
+  // a -pressed token, which is a state word and went near-invisible in light.
+  offline: "bg-content-neutral-subtle",
 } as const;
 
 export interface AvatarStatusProps extends React.ComponentProps<"span"> {
@@ -147,7 +175,13 @@ export interface AvatarStatusProps extends React.ComponentProps<"span"> {
  * The dot on the corner. It carries meaning, so it gets a name — an avatar
  * that silently turns green tells a screen reader nothing.
  */
-export function AvatarStatus({ className, type, count, label, ...props }: AvatarStatusProps) {
+export function AvatarStatus({
+  className,
+  type,
+  count,
+  label,
+  ...props
+}: AvatarStatusProps) {
   const size = useAvatarSize();
   const name = label ?? (type === "count" ? `${count} unread` : type);
   return (
@@ -160,14 +194,17 @@ export function AvatarStatus({ className, type, count, label, ...props }: Avatar
         "absolute end-0 bottom-0 inline-flex items-center justify-center rounded-full",
         DOT[size],
         type === "online" || type === "offline" ? TONE[type] : null,
-        type === "count" && "bg-surface-danger-emphasis text-content-on-danger-emphasis text-label-xs",
+        type === "count" &&
+          "bg-surface-danger-emphasis text-content-on-danger-emphasis text-label-xs",
         type === "verified" && "text-content-info-emphasis",
         className,
       )}
       {...props}
     >
       {type === "count" ? count : null}
-      {type === "verified" ? <BadgeCheck aria-hidden className="size-full" /> : null}
+      {type === "verified" ? (
+        <BadgeCheck aria-hidden className="size-full" />
+      ) : null}
     </span>
   );
 }
@@ -231,13 +268,27 @@ export interface AvatarGroupProps extends React.ComponentProps<"div"> {
   max?: number;
 }
 
-export function AvatarGroup({ className, size = "md", variant = "default", ring = true, max, action, children, ...props }: AvatarGroupProps) {
+export function AvatarGroup({
+  className,
+  size = "md",
+  variant = "default",
+  ring = true,
+  max,
+  action,
+  children,
+  ...props
+}: AvatarGroupProps) {
   const items = React.Children.toArray(children);
-  const over = max != null && max >= 0 && items.length > max ? items.length - max : 0;
+  const over =
+    max != null && max >= 0 && items.length > max ? items.length - max : 0;
   const shown = over > 0 ? items.slice(0, max) : items;
   return (
     <GroupContext.Provider value={{ size, variant, ring }}>
-      <div data-slot="avatar-group" className={cn("flex items-center gap-2", className)} {...props}>
+      <div
+        data-slot="avatar-group"
+        className={cn("flex items-center gap-2", className)}
+        {...props}
+      >
         <div data-slot="avatar-stack" className={avatarStackVariants({ size })}>
           {shown}
           {over > 0 ? (
@@ -284,14 +335,23 @@ const avatarAddVariants = cva(
   },
 );
 
-export interface AvatarAddButtonProps extends Omit<React.ComponentProps<"button">, "children"> {
+export interface AvatarAddButtonProps extends Omit<
+  React.ComponentProps<"button">,
+  "children"
+> {
   size?: Size;
   variant?: Style;
   /** What adding does. "Add" alone rarely says enough. */
   label?: string;
 }
 
-export function AvatarAddButton({ className, size, variant, label = "Add person", ...props }: AvatarAddButtonProps) {
+export function AvatarAddButton({
+  className,
+  size,
+  variant,
+  label = "Add person",
+  ...props
+}: AvatarAddButtonProps) {
   const group = React.useContext(GroupContext);
   const s = size ?? group?.size ?? "md";
   const v = variant ?? group?.variant ?? "default";

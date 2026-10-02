@@ -5,7 +5,9 @@ import { NumberInput } from "./number-input";
 
 describe("NumberInput", () => {
   it("is a spinbutton with its range announced", () => {
-    render(<NumberInput aria-label="Retries" defaultValue={3} min={0} max={5} />);
+    render(
+      <NumberInput aria-label="Retries" defaultValue={3} min={0} max={5} />,
+    );
     const el = screen.getByRole("spinbutton", { name: "Retries" });
     expect(el).toHaveAttribute("aria-valuenow", "3");
     expect(el).toHaveAttribute("aria-valuemin", "0");
@@ -14,7 +16,15 @@ describe("NumberInput", () => {
 
   it("steps with the buttons and stops at the bounds", async () => {
     const onValueChange = vi.fn();
-    render(<NumberInput aria-label="Retries" defaultValue={4} min={0} max={5} onValueChange={onValueChange} />);
+    render(
+      <NumberInput
+        aria-label="Retries"
+        defaultValue={4}
+        min={0}
+        max={5}
+        onValueChange={onValueChange}
+      />,
+    );
     const plus = screen.getByRole("button", { name: "Increase" });
     await userEvent.click(plus);
     expect(onValueChange).toHaveBeenLastCalledWith(5);
@@ -23,7 +33,9 @@ describe("NumberInput", () => {
   });
 
   it("steps with the keyboard: arrows, page keys, home and end", async () => {
-    render(<NumberInput aria-label="Timeout" defaultValue={10} min={0} max={100} />);
+    render(
+      <NumberInput aria-label="Timeout" defaultValue={10} min={0} max={100} />,
+    );
     const el = screen.getByRole("spinbutton");
     el.focus();
     await userEvent.keyboard("{ArrowUp}");
@@ -37,7 +49,9 @@ describe("NumberInput", () => {
   });
 
   it("lets you type freely and clamps on blur", async () => {
-    render(<NumberInput aria-label="Retries" defaultValue={1} min={0} max={5} />);
+    render(
+      <NumberInput aria-label="Retries" defaultValue={1} min={0} max={5} />,
+    );
     const el = screen.getByRole("spinbutton");
     await userEvent.clear(el);
     await userEvent.type(el, "12");
@@ -52,5 +66,17 @@ describe("NumberInput", () => {
     el.focus();
     await userEvent.keyboard("{ArrowUp}{ArrowUp}");
     expect(el).toHaveValue("0.3");
+  });
+
+  it("turns its border red when invalid — a box gets a border, not a ring", () => {
+    render(<NumberInput aria-label="Retries" aria-invalid defaultValue={0} />);
+    // The shell draws the box, so it reads the inner control's aria-invalid.
+    expect(screen.getByRole("spinbutton")).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
+    expect(
+      document.querySelector("[data-slot=number-input]")!.className,
+    ).toContain("has-[[aria-invalid=true]]:border-line-input-invalid");
   });
 });

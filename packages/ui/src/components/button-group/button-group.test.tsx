@@ -59,7 +59,9 @@ describe("ButtonGroup", () => {
     render(<Three data-testid="g" />);
     // Neighbours overlap, so without this the focus ring is painted over by
     // the next button and reads as a half ring.
-    expect(screen.getByTestId("g").className).toContain("[&>*:focus-visible]:z-raised");
+    expect(screen.getByTestId("g").className).toContain(
+      "[&>*:focus-visible]:z-raised",
+    );
     await userEvent.tab();
     expect(screen.getByRole("button", { name: "Out" })).toHaveFocus();
   });

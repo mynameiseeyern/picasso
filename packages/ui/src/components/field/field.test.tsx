@@ -1,10 +1,20 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Field, FieldControl, FieldDescription, FieldError, FieldLabel } from "./field";
+import {
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldError,
+  FieldLabel,
+} from "./field";
 import { Input } from "../input/input";
 
-const Example = (props: { invalid?: boolean; disabled?: boolean; required?: boolean }) => (
+const Example = (props: {
+  invalid?: boolean;
+  disabled?: boolean;
+  required?: boolean;
+}) => (
   <Field invalid={props.invalid} disabled={props.disabled}>
     <FieldLabel required={props.required}>Threshold</FieldLabel>
     <FieldControl required={props.required}>
@@ -36,12 +46,16 @@ describe("Field", () => {
     const control = screen.getByRole("textbox");
     expect(control).toHaveAttribute("aria-invalid", "true");
     expect(control).toHaveAccessibleDescription("Use 3.6, not 3.60000.");
-    expect(screen.queryByText("MOS is measured to one decimal.")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("MOS is measured to one decimal."),
+    ).not.toBeInTheDocument();
   });
 
   it("announces the error, rather than waiting for focus to reach the control", () => {
     render(<Example invalid />);
-    expect(screen.getByRole("alert")).toHaveTextContent("Use 3.6, not 3.60000.");
+    expect(screen.getByRole("alert")).toHaveTextContent(
+      "Use 3.6, not 3.60000.",
+    );
   });
 
   it("renders no error while the field is valid", () => {
@@ -57,14 +71,19 @@ describe("Field", () => {
   it("marks required on the control, not only with an asterisk", () => {
     render(<Example required />);
     // The asterisk is aria-hidden, so it cannot be the only signal.
-    expect(screen.getByRole("textbox")).toHaveAttribute("aria-required", "true");
+    expect(screen.getByRole("textbox")).toHaveAttribute(
+      "aria-required",
+      "true",
+    );
     expect(screen.getByText("*")).toHaveAttribute("aria-hidden", "true");
   });
 
   it("refuses to be used outside a Field", () => {
     const quiet = { error: console.error };
     console.error = () => {};
-    expect(() => render(<FieldLabel>Orphan</FieldLabel>)).toThrow(/inside a <Field>/);
+    expect(() => render(<FieldLabel>Orphan</FieldLabel>)).toThrow(
+      /inside a <Field>/,
+    );
     console.error = quiet.error;
   });
 
@@ -72,8 +91,12 @@ describe("Field", () => {
     const { default: userEvent } = await import("@testing-library/user-event");
     render(
       <Field>
-        <FieldLabel help="Probes report every 30 seconds.">Poll interval</FieldLabel>
-        <FieldControl><input /></FieldControl>
+        <FieldLabel help="Probes report every 30 seconds.">
+          Poll interval
+        </FieldLabel>
+        <FieldControl>
+          <input />
+        </FieldControl>
       </Field>,
     );
     const help = screen.getByRole("button", { name: "About Poll interval" });
@@ -83,6 +106,8 @@ describe("Field", () => {
     // first stop: it sits beside the label, before the control
     await userEvent.tab();
     expect(help).toHaveFocus();
-    expect(await screen.findByRole("tooltip")).toHaveTextContent("Probes report every 30 seconds.");
+    expect(await screen.findByRole("tooltip")).toHaveTextContent(
+      "Probes report every 30 seconds.",
+    );
   });
 });

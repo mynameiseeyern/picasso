@@ -161,10 +161,7 @@ export function AppShellContent({
     <main
       data-slot="app-shell-content"
       data-width={width ?? "fluid"}
-      className={cn(
-        "min-h-0 flex-1 overflow-y-auto p-gutter",
-        className,
-      )}
+      className={cn("min-h-0 flex-1 overflow-y-auto p-gutter", className)}
       {...props}
     >
       <div

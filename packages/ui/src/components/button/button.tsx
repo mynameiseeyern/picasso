@@ -101,7 +101,8 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   /** Render as the child element, keeping Button's styling. */
   asChild?: boolean;
@@ -111,7 +112,16 @@ export interface ButtonProps
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
-    { className, variant, size, asChild = false, loading = false, disabled, children, ...props },
+    {
+      className,
+      variant,
+      size,
+      asChild = false,
+      loading = false,
+      disabled,
+      children,
+      ...props
+    },
     ref,
   ) => {
     const Comp = asChild ? Slot : "button";
@@ -131,7 +141,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         data-variant={variant ?? "default"}
         {...props}
       >
-        {loading ? <Loader2 className="animate-spin" aria-hidden="true" /> : null}
+        {loading ? (
+          <Loader2 className="animate-spin" aria-hidden="true" />
+        ) : null}
         <Slottable>{children}</Slottable>
       </Comp>
     );

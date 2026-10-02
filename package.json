@@ -20,6 +20,8 @@
     "type-check": "npm run type-check --workspace @ir/ui",
     "test": "npm run test --workspace @ir/ui",
     "lint": "eslint",
+    "format": "prettier --write packages/ui/src",
+    "format:check": "prettier --check packages/ui/src",
     "build:llms": "node scripts/build-llms.mjs",
     "dev:site": "npm run copy:assets && npm run dev --workspace @ir/site",
     "build:site": "npm run build:tokens && npm run build:llms && npm run copy:assets && npm run build-storybook --workspace @ir/ui && node scripts/nest-storybook.mjs && npm run build --workspace @ir/site",
@@ -29,6 +31,7 @@
     "@shadcn/lint": "^0.2.0",
     "@typescript-eslint/parser": "^8.70.1",
     "eslint": "^10.11.0",
-    "oxlint": "^1.85.0"
+    "oxlint": "^1.85.0",
+    "prettier": "^3.9.9"
   }
 }

@@ -50,8 +50,7 @@ const fieldVariants = cva("flex flex-col", {
 });
 
 export interface FieldProps
-  extends React.ComponentProps<"div">,
-    VariantProps<typeof fieldVariants> {
+  extends React.ComponentProps<"div">, VariantProps<typeof fieldVariants> {
   /** Sets aria-invalid on the control and swaps the hint for the error. */
   invalid?: boolean;
   /** Disables the control and dims the label and hint. */
@@ -91,10 +90,13 @@ export function Field({
   );
 }
 
-const labelVariants = cva("flex items-center gap-0.5 text-content-neutral-emphasis", {
-  variants: { size: { sm: "text-label-sm", md: "text-label-md" } },
-  defaultVariants: { size: "md" },
-});
+const labelVariants = cva(
+  "flex items-center gap-0.5 text-content-neutral-emphasis",
+  {
+    variants: { size: { sm: "text-label-sm", md: "text-label-md" } },
+    defaultVariants: { size: "md" },
+  },
+);
 
 export interface FieldLabelProps extends React.ComponentProps<"label"> {
   /** Renders the asterisk and sets required on the control. */
@@ -106,13 +108,23 @@ export interface FieldLabelProps extends React.ComponentProps<"label"> {
   help?: React.ReactNode;
 }
 
-export function FieldLabel({ className, children, required, help, ...props }: FieldLabelProps) {
+export function FieldLabel({
+  className,
+  children,
+  required,
+  help,
+  ...props
+}: FieldLabelProps) {
   const { id, size, disabled } = useField("FieldLabel");
   const label = (
     <label
       htmlFor={id}
       data-slot="field-label"
-      className={cn(labelVariants({ size }), disabled && "text-content-disabled", className)}
+      className={cn(
+        labelVariants({ size }),
+        disabled && "text-content-disabled",
+        className,
+      )}
       {...props}
     >
       {children}
@@ -160,7 +172,8 @@ export interface FieldControlProps {
  * knowing anything about them.
  */
 export function FieldControl({ children, required }: FieldControlProps) {
-  const { id, descriptionId, errorId, invalid, disabled } = useField("FieldControl");
+  const { id, descriptionId, errorId, invalid, disabled } =
+    useField("FieldControl");
   // Slot's props are typed as HTMLAttributes, which has no `disabled` — but it
   // forwards whatever it is handed to its child, and the child here is a form
   // control. The cast is on the prop bag, not on the child.
@@ -181,8 +194,12 @@ const messageVariants = cva("", {
   defaultVariants: { size: "md" },
 });
 
-export function FieldDescription({ className, ...props }: React.ComponentProps<"p">) {
-  const { descriptionId, size, invalid, disabled } = useField("FieldDescription");
+export function FieldDescription({
+  className,
+  ...props
+}: React.ComponentProps<"p">) {
+  const { descriptionId, size, invalid, disabled } =
+    useField("FieldDescription");
   // Figma swaps the hint for the error rather than stacking them.
   if (invalid) return null;
   return (
@@ -209,7 +226,11 @@ export function FieldError({ className, ...props }: React.ComponentProps<"p">) {
       // only when focus happens to reach the control.
       role="alert"
       data-slot="field-error"
-      className={cn(messageVariants({ size }), "text-content-danger-emphasis", className)}
+      className={cn(
+        messageVariants({ size }),
+        "text-content-danger-emphasis",
+        className,
+      )}
       {...props}
     />
   );

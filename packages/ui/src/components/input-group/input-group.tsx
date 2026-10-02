@@ -53,9 +53,17 @@ type Size = "sm" | "md";
 const SizeContext = React.createContext<Size>("md");
 export const useInputGroupSize = () => React.useContext(SizeContext);
 
-export interface InputGroupProps extends React.ComponentProps<"div">, VariantProps<typeof inputGroupVariants> {}
+export interface InputGroupProps
+  extends
+    React.ComponentProps<"div">,
+    VariantProps<typeof inputGroupVariants> {}
 
-export function InputGroup({ className, size = "md", onMouseDown, ...props }: InputGroupProps) {
+export function InputGroup({
+  className,
+  size = "md",
+  onMouseDown,
+  ...props
+}: InputGroupProps) {
   return (
     <SizeContext.Provider value={size ?? "md"}>
       <div
@@ -66,8 +74,14 @@ export function InputGroup({ className, size = "md", onMouseDown, ...props }: In
           onMouseDown?.(e);
           // A click on the box (padding, icon, text) goes to the input.
           const target = e.target as HTMLElement;
-          if (e.defaultPrevented || target.closest("button, a, input, textarea, select, [role=button]")) return;
-          const control = e.currentTarget.querySelector<HTMLElement>("[data-slot=input-group-control]");
+          if (
+            e.defaultPrevented ||
+            target.closest("button, a, input, textarea, select, [role=button]")
+          )
+            return;
+          const control = e.currentTarget.querySelector<HTMLElement>(
+            "[data-slot=input-group-control]",
+          );
           if (control && !(control as HTMLInputElement).disabled) {
             e.preventDefault();
             control.focus();
@@ -82,21 +96,22 @@ export function InputGroup({ className, size = "md", onMouseDown, ...props }: In
 export type InputGroupInputProps = Omit<React.ComponentProps<"input">, "size">;
 
 /** The bare input inside a group. Carries the id, aria and value — the group only draws. */
-export const InputGroupInput = React.forwardRef<HTMLInputElement, InputGroupInputProps>(
-  ({ className, ...props }, ref) => (
-    <input
-      ref={ref}
-      data-slot="input-group-control"
-      className={cn(
-        "h-full w-full min-w-0 flex-1 bg-transparent outline-none " +
-          "placeholder:text-content-neutral-subtle " +
-          "disabled:cursor-not-allowed disabled:placeholder:text-content-disabled",
-        className,
-      )}
-      {...props}
-    />
-  ),
-);
+export const InputGroupInput = React.forwardRef<
+  HTMLInputElement,
+  InputGroupInputProps
+>(({ className, ...props }, ref) => (
+  <input
+    ref={ref}
+    data-slot="input-group-control"
+    className={cn(
+      "h-full w-full min-w-0 flex-1 bg-transparent outline-none " +
+        "placeholder:text-content-neutral-subtle " +
+        "disabled:cursor-not-allowed disabled:placeholder:text-content-disabled",
+      className,
+    )}
+    {...props}
+  />
+));
 InputGroupInput.displayName = "InputGroupInput";
 
 export interface InputGroupAddonProps extends React.ComponentProps<"div"> {
@@ -108,7 +123,11 @@ export interface InputGroupAddonProps extends React.ComponentProps<"div"> {
  * A slot beside the input. Icons get 16px and fg/neutral/subtle; anything
  * else (Kbd, a button, a spinner) renders as it is.
  */
-export function InputGroupAddon({ className, align = "start", ...props }: InputGroupAddonProps) {
+export function InputGroupAddon({
+  className,
+  align = "start",
+  ...props
+}: InputGroupAddonProps) {
   return (
     <div
       data-slot="input-group-addon"
@@ -125,20 +144,35 @@ export function InputGroupAddon({ className, align = "start", ...props }: InputG
 }
 
 /** Figma `Variant=Text`: a fixed prefix or suffix — `https://`, `ms`, `%`. Mono, so it reads as syntax. */
-export function InputGroupText({ className, ...props }: React.ComponentProps<"span">) {
+export function InputGroupText({
+  className,
+  ...props
+}: React.ComponentProps<"span">) {
   return (
     <span
       data-slot="input-group-text"
-      className={cn("text-code-md whitespace-nowrap text-content-neutral-subtle", className)}
+      className={cn(
+        "text-code-md whitespace-nowrap text-content-neutral-subtle",
+        className,
+      )}
       {...props}
     />
   );
 }
 
 /** Figma `Variant=Spinner`: the field is working — validating, searching. Announced politely. */
-export function InputGroupSpinner({ className, label = "Loading", ...props }: React.ComponentProps<"span"> & { label?: string }) {
+export function InputGroupSpinner({
+  className,
+  label = "Loading",
+  ...props
+}: React.ComponentProps<"span"> & { label?: string }) {
   return (
-    <span role="status" data-slot="input-group-spinner" className={cn("inline-flex", className)} {...props}>
+    <span
+      role="status"
+      data-slot="input-group-spinner"
+      className={cn("inline-flex", className)}
+      {...props}
+    >
       <Loader2 aria-hidden className="size-4 animate-spin" />
       <span className="sr-only">{label}</span>
     </span>
@@ -146,7 +180,11 @@ export function InputGroupSpinner({ className, label = "Loading", ...props }: Re
 }
 
 /** Figma `Variant=Check Circle`: the value has been checked and is valid. */
-export function InputGroupCheck({ className, label = "Valid", ...props }: React.ComponentProps<"span"> & { label?: string }) {
+export function InputGroupCheck({
+  className,
+  label = "Valid",
+  ...props
+}: React.ComponentProps<"span"> & { label?: string }) {
   return (
     <span
       data-slot="input-group-check"

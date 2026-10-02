@@ -73,10 +73,15 @@ const buttonGroupVariants = cva(
 );
 
 export interface ButtonGroupProps
-  extends React.ComponentProps<"div">,
+  extends
+    React.ComponentProps<"div">,
     VariantProps<typeof buttonGroupVariants> {}
 
-export function ButtonGroup({ className, orientation, ...props }: ButtonGroupProps) {
+export function ButtonGroup({
+  className,
+  orientation,
+  ...props
+}: ButtonGroupProps) {
   return (
     <div
       // A group of related controls, so it is announced as one thing. Give it

@@ -9,7 +9,9 @@ function Fixture(props: React.ComponentProps<typeof Tabs>) {
       <TabsList>
         <TabsTrigger value="overview">Overview</TabsTrigger>
         <TabsTrigger value="trunks">Trunks</TabsTrigger>
-        <TabsTrigger value="alerts" disabled>Alerts</TabsTrigger>
+        <TabsTrigger value="alerts" disabled>
+          Alerts
+        </TabsTrigger>
         <TabsTrigger value="settings">Settings</TabsTrigger>
       </TabsList>
       <TabsContent value="overview">Overview panel</TabsContent>
@@ -34,9 +36,15 @@ describe("Tabs", () => {
     // Radix roving focus only moves while the key is held — the same trap as
     // RadioGroup, where a keyup between press and check clears the flag.
     await user.keyboard("{ArrowRight>}{/ArrowRight}");
-    expect(screen.getByRole("tab", { name: "Trunks" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: "Trunks" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
     await user.keyboard("{ArrowRight>}{/ArrowRight}");
-    expect(screen.getByRole("tab", { name: "Settings" })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("tab", { name: "Settings" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
   });
 
   it("gives every tab a focus ring, including the one Figma forgot", () => {
@@ -60,17 +68,25 @@ describe("Tabs", () => {
   it("flows variant and size from the root, so triggers cannot disagree", () => {
     const { rerender } = render(<Fixture variant="border" size="sm" />);
     expect(screen.getByRole("tablist").className).toContain("rounded-xl");
-    expect(screen.getByRole("tab", { name: "Overview" }).className).toContain("text-label-md");
+    expect(screen.getByRole("tab", { name: "Overview" }).className).toContain(
+      "text-label-md",
+    );
     rerender(<Fixture variant="gray" size="md" />);
-    expect(screen.getByRole("tab", { name: "Overview" }).className).toContain("data-[state=active]:bg-surface-neutral-muted");
-    expect(screen.getByRole("tab", { name: "Overview" }).className).toContain("text-label-lg");
+    expect(screen.getByRole("tab", { name: "Overview" }).className).toContain(
+      "data-[state=active]:bg-surface-neutral-muted",
+    );
+    expect(screen.getByRole("tab", { name: "Overview" }).className).toContain(
+      "text-label-lg",
+    );
   });
 
   it("holds a transparent border where the current tab gains one", () => {
     render(<Fixture variant="brand" />);
     // Brand and Minimal outline the current tab. Without a resting border of
     // the same width, every selection would shift the row by 2px.
-    expect(screen.getByRole("tab", { name: "Trunks" }).className).toContain("border-transparent");
+    expect(screen.getByRole("tab", { name: "Trunks" }).className).toContain(
+      "border-transparent",
+    );
   });
 
   it("lifts the current Border tab rather than outlining it", () => {
@@ -83,12 +99,16 @@ describe("Tabs", () => {
   it("stretches the tabs when asked", () => {
     render(<Fixture fullWidth />);
     expect(screen.getByRole("tablist").className).toContain("w-full");
-    expect(screen.getByRole("tab", { name: "Overview" }).className).toContain("flex-1");
+    expect(screen.getByRole("tab", { name: "Overview" }).className).toContain(
+      "flex-1",
+    );
   });
 
   it("stacks and rules the side when vertical", () => {
     render(<Fixture variant="line" orientation="vertical" />);
     expect(screen.getByRole("tablist").className).toContain("flex-col");
-    expect(screen.getByRole("tab", { name: "Overview" }).className).toContain("border-s-2");
+    expect(screen.getByRole("tab", { name: "Overview" }).className).toContain(
+      "border-s-2",
+    );
   });
 });

@@ -10,7 +10,9 @@ describe("TagsInput", () => {
     const input = screen.getByRole("textbox", { name: "Hosts" });
     await userEvent.type(input, "syd-03{Enter}mel-01,SYD-03,");
     expect(onValueChange).toHaveBeenLastCalledWith(["syd-03", "mel-01"]);
-    expect(screen.getByRole("button", { name: "Remove syd-03" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Remove syd-03" }),
+    ).toBeInTheDocument();
   });
 
   it("removes the last tag with Backspace in an empty field, and one tag with its ×", async () => {
@@ -48,14 +50,22 @@ describe("TagsInput", () => {
   });
 
   it("keeps one chip size and a 6px gap at both sizes, as Figma draws them", () => {
-    const { rerender, container } = render(<TagsInput aria-label="Tags" defaultValue={["prod"]} />);
-    const box = () => container.querySelector("[data-slot=tags-input]") ?? container.firstElementChild!;
-    expect(container.querySelector("[data-slot=input-chip]")!.className).toContain("h-7");
+    const { rerender, container } = render(
+      <TagsInput aria-label="Tags" defaultValue={["prod"]} />,
+    );
+    const box = () =>
+      container.querySelector("[data-slot=tags-input]") ??
+      container.firstElementChild!;
+    expect(
+      container.querySelector("[data-slot=input-chip]")!.className,
+    ).toContain("h-7");
     expect(box().className).toContain("min-h-10");
     expect(box().className).toContain("gap-1.5");
     rerender(<TagsInput aria-label="Tags" size="sm" defaultValue={["prod"]} />);
     // sm shrinks the padding only — 36 tall, same chip, same gap.
-    expect(container.querySelector("[data-slot=input-chip]")!.className).toContain("h-7");
+    expect(
+      container.querySelector("[data-slot=input-chip]")!.className,
+    ).toContain("h-7");
     expect(box().className).toContain("min-h-9");
     expect(box().className).toContain("gap-1.5");
   });

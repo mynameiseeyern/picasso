@@ -21,9 +21,15 @@ describe("Progress", () => {
 
   it("clamps rather than overflowing its track", () => {
     const { rerender } = render(<Progress value={140} />);
-    expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "100");
+    expect(screen.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuenow",
+      "100",
+    );
     rerender(<Progress value={-20} />);
-    expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "0");
+    expect(screen.getByRole("progressbar")).toHaveAttribute(
+      "aria-valuenow",
+      "0",
+    );
   });
 
   it("draws a track you can see, so the bar has an end", () => {
@@ -37,17 +43,24 @@ describe("Progress", () => {
 
   it("moves the indicator by a custom property, not an inline transform", () => {
     render(<Progress value={30} />);
-    const ind = screen.getByRole("progressbar").querySelector("[data-slot=progress-indicator]");
+    const ind = screen
+      .getByRole("progressbar")
+      .querySelector("[data-slot=progress-indicator]");
     // An inline transform is refused by no-inline-styles and a
     // translate-x-[calc(...)] by no-arbitrary-values — both correctly. A
     // variable reference is neither, so the arithmetic stays in JS.
     expect(ind).toHaveClass("translate-x-(--progress-offset)");
-    expect((ind as HTMLElement).style.getPropertyValue("--progress-offset")).toBe("-70%");
+    expect(
+      (ind as HTMLElement).style.getPropertyValue("--progress-offset"),
+    ).toBe("-70%");
   });
 
   it("takes the brand fill by default and neutral on request", () => {
     const { rerender } = render(<Progress value={50} />);
-    const ind = () => screen.getByRole("progressbar").querySelector("[data-slot=progress-indicator]");
+    const ind = () =>
+      screen
+        .getByRole("progressbar")
+        .querySelector("[data-slot=progress-indicator]");
     expect(ind()).toHaveClass("bg-surface-primary-emphasis");
     rerender(<Progress value={50} variant="neutral" />);
     expect(ind()).toHaveClass("bg-surface-neutral-emphasis");

@@ -29,13 +29,16 @@ const inputButtonVariants = cva(
     "disabled:text-content-disabled " +
     "[&_svg]:size-4 [&_svg]:shrink-0",
   {
-    variants: { size: { sm: "h-8 px-2.5 text-body-sm", md: "h-9 px-3 text-body-md" } },
+    variants: {
+      size: { sm: "h-8 px-2.5 text-body-sm", md: "h-9 px-3 text-body-md" },
+    },
     defaultVariants: { size: "md" },
   },
 );
 
 export interface InputButtonProps
-  extends Omit<React.ComponentProps<"button">, "value">,
+  extends
+    Omit<React.ComponentProps<"button">, "value">,
     VariantProps<typeof inputButtonVariants> {
   /** Leading icon — Calendar, Filter, … */
   icon?: React.ReactNode;
@@ -48,17 +51,47 @@ export interface InputButtonProps
   hideChevron?: boolean;
 }
 
-export const InputButton = React.forwardRef<HTMLButtonElement, InputButtonProps>(
-  ({ className, size, icon, value, placeholder, adornment, hideChevron, type = "button", ...props }, ref) => {
+export const InputButton = React.forwardRef<
+  HTMLButtonElement,
+  InputButtonProps
+>(
+  (
+    {
+      className,
+      size,
+      icon,
+      value,
+      placeholder,
+      adornment,
+      hideChevron,
+      type = "button",
+      ...props
+    },
+    ref,
+  ) => {
     const empty = value === undefined || value === null || value === "";
     return (
-      <button ref={ref} type={type} data-slot="input-button" className={cn(inputButtonVariants({ size }), className)} {...props}>
-        {icon ? <span aria-hidden className="flex text-content-neutral-subtle group-disabled/input-button:text-content-disabled">{icon}</span> : null}
+      <button
+        ref={ref}
+        type={type}
+        data-slot="input-button"
+        className={cn(inputButtonVariants({ size }), className)}
+        {...props}
+      >
+        {icon ? (
+          <span
+            aria-hidden
+            className="flex text-content-neutral-subtle group-disabled/input-button:text-content-disabled"
+          >
+            {icon}
+          </span>
+        ) : null}
         <span
           data-slot="input-button-value"
           className={cn(
             "min-w-0 flex-1 truncate",
-            empty && "text-content-neutral-subtle group-disabled/input-button:text-content-disabled",
+            empty &&
+              "text-content-neutral-subtle group-disabled/input-button:text-content-disabled",
           )}
         >
           {empty ? placeholder : value}

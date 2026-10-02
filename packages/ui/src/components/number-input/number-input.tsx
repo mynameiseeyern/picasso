@@ -29,17 +29,32 @@ const shell = cva(
     "has-[[aria-invalid=true]]:focus-within:ring-line-danger-emphasis " +
     "has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-surface-input-disabled " +
     "has-[input:disabled]:border-line-input-disabled has-[input:disabled]:text-content-disabled",
-  { variants: { size: { sm: "h-8 text-body-sm", md: "h-9 text-body-md" } }, defaultVariants: { size: "md" } },
+  {
+    variants: { size: { sm: "h-8 text-body-sm", md: "h-9 text-body-md" } },
+    defaultVariants: { size: "md" },
+  },
 );
 const stepper = cva(
   "inline-flex shrink-0 items-center justify-center border-line-input-default text-content-neutral-muted " +
     "hover:bg-surface-input-hovered active:bg-surface-input-pressed " +
     "disabled:pointer-events-none disabled:text-content-disabled [&>svg]:size-4",
-  { variants: { size: { sm: "w-8", md: "w-9" } }, defaultVariants: { size: "md" } },
+  {
+    variants: { size: { sm: "w-8", md: "w-9" } },
+    defaultVariants: { size: "md" },
+  },
 );
 
-export interface NumberInputProps
-  extends Omit<React.ComponentProps<"input">, "size" | "value" | "defaultValue" | "onChange" | "type" | "min" | "max" | "step"> {
+export interface NumberInputProps extends Omit<
+  React.ComponentProps<"input">,
+  | "size"
+  | "value"
+  | "defaultValue"
+  | "onChange"
+  | "type"
+  | "min"
+  | "max"
+  | "step"
+> {
   size?: "sm" | "md";
   value?: number | null;
   defaultValue?: number | null;
@@ -58,31 +73,60 @@ const decimals = (n: number) => (String(n).split(".")[1] ?? "").length;
 export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
   (
     {
-      size = "md", value, defaultValue = null, onValueChange, min = -Infinity, max = Infinity, step = 1,
-      decrementLabel = "Decrease", incrementLabel = "Increase", groupClassName, className, disabled, readOnly,
-      onBlur, onKeyDown, ...props
+      size = "md",
+      value,
+      defaultValue = null,
+      onValueChange,
+      min = -Infinity,
+      max = Infinity,
+      step = 1,
+      decrementLabel = "Decrease",
+      incrementLabel = "Increase",
+      groupClassName,
+      className,
+      disabled,
+      readOnly,
+      onBlur,
+      onKeyDown,
+      ...props
     },
     ref,
   ) => {
     const controlled = value !== undefined;
     const [inner, setInner] = React.useState<number | null>(defaultValue);
     const current = controlled ? value : inner;
-    const [text, setText] = React.useState(current == null ? "" : String(current));
-    React.useEffect(() => setText(current == null ? "" : String(current)), [current]);
+    const [text, setText] = React.useState(
+      current == null ? "" : String(current),
+    );
+    React.useEffect(
+      () => setText(current == null ? "" : String(current)),
+      [current],
+    );
 
-    const places = Math.max(decimals(step), decimals(Number.isFinite(min) ? min : 0));
-    const clamp = (n: number) => Math.min(max, Math.max(min, +n.toFixed(places)));
+    const places = Math.max(
+      decimals(step),
+      decimals(Number.isFinite(min) ? min : 0),
+    );
+    const clamp = (n: number) =>
+      Math.min(max, Math.max(min, +n.toFixed(places)));
     const commit = (n: number | null) => {
       const next = n == null ? null : clamp(n);
       if (!controlled) setInner(next);
       setText(next == null ? "" : String(next));
       if (next !== current) onValueChange?.(next);
     };
-    const stepBy = (k: number) => commit((current ?? (Number.isFinite(min) ? min : 0) - (k > 0 ? step : -step)) + k * step);
+    const stepBy = (k: number) =>
+      commit(
+        (current ?? (Number.isFinite(min) ? min : 0) - (k > 0 ? step : -step)) +
+          k * step,
+      );
     const locked = disabled || readOnly;
 
     return (
-      <div className={cn(shell({ size }), groupClassName)} data-slot="number-input">
+      <div
+        className={cn(shell({ size }), groupClassName)}
+        data-slot="number-input"
+      >
         <button
           type="button"
           tabIndex={-1}
@@ -123,8 +167,12 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
               Home: () => Number.isFinite(min) && commit(min),
               End: () => Number.isFinite(max) && commit(max),
             };
-            if (map[e.key]) { e.preventDefault(); map[e.key](); }
-            if (e.key === "Enter") commit(text.trim() === "" ? null : Number(text));
+            if (map[e.key]) {
+              e.preventDefault();
+              map[e.key]();
+            }
+            if (e.key === "Enter")
+              commit(text.trim() === "" ? null : Number(text));
           }}
           data-slot="number-input-control"
           className={cn(

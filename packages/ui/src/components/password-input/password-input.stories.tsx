@@ -57,3 +57,8 @@ export const NewPassword: Story = {
 export const Disabled: Story = {
   args: { disabled: true, defaultValue: "secret" },
 };
+
+/** Invalid is `aria-invalid`, not a prop: the border turns red, and a Field sets it for you. */
+export const Invalid: Story = {
+  args: { "aria-invalid": true, defaultValue: "secret" },
+};

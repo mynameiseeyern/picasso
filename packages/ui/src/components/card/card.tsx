@@ -57,7 +57,10 @@ export function Card({ className, size = "default", ...props }: CardProps) {
  * Title, description, and anything trailing — a menu button, a badge, a pair
  * of actions. The trailing slot is `CardAction`.
  */
-export function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
+export function CardHeader({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   const size = useCardSize();
   return (
     <div
@@ -76,7 +79,10 @@ export function CardHeader({ className, ...props }: React.ComponentProps<"div">)
 }
 
 /** heading/sm. One line that says what the card is. */
-export function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
+export function CardTitle({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-title"
@@ -87,7 +93,10 @@ export function CardTitle({ className, ...props }: React.ComponentProps<"div">) 
 }
 
 /** body/md, subtle. Sits 4 under the title. */
-export function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
+export function CardDescription({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-description"
@@ -98,7 +107,10 @@ export function CardDescription({ className, ...props }: React.ComponentProps<"d
 }
 
 /** The title and description as one block, so the trailing action can sit beside them. */
-export function CardHeaderText({ className, ...props }: React.ComponentProps<"div">) {
+export function CardHeaderText({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-header-text"
@@ -109,7 +121,10 @@ export function CardHeaderText({ className, ...props }: React.ComponentProps<"di
 }
 
 /** Trailing controls in the header row — a menu, a badge, a button or two. */
-export function CardAction({ className, ...props }: React.ComponentProps<"div">) {
+export function CardAction({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="card-action"
@@ -119,18 +134,28 @@ export function CardAction({ className, ...props }: React.ComponentProps<"div">)
   );
 }
 
-export function CardContent({ className, ...props }: React.ComponentProps<"div">) {
+export function CardContent({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   const size = useCardSize();
   return (
     <div
       data-slot="card-content"
-      className={cn("flex flex-col", size === "sm" ? "gap-4 p-4" : "gap-6 p-6", className)}
+      className={cn(
+        "flex flex-col",
+        size === "sm" ? "gap-4 p-4" : "gap-6 p-6",
+        className,
+      )}
       {...props}
     />
   );
 }
 
-export function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
+export function CardFooter({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   const size = useCardSize();
   return (
     <div

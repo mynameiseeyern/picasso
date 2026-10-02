@@ -1,7 +1,12 @@
 import * as React from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { InputGroup, InputGroupAddon, InputGroupInput, type InputGroupInputProps } from "../input-group/input-group";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  type InputGroupInputProps,
+} from "../input-group/input-group";
 
 /**
  * PasswordInput — Figma's `Password input` set (40000625:564): the field plus a trailing eye
@@ -28,9 +33,19 @@ export interface PasswordInputProps extends InputGroupInputProps {
   hideLabel?: string;
 }
 
-export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputProps>(
+export const PasswordInput = React.forwardRef<
+  HTMLInputElement,
+  PasswordInputProps
+>(
   (
-    { size = "md", showLabel = "Show password", hideLabel = "Hide password", autoComplete = "current-password", disabled, ...props },
+    {
+      size = "md",
+      showLabel = "Show password",
+      hideLabel = "Hide password",
+      autoComplete = "current-password",
+      disabled,
+      ...props
+    },
     ref,
   ) => {
     const [visible, setVisible] = React.useState(false);

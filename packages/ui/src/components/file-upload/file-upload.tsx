@@ -17,7 +17,10 @@ import { Button } from "../button/button";
  * anywhere in the field opens the picker, and the Browse button is the same
  * label's visual — one control, not two.
  */
-export interface FileUploadProps extends Omit<React.ComponentProps<"input">, "type" | "size" | "value" | "onChange"> {
+export interface FileUploadProps extends Omit<
+  React.ComponentProps<"input">,
+  "type" | "size" | "value" | "onChange"
+> {
   onFilesChange?: (files: File[]) => void;
   size?: "sm" | "md";
   browseLabel?: string;
@@ -25,9 +28,27 @@ export interface FileUploadProps extends Omit<React.ComponentProps<"input">, "ty
 }
 
 export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
-  ({ onFilesChange, size = "md", browseLabel = "Browse", placeholder = "No file chosen", groupClassName, className, disabled, multiple, ...props }, ref) => {
+  (
+    {
+      onFilesChange,
+      size = "md",
+      browseLabel = "Browse",
+      placeholder = "No file chosen",
+      groupClassName,
+      className,
+      disabled,
+      multiple,
+      ...props
+    },
+    ref,
+  ) => {
     const [files, setFiles] = React.useState<File[]>([]);
-    const summary = files.length === 0 ? null : files.length === 1 ? files[0].name : `${files.length} files`;
+    const summary =
+      files.length === 0
+        ? null
+        : files.length === 1
+          ? files[0].name
+          : `${files.length} files`;
     return (
       <label
         data-slot="file-upload"
@@ -38,7 +59,9 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
             "has-[input:focus-visible]:ring-offset-2 has-[input:focus-visible]:ring-offset-surface-app " +
             "has-[[aria-invalid=true]]:border-line-input-invalid " +
             "has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-surface-input-disabled has-[input:disabled]:border-line-input-disabled",
-          size === "sm" ? "h-8 ps-2.5 pe-1 text-body-sm" : "h-9 ps-3 pe-1 text-body-md",
+          size === "sm"
+            ? "h-8 ps-2.5 pe-1 text-body-sm"
+            : "h-9 ps-3 pe-1 text-body-md",
           groupClassName,
         )}
       >
@@ -56,11 +79,25 @@ export const FileUpload = React.forwardRef<HTMLInputElement, FileUploadProps>(
           }}
           {...props}
         />
-        <span className={cn("min-w-0 flex-1 truncate", summary ? "text-content-neutral-emphasis" : "text-content-neutral-subtle", disabled && "text-content-disabled")}>
+        <span
+          className={cn(
+            "min-w-0 flex-1 truncate",
+            summary
+              ? "text-content-neutral-emphasis"
+              : "text-content-neutral-subtle",
+            disabled && "text-content-disabled",
+          )}
+        >
           {summary ?? placeholder}
         </span>
         <Button asChild variant="secondary" size="xs" aria-hidden>
-          <span className={cn(disabled && "pointer-events-none text-content-disabled")}>{browseLabel}</span>
+          <span
+            className={cn(
+              disabled && "pointer-events-none text-content-disabled",
+            )}
+          >
+            {browseLabel}
+          </span>
         </Button>
       </label>
     );
@@ -72,8 +109,12 @@ FileUpload.displayName = "FileUpload";
 export function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
   const units = ["KB", "MB", "GB", "TB"];
-  let n = bytes / 1024, i = 0;
-  while (n >= 1024 && i < units.length - 1) { n /= 1024; i++; }
+  let n = bytes / 1024,
+    i = 0;
+  while (n >= 1024 && i < units.length - 1) {
+    n /= 1024;
+    i++;
+  }
   return `${i === 0 ? Math.round(n) : n.toFixed(1)} ${units[i]}`;
 }
 
@@ -88,7 +129,16 @@ export interface FileUploadItemProps extends React.ComponentProps<"div"> {
   icon?: React.ReactNode;
 }
 
-export function FileUploadItem({ className, name, size, progress, onRemove, removeLabel, icon, ...props }: FileUploadItemProps) {
+export function FileUploadItem({
+  className,
+  name,
+  size,
+  progress,
+  onRemove,
+  removeLabel,
+  icon,
+  ...props
+}: FileUploadItemProps) {
   const uploading = progress !== undefined && progress < 100;
   return (
     <div
@@ -99,13 +149,22 @@ export function FileUploadItem({ className, name, size, progress, onRemove, remo
       )}
       {...props}
     >
-      <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-surface-neutral-muted text-content-neutral-muted [&>svg]:size-6">
+      <span
+        aria-hidden
+        className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-surface-neutral-muted text-content-neutral-muted [&>svg]:size-6"
+      >
         {icon ?? <FileIcon />}
       </span>
       <div className="flex min-w-0 flex-1 flex-col gap-1.5">
         <div className="flex min-w-0 items-baseline gap-2">
-          <span className="truncate text-body-sm text-content-neutral-emphasis">{name}</span>
-          {size !== undefined ? <span className="shrink-0 text-body-xs text-content-neutral-subtle">{formatBytes(size)}</span> : null}
+          <span className="truncate text-body-sm text-content-neutral-emphasis">
+            {name}
+          </span>
+          {size !== undefined ? (
+            <span className="shrink-0 text-body-xs text-content-neutral-subtle">
+              {formatBytes(size)}
+            </span>
+          ) : null}
         </div>
         {progress !== undefined ? (
           <div
@@ -121,13 +180,24 @@ export function FileUploadItem({ className, name, size, progress, onRemove, remo
               // Same pattern as Progress: the offset travels as a custom
               // property. An inline width is refused by no-inline-styles and
               // transition-[width] by no-arbitrary-values — both correctly.
-              style={{ "--upload-offset": `-${100 - Math.min(100, Math.max(0, progress))}%` } as React.CSSProperties}
+              style={
+                {
+                  "--upload-offset": `-${100 - Math.min(100, Math.max(0, progress))}%`,
+                } as React.CSSProperties
+              }
             />
           </div>
         ) : null}
       </div>
       {onRemove ? (
-        <Button variant="ghost" size="icon-xs" aria-label={removeLabel ?? `${uploading ? "Cancel" : "Remove"} ${name}`} onClick={onRemove}>
+        <Button
+          variant="ghost"
+          size="icon-xs"
+          aria-label={
+            removeLabel ?? `${uploading ? "Cancel" : "Remove"} ${name}`
+          }
+          onClick={onRemove}
+        >
           <X aria-hidden />
         </Button>
       ) : null}

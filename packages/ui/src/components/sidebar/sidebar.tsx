@@ -70,7 +70,9 @@ interface SidebarContextValue {
 const PHONE_QUERY = "(max-width: 767.98px)";
 function usePhone() {
   const [phone, setPhone] = React.useState(
-    () => typeof window !== "undefined" && window.matchMedia?.(PHONE_QUERY).matches === true,
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia?.(PHONE_QUERY).matches === true,
   );
   React.useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
@@ -194,20 +196,30 @@ export function Sidebar({
 
   if (mobile === "fullscreen" && ctx.phone) {
     return (
-      <DialogPrimitive.Root open={ctx.mobileOpen} onOpenChange={ctx.setMobileOpen}>
+      <DialogPrimitive.Root
+        open={ctx.mobileOpen}
+        onOpenChange={ctx.setMobileOpen}
+      >
         <DialogPrimitive.Portal>
           <DialogPrimitive.Content
             data-slot="sidebar-mobile"
             aria-describedby={undefined}
             className="fixed inset-0 z-modal flex outline-none"
           >
-            <DialogPrimitive.Title className="sr-only">{mobileLabel}</DialogPrimitive.Title>
+            <DialogPrimitive.Title className="sr-only">
+              {mobileLabel}
+            </DialogPrimitive.Title>
             {/* The same tree, expanded and touch-sized. */}
-            <SidebarContext.Provider value={{ ...ctx, collapsed: false, inMobile: true }}>
+            <SidebarContext.Provider
+              value={{ ...ctx, collapsed: false, inMobile: true }}
+            >
               <aside
                 data-slot="sidebar"
                 data-mobile
-                className={cn("flex size-full flex-col bg-surface-sidebar", className)}
+                className={cn(
+                  "flex size-full flex-col bg-surface-sidebar",
+                  className,
+                )}
                 {...props}
               >
                 {children}
@@ -707,14 +719,23 @@ export function SidebarTrigger({
   children,
   ...props
 }: React.ComponentProps<"button">) {
-  const { collapsed, setCollapsed, phone, mobileOpen, setMobileOpen } = useSidebar();
+  const { collapsed, setCollapsed, phone, mobileOpen, setMobileOpen } =
+    useSidebar();
   return (
     <button
       type="button"
       data-slot="sidebar-trigger"
       aria-expanded={phone ? mobileOpen : !collapsed}
-      aria-label={phone ? "Open navigation" : collapsed ? "Expand sidebar" : "Collapse sidebar"}
-      onClick={() => (phone ? setMobileOpen(!mobileOpen) : setCollapsed(!collapsed))}
+      aria-label={
+        phone
+          ? "Open navigation"
+          : collapsed
+            ? "Expand sidebar"
+            : "Collapse sidebar"
+      }
+      onClick={() =>
+        phone ? setMobileOpen(!mobileOpen) : setCollapsed(!collapsed)
+      }
       className={cn(
         "flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md " +
           "text-content-neutral-muted outline-none transition-colors " +

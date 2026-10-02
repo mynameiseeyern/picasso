@@ -58,8 +58,9 @@ export function BottomSheetClose(
   return <DialogPrimitive.Close data-slot="bottom-sheet-close" {...props} />;
 }
 
-export interface BottomSheetContentProps
-  extends React.ComponentProps<typeof DialogPrimitive.Content> {
+export interface BottomSheetContentProps extends React.ComponentProps<
+  typeof DialogPrimitive.Content
+> {
   /** Accessible name for a sheet with no visible `BottomSheetTitle`. Mutually exclusive with it. */
   label?: string;
   /** The decorative handle. On by default; it never drags. */
@@ -91,7 +92,9 @@ export function BottomSheetContent({
         {...props}
       >
         {label ? (
-          <DialogPrimitive.Title className="sr-only">{label}</DialogPrimitive.Title>
+          <DialogPrimitive.Title className="sr-only">
+            {label}
+          </DialogPrimitive.Title>
         ) : null}
         {handle ? (
           <div
@@ -114,7 +117,10 @@ export function BottomSheetHeader({
   return (
     <div
       data-slot="bottom-sheet-header"
-      className={cn("flex shrink-0 items-center gap-3 ps-4 pe-2 pt-2 pb-1", className)}
+      className={cn(
+        "flex shrink-0 items-center gap-3 ps-4 pe-2 pt-2 pb-1",
+        className,
+      )}
       {...props}
     />
   );
@@ -128,7 +134,10 @@ export function BottomSheetTitle({
   return (
     <DialogPrimitive.Title
       data-slot="bottom-sheet-title"
-      className={cn("min-w-0 flex-1 text-heading-md text-content-neutral-emphasis", className)}
+      className={cn(
+        "min-w-0 flex-1 text-heading-md text-content-neutral-emphasis",
+        className,
+      )}
       {...props}
     />
   );
@@ -174,7 +183,10 @@ export function BottomSheetBody({
   return (
     <div
       data-slot="bottom-sheet-body"
-      className={cn("flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-4 py-2", className)}
+      className={cn(
+        "flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-4 py-2",
+        className,
+      )}
       {...props}
     />
   );

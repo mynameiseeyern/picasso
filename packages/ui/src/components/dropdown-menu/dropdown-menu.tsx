@@ -48,16 +48,29 @@ import { overlaySurfaceVariants } from "../overlay/overlay";
  * wants them, but Figma draws no check indicator for this menu and inventing
  * one is the mistake this project keeps paying for. Worth adding to the file.
  */
-export function DropdownMenu(props: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
+export function DropdownMenu(
+  props: React.ComponentProps<typeof DropdownMenuPrimitive.Root>,
+) {
   return <DropdownMenuPrimitive.Root data-slot="dropdown-menu" {...props} />;
 }
 
-export function DropdownMenuTrigger(props: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>) {
-  return <DropdownMenuPrimitive.Trigger data-slot="dropdown-menu-trigger" {...props} />;
+export function DropdownMenuTrigger(
+  props: React.ComponentProps<typeof DropdownMenuPrimitive.Trigger>,
+) {
+  return (
+    <DropdownMenuPrimitive.Trigger
+      data-slot="dropdown-menu-trigger"
+      {...props}
+    />
+  );
 }
 
-export function DropdownMenuGroup(props: React.ComponentProps<typeof DropdownMenuPrimitive.Group>) {
-  return <DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />;
+export function DropdownMenuGroup(
+  props: React.ComponentProps<typeof DropdownMenuPrimitive.Group>,
+) {
+  return (
+    <DropdownMenuPrimitive.Group data-slot="dropdown-menu-group" {...props} />
+  );
 }
 
 export function DropdownMenuContent({
@@ -91,8 +104,10 @@ const dropdownMenuItemVariants = cva(
   {
     variants: {
       variant: {
-        default: "text-content-neutral-emphasis focus:bg-surface-neutral-subtle-hovered",
-        destructive: "text-content-danger-emphasis focus:bg-surface-danger-subtle",
+        default:
+          "text-content-neutral-emphasis focus:bg-surface-neutral-subtle-hovered",
+        destructive:
+          "text-content-danger-emphasis focus:bg-surface-danger-subtle",
       },
     },
     defaultVariants: { variant: "default" },
@@ -100,10 +115,15 @@ const dropdownMenuItemVariants = cva(
 );
 
 export interface DropdownMenuItemProps
-  extends React.ComponentProps<typeof DropdownMenuPrimitive.Item>,
+  extends
+    React.ComponentProps<typeof DropdownMenuPrimitive.Item>,
     VariantProps<typeof dropdownMenuItemVariants> {}
 
-export function DropdownMenuItem({ className, variant, ...props }: DropdownMenuItemProps) {
+export function DropdownMenuItem({
+  className,
+  variant,
+  ...props
+}: DropdownMenuItemProps) {
   return (
     <DropdownMenuPrimitive.Item
       data-slot="dropdown-menu-item"
@@ -115,7 +135,10 @@ export function DropdownMenuItem({ className, variant, ...props }: DropdownMenuI
 }
 
 /** The key hint on the right. Brightens with the row, because it belongs to it. */
-export function DropdownMenuShortcut({ className, ...props }: React.ComponentProps<"span">) {
+export function DropdownMenuShortcut({
+  className,
+  ...props
+}: React.ComponentProps<"span">) {
   return (
     <span
       data-slot="dropdown-menu-shortcut"
@@ -128,17 +151,26 @@ export function DropdownMenuShortcut({ className, ...props }: React.ComponentPro
   );
 }
 
-export function DropdownMenuLabel({ className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Label>) {
+export function DropdownMenuLabel({
+  className,
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Label>) {
   return (
     <DropdownMenuPrimitive.Label
       data-slot="dropdown-menu-label"
-      className={cn("px-1.5 py-1 text-label-sm text-content-neutral-subtle", className)}
+      className={cn(
+        "px-1.5 py-1 text-label-sm text-content-neutral-subtle",
+        className,
+      )}
       {...props}
     />
   );
 }
 
-export function DropdownMenuSeparator({ className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
+export function DropdownMenuSeparator({
+  className,
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
   return (
     <DropdownMenuPrimitive.Separator
       data-slot="dropdown-menu-separator"
@@ -150,7 +182,9 @@ export function DropdownMenuSeparator({ className, ...props }: React.ComponentPr
   );
 }
 
-export function DropdownMenuSub(props: React.ComponentProps<typeof DropdownMenuPrimitive.Sub>) {
+export function DropdownMenuSub(
+  props: React.ComponentProps<typeof DropdownMenuPrimitive.Sub>,
+) {
   return <DropdownMenuPrimitive.Sub data-slot="dropdown-menu-sub" {...props} />;
 }
 
@@ -177,12 +211,19 @@ export function DropdownMenuSubTrigger({
   );
 }
 
-export function DropdownMenuSubContent({ className, ...props }: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
+export function DropdownMenuSubContent({
+  className,
+  ...props
+}: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.SubContent
         data-slot="dropdown-menu-sub-content"
-        className={cn(overlaySurfaceVariants({ density: "compact" }), "min-w-40", className)}
+        className={cn(
+          overlaySurfaceVariants({ density: "compact" }),
+          "min-w-40",
+          className,
+        )}
         {...props}
       />
     </DropdownMenuPrimitive.Portal>

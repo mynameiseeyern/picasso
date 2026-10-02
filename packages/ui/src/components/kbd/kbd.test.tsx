@@ -8,17 +8,29 @@ describe("Kbd", () => {
     const el = screen.getByText("Ctrl");
     expect(el.tagName).toBe("KBD");
     expect(el).toHaveAttribute("data-slot", "kbd");
-    expect(el).toHaveClass("bg-surface-neutral-muted", "text-content-neutral-muted", "h-5");
+    expect(el).toHaveClass(
+      "bg-surface-neutral-muted",
+      "text-content-neutral-muted",
+      "h-5",
+    );
   });
 
   it("uses radius/sm, not a larger radius", () => {
     // Regression: Figma had Kbd on radius/lg (10px), which reads as a pill
     // at 20px tall. Kbd is rounded-sm (6px) — 28 Sept.
-    for (const background of ["default", "neutral", "brand", "opaque", "on-emphasis"] as const) {
+    for (const background of [
+      "default",
+      "neutral",
+      "brand",
+      "opaque",
+      "on-emphasis",
+    ] as const) {
       const { unmount } = render(<Kbd background={background}>K</Kbd>);
       const el = screen.getByText("K");
       expect(el, background).toHaveClass("rounded-sm");
-      expect(el.className, background).not.toMatch(/\brounded-(md|lg|xl|full)\b/);
+      expect(el.className, background).not.toMatch(
+        /\brounded-(md|lg|xl|full)\b/,
+      );
       unmount();
     }
   });

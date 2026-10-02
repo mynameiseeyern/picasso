@@ -15,11 +15,16 @@ import { cn } from "@/lib/utils";
  * A tooltip explains; it never holds the only copy of something someone needs
  * to finish a task. That belongs in the field's hint.
  */
-export function TooltipProvider({ delayDuration = 300, ...props }: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
+export function TooltipProvider({
+  delayDuration = 300,
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
   return <TooltipPrimitive.Provider delayDuration={delayDuration} {...props} />;
 }
 
-export function Tooltip(props: React.ComponentProps<typeof TooltipPrimitive.Root>) {
+export function Tooltip(
+  props: React.ComponentProps<typeof TooltipPrimitive.Root>,
+) {
   // Self-providing, so a single tooltip works without an app-level provider.
   return (
     <TooltipProvider>
@@ -28,7 +33,9 @@ export function Tooltip(props: React.ComponentProps<typeof TooltipPrimitive.Root
   );
 }
 
-export function TooltipTrigger(props: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {
+export function TooltipTrigger(
+  props: React.ComponentProps<typeof TooltipPrimitive.Trigger>,
+) {
   return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
 }
 
@@ -51,7 +58,11 @@ export function TooltipContent({
         {...props}
       >
         {children}
-        <TooltipPrimitive.Arrow className="fill-surface-neutral-emphasis" width={10} height={5} />
+        <TooltipPrimitive.Arrow
+          className="fill-surface-neutral-emphasis"
+          width={10}
+          height={5}
+        />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );

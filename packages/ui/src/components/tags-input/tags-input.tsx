@@ -22,7 +22,14 @@ export interface InputChipProps extends React.ComponentProps<"span"> {
 }
 
 /** Figma "Input chip": a pill with a label and a remove ×. */
-export function InputChip({ className, children, onRemove, removeLabel, disabled, ...props }: InputChipProps) {
+export function InputChip({
+  className,
+  children,
+  onRemove,
+  removeLabel,
+  disabled,
+  ...props
+}: InputChipProps) {
   return (
     <span
       data-slot="input-chip"
@@ -38,7 +45,10 @@ export function InputChip({ className, children, onRemove, removeLabel, disabled
       {onRemove ? (
         <button
           type="button"
-          aria-label={removeLabel ?? `Remove ${typeof children === "string" ? children : "tag"}`}
+          aria-label={
+            removeLabel ??
+            `Remove ${typeof children === "string" ? children : "tag"}`
+          }
           disabled={disabled}
           onClick={onRemove}
           className="inline-flex size-4 items-center justify-center rounded-full outline-none hover:bg-surface-neutral-subtle-hovered focus-visible:ring-2 focus-visible:ring-line-focused disabled:pointer-events-none"
@@ -50,8 +60,10 @@ export function InputChip({ className, children, onRemove, removeLabel, disabled
   );
 }
 
-export interface TagsInputProps
-  extends Omit<React.ComponentProps<"input">, "size" | "value" | "defaultValue" | "onChange"> {
+export interface TagsInputProps extends Omit<
+  React.ComponentProps<"input">,
+  "size" | "value" | "defaultValue" | "onChange"
+> {
   value?: string[];
   defaultValue?: string[];
   onValueChange?: (value: string[]) => void;
@@ -63,21 +75,41 @@ export interface TagsInputProps
 
 export const TagsInput = React.forwardRef<HTMLInputElement, TagsInputProps>(
   (
-    { value, defaultValue = [], onValueChange, validate, size = "md", groupClassName, className, placeholder = "Add a tag…", disabled, onKeyDown, onBlur, onPaste, ...props },
+    {
+      value,
+      defaultValue = [],
+      onValueChange,
+      validate,
+      size = "md",
+      groupClassName,
+      className,
+      placeholder = "Add a tag…",
+      disabled,
+      onKeyDown,
+      onBlur,
+      onPaste,
+      ...props
+    },
     ref,
   ) => {
     const controlled = value !== undefined;
     const [inner, setInner] = React.useState<string[]>(defaultValue);
     const tags = controlled ? value : inner;
     const [text, setText] = React.useState("");
-    const set = (next: string[]) => { if (!controlled) setInner(next); onValueChange?.(next); };
+    const set = (next: string[]) => {
+      if (!controlled) setInner(next);
+      onValueChange?.(next);
+    };
 
     const add = (raw: string[]) => {
       const next = [...tags];
       const rejected: string[] = [];
       for (const r of raw.map((s) => s.trim()).filter(Boolean)) {
         if (next.some((t) => t.toLowerCase() === r.toLowerCase())) continue;
-        if (validate && !validate(r)) { rejected.push(r); continue; }
+        if (validate && !validate(r)) {
+          rejected.push(r);
+          continue;
+        }
         next.push(r);
       }
       if (next.length !== tags.length) set(next);
@@ -94,7 +126,9 @@ export const TagsInput = React.forwardRef<HTMLInputElement, TagsInputProps>(
             "focus-within:ring-offset-2 focus-within:ring-offset-surface-app " +
             "has-[[aria-invalid=true]]:border-line-input-invalid " +
             "has-[input:disabled]:cursor-not-allowed has-[input:disabled]:bg-surface-input-disabled has-[input:disabled]:border-line-input-disabled",
-          size === "sm" ? "min-h-9 gap-1.5 px-2 py-1 text-body-sm" : "min-h-10 gap-1.5 px-2 py-1.5 text-body-md",
+          size === "sm"
+            ? "min-h-9 gap-1.5 px-2 py-1 text-body-sm"
+            : "min-h-10 gap-1.5 px-2 py-1.5 text-body-md",
           groupClassName,
         )}
         onMouseDown={(e) => {
@@ -104,7 +138,11 @@ export const TagsInput = React.forwardRef<HTMLInputElement, TagsInputProps>(
         }}
       >
         {tags.map((t) => (
-          <InputChip key={t} disabled={disabled} onRemove={() => set(tags.filter((x) => x !== t))}>
+          <InputChip
+            key={t}
+            disabled={disabled}
+            onRemove={() => set(tags.filter((x) => x !== t))}
+          >
             {t}
           </InputChip>
         ))}
@@ -116,21 +154,35 @@ export const TagsInput = React.forwardRef<HTMLInputElement, TagsInputProps>(
           placeholder={placeholder}
           onChange={(e) => {
             const v = e.target.value;
-            if (v.includes(",")) { add(v.split(",").slice(0, -1)); setText((s) => (s ? `${s}, ` : "") + (v.split(",").at(-1) ?? "").trimStart()); }
-            else setText(v);
+            if (v.includes(",")) {
+              add(v.split(",").slice(0, -1));
+              setText(
+                (s) =>
+                  (s ? `${s}, ` : "") + (v.split(",").at(-1) ?? "").trimStart(),
+              );
+            } else setText(v);
           }}
           onKeyDown={(e) => {
             onKeyDown?.(e);
             if (e.defaultPrevented) return;
-            if (e.key === "Enter" && text.trim()) { e.preventDefault(); add([text]); }
-            else if (e.key === "Backspace" && !text && tags.length) set(tags.slice(0, -1));
+            if (e.key === "Enter" && text.trim()) {
+              e.preventDefault();
+              add([text]);
+            } else if (e.key === "Backspace" && !text && tags.length)
+              set(tags.slice(0, -1));
           }}
           onPaste={(e) => {
             onPaste?.(e);
             const data = e.clipboardData.getData("text");
-            if (/[,\n]/.test(data)) { e.preventDefault(); add(data.split(/[,\n]/)); }
+            if (/[,\n]/.test(data)) {
+              e.preventDefault();
+              add(data.split(/[,\n]/));
+            }
           }}
-          onBlur={(e) => { onBlur?.(e); if (text.trim()) add([text]); }}
+          onBlur={(e) => {
+            onBlur?.(e);
+            if (text.trim()) add([text]);
+          }}
           className={cn(
             "h-7 min-w-20 flex-1 bg-transparent px-1 outline-none placeholder:text-content-neutral-subtle disabled:cursor-not-allowed",
             className,

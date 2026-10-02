@@ -98,3 +98,8 @@ export const InAField: Story = {
 export const Disabled: Story = {
   args: { disabled: true, defaultValue: ["probe.created"] },
 };
+
+/** Invalid is `aria-invalid` on the trigger: the border turns red, and a Field sets it for you. */
+export const Invalid: Story = {
+  args: { "aria-invalid": true },
+};

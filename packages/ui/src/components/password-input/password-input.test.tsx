@@ -12,7 +12,9 @@ describe("PasswordInput", () => {
     expect(eye).toHaveAttribute("aria-pressed", "false");
     await userEvent.click(eye);
     expect(input).toHaveAttribute("type", "text");
-    expect(screen.getByRole("button", { name: "Hide password" })).toHaveAttribute("aria-pressed", "true");
+    expect(
+      screen.getByRole("button", { name: "Hide password" }),
+    ).toHaveAttribute("aria-pressed", "true");
   });
 
   it("defaults autocomplete for signing in, and switches off autocorrect", () => {
@@ -24,6 +26,20 @@ describe("PasswordInput", () => {
 
   it("disables the eye with the field", () => {
     render(<PasswordInput aria-label="Password" disabled />);
-    expect(screen.getByRole("button", { name: "Show password" })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: "Show password" }),
+    ).toBeDisabled();
+  });
+
+  it("turns its border red when invalid — a box gets a border, not a ring", () => {
+    render(<PasswordInput aria-label="Password" aria-invalid />);
+    // InputGroup draws the box and reads the inner control's aria-invalid.
+    expect(screen.getByLabelText("Password")).toHaveAttribute(
+      "aria-invalid",
+      "true",
+    );
+    expect(
+      document.querySelector("[data-slot=password-input]")!.className,
+    ).toContain("has-[[aria-invalid=true]]:border-line-input-invalid");
   });
 });

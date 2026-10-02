@@ -31,7 +31,12 @@ import {
 
 import { Badge } from "../badge/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "../card/card";
-import { Field, FieldControl, FieldDescription, FieldLabel } from "../field/field";
+import {
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldLabel,
+} from "../field/field";
 import { Input } from "../input/input";
 import { KpiTile } from "../kpi-tile/kpi-tile";
 import {
@@ -237,7 +242,13 @@ const KPIS = [
 const ROWS = [
   ["sbc-syd-01.edge.example.net", "Sydney", "healthy", "24", "8,412"],
   ["sbc-mel-02.edge.example.net", "Melbourne", "healthy", "31", "6,005"],
-  ["teams-direct-routing-gateway-ap-southeast", "Singapore", "warning", "88", "2,341"],
+  [
+    "teams-direct-routing-gateway-ap-southeast",
+    "Singapore",
+    "warning",
+    "88",
+    "2,341",
+  ],
   ["webex-trunk-03.example.net", "Auckland", "critical", "212", "419"],
 ] as const;
 
@@ -285,11 +296,16 @@ function ChartCard({ title, series }: { title: string; series: 1 | 2 | 3 }) {
 function Dashboard() {
   return (
     <div className="space-y-6">
-      <h1 className="text-heading-xl text-content-neutral-emphasis">Overview</h1>
+      <h1 className="text-heading-xl text-content-neutral-emphasis">
+        Overview
+      </h1>
 
       {/* KPI row: auto-fill with a 224 minimum. More tiles per row as the
           column widens; never four stretched tiles. */}
-      <section aria-label="Key metrics" className="grid grid-cols-tiles gap-gutter">
+      <section
+        aria-label="Key metrics"
+        className="grid grid-cols-tiles gap-gutter"
+      >
         {KPIS.map((k) => (
           <KpiTile
             key={k.label}
@@ -560,14 +576,20 @@ export const DoAndDont: Story = {
         dont={
           <div className="grid w-full grid-cols-4 gap-2">
             {Array.from({ length: 4 }, (_, i) => (
-              <div key={i} className="h-12 rounded-md border border-line-neutral-muted bg-surface-card" />
+              <div
+                key={i}
+                className="h-12 rounded-md border border-line-neutral-muted bg-surface-card"
+              />
             ))}
           </div>
         }
         do={
           <div className="grid w-full grid-cols-8 gap-2">
             {Array.from({ length: 8 }, (_, i) => (
-              <div key={i} className="h-12 rounded-md border border-line-neutral-muted bg-surface-card" />
+              <div
+                key={i}
+                className="h-12 rounded-md border border-line-neutral-muted bg-surface-card"
+              />
             ))}
           </div>
         }
@@ -600,7 +622,10 @@ export const DoAndDont: Story = {
           <div className="w-56 rounded-md border border-line-neutral-muted p-2">
             <div className="grid grid-cols-1 gap-2 xl:grid-cols-3">
               {["Calls", "MOS", "Jitter"].map((t) => (
-                <div key={t} className="truncate rounded-md bg-surface-neutral-subtle p-2 text-body-sm text-content-neutral-emphasis">
+                <div
+                  key={t}
+                  className="truncate rounded-md bg-surface-neutral-subtle p-2 text-body-sm text-content-neutral-emphasis"
+                >
                   {t} last 24 h
                 </div>
               ))}
@@ -611,7 +636,10 @@ export const DoAndDont: Story = {
           <div className="w-56 rounded-md border border-line-neutral-muted p-2 @container">
             <div className="grid grid-cols-1 gap-2 @3xl:grid-cols-3">
               {["Calls", "MOS", "Jitter"].map((t) => (
-                <div key={t} className="truncate rounded-md bg-surface-neutral-subtle p-2 text-body-sm text-content-neutral-emphasis">
+                <div
+                  key={t}
+                  className="truncate rounded-md bg-surface-neutral-subtle p-2 text-body-sm text-content-neutral-emphasis"
+                >
                   {t} last 24 h
                 </div>
               ))}
@@ -625,13 +653,35 @@ export const DoAndDont: Story = {
         width="wide"
         stage="tall"
         dont={
-          <svg viewBox="0 0 400 100" preserveAspectRatio="none" aria-hidden className="block aspect-video w-2/3 rounded-md bg-surface-neutral-subtle">
-            <path d="M0 70 L80 66 L160 48 L240 44 L320 52 L400 34" fill="none" className="stroke-chart-1" strokeWidth={2} vectorEffect="non-scaling-stroke" />
+          <svg
+            viewBox="0 0 400 100"
+            preserveAspectRatio="none"
+            aria-hidden
+            className="block aspect-video w-2/3 rounded-md bg-surface-neutral-subtle"
+          >
+            <path
+              d="M0 70 L80 66 L160 48 L240 44 L320 52 L400 34"
+              fill="none"
+              className="stroke-chart-1"
+              strokeWidth={2}
+              vectorEffect="non-scaling-stroke"
+            />
           </svg>
         }
         do={
-          <svg viewBox="0 0 400 100" preserveAspectRatio="none" aria-hidden className="block h-24 w-full rounded-md bg-surface-neutral-subtle">
-            <path d="M0 70 L80 66 L160 48 L240 44 L320 52 L400 34" fill="none" className="stroke-chart-1" strokeWidth={2} vectorEffect="non-scaling-stroke" />
+          <svg
+            viewBox="0 0 400 100"
+            preserveAspectRatio="none"
+            aria-hidden
+            className="block h-24 w-full rounded-md bg-surface-neutral-subtle"
+          >
+            <path
+              d="M0 70 L80 66 L160 48 L240 44 L320 52 L400 34"
+              fill="none"
+              className="stroke-chart-1"
+              strokeWidth={2}
+              vectorEffect="non-scaling-stroke"
+            />
           </svg>
         }
       />

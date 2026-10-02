@@ -6,12 +6,20 @@ import { FileUpload, FileUploadItem, formatBytes } from "./file-upload";
 describe("FileUpload", () => {
   it("keeps the native file input, labelled by the whole field", async () => {
     const onFilesChange = vi.fn();
-    render(<FileUpload aria-label="Import endpoints" accept=".csv" onFilesChange={onFilesChange} />);
+    render(
+      <FileUpload
+        aria-label="Import endpoints"
+        accept=".csv"
+        onFilesChange={onFilesChange}
+      />,
+    );
     const input = screen.getByLabelText("Import endpoints");
     expect(input).toHaveAttribute("type", "file");
     expect(input).toHaveClass("sr-only");
     expect(input.closest("label")).toHaveTextContent("No file chosen");
-    const file = new File(["a,b"], "endpoints-export.csv", { type: "text/csv" });
+    const file = new File(["a,b"], "endpoints-export.csv", {
+      type: "text/csv",
+    });
     await userEvent.upload(input, file);
     expect(onFilesChange).toHaveBeenCalledWith([file]);
     expect(input.closest("label")).toHaveTextContent("endpoints-export.csv");
@@ -30,16 +38,29 @@ describe("FileUpload", () => {
 
 describe("FileUploadItem", () => {
   it("shows name, size and an announced progress bar, and names its remove button", () => {
-    render(<FileUploadItem name="endpoints-export.csv" size={860160} progress={64} onRemove={() => {}} />);
+    render(
+      <FileUploadItem
+        name="endpoints-export.csv"
+        size={860160}
+        progress={64}
+        onRemove={() => {}}
+      />,
+    );
     expect(screen.getByText("840 KB")).toBeInTheDocument();
-    const bar = screen.getByRole("progressbar", { name: "Uploading endpoints-export.csv" });
+    const bar = screen.getByRole("progressbar", {
+      name: "Uploading endpoints-export.csv",
+    });
     expect(bar).toHaveAttribute("aria-valuenow", "64");
-    expect(screen.getByRole("button", { name: "Cancel endpoints-export.csv" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Cancel endpoints-export.csv" }),
+    ).toBeInTheDocument();
   });
 
   it("says Remove once the upload is done", () => {
     render(<FileUploadItem name="a.csv" onRemove={() => {}} />);
-    expect(screen.getByRole("button", { name: "Remove a.csv" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Remove a.csv" }),
+    ).toBeInTheDocument();
   });
 });
 

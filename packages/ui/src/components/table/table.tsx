@@ -68,7 +68,10 @@ export function Table({ className, size = "md", ...props }: TableProps) {
         <table
           data-slot="table"
           data-size={size}
-          className={cn("w-full caption-bottom border-collapse text-left", className)}
+          className={cn(
+            "w-full caption-bottom border-collapse text-left",
+            className,
+          )}
           {...props}
         />
       </div>
@@ -80,8 +83,13 @@ export function Table({ className, size = "md", ...props }: TableProps) {
  * `<colgroup>` — where a column's width is declared once, for every cell in
  * it. The closest HTML gets to Figma v2's column slot.
  */
-export function TableColGroup({ className, ...props }: React.ComponentProps<"colgroup">) {
-  return <colgroup data-slot="table-colgroup" className={cn(className)} {...props} />;
+export function TableColGroup({
+  className,
+  ...props
+}: React.ComponentProps<"colgroup">) {
+  return (
+    <colgroup data-slot="table-colgroup" className={cn(className)} {...props} />
+  );
 }
 
 /**
@@ -100,20 +108,34 @@ export function TableCol({ className, ...props }: React.ComponentProps<"col">) {
   return <col data-slot="table-col" className={cn(className)} {...props} />;
 }
 
-export function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
-  return <thead data-slot="table-header" className={cn(className)} {...props} />;
+export function TableHeader({
+  className,
+  ...props
+}: React.ComponentProps<"thead">) {
+  return (
+    <thead data-slot="table-header" className={cn(className)} {...props} />
+  );
 }
 
-export function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
+export function TableBody({
+  className,
+  ...props
+}: React.ComponentProps<"tbody">) {
   return <tbody data-slot="table-body" className={cn(className)} {...props} />;
 }
 
 /** `<tfoot>` — a totals row. The pagination bar in Figma is not this; it is a card footer. */
-export function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
+export function TableFooter({
+  className,
+  ...props
+}: React.ComponentProps<"tfoot">) {
   return (
     <tfoot
       data-slot="table-footer"
-      className={cn("border-t border-line-neutral-muted font-medium", className)}
+      className={cn(
+        "border-t border-line-neutral-muted font-medium",
+        className,
+      )}
       {...props}
     />
   );
@@ -161,10 +183,16 @@ const cellVariants = cva("align-middle", {
 export interface TableHeadProps
   // `align` is a deprecated HTML attribute on th/td, so the native one is
   // dropped — same collision Input has with the native `size`.
-  extends Omit<React.ComponentProps<"th">, "align">,
+  extends
+    Omit<React.ComponentProps<"th">, "align">,
     VariantProps<typeof cellVariants> {}
 
-export function TableHead({ className, align, numeric, ...props }: TableHeadProps) {
+export function TableHead({
+  className,
+  align,
+  numeric,
+  ...props
+}: TableHeadProps) {
   return (
     <th
       data-slot="table-head"
@@ -186,10 +214,16 @@ export function TableHead({ className, align, numeric, ...props }: TableHeadProp
 }
 
 export interface TableCellProps
-  extends Omit<React.ComponentProps<"td">, "align">,
+  extends
+    Omit<React.ComponentProps<"td">, "align">,
     VariantProps<typeof cellVariants> {}
 
-export function TableCell({ className, align, numeric, ...props }: TableCellProps) {
+export function TableCell({
+  className,
+  align,
+  numeric,
+  ...props
+}: TableCellProps) {
   const size = useTableSize();
   return (
     <td
@@ -205,7 +239,10 @@ export function TableCell({ className, align, numeric, ...props }: TableCellProp
   );
 }
 
-export function TableCaption({ className, ...props }: React.ComponentProps<"caption">) {
+export function TableCaption({
+  className,
+  ...props
+}: React.ComponentProps<"caption">) {
   return (
     <caption
       data-slot="table-caption"

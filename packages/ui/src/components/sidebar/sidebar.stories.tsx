@@ -282,7 +282,10 @@ export const BrandPlate: Story = {
  * Switch the viewport to a phone to try it.
  */
 export const PhoneNav: Story = {
-  parameters: { viewport: { defaultViewport: "mobile1" }, layout: "fullscreen" },
+  parameters: {
+    viewport: { defaultViewport: "mobile1" },
+    layout: "fullscreen",
+  },
   render: () => {
     const [active, setActive] = React.useState("Endpoints");
     return (
@@ -290,7 +293,13 @@ export const PhoneNav: Story = {
         <SidebarProvider>
           <Sidebar mobile="fullscreen">
             <SidebarHeader variant="plate">
-              <SidebarBrand image={clarionPlate} subtitle="powered by Iris" mark="C">CLARION</SidebarBrand>
+              <SidebarBrand
+                image={clarionPlate}
+                subtitle="powered by Iris"
+                mark="C"
+              >
+                CLARION
+              </SidebarBrand>
             </SidebarHeader>
             <SidebarContent>
               <SidebarGroup>
@@ -298,7 +307,10 @@ export const PhoneNav: Story = {
                 <SidebarMenu>
                   {NAV.slice(0, 3).map((item) => (
                     <SidebarMenuItem key={item.label}>
-                      <SidebarMenuButton active={active === item.label} onClick={() => setActive(item.label)}>
+                      <SidebarMenuButton
+                        active={active === item.label}
+                        onClick={() => setActive(item.label)}
+                      >
                         <item.icon aria-hidden />
                         <SidebarMenuLabel>{item.label}</SidebarMenuLabel>
                       </SidebarMenuButton>
@@ -328,10 +340,13 @@ export const PhoneNav: Story = {
           <SidebarInset>
             <header className="flex h-12 items-center gap-2 border-b border-line-neutral-muted px-4">
               <SidebarTrigger />
-              <span className="text-label-md text-content-neutral-emphasis">{active}</span>
+              <span className="text-label-md text-content-neutral-emphasis">
+                {active}
+              </span>
             </header>
             <div className="p-4 text-body-md text-content-neutral-muted">
-              On a phone the trigger opens the nav full screen; from md up it collapses the rail as usual.
+              On a phone the trigger opens the nav full screen; from md up it
+              collapses the rail as usual.
             </div>
           </SidebarInset>
         </SidebarProvider>

@@ -25,7 +25,9 @@ describe("Select", () => {
 
   it("opens a searchable, grouped, multi-select list with focus in the search", async () => {
     setup();
-    await userEvent.click(screen.getByRole("button", { name: /Filter actions/ }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Filter actions/ }),
+    );
     const search = screen.getByRole("combobox");
     expect(search).toHaveFocus();
     const list = screen.getByRole("listbox");
@@ -33,16 +35,25 @@ describe("Select", () => {
     expect(within(list).getAllByRole("group")).toHaveLength(2);
     expect(within(list).getAllByRole("option")).toHaveLength(5);
     await userEvent.type(search, "sign");
-    expect(within(list).getAllByRole("option").map((o) => o.textContent)).toEqual(["Signed inlogin", "Signed outlogout"]);
+    expect(
+      within(list)
+        .getAllByRole("option")
+        .map((o) => o.textContent),
+    ).toEqual(["Signed inlogin", "Signed outlogout"]);
   });
 
   it("commits only on Apply, in the options' order", async () => {
     const onValueChange = vi.fn();
     setup({ onValueChange });
-    await userEvent.click(screen.getByRole("button", { name: /Filter actions/ }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Filter actions/ }),
+    );
     await userEvent.click(screen.getByRole("option", { name: /Deleted/ }));
     await userEvent.click(screen.getByRole("option", { name: /Created/ }));
-    expect(screen.getByRole("option", { name: /Created/ })).toHaveAttribute("aria-selected", "true");
+    expect(screen.getByRole("option", { name: /Created/ })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
     expect(onValueChange).not.toHaveBeenCalled();
     await userEvent.click(screen.getByRole("button", { name: "Apply" }));
     expect(onValueChange).toHaveBeenCalledWith(["created", "deleted"]);
@@ -52,23 +63,38 @@ describe("Select", () => {
   it("discards the draft when closed without applying", async () => {
     const onValueChange = vi.fn();
     setup({ onValueChange, defaultValue: ["updated"] });
-    await userEvent.click(screen.getByRole("button", { name: /Filter actions/ }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Filter actions/ }),
+    );
     await userEvent.click(screen.getByRole("option", { name: /Created/ }));
     await userEvent.keyboard("{Escape}");
     expect(onValueChange).not.toHaveBeenCalled();
-    await userEvent.click(screen.getByRole("button", { name: /Filter actions/ }));
-    expect(screen.getByRole("option", { name: /Created/ })).toHaveAttribute("aria-selected", "false");
-    expect(screen.getByRole("option", { name: /Updated/ })).toHaveAttribute("aria-selected", "true");
+    await userEvent.click(
+      screen.getByRole("button", { name: /Filter actions/ }),
+    );
+    expect(screen.getByRole("option", { name: /Created/ })).toHaveAttribute(
+      "aria-selected",
+      "false",
+    );
+    expect(screen.getByRole("option", { name: /Updated/ })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
   });
 
   it("works from the keyboard: arrows move, Enter ticks, Ctrl+Enter applies; disabled options are skipped", async () => {
     const onValueChange = vi.fn();
     setup({ onValueChange });
-    await userEvent.click(screen.getByRole("button", { name: /Filter actions/ }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Filter actions/ }),
+    );
     const search = screen.getByRole("combobox");
     await userEvent.keyboard("{ArrowUp}");
     // wraps to the last ENABLED option — "Signed out" is disabled
-    expect(search).toHaveAttribute("aria-activedescendant", screen.getByRole("option", { name: /Signed in/ }).id);
+    expect(search).toHaveAttribute(
+      "aria-activedescendant",
+      screen.getByRole("option", { name: /Signed in/ }).id,
+    );
     await userEvent.keyboard("{Enter}{Control>}{Enter}{/Control}");
     expect(onValueChange).toHaveBeenCalledWith(["login"]);
   });
@@ -76,7 +102,9 @@ describe("Select", () => {
   it("Clear empties the draft, and still needs Apply", async () => {
     const onValueChange = vi.fn();
     setup({ onValueChange, defaultValue: ["created"] });
-    await userEvent.click(screen.getByRole("button", { name: /Filter actions/ }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Filter actions/ }),
+    );
     await userEvent.click(screen.getByRole("button", { name: "Clear" }));
     expect(screen.getByRole("button", { name: "Clear" })).toBeDisabled();
     await userEvent.click(screen.getByRole("button", { name: "Apply" }));
@@ -85,9 +113,20 @@ describe("Select", () => {
 
   it("draws the checkbox rather than nesting a real control in each option", async () => {
     setup();
-    await userEvent.click(screen.getByRole("button", { name: /Filter actions/ }));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Filter actions/ }),
+    );
     const option = screen.getByRole("option", { name: /Created/ });
     expect(within(option).queryByRole("checkbox")).toBeNull();
     expect(within(option).queryByRole("button")).toBeNull();
+  });
+
+  it("turns the trigger's border red when invalid — a box gets a border, not a ring", () => {
+    setup({ "aria-invalid": true });
+    const trigger = screen.getByRole("button", { name: /Filter actions/ });
+    expect(trigger).toHaveAttribute("aria-invalid", "true");
+    expect(trigger.className).toContain(
+      "aria-invalid:border-line-input-invalid",
+    );
   });
 });

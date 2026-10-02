@@ -1,8 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import {
-  Card, CardAction, CardContent, CardDescription, CardFooter,
-  CardHeader, CardHeaderText, CardTitle,
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardHeaderText,
+  CardTitle,
 } from "./card";
 
 describe("Card", () => {
@@ -21,7 +27,9 @@ describe("Card", () => {
     render(
       <Card>
         <CardHeader data-testid="h">
-          <CardHeaderText><CardTitle>Title</CardTitle></CardHeaderText>
+          <CardHeaderText>
+            <CardTitle>Title</CardTitle>
+          </CardHeaderText>
         </CardHeader>
         <CardContent data-testid="b">body</CardContent>
         <CardFooter data-testid="f">footer</CardFooter>
@@ -36,7 +44,9 @@ describe("Card", () => {
     render(
       <Card>
         <CardHeader data-testid="h">
-          <CardHeaderText><CardTitle>Header only</CardTitle></CardHeaderText>
+          <CardHeaderText>
+            <CardTitle>Header only</CardTitle>
+          </CardHeaderText>
         </CardHeader>
       </Card>,
     );
@@ -49,7 +59,9 @@ describe("Card", () => {
     render(
       <Card size="sm" data-testid="c">
         <CardHeader data-testid="h">
-          <CardHeaderText><CardTitle>Title</CardTitle></CardHeaderText>
+          <CardHeaderText>
+            <CardTitle>Title</CardTitle>
+          </CardHeaderText>
         </CardHeader>
         <CardContent data-testid="b">body</CardContent>
         <CardFooter data-testid="f">footer</CardFooter>
@@ -85,16 +97,26 @@ describe("Card", () => {
         </CardHeader>
       </Card>,
     );
-    expect(screen.getByTestId("t")).toHaveClass("text-heading-sm", "text-content-neutral-emphasis");
-    expect(screen.getByTestId("d")).toHaveClass("text-body-md", "text-content-neutral-subtle");
+    expect(screen.getByTestId("t")).toHaveClass(
+      "text-heading-sm",
+      "text-content-neutral-emphasis",
+    );
+    expect(screen.getByTestId("d")).toHaveClass(
+      "text-body-md",
+      "text-content-neutral-subtle",
+    );
   });
 
   it("keeps the trailing action beside the text, not under it", () => {
     render(
       <Card>
         <CardHeader data-testid="h">
-          <CardHeaderText><CardTitle>Title</CardTitle></CardHeaderText>
-          <CardAction data-testid="a"><button type="button">More</button></CardAction>
+          <CardHeaderText>
+            <CardTitle>Title</CardTitle>
+          </CardHeaderText>
+          <CardAction data-testid="a">
+            <button type="button">More</button>
+          </CardAction>
         </CardHeader>
       </Card>,
     );

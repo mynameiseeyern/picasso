@@ -1,8 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { render, screen, within } from "@testing-library/react";
 import {
-  Table, TableBody, TableCaption, TableCell, TableCol, TableColGroup,
-  TableFooter, TableHead, TableHeader, TableRow,
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableCol,
+  TableColGroup,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "./table";
 
 const Demo = (props: React.ComponentProps<typeof Table>) => (
@@ -59,9 +67,13 @@ describe("Table", () => {
   it("puts selection on the row, not on the checkbox inside it", () => {
     render(<Demo />);
     const rows = screen.getAllByRole("row");
-    const selected = rows.find((r) => r.getAttribute("data-state") === "selected");
+    const selected = rows.find(
+      (r) => r.getAttribute("data-state") === "selected",
+    );
     expect(selected).toHaveAttribute("aria-selected", "true");
-    expect(selected?.className).toContain("data-[state=selected]:bg-surface-selected-subtle");
+    expect(selected?.className).toContain(
+      "data-[state=selected]:bg-surface-selected-subtle",
+    );
     // and the unselected rows say nothing rather than aria-selected="false",
     // which would announce every row as selectable.
     expect(rows[1]).not.toHaveAttribute("aria-selected");
@@ -118,15 +130,21 @@ describe("Table", () => {
       <Table>
         <TableCaption>Trunks reporting in the last hour</TableCaption>
         <TableBody>
-          <TableRow><TableCell>Sydney</TableCell></TableRow>
+          <TableRow>
+            <TableCell>Sydney</TableCell>
+          </TableRow>
         </TableBody>
         <TableFooter data-testid="f">
-          <TableRow><TableCell>Total</TableCell></TableRow>
+          <TableRow>
+            <TableCell>Total</TableCell>
+          </TableRow>
         </TableFooter>
       </Table>,
     );
     // The caption names the table for assistive tech without needing a label.
-    expect(screen.getByText("Trunks reporting in the last hour").tagName).toBe("CAPTION");
+    expect(screen.getByText("Trunks reporting in the last hour").tagName).toBe(
+      "CAPTION",
+    );
     expect(screen.getByTestId("f").tagName).toBe("TFOOT");
   });
 });

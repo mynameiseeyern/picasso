@@ -1,6 +1,12 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-import { CircleCheck, Info, OctagonAlert, TriangleAlert, X } from "lucide-react";
+import {
+  CircleCheck,
+  Info,
+  OctagonAlert,
+  TriangleAlert,
+  X,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -30,17 +36,20 @@ import { cn } from "@/lib/utils";
  * of the title row there. If a dismissible alert with no title is wanted,
  * that is a change to the Figma component first.
  */
-const alertVariants = cva("flex w-full items-center gap-2 rounded-md border px-2.5 py-2", {
-  variants: {
-    variant: {
-      info: "bg-surface-info-subtle border-line-info-emphasis",
-      destructive: "bg-surface-danger-subtle border-line-danger-emphasis",
-      warning: "bg-surface-warning-subtle border-line-warning-emphasis",
-      success: "bg-surface-success-subtle border-line-success-emphasis",
+const alertVariants = cva(
+  "flex w-full items-center gap-2 rounded-md border px-2.5 py-2",
+  {
+    variants: {
+      variant: {
+        info: "bg-surface-info-subtle border-line-info-emphasis",
+        destructive: "bg-surface-danger-subtle border-line-danger-emphasis",
+        warning: "bg-surface-warning-subtle border-line-warning-emphasis",
+        success: "bg-surface-success-subtle border-line-success-emphasis",
+      },
     },
+    defaultVariants: { variant: "info" },
   },
-  defaultVariants: { variant: "info" },
-});
+);
 
 const ICONS = {
   info: Info,
@@ -61,7 +70,8 @@ interface AlertContextValue {
 const AlertContext = React.createContext<AlertContextValue | null>(null);
 
 export interface AlertProps
-  extends Omit<React.ComponentProps<"div">, "title">,
+  extends
+    Omit<React.ComponentProps<"div">, "title">,
     VariantProps<typeof alertVariants> {
   /** Hide the tone icon. Figma's `Icon` boolean. */
   icon?: boolean;
@@ -101,7 +111,10 @@ export function Alert({
         className={cn(alertVariants({ variant }), className)}
         {...props}
       >
-        <div data-slot="alert-body" className="flex min-w-0 flex-1 flex-col gap-1">
+        <div
+          data-slot="alert-body"
+          className="flex min-w-0 flex-1 flex-col gap-1"
+        >
           {children}
         </div>
         {action ? (
@@ -118,7 +131,11 @@ export function Alert({
  * The title row: icon, one line of label/lg, and the dismiss. One line — a
  * title that wraps is a description.
  */
-export function AlertTitle({ className, children, ...props }: React.ComponentProps<"div">) {
+export function AlertTitle({
+  className,
+  children,
+  ...props
+}: React.ComponentProps<"div">) {
   const ctx = React.useContext(AlertContext);
   const Icon = ICONS[ctx?.variant ?? "info"];
   return (
@@ -156,7 +173,10 @@ export function AlertTitle({ className, children, ...props }: React.ComponentPro
 }
 
 /** body/md, muted. Says what happened and what to do about it. */
-export function AlertDescription({ className, ...props }: React.ComponentProps<"div">) {
+export function AlertDescription({
+  className,
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="alert-description"

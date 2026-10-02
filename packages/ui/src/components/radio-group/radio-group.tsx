@@ -77,7 +77,8 @@ export function RadioGroup({
 }
 
 export interface RadioProps
-  extends Omit<React.ComponentProps<typeof RadioGroupPrimitive.Item>, "size">,
+  extends
+    Omit<React.ComponentProps<typeof RadioGroupPrimitive.Item>, "size">,
     VariantProps<typeof radioVariants> {}
 
 export function Radio({ className, size, ...props }: RadioProps) {

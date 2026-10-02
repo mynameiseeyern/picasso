@@ -33,18 +33,22 @@ import { cn } from "@/lib/utils";
  * options. Here it is a number: the bar is drawn by width, so the steps were
  * only ever a way to draw five pictures of one continuous thing.
  */
-const indicatorVariants = cva("h-full w-full flex-1 rounded-full transition-transform", {
-  variants: {
-    variant: {
-      brand: "bg-surface-primary-emphasis",
-      neutral: "bg-surface-neutral-emphasis",
+const indicatorVariants = cva(
+  "h-full w-full flex-1 rounded-full transition-transform",
+  {
+    variants: {
+      variant: {
+        brand: "bg-surface-primary-emphasis",
+        neutral: "bg-surface-neutral-emphasis",
+      },
     },
+    defaultVariants: { variant: "brand" },
   },
-  defaultVariants: { variant: "brand" },
-});
+);
 
 export interface ProgressProps
-  extends React.ComponentProps<typeof ProgressPrimitive.Root>,
+  extends
+    React.ComponentProps<typeof ProgressPrimitive.Root>,
     VariantProps<typeof indicatorVariants> {
   /** 0–100. Leave undefined for work of unknown length — see the note below. */
   value?: number | null;
@@ -64,14 +68,19 @@ export function Progress({
 }: ProgressProps) {
   const pct = value == null ? null : Math.min(100, Math.max(0, value));
   return (
-    <div data-slot="progress-root" className={cn("flex flex-col gap-2", className)}>
+    <div
+      data-slot="progress-root"
+      className={cn("flex flex-col gap-2", className)}
+    >
       {label ? (
         <div
           data-slot="progress-label"
           className="flex items-center justify-between text-metric-md text-content-neutral-emphasis"
         >
           <span>{label}</span>
-          <span>{valueLabel ?? (pct == null ? "" : `${Math.round(pct)}%`)}</span>
+          <span>
+            {valueLabel ?? (pct == null ? "" : `${Math.round(pct)}%`)}
+          </span>
         </div>
       ) : null}
       <ProgressPrimitive.Root
@@ -80,12 +89,17 @@ export function Progress({
         // and omits aria-valuenow when value is null — which is exactly how
         // an indeterminate bar should announce itself.
         value={pct}
-        className={cn("relative h-2 w-full overflow-hidden rounded-full bg-surface-layer-emphasis")}
+        className={cn(
+          "relative h-2 w-full overflow-hidden rounded-full bg-surface-layer-emphasis",
+        )}
         {...props}
       >
         <ProgressPrimitive.Indicator
           data-slot="progress-indicator"
-          className={cn(indicatorVariants({ variant }), "translate-x-(--progress-offset)")}
+          className={cn(
+            indicatorVariants({ variant }),
+            "translate-x-(--progress-offset)",
+          )}
           // translateX rather than width: a transform animates on the
           // compositor, so a bar that updates often never relayouts.
           //
@@ -96,7 +110,11 @@ export function Progress({
           // no-arbitrary-values — both correctly. A variable reference is
           // neither an inline style nor a magic number, so the arithmetic
           // stays in JS where the value comes from.
-          style={{ "--progress-offset": `-${100 - (pct ?? 0)}%` } as React.CSSProperties}
+          style={
+            {
+              "--progress-offset": `-${100 - (pct ?? 0)}%`,
+            } as React.CSSProperties
+          }
         />
       </ProgressPrimitive.Root>
     </div>

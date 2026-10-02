@@ -2,8 +2,13 @@ import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
-  DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuTrigger,
   dropdownMenuItemVariants,
 } from "./dropdown-menu";
 
@@ -61,7 +66,9 @@ describe("DropdownMenu", () => {
     for (const v of ["default", "destructive"] as const) {
       expect(dropdownMenuItemVariants({ variant: v })).not.toContain("hover:");
     }
-    expect(dropdownMenuItemVariants({ variant: "default" })).toContain("focus:bg-surface-neutral-subtle-hovered");
+    expect(dropdownMenuItemVariants({ variant: "default" })).toContain(
+      "focus:bg-surface-neutral-subtle-hovered",
+    );
   });
 
   it("draws destructive rows in danger, and focuses them onto danger subtle", () => {

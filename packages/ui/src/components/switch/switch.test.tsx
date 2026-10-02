@@ -79,8 +79,12 @@ describe("Switch", () => {
 
   it("does not toggle when disabled", async () => {
     const onChange = vi.fn();
-    render(<Switch aria-label="Notifications" disabled onCheckedChange={onChange} />);
-    await userEvent.click(screen.getByRole("switch", { name: "Notifications" }));
+    render(
+      <Switch aria-label="Notifications" disabled onCheckedChange={onChange} />,
+    );
+    await userEvent.click(
+      screen.getByRole("switch", { name: "Notifications" }),
+    );
     expect(onChange).not.toHaveBeenCalled();
   });
 });

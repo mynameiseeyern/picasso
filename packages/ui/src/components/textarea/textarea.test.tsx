@@ -18,13 +18,17 @@ describe("Textarea", () => {
     const el = screen.getByRole("textbox", { name: "Notes" });
     // A box that cannot grow is why people write three words.
     expect(el).toHaveClass("field-sizing-content");
-    const fixedHeight = el.className.split(/\s+/).filter((c) => /^h-\d/.test(c));
+    const fixedHeight = el.className
+      .split(/\s+/)
+      .filter((c) => /^h-\d/.test(c));
     expect(fixedHeight).toEqual([]);
   });
 
   it("resizes vertically only", () => {
     render(<Textarea aria-label="Notes" />);
-    expect(screen.getByRole("textbox", { name: "Notes" })).toHaveClass("resize-y");
+    expect(screen.getByRole("textbox", { name: "Notes" })).toHaveClass(
+      "resize-y",
+    );
   });
 
   it("drops the resize handle when it cannot be edited", () => {
@@ -36,7 +40,9 @@ describe("Textarea", () => {
     );
     const ro = screen.getByRole("textbox", { name: "Read only" });
     expect(ro.className).toContain("[&:read-only:not(:disabled)]:resize-none");
-    expect(screen.getByRole("textbox", { name: "Disabled" })).toHaveClass("disabled:resize-none");
+    expect(screen.getByRole("textbox", { name: "Disabled" })).toHaveClass(
+      "disabled:resize-none",
+    );
   });
 
   it("takes the invalid state from aria-invalid", () => {

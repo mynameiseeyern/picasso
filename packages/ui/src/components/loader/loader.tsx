@@ -29,8 +29,10 @@ import { cn } from "@/lib/utils";
 type SpinnerSize = "3" | "4" | "5" | "6" | "8" | "xl";
 type FuseSize = 56 | 96 | 160;
 
-interface LoaderBaseProps
-  extends Omit<React.ComponentProps<"span">, "children"> {
+interface LoaderBaseProps extends Omit<
+  React.ComponentProps<"span">,
+  "children"
+> {
   /**
    * What is being waited for, read by screen readers. `null` hides the loader
    * from assistive tech — use it when visible text already says the same.
@@ -95,9 +97,30 @@ type CSSVars = React.CSSProperties & Record<`--${string}`, string>;
  * (--loader-merge). Converged to the middle they form a symmetric blob, and a
  * symmetric blob spinning looks still. Don't tighten the merge past ~0.6×.  */
 const drops = [
-  { size: "size-9/25", turn: "rotate-0", tone: "bg-chart-4", reach: "-85%", merge: "-24%", delay: "0s" },
-  { size: "size-31/100", turn: "rotate-120", tone: "bg-chart-2", reach: "-100%", merge: "-23%", delay: "-0.075s" },
-  { size: "size-13/50", turn: "rotate-240", tone: "bg-chart-3", reach: "-120%", merge: "-36%", delay: "-0.15s" },
+  {
+    size: "size-9/25",
+    turn: "rotate-0",
+    tone: "bg-chart-4",
+    reach: "-85%",
+    merge: "-24%",
+    delay: "0s",
+  },
+  {
+    size: "size-31/100",
+    turn: "rotate-120",
+    tone: "bg-chart-2",
+    reach: "-100%",
+    merge: "-23%",
+    delay: "-0.075s",
+  },
+  {
+    size: "size-13/50",
+    turn: "rotate-240",
+    tone: "bg-chart-3",
+    reach: "-120%",
+    merge: "-36%",
+    delay: "-0.15s",
+  },
 ] as const;
 
 const fuseSizes: Record<FuseSize, string> = {
@@ -124,7 +147,11 @@ function Fuse({ size }: { size: FuseSize }) {
             width="150%"
             height="150%"
           >
-            <feGaussianBlur in="SourceGraphic" stdDeviation="0.045" result="blur" />
+            <feGaussianBlur
+              in="SourceGraphic"
+              stdDeviation="0.045"
+              result="blur"
+            />
             <feColorMatrix
               in="blur"
               type="matrix"
@@ -200,7 +227,10 @@ function Pulse({ onTint }: { onTint?: boolean }) {
         )}
       />
       <i
-        className={cn(dot, "bg-chart-2 animate-loader-pulse-m motion-reduce:animate-loader-pulse-fade")}
+        className={cn(
+          dot,
+          "bg-chart-2 animate-loader-pulse-m motion-reduce:animate-loader-pulse-fade",
+        )}
       />
       <i
         className={cn(

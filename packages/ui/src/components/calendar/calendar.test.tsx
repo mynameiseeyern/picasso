@@ -98,7 +98,9 @@ describe("Calendar", () => {
     // react-day-picker marks the whole run as selected, middle included. The
     // solid fill and its white text must skip the middle, or the day numbers
     // go white on bg/primary/subtle.
-    const middle = [...container.querySelectorAll("[role=gridcell].range-middle")];
+    const middle = [
+      ...container.querySelectorAll("[role=gridcell].range-middle"),
+    ];
     expect(middle).toHaveLength(3);
     for (const cell of middle) {
       expect(cell).toHaveAttribute("data-selected", "true");

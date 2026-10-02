@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { Avatar, AvatarAddButton, AvatarFallback, AvatarGroup, AvatarImage, AvatarStatus } from "./avatar";
+import {
+  Avatar,
+  AvatarAddButton,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarImage,
+  AvatarStatus,
+} from "./avatar";
 
 describe("Avatar", () => {
   it("shows the fallback until an image loads", () => {
@@ -38,7 +45,9 @@ describe("Avatar", () => {
 
   it("does not clip, because the status dot sits on its edge", () => {
     const { container } = render(<Avatar />);
-    expect(container.querySelector("[data-slot=avatar]")!.className).not.toContain("overflow-hidden");
+    expect(
+      container.querySelector("[data-slot=avatar]")!.className,
+    ).not.toContain("overflow-hidden");
   });
 
   it("gives the status dot a name — a silently green avatar says nothing", () => {
@@ -53,7 +62,9 @@ describe("Avatar", () => {
         <AvatarStatus type="count" count={8} />
       </Avatar>,
     );
-    expect(screen.getByRole("img", { name: "8 unread" })).toHaveTextContent("8");
+    expect(screen.getByRole("img", { name: "8 unread" })).toHaveTextContent(
+      "8",
+    );
   });
 
   it("sizes the dot from the avatar around it", () => {
@@ -78,19 +89,33 @@ describe("Avatar", () => {
         <AvatarFallback icon />
       </Avatar>,
     );
-    expect(container.querySelector("[data-slot=avatar-fallback] svg")).toBeInTheDocument();
+    expect(
+      container.querySelector("[data-slot=avatar-fallback] svg"),
+    ).toBeInTheDocument();
   });
 });
 
 describe("AvatarGroup", () => {
   it("overlaps by the step Figma measures, not a guessed ratio", () => {
-    const { container, rerender } = render(<AvatarGroup size="xs"><Avatar /></AvatarGroup>);
+    const { container, rerender } = render(
+      <AvatarGroup size="xs">
+        <Avatar />
+      </AvatarGroup>,
+    );
     const stack = () => container.querySelector("[data-slot=avatar-stack]")!;
     // slot item spacing in Figma: xs -4, sm -8, md -12.
     expect(stack().className).toContain("-space-x-1");
-    rerender(<AvatarGroup size="sm"><Avatar /></AvatarGroup>);
+    rerender(
+      <AvatarGroup size="sm">
+        <Avatar />
+      </AvatarGroup>,
+    );
     expect(stack().className).toContain("-space-x-2");
-    rerender(<AvatarGroup size="md"><Avatar /></AvatarGroup>);
+    rerender(
+      <AvatarGroup size="md">
+        <Avatar />
+      </AvatarGroup>,
+    );
     expect(stack().className).toContain("-space-x-3");
   });
 
@@ -111,7 +136,9 @@ describe("AvatarGroup", () => {
         <Avatar size="md" data-testid="big" />
       </AvatarGroup>,
     );
-    expect(container.querySelector("[data-slot=avatar]")!.className).toContain("size-10");
+    expect(container.querySelector("[data-slot=avatar]")!.className).toContain(
+      "size-10",
+    );
   });
 
   it("keeps the trailing action out of the overlap", () => {
@@ -125,7 +152,9 @@ describe("AvatarGroup", () => {
     // Figma composes it as slot + 8px gap + button, so the button is a
     // sibling of the stack rather than another overlapping child.
     expect(stack.contains(add)).toBe(false);
-    expect(container.querySelector("[data-slot=avatar-group]")!.className).toContain("gap-2");
+    expect(
+      container.querySelector("[data-slot=avatar-group]")!.className,
+    ).toContain("gap-2");
   });
 });
 
@@ -148,7 +177,9 @@ describe("AvatarAddButton", () => {
   });
 
   it("takes one disabled treatment for both styles, as the file draws it", () => {
-    const { container } = render(<AvatarAddButton variant="inverse" disabled />);
+    const { container } = render(
+      <AvatarAddButton variant="inverse" disabled />,
+    );
     const cls = container.querySelector("[data-slot=avatar-add]")!.className;
     expect(cls).toContain("disabled:bg-surface-disabled");
     expect(cls).toContain("disabled:border-line-disabled");
@@ -156,7 +187,12 @@ describe("AvatarAddButton", () => {
 });
 describe("AvatarGroup ring and overflow", () => {
   it("rings grouped avatars by default, so they do not swallow each other", () => {
-    const { container } = render(<AvatarGroup><Avatar /><Avatar /></AvatarGroup>);
+    const { container } = render(
+      <AvatarGroup>
+        <Avatar />
+        <Avatar />
+      </AvatarGroup>,
+    );
     // Unringed, a 4-12px overlap covers each avatar's trailing initial —
     // "OR" renders as "OF". Fixed in Figma on 29 Sept; true is the default.
     for (const el of container.querySelectorAll("[data-slot=avatar]")) {
@@ -165,15 +201,23 @@ describe("AvatarGroup ring and overflow", () => {
   });
 
   it("lets a group opt out", () => {
-    const { container } = render(<AvatarGroup ring={false}><Avatar /></AvatarGroup>);
-    expect(container.querySelector("[data-slot=avatar]")!.className).not.toContain("ring-inset");
+    const { container } = render(
+      <AvatarGroup ring={false}>
+        <Avatar />
+      </AvatarGroup>,
+    );
+    expect(
+      container.querySelector("[data-slot=avatar]")!.className,
+    ).not.toContain("ring-inset");
   });
 
   it("counts the rest into a +N avatar, which is what the file draws", () => {
     render(
       <AvatarGroup max={3}>
         {["OR", "EN", "SK", "VP", "AM"].map((t) => (
-          <Avatar key={t}><AvatarFallback>{t}</AvatarFallback></Avatar>
+          <Avatar key={t}>
+            <AvatarFallback>{t}</AvatarFallback>
+          </Avatar>
         ))}
       </AvatarGroup>,
     );
@@ -187,7 +231,9 @@ describe("AvatarGroup ring and overflow", () => {
     render(
       <AvatarGroup max={5}>
         {["OR", "EN"].map((t) => (
-          <Avatar key={t}><AvatarFallback>{t}</AvatarFallback></Avatar>
+          <Avatar key={t}>
+            <AvatarFallback>{t}</AvatarFallback>
+          </Avatar>
         ))}
       </AvatarGroup>,
     );

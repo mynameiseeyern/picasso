@@ -24,7 +24,9 @@ describe("Tooltip", () => {
     // A tooltip a mouse can reach and a keyboard cannot is a tooltip half the
     // audience never sees. Radix opens on focus with no delay.
     await user.tab();
-    expect(await screen.findByRole("tooltip")).toHaveTextContent("Alerts fire above this.");
+    expect(await screen.findByRole("tooltip")).toHaveTextContent(
+      "Alerts fire above this.",
+    );
   });
 
   it("describes its trigger while open", async () => {
@@ -32,7 +34,9 @@ describe("Tooltip", () => {
     render(<Fixture />);
     await user.tab();
     await screen.findByRole("tooltip");
-    expect(screen.getByRole("button", { name: "Threshold" })).toHaveAttribute("aria-describedby");
+    expect(screen.getByRole("button", { name: "Threshold" })).toHaveAttribute(
+      "aria-describedby",
+    );
   });
 
   it("closes on Escape", async () => {

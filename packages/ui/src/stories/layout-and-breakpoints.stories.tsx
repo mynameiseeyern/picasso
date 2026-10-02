@@ -50,7 +50,10 @@ function Grid({ head, rows }: { head: string[]; rows: React.ReactNode[][] }) {
       <TableHeader>
         <TableRow>
           {head.map((h, i) => (
-            <TableHead key={h} numeric={i > 0 && typeof rows[0][i] === "number"}>
+            <TableHead
+              key={h}
+              numeric={i > 0 && typeof rows[0][i] === "number"}
+            >
               {h}
             </TableHead>
           ))}
@@ -104,9 +107,8 @@ export const LayoutAndBreakpoints: Story = {
       </h1>
       <P>
         Viewport breakpoints belong to the shell: the rail, the page padding.
-        Everything inside the content area answers to the content area. And
-        how wide the content may get is a per-page choice between three
-        modes.
+        Everything inside the content area answers to the content area. And how
+        wide the content may get is a per-page choice between three modes.
       </P>
 
       <H2>The ladder</H2>
@@ -114,17 +116,25 @@ export const LayoutAndBreakpoints: Story = {
         Tailwind&apos;s names and Tailwind&apos;s values, plus{" "}
         <Code>wide-laptop</Code> for 1440, which Tailwind has no rung for. One
         source: <Code>screen/desktop/*</Code>, with a build gate against{" "}
-        <Code>--breakpoint-*</Code>. 1920 and 2560 are in the viewport
-        toolbar for testing; they are not breakpoints.
+        <Code>--breakpoint-*</Code>. 1920 and 2560 are in the viewport toolbar
+        for testing; they are not breakpoints.
       </P>
       <Grid
         head={["Name", "Width", "Use"]}
         rows={[
-          ["sm", 640, "Below the supported floor. Present so the ladder is Tailwind's, entire"],
+          [
+            "sm",
+            640,
+            "Below the supported floor. Present so the ladder is Tailwind's, entire",
+          ],
           ["md", 768, "Floor for desktop layouts. Rail collapsed by default"],
           ["lg", 1024, "Small laptop. Rail expanded from here"],
           ["xl", 1280, "Primary design canvas. Page padding steps 16 → 24"],
-          ["wide-laptop", 1440, "Wide laptop. Named so because 1024 and 1280 are laptop widths too"],
+          [
+            "wide-laptop",
+            1440,
+            "Wide laptop. Named so because 1024 and 1280 are laptop widths too",
+          ],
           ["2xl", 1536, "Wide monitors, NOC displays"],
         ]}
       />
@@ -132,21 +142,26 @@ export const LayoutAndBreakpoints: Story = {
       <H2>Content width</H2>
       <P>
         Set per page with <Code>{'<AppShellContent width="…">'}</Code>. The
-        default is <Code>fluid</Code>, so no existing page moves. Capped
-        content stays left-aligned to the rail — never centred — so the page
-        heading starts in the same place in every mode.
+        default is <Code>fluid</Code>, so no existing page moves. Capped content
+        stays left-aligned to the rail — never centred — so the page heading
+        starts in the same place in every mode.
       </P>
       <Grid
         head={["Mode", "Max width", "Token", "Use for"]}
         rows={[
           ["fluid", "none", "—", "Dashboards, tables, log viewer"],
-          ["standard", "1280", "size/content/standard", "Detail, settings and mixed pages"],
+          [
+            "standard",
+            "1280",
+            "size/content/standard",
+            "Detail, settings and mixed pages",
+          ],
           ["reading", "768", "size/content/reading", "Forms and prose"],
         ]}
       />
       <P>
-        <Code>standard</Code> only starts to bite above a 1584 viewport (1280
-        + 256 rail + 48 padding), so it is a wide-screen rule.
+        <Code>standard</Code> only starts to bite above a 1584 viewport (1280 +
+        256 rail + 48 padding), so it is a wide-screen rule.
       </P>
 
       <H2>What each viewport gets</H2>
@@ -155,7 +170,14 @@ export const LayoutAndBreakpoints: Story = {
         minimum and the gutter as gap.
       </P>
       <Grid
-        head={["Viewport", "Fluid column", "Standard", "Reading", "KPI tiles per row", "Charts per row"]}
+        head={[
+          "Viewport",
+          "Fluid column",
+          "Standard",
+          "Reading",
+          "KPI tiles per row",
+          "Charts per row",
+        ]}
         rows={COLUMN}
       />
 
@@ -172,9 +194,8 @@ export const LayoutAndBreakpoints: Story = {
           <Code>grid-cols-1 @3xl:grid-cols-2 @7xl:grid-cols-3</Code>.
         </li>
         <li>
-          Tables and time series take the full row at every width. Text
-          columns keep a max width; spare width goes to spacing, not to
-          stretched cells.
+          Tables and time series take the full row at every width. Text columns
+          keep a max width; spare width goes to spacing, not to stretched cells.
         </li>
         <li>
           Chart height is a fixed range (240–320), never an aspect ratio, so
@@ -198,9 +219,8 @@ export const LayoutAndBreakpoints: Story = {
 
       <H2>Out of scope</H2>
       <P>
-        Wallboard and TV mode — a NOC screen across a room, read at a
-        distance — is a different density, not a wider dashboard. Logged as
-        open.
+        Wallboard and TV mode — a NOC screen across a room, read at a distance —
+        is a different density, not a wider dashboard. Logged as open.
       </P>
     </article>
   ),

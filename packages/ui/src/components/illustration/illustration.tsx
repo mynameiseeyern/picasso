@@ -53,15 +53,12 @@ import { cn } from "@/lib/utils";
  */
 
 export type IllustrationName =
-  | "issue-alerts"
-  | "fleet-health"
-  | "call-readiness";
+  "issue-alerts" | "fleet-health" | "call-readiness";
 
-export interface IllustrationProps
-  extends Omit<
-    React.ComponentProps<"svg">,
-    "children" | "viewBox" | "name" | "style"
-  > {
+export interface IllustrationProps extends Omit<
+  React.ComponentProps<"svg">,
+  "children" | "viewBox" | "name" | "style"
+> {
   /** Which drawing. Each has one mechanic; see the component notes. */
   name: IllustrationName;
   /**
@@ -197,7 +194,14 @@ function IssueAlerts({ interactive }: { interactive: boolean }) {
         return (
           <g key={i} data-slot="illustration-detail">
             <circle cx={47} cy={y + 11.4} r={1.6} className={bar} />
-            <rect x={60} y={y + 7} width={30} height={3.2} rx={1.6} className={bar} />
+            <rect
+              x={60}
+              y={y + 7}
+              width={30}
+              height={3.2}
+              rx={1.6}
+              className={bar}
+            />
             <rect
               x={60}
               y={y + 12.6}
@@ -248,7 +252,9 @@ function IssueAlerts({ interactive }: { interactive: boolean }) {
               r={7}
               className={cn(
                 move,
-                isOpen ? "fill-surface-primary-muted" : "fill-surface-layer-muted",
+                isOpen
+                  ? "fill-surface-primary-muted"
+                  : "fill-surface-layer-muted",
               )}
             />
             <TriangleAlert
@@ -260,8 +266,22 @@ function IssueAlerts({ interactive }: { interactive: boolean }) {
               strokeWidth={1.5}
               className={cn(move, isOpen ? accentGlyph : glyph)}
             />
-            <rect x={60} y={y + 6.4} width={28} height={3.4} rx={1.7} className={bar} />
-            <rect x={60} y={y + 12.2} width={52} height={3.6} rx={1.8} className={bar} />
+            <rect
+              x={60}
+              y={y + 6.4}
+              width={28}
+              height={3.4}
+              rx={1.7}
+              className={bar}
+            />
+            <rect
+              x={60}
+              y={y + 12.2}
+              width={52}
+              height={3.6}
+              rx={1.8}
+              className={bar}
+            />
           </g>
         );
       })}
