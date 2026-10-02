@@ -122,14 +122,19 @@ export function BrandFlow() {
           <div className="min-w-0 flex-1 pt-0.5">
             <h3 className="text-sm font-semibold">Does check pass?</h3>
             <div className="mt-1.5 space-y-1.5 text-[13px] leading-relaxed text-fd-muted-foreground">
+              <p>
+                <strong className="font-semibold text-fd-foreground">A light brand colour is not a failure.</strong>{' '}
+                <M>fg/on/*</M> is measured, not chosen: white where white reaches 4.5:1,{' '}
+                <M>palette/neutral/950</M> where it does not. A yellow gets dark ink at 13.69:1 and the
+                button is still a button. Nothing to fix.
+              </p>
               <p className="flex items-start gap-1.5">
                 <ArrowLeft className="mt-0.5 size-3.5 shrink-0" aria-hidden />
                 <span>
-                  <strong className="font-semibold text-fd-foreground">No — fix the input, not the output.</strong>{' '}
-                  A contrast failure is the ramp: on-colours are measured, never chosen, so change{' '}
-                  <M>colour.base</M>. &quot;Matches no preset&quot; means the neutral, radius or spacing is
-                  not one of the options — add the preset to <M>presets.json</M> first. Then run{' '}
-                  <M>check</M> again.
+                  <strong className="font-semibold text-fd-foreground">What does send you back:</strong>{' '}
+                  &quot;matches no preset&quot; — the neutral, radius or spacing is not one of the options,
+                  so add it to <M>presets.json</M> first. Light and dark not defining the same tokens. A
+                  structure that differs from Clarion&apos;s. Then run <M>check</M> again.
                 </span>
               </p>
               <p>
@@ -144,6 +149,11 @@ export function BrandFlow() {
           <p>
             Every on-colour pair, in both modes, for every brand, at 4.5:1 — and the focus ring at 3:1,
             because a focus indicator is a UI component rather than text.
+          </p>
+          <p>
+            This is the gate that catches the one colour problem worth catching: a surface that{' '}
+            <em>neither</em> ink reaches — white under 4.5:1 and <M>neutral/950</M> under 4.5:1 too. That
+            colour has to move. Everything else the build resolves on its own.
           </p>
         </Step>
 

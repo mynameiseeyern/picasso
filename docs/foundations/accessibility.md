@@ -17,6 +17,11 @@ A brand's ramp and its on-colours are generated, so the gate is what proves
 the generator right. It also asserts that it found 24 pairs: a token renamed
 out of coverage is a gate that passes while checking nothing.
 
+A brand colour is never rejected for being light. `fg/on/*-emphasis` is
+measured per brand and per mode: white where white carries, `palette/neutral/950`
+where it does not. The gate only fires when neither ink reaches 4.5:1 on that
+surface — see [Colour](colour.md).
+
 The standard is WCAG 2.1, not APCA. **Comply with 2.1, and where 2.1 says pass
 and the screen says otherwise, darken.** Never the reverse — the eye overrides
 upward only.

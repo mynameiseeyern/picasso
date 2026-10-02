@@ -82,23 +82,37 @@ uses semantic utilities gets dark mode without a single `dark:` class.
 Picasso is multi-brand: a brand supplies its own brand and accent ramps and
 inherits everything else.
 
-The rule that keeps that from sprawling is that **only `fg/on/*` may differ
-per brand**. Every other semantic aliases a primitive, so re-pointing
-`--palette-brand-600` carries the whole system with it. If a brand seems to
-need some other semantic overridden, the ramp is wrong.
+## A surface does not have to carry white
 
-Ramps are generated in OKLCH from one base colour, and the steps that carry
-text are **solved** so white passes — not generated freely and then rescued by
-flipping the text to dark. A primary button should look structurally the same
-in every brand, with only the hue changing.
+`fg/on/*` is measured, never chosen. For every `bg/<intent>/emphasis`, the
+build asks which ink reaches 4.5:1 on it and writes that one: white where
+white carries, `palette/neutral/950` where it does not.
 
-The flip survives for the two cases that cannot be constrained: a colour that
-must stay recognisable (amber cannot be darkened enough to carry white and
-still read as a warning), and dark mode, which paints with a lighter step.
+| Surface | `fg/on/*-emphasis` becomes | At |
+|---|---|---|
+| `#007FAB` | white | 4.54:1 |
+| `#F59E0B` | neutral-950 | 9:1 |
+| `#A3E635` | neutral-950 | 12.82:1 |
+| `#FFD60A` | neutral-950 | 13.69:1 |
 
-`npm test` measures every on-colour pair against its own surface in both
-modes, so a ramp that drifts a step lighter fails the build rather than an
-audit.
+So a brand colour is never rejected for being light. It gets dark ink, and the
+button is still a button. This is the one semantic that may differ per brand —
+everything else aliases a primitive, so re-pointing `--palette-brand-600`
+carries the whole system with it. **If a brand seems to need some other
+semantic overridden, the ramp is wrong.**
+
+A generated ramp rarely needs the flip at the steps a button is painted with:
+lightness comes from a fixed ladder, so 600–950 land dark enough to hold white
+whatever the hue, and the base colour contributes hue and chroma. The flip is
+what carries a **pinned** ramp — eleven stops supplied by Marketing, where any
+value is possible — the lighter steps, and status colours like amber.
+
+The one real failure is a surface that neither ink reaches: white below 4.5:1
+*and* neutral-950 below 4.5:1. That colour has to move, and `npm test` says so.
+
+`npm test` measures every on-colour pair against its own surface, in both
+modes, for every brand — so a ramp that drifts a step lighter fails the build
+rather than an audit.
 
 See `AGENTS.md` → Adding a brand.
 
