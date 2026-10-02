@@ -92,6 +92,8 @@ export function Slider({ className, thumbLabels, ...props }: SliderProps) {
           aria-label={thumbLabels?.[i]}
           className={cn(
             "block size-4 shrink-0 rounded-full border-2 border-line-primary-emphasis " +
+              // the grab area is 44 tall and 24 wide; the thumb stays 16
+              "relative after:absolute after:-inset-y-3.5 after:-inset-x-1 " +
               "bg-surface-card shadow-xs transition-colors outline-none",
             "focus-visible:ring-2 focus-visible:ring-line-focused " +
               "focus-visible:ring-offset-2 focus-visible:ring-offset-surface-app",

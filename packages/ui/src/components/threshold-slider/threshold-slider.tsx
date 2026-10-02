@@ -351,7 +351,14 @@ export function ThresholdSlider({
               onKeyDown={handleKeyDown(which)}
               style={{ "--at": `${at}%` } as React.CSSProperties}
               className={cn(
+                // no `relative` here — the thumb is already absolute, and
+                // tailwind-merge would drop the one that positions it. An
+                // absolutely-positioned box is its own containing block, so
+                // the ::after has what it needs.
                 "absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 " +
+                  // the grab area is 44 tall and 24 wide; the thumb stays 16,
+                  // and two thumbs that converge barely overlap
+                  "after:absolute after:-inset-y-3.5 after:-inset-x-1 " +
                   "cursor-grab touch-none rounded-full border-3 bg-surface-card " +
                   "shadow-sm outline-none focus-visible:ring-2 " +
                   "focus-visible:ring-line-focused active:cursor-grabbing " +
