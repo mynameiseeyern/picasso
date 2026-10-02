@@ -23,6 +23,19 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### ⚠️ Changed (Figma structure)
 
+- **Figma's Button group keeps its first and last buttons, and toggles the
+  four between them.** `Button 1` and `Button 6` are no longer properties;
+  `Button 2`–`Button 5` remain. The ends carry `radius/md` themselves (they
+  were bound to `radius/lg` under a frame clipped at `radius/md`), every
+  button carries its own border, and the frame has no border and does not
+  clip — so a group of any size has rounded ends and a focus ring is no
+  longer cut off. Secondary groups gain the dividers they were missing. All
+  25 instances in the file were migrated and show the same buttons as before.
+  **Code impact** — none; this is the shape the code already had. In a
+  consuming file, an instance that hid `Button 6` will show a default last
+  button after the library update: turn off the highest middle button instead
+  and put its content on the last one.
+
 - **Figma's Input is six sets, not one set with a `Type` axis.** `Input` (14
   variants, `State` × `Size`), `Password input` (14, with a `Shown` axis),
   `Number input` (12), `Input button` (24, `Type` = Button | Select trigger),

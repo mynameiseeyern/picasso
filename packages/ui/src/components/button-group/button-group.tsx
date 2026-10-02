@@ -14,7 +14,8 @@ import { cn } from "@/lib/utils";
  *
  * FROM FIGMA (`667:1703`), as drawn:
  *
- *   join       outer corners at radius/lg, every inner corner square
+ *   join       outer corners at radius/md (the Button's own radius), every
+ *              inner corner square
  *   outline    neighbours overlap by 1px so two borders read as one line
  *   secondary  the same
  *   default    solid buttons, divided by a 1px border/primary/muted line
@@ -28,10 +29,15 @@ import { cn } from "@/lib/utils";
  * their colour. Same divergence the theme-architecture note records for
  * Input's `Type` axis — the code shape is the contract.
  *
- * ⚠️ Figma's six `Button N` toggles hide a button but cannot move the rounded
- * corner, so switching off the last one leaves a square end. Here the corners
- * come from `:first-child` / `:last-child`, so any number of children is
- * correct and the problem does not exist.
+ * Figma (since 2 Oct) keeps the first and last buttons permanent and toggles
+ * the four between them, because a variant cannot move a rounded corner to
+ * whichever button happens to be last. The frame has no border and does not
+ * clip, as here, so a focus ring shows in full. Here the corners come from
+ * `:first-child` / `:last-child`, so any number of children is correct.
+ *
+ * One thing Figma cannot draw: this lifts a hovered or focused member above
+ * its neighbours (`z-raised`). In Figma the next button sits on top, so a
+ * focus ring is covered along its trailing edge. The code is the reference.
  */
 const buttonGroupVariants = cva(
   "flex w-fit items-stretch " +
