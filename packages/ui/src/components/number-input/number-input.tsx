@@ -176,7 +176,8 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           }}
           data-slot="number-input-control"
           className={cn(
-            "w-full min-w-0 flex-1 bg-transparent text-center tabular-nums outline-none " +
+            // ltr-island: "-5" must not become "5-" while it is being typed.
+            "ltr-island w-full min-w-0 flex-1 bg-transparent text-center tabular-nums outline-none " +
               "placeholder:text-content-neutral-subtle disabled:cursor-not-allowed",
             className,
           )}

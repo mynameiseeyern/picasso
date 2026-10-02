@@ -68,13 +68,18 @@ const switchVariants = cva(
     "disabled:data-[state=checked]:hover:bg-surface-input-disabled",
   {
     variants: {
+      // On is the inline end: the knob travels right in English and left in
+      // Arabic. There is no logical translate, so RTL gets the same distance
+      // the other way; without it the knob slides out of its own track.
       size: {
         sm:
           "h-5 w-9 [&_[data-slot=switch-thumb]]:size-4 " +
-          "[&_[data-slot=switch-thumb]]:data-[state=checked]:translate-x-4",
+          "[&_[data-slot=switch-thumb]]:data-[state=checked]:translate-x-4 " +
+          "rtl:[&_[data-slot=switch-thumb]]:data-[state=checked]:-translate-x-4",
         md:
           "h-6 w-11 [&_[data-slot=switch-thumb]]:size-5 " +
-          "[&_[data-slot=switch-thumb]]:data-[state=checked]:translate-x-5",
+          "[&_[data-slot=switch-thumb]]:data-[state=checked]:translate-x-5 " +
+          "rtl:[&_[data-slot=switch-thumb]]:data-[state=checked]:-translate-x-5",
       },
     },
     defaultVariants: { size: "md" },

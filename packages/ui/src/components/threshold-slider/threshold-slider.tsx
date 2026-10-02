@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { useDirection } from "../direction/direction";
 
 /**
  * ThresholdSlider — Figma's `Slider` Type=Threshold (1106:40) for the states,
@@ -29,7 +30,7 @@ import { cn } from "@/lib/utils";
  *
  * ⭐ The labels move, the thumbs do not. Two 60px labels over thumbs 20px
  * apart are unreadable, so once they would overlap they separate symmetrically
- * about their midpoint — the lower one left, the higher one right — and the
+ * about their midpoint — the lower one toward the start, the higher one toward the end — and the
  * pair slides back inside the track if that pushed an end off it. When the
  * thumbs meet exactly there is no warning band at all and both labels would
  * carry the same number, so the critical one is dropped and the warning one
@@ -112,6 +113,10 @@ export function ThresholdSlider({
   ...props
 }: ThresholdSliderProps) {
   const trackRef = React.useRef<HTMLDivElement>(null);
+  // The scale mirrors: low is at the inline start, so in Arabic it is on the
+  // right, as Radix's Slider is. Everything that measures — the pointer, the
+  // arrow keys — reads this; everything that draws uses `start-`.
+  const rtl = useDirection() === "rtl";
 
   // The one derivation everything else hangs off. Ties count as higher-is-
   // better, which puts an empty warning band in the middle rather than
@@ -196,7 +201,8 @@ export function ThresholdSlider({
     if (!el) return null;
     const r = el.getBoundingClientRect();
     if (!r.width) return null;
-    return min + ((clientX - r.left) / r.width) * (max - min);
+    const fromStart = rtl ? r.right - clientX : clientX - r.left;
+    return min + (fromStart / r.width) * (max - min);
   }
 
   function handlePointerDown(which: "warning" | "critical") {
@@ -221,9 +227,12 @@ export function ThresholdSlider({
       const current = which === "warning" ? warning : critical;
       const big = step * 10;
       let next: number | null = null;
-      if (e.key === "ArrowRight" || e.key === "ArrowUp") next = current + step;
-      else if (e.key === "ArrowLeft" || e.key === "ArrowDown")
-        next = current - step;
+      // The arrow that points along the scale increases; in RTL that is
+      // ArrowLeft. Up and down mean more and less in both.
+      const forward = rtl ? "ArrowLeft" : "ArrowRight";
+      const back = rtl ? "ArrowRight" : "ArrowLeft";
+      if (e.key === forward || e.key === "ArrowUp") next = current + step;
+      else if (e.key === back || e.key === "ArrowDown") next = current - step;
       else if (e.key === "PageUp") next = current + big;
       else if (e.key === "PageDown") next = current - big;
       else if (e.key === "Home") next = min;
@@ -271,7 +280,7 @@ export function ThresholdSlider({
             <span
               key={which}
               data-slot={`threshold-slider-label-${which}`}
-              // A custom property plus Tailwind's `left-(--var)` shorthand is
+              // A custom property plus Tailwind's `start-(--var)` shorthand is
               // the house pattern for a dynamic value — an inline `left` is
               // refused by no-inline-styles and a calc() by no-arbitrary-values.
               style={
@@ -279,18 +288,18 @@ export function ThresholdSlider({
                   "--at": labelX ? `${labelX[which]}px` : `${at}%`,
                 } as React.CSSProperties
               }
-              /* eslint-disable-next-line picasso/no-physical-properties --
-                 `--at` is measured from the inline start in JS; swapping the
-                 class alone would put the label and the maths on opposite
-                 sides. Both move together or neither does. */
-              className="absolute top-0 flex w-15 -translate-x-1/2 flex-col items-center left-(--at)"
+              // `--at` is a distance from the inline start, so the class is
+              // `start-`. Centring on that point is half the label's width
+              // back toward the start: left in LTR, right in RTL.
+              className="absolute top-0 flex w-15 -translate-x-1/2 flex-col items-center start-(--at) rtl:translate-x-1/2"
             >
               <span className="text-label-sm text-content-neutral-muted">
                 {label}
               </span>
               <span
                 className={cn(
-                  "text-code-xs",
+                  // A reading is a figure: "-70 dBm" must not reorder.
+                  "ltr-island text-code-xs",
                   which === "critical"
                     ? "text-content-danger-emphasis"
                     : "text-content-warning-emphasis",
@@ -355,7 +364,7 @@ export function ThresholdSlider({
                 // tailwind-merge would drop the one that positions it. An
                 // absolutely-positioned box is its own containing block, so
                 // the ::after has what it needs.
-                "absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 " +
+                "absolute top-1/2 size-4 -translate-x-1/2 -translate-y-1/2 rtl:translate-x-1/2 " +
                   // the grab area clears 44 tall and 24 wide; the thumb stays
                   // 16, and two thumbs that converge barely overlap. The
                   // insets look large because border-3 leaves a 10px padding
@@ -364,8 +373,7 @@ export function ThresholdSlider({
                   "cursor-grab touch-none rounded-full border-3 bg-surface-card " +
                   "shadow-sm outline-none focus-visible:ring-2 " +
                   "focus-visible:ring-line-focused active:cursor-grabbing " +
-                  // eslint-disable-next-line picasso/no-physical-properties -- see the label above: `--at` is measured from the inline start in JS
-                  "left-(--at)",
+                  "start-(--at)",
                 which === "critical"
                   ? "border-status-critical"
                   : "border-status-warning",
@@ -379,8 +387,12 @@ export function ThresholdSlider({
       </div>
 
       <div className="flex justify-between text-code-xs text-content-neutral-subtle">
-        <span data-slot="threshold-slider-min">{format(min)}</span>
-        <span data-slot="threshold-slider-max">{format(max)}</span>
+        <span data-slot="threshold-slider-min" className="ltr-island">
+          {format(min)}
+        </span>
+        <span data-slot="threshold-slider-max" className="ltr-island">
+          {format(max)}
+        </span>
       </div>
     </div>
   );

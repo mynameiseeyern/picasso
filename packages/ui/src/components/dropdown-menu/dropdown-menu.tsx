@@ -208,7 +208,7 @@ export function DropdownMenuSubTrigger({
       {...props}
     >
       {children}
-      <ChevronRight aria-hidden className="ms-auto size-4 shrink-0" />
+      <ChevronRight aria-hidden className="rtl-mirror ms-auto size-4 shrink-0" />
     </DropdownMenuPrimitive.SubTrigger>
   );
 }

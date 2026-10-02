@@ -21,6 +21,7 @@ import presets from '@ir/tokens/presets.json';
 export const SANS_FONTS = [
   { id: 'inter', label: 'Inter', family: 'Inter' },
   { id: 'manrope', label: 'Manrope', family: 'Manrope' },
+  { id: 'noto', label: 'Noto Sans', family: 'Noto Sans' },
   { id: 'geist', label: 'Geist', family: 'Geist' },
   { id: 'figtree', label: 'Figtree', family: 'Figtree' },
   { id: 'dm-sans', label: 'DM Sans', family: 'DM Sans' },
@@ -40,8 +41,8 @@ export const MONO_FONTS = [
 
 /* The build's own fallbacks (build/brands.mjs `font()`), so a font with no
  * presets.json entry gets the same stack here as it will in tokens.css. */
-const SANS_FALLBACK = 'ui-sans-serif, system-ui, sans-serif';
-const MONO_FALLBACK = 'ui-monospace, SFMono-Regular, Menlo, monospace';
+const SANS_FALLBACK = "'Noto Sans Arabic', 'Noto Sans Hebrew', ui-sans-serif, system-ui, sans-serif";
+const MONO_FALLBACK = "'Noto Sans Arabic', 'Noto Sans Hebrew', ui-monospace, SFMono-Regular, Menlo, monospace";
 
 /* Read from packages/tokens/tokens/presets.json — the same menu a brand.json
  * picks from — so the builder cannot offer a value the tokens cannot honour. */

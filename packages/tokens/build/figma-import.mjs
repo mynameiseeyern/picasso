@@ -112,7 +112,7 @@ for (const name of group("_type/style/")) {
   const weight = Number(files.core.type.weight[wkey]?.$value);
   const fam = brand.type[role];
   if (!fam || !weight) continue;
-  files.presets.fonts[fam] ??= { stack: `'${fam}', ${role === "mono" ? "ui-monospace, monospace" : "ui-sans-serif, system-ui, sans-serif"}`, styles: {} };
+  files.presets.fonts[fam] ??= { stack: `'${fam}', ${role === "mono" ? "'Noto Sans Arabic', 'Noto Sans Hebrew', ui-monospace, monospace" : "'Noto Sans Arabic', 'Noto Sans Hebrew', ui-sans-serif, system-ui, sans-serif"}`, styles: {} };
   if (files.presets.fonts[fam].styles[weight] !== inPrim.get(name)) {
     files.presets.fonts[fam].styles[weight] = inPrim.get(name);
     changes.push(`presets.json: ${fam} ${weight} is "${inPrim.get(name)}" in Figma`);

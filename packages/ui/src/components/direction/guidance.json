@@ -1,0 +1,49 @@
+{
+  "component": "Direction",
+  "summary": "DirectionProvider and useDirection: tells every component which way the page reads, for Arabic, Hebrew and Persian.",
+  "figma": "None — direction is a property of the page, not a component in the library",
+  "structureFrom": "code",
+  "measurementsFrom": "code",
+  "pairs": [
+    {
+      "id": "attribute-and-provider",
+      "dont": "Set dir=\"rtl\" on the page and stop there.",
+      "do": "Set dir on <html> and wrap the app in DirectionProvider with the same value.",
+      "why": "CSS reads the attribute; Radix reads the provider. With only the attribute the layout mirrors and the keyboard does not, so the arrow that points at the next tab moves to the previous one.",
+      "example": false
+    },
+    {
+      "id": "once-at-the-root",
+      "dont": "Wrap individual components in their own provider.",
+      "do": "Provide direction once, at the root, beside the theme.",
+      "why": "A page reads one way. A provider halfway down the tree means a portalled menu and the button that opened it can disagree.",
+      "example": false
+    },
+    {
+      "id": "class-before-hook",
+      "dont": "Call useDirection to choose between two classes.",
+      "do": "Use a logical class (ps-, start-, border-s) or the rtl: variant, and keep the hook for geometry done in script.",
+      "why": "A logical class costs nothing and cannot disagree with the DOM. The hook is for pointer maths, swipe direction and third-party props that take a direction.",
+      "example": false
+    },
+    {
+      "id": "technical-text-stays-ltr",
+      "dont": "Let an IP address, a SIP trace, an ID or a metric take the page's direction.",
+      "do": "Put ltr-island on the element that holds it.",
+      "why": "Inside right-to-left text the bidi algorithm reorders punctuation: -5% reads as 5%- and 10.0.0.1:5060 comes apart at the colon.",
+      "example": false
+    },
+    {
+      "id": "not-everything-mirrors",
+      "dont": "Mirror every icon and every picture.",
+      "do": "Mirror what points along the reading direction — chevrons, arrows, panel toggles. Leave check marks, clocks, logos, media controls, charts' time axes and illustrations as they are.",
+      "why": "A clock running backwards is wrong in every language, and time on a chart runs left to right for everyone who reads monitoring data.",
+      "example": false
+    }
+  ],
+  "a11y": [
+    "Direction is half of what a screen reader needs; the other half is lang on <html>. Set both, or Arabic text is read with the wrong voice.",
+    "With the provider in place, arrow-key navigation in Tabs, Radio group, Slider and menus follows the visual order in both directions.",
+    "DirectionProvider renders no element of its own, so it cannot change the accessibility tree."
+  ]
+}

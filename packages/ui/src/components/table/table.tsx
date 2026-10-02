@@ -174,8 +174,13 @@ export function TableRow({ className, selected, ...props }: TableRowProps) {
 const cellVariants = cva("align-middle", {
   variants: {
     align: { start: "text-start", center: "text-center", end: "text-end" },
-    /** A number: right-aligned and mono, so place values line up down the column. */
-    numeric: { true: "text-end font-mono", false: "" },
+    /**
+     * A number: right-aligned and mono, so place values line up down the
+     * column. Right in **every** locale — the units digit is on the right in
+     * Arabic and Hebrew too, as it is in a spreadsheet. `ltr-island` keeps a
+     * sign or a unit from being reordered, and makes `text-end` mean right.
+     */
+    numeric: { true: "ltr-island text-end font-mono", false: "" },
   },
   defaultVariants: { numeric: false },
 });
@@ -205,7 +210,8 @@ export function TableHead({
         // A numeric column heads right with the figures, but stays in the
         // label face — Figma's header is label/sm whatever the column holds.
         cellVariants({ align }),
-        numeric && "text-end",
+        // eslint-disable-next-line picasso/no-physical-properties -- the heading sits over figures that are right-aligned in every locale (see `numeric`); its own text may be Arabic, so it cannot be an LTR island and `text-end` would put it on the left.
+        numeric && "text-right",
         className,
       )}
       {...props}

@@ -43,7 +43,7 @@ const meta: Meta<DrawerContentProps> = {
     },
   },
   argTypes: {
-    side: { control: "inline-radio", options: ["right", "left", "expanded"] },
+    side: { control: "inline-radio", options: ["end", "start", "expanded"] },
     size: { control: "inline-radio", options: ["default", "wide"] },
   },
 };
@@ -53,7 +53,7 @@ type Story = StoryObj<DrawerContentProps>;
 /** A title header — the everyday drawer. Filters, settings, a create flow. */
 /** Drive the side and the width from the controls panel. */
 export const Playground: Story = {
-  args: { side: "right", size: "default" },
+  args: { side: "end", size: "default" },
   render: (args) => (
     <Drawer>
       <DrawerTrigger asChild>
@@ -178,14 +178,14 @@ export const Record: Story = {
   ),
 };
 
-/** Left, for navigation and context that belongs on the side it came from. */
-export const Left: Story = {
+/** Start — the left in English, the right in Arabic — for navigation and context that belongs on the side it came from. */
+export const Start: Story = {
   render: () => (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button variant="outline">Open from the left</Button>
+        <Button variant="outline">Open from the start</Button>
       </DrawerTrigger>
-      <DrawerContent side="left">
+      <DrawerContent side="start">
         <DrawerHeader type="title">
           <DrawerHeading>
             <DrawerTitleGroup>
@@ -198,8 +198,8 @@ export const Left: Story = {
         </DrawerHeader>
         <DrawerBody>
           <p className="text-body-sm text-content-neutral-muted">
-            The border sits on the inner edge — right here, left on a right
-            drawer.
+            The border sits on the inner edge: the inline end here, the
+            inline start on an end drawer.
           </p>
         </DrawerBody>
       </DrawerContent>

@@ -210,7 +210,14 @@ StyleDictionary.registerFormat({
           `  font-size: var(--${className}-font-size);`,
           `  font-weight: var(--${className}-font-weight);`,
           `  line-height: var(--${className}-line-height);`,
-          `  letter-spacing: var(--${className}-letter-spacing);`,
+          // Tracking is scaled, so one variable can switch it off. Arabic
+          // script is joined and any letter-spacing pulls the joins apart;
+          // theme.css sets --type-tracking-scale to 0 under those languages.
+          // A role with no tracking is left alone: calc(0 * 1) is a number,
+          // not a length, and would be dropped at computed-value time.
+          Number.parseFloat(v.letterSpacing) === 0
+            ? `  letter-spacing: var(--${className}-letter-spacing);`
+            : `  letter-spacing: calc(var(--${className}-letter-spacing) * var(--type-tracking-scale, 1));`,
         ];
         if (v.textCase) props.push(`  text-transform: ${v.textCase};`);
         // `@utility`, not a plain `.class`. A bare class is invisible to

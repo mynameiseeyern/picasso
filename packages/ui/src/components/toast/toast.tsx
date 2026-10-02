@@ -9,6 +9,7 @@ import {
   X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useDirection } from "../direction/direction";
 
 /**
  * Toast — Figma `Toast` 94:59093, 24 variants (Variant × Style × Action).
@@ -136,15 +137,21 @@ const ToastContext = React.createContext<{
 /**
  * Wrap the app once. Radix owns the queue, the timers and the swipe.
  *
- * ⚠️ RTL: the viewport and the slide mirror on their own, the swipe does
- * not — Radix's `swipeDirection` is physical and defaults to "right". Pass
- * `swipeDirection="left"` in an RTL locale, or a swipe sends the toast one
- * way and the exit takes it the other.
+ * RTL: the viewport and the slide mirror in CSS. The swipe cannot — Radix's
+ * `swipeDirection` is physical and defaults to "right" — so it is set here
+ * from the direction provider: a toast is swiped away toward the edge it
+ * came from, which is the left in Arabic. Pass `swipeDirection` to override.
  */
 export function ToastProvider(
   props: React.ComponentProps<typeof ToastPrimitive.Provider>,
 ) {
-  return <ToastPrimitive.Provider {...props} />;
+  const direction = useDirection();
+  return (
+    <ToastPrimitive.Provider
+      swipeDirection={direction === "rtl" ? "left" : "right"}
+      {...props}
+    />
+  );
 }
 
 /**

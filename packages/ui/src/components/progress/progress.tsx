@@ -78,7 +78,8 @@ export function Progress({
           className="flex items-center justify-between text-metric-md text-content-neutral-emphasis"
         >
           <span>{label}</span>
-          <span>
+          {/* A figure reads left to right in every locale. */}
+          <span data-slot="progress-value" className="ltr-island">
             {valueLabel ?? (pct == null ? "" : `${Math.round(pct)}%`)}
           </span>
         </div>
@@ -98,7 +99,9 @@ export function Progress({
           data-slot="progress-indicator"
           className={cn(
             indicatorVariants({ variant }),
-            "translate-x-(--progress-offset)",
+            // The bar fills from the inline start, so in RTL the offset is
+            // the same distance the other way. There is no logical translate.
+            "translate-x-(--progress-offset) rtl:-translate-x-(--progress-offset)",
           )}
           // translateX rather than width: a transform animates on the
           // compositor, so a bar that updates often never relayouts.

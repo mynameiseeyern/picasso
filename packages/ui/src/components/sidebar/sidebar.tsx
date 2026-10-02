@@ -384,7 +384,8 @@ export function SidebarBrand({
             data-slot="sidebar-brand-scrim"
             aria-hidden
             className={cn(
-              "absolute inset-0 -z-10 bg-linear-to-r to-transparent",
+              // Darkest under the wordmark, which sits at the inline start.
+              "absolute inset-0 -z-10 bg-linear-to-r to-transparent rtl:bg-linear-to-l",
               ink === "on-light"
                 ? "from-surface-app/70 via-surface-app/35"
                 : "from-surface-scrim/65 via-surface-scrim/30",
@@ -753,7 +754,7 @@ export function SidebarTrigger({
       )}
       {...props}
     >
-      {children ?? <PanelLeft aria-hidden />}
+      {children ?? <PanelLeft aria-hidden className="rtl-mirror" />}
     </button>
   );
 }

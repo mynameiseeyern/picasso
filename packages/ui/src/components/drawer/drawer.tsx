@@ -20,7 +20,8 @@ import { overlayScrimVariants } from "../overlay/overlay";
  *
  * The panel is a full-height edge of the app, not a floating card: bg/card,
  * shadow/lg, no radius, and a single border on the **inner** edge only —
- * left border for a right drawer, right border for a left one. Expanded is
+ * the inline-start edge for an end drawer, the inline-end edge for a start
+ * one (left and right respectively, in English). Expanded is
  * the exception: inset 80 horizontally and 40 vertically, a border on all
  * four sides, and radius/2xl. Measured at the 1280×800 canvas the file is
  * drawn at: 1120×720.
@@ -49,22 +50,20 @@ const drawerPanelVariants = cva(
   "fixed z-modal flex flex-col bg-surface-card shadow-lg outline-none",
   {
     variants: {
-      /* ⚠️ `side` is physical on purpose, for now. Converting these four
-         classes to logical would silently move a `side="right"` drawer to
-         the left in an RTL locale while the prop still said "right" — the
-         API would be lying. Doing it properly means renaming the variants to
-         `start` / `end`, which is a breaking change and a decision, not a
-         class swap. Raised; until then the rule is disabled here and
-         nowhere else. */
-      /* eslint-disable picasso/no-physical-properties */
+      /* `side` is logical: `end` is where a line of text finishes, so the
+         detail drawer opens on the right in English and on the left in
+         Arabic — the opposite side from the sidebar in both. It was
+         `right` / `left` until 2 Oct 2026; a `side="right"` drawer that
+         stayed on the right in an RTL locale would have opened over the
+         sidebar it is meant to face. The travel is signed in theme.css,
+         because there is no logical `translate`. */
       side: {
-        right:
-          "inset-y-0 right-0 border-l border-line-neutral-muted " +
-          "motion-safe:data-[state=open]:animate-drawer-in-right motion-safe:data-[state=closed]:animate-drawer-out-right",
-        left:
-          "inset-y-0 left-0 border-r border-line-neutral-muted " +
-          "motion-safe:data-[state=open]:animate-drawer-in-left motion-safe:data-[state=closed]:animate-drawer-out-left",
-        /* eslint-enable picasso/no-physical-properties */
+        end:
+          "inset-y-0 end-0 border-s border-line-neutral-muted " +
+          "motion-safe:data-[state=open]:animate-drawer-in-end motion-safe:data-[state=closed]:animate-drawer-out-end",
+        start:
+          "inset-y-0 start-0 border-e border-line-neutral-muted " +
+          "motion-safe:data-[state=open]:animate-drawer-in-start motion-safe:data-[state=closed]:animate-drawer-out-start",
         // Inset on all four sides; size does not apply.
         expanded:
           "inset-x-20 inset-y-10 rounded-2xl border border-line-neutral-muted " +
@@ -73,12 +72,12 @@ const drawerPanelVariants = cva(
       size: { default: "", wide: "" },
     },
     compoundVariants: [
-      { side: "right", size: "default", class: "w-120 max-w-full" },
-      { side: "right", size: "wide", class: "w-160 max-w-full" },
-      { side: "left", size: "default", class: "w-120 max-w-full" },
-      { side: "left", size: "wide", class: "w-160 max-w-full" },
+      { side: "end", size: "default", class: "w-120 max-w-full" },
+      { side: "end", size: "wide", class: "w-160 max-w-full" },
+      { side: "start", size: "default", class: "w-120 max-w-full" },
+      { side: "start", size: "wide", class: "w-160 max-w-full" },
     ],
-    defaultVariants: { side: "right", size: "default" },
+    defaultVariants: { side: "end", size: "default" },
   },
 );
 
@@ -136,7 +135,7 @@ export function DrawerContent({
       />
       <DialogPrimitive.Content
         data-slot="drawer-content"
-        data-side={side ?? "right"}
+        data-side={side ?? "end"}
         ref={(node: HTMLDivElement | null) => {
           // Ref callbacks run bottom-up, so the children are already in the
           // DOM here — which an effect on this component cannot rely on: the

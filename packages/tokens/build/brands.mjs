@@ -39,7 +39,12 @@ const own = (o) => Object.entries(o).filter(([k]) => !k.startsWith("$"));
 
 function font(name, role) {
   const f = presets.fonts[name];
-  const fallback = role === "mono" ? "ui-monospace, SFMono-Regular, Menlo, monospace" : "ui-sans-serif, system-ui, sans-serif";
+  // Both stacks carry the Arabic and Hebrew faces ahead of the system fonts,
+  // as every stack in presets.json does. Mono too: a mono role sometimes
+  // holds a word (a Progress label is metric/md), and Arabic in an OS
+  // monospace comes out unjoined.
+  const scripts = "'Noto Sans Arabic', 'Noto Sans Hebrew'";
+  const fallback = role === "mono" ? `${scripts}, ui-monospace, SFMono-Regular, Menlo, monospace` : `${scripts}, ui-sans-serif, system-ui, sans-serif`;
   return {
     name,
     stack: f?.stack ?? `'${name}', ${fallback}`,

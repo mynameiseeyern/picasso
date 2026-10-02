@@ -113,7 +113,12 @@ export function OtpInput({
         data-slot="otp-input"
         disabled={disabled}
         aria-invalid={invalid || undefined}
-        containerClassName={cn("flex items-center gap-2", containerClassName)}
+        // A code is typed and read left to right in every locale; without
+        // this the boxes run right to left and the digits come out reversed.
+        containerClassName={cn(
+          "ltr-island flex items-center gap-2",
+          containerClassName,
+        )}
         className={cn("disabled:cursor-not-allowed", className)}
         {...props}
       >

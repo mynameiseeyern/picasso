@@ -417,3 +417,9 @@ export {
   BottomSheetTrigger,
   type BottomSheetContentProps,
 } from "./components/bottom-sheet/bottom-sheet";
+export {
+  DirectionProvider,
+  useDirection,
+  type Direction,
+  type DirectionProviderProps,
+} from "./components/direction/direction";

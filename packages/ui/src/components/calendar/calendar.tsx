@@ -3,6 +3,7 @@ import { DayPicker, type DayPickerProps } from "react-day-picker";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
+import { useDirection } from "../direction/direction";
 
 /**
  * Calendar — Figma `Calendar / Basic` 2506:3284, `Calendar / Day Button`
@@ -68,9 +69,15 @@ export function Calendar({
   ...props
 }: CalendarProps) {
   const cell = dayCell[size ?? "default"];
+  // react-day-picker lays the grid out, swaps its own chevrons and turns the
+  // arrow keys round from this one prop. It does not read the DOM, so the
+  // direction comes from the provider. The week's first day is the locale's:
+  // pass a date-fns `locale` and Saturday or Sunday follows from it.
+  const direction = useDirection();
 
   // Assembled and cast once, for the same reason as the type above.
   const dayPickerProps = {
+    dir: direction,
     ...props,
     showOutsideDays,
     className: cn(calendarVariants({ size }), className),

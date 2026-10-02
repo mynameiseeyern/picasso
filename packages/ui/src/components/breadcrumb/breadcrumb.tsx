@@ -88,7 +88,7 @@ export function BreadcrumbItem({
         <ChevronRight
           aria-hidden
           data-slot="breadcrumb-separator"
-          className="size-3.5 shrink-0 text-content-neutral-subtle group-first/item:hidden"
+          className="rtl-mirror size-3.5 shrink-0 text-content-neutral-subtle group-first/item:hidden"
         />
       ) : null}
       {children}

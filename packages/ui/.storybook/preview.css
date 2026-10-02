@@ -22,12 +22,24 @@
  * an outside host to tell the truth, so the files ship with the package.
  *
  * 400/500/600 for text and 400/500 for mono: exactly the weights the system
- * renders (type/weight/bold is declared but no component uses it). Latin only
- * — the subset the products ship in.
+ * renders (type/weight/bold is declared but no component uses it). Latin for
+ * every family; Arabic and Hebrew come from Noto Sans Arabic and Noto Sans
+ * Hebrew, which sit in every sans stack as the fallback for those scripts
+ * (Noto Sans Arabic covers Persian). A browser fetches a fallback face only
+ * when the text on the page needs it, so an English page never loads them.
  */
 @import "@fontsource/inter/latin-400.css";
 @import "@fontsource/inter/latin-500.css";
 @import "@fontsource/inter/latin-600.css";
+@import "@fontsource/noto-sans/latin-400.css";
+@import "@fontsource/noto-sans/latin-500.css";
+@import "@fontsource/noto-sans/latin-600.css";
+@import "@fontsource/noto-sans-arabic/arabic-400.css";
+@import "@fontsource/noto-sans-arabic/arabic-500.css";
+@import "@fontsource/noto-sans-arabic/arabic-600.css";
+@import "@fontsource/noto-sans-hebrew/hebrew-400.css";
+@import "@fontsource/noto-sans-hebrew/hebrew-500.css";
+@import "@fontsource/noto-sans-hebrew/hebrew-600.css";
 @import "@fontsource/manrope/latin-400.css";
 @import "@fontsource/manrope/latin-500.css";
 @import "@fontsource/manrope/latin-600.css";

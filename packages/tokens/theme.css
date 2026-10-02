@@ -415,13 +415,35 @@
   :focus-visible {
     outline: none;
   }
-  /* RTL: components must use logical properties (ps-/pe-/ms-/me-/start-/end-).
-     ⚠️ NOTHING ENFORCES THIS. `no-physical-properties` lived in .oxlintrc.json
-     and was lost when the repo moved from oxlint to ESLint; @shadcn/lint has
-     no equivalent rule. Drawer, Accordion, Calendar and Toast have drifted
-     since. Treat it as a review item until a rule exists.
-     Icons that encode direction (chevrons, arrows, back/forward) mirror;
-     clocks, checkmarks, logos and media controls do not. */
+  /* RTL — Arabic, Hebrew, Persian. See docs/foundations/rtl.md.
+     Logical properties only (ps-/pe-/ms-/me-/start-/end-), enforced by
+     `picasso/no-physical-properties`. Three things a logical class cannot
+     reach are handled here instead:
+
+     1. Icons that encode direction (chevrons, arrows, panel toggles) carry
+        `.rtl-mirror`. Clocks, check marks, logos and media controls do not.
+     2. There is no logical `translate`. `--direction-sign` is 1 in LTR and
+        -1 in RTL, so a keyframe multiplies by it and travels the right way.
+        It resets under an explicit dir="ltr", so an LTR island inside an
+        RTL page behaves as LTR.
+     3. Arabic script is joined; any letter-spacing pulls the joins apart.
+        Under an Arabic-script language the tracking tokens are zero.       */
+  :root,
+  [dir="ltr"] {
+    --direction-sign: 1;
+  }
+  [dir="rtl"] {
+    --direction-sign: -1;
+  }
+  :lang(ar),
+  :lang(fa),
+  :lang(ur),
+  :lang(ps),
+  :lang(ckb) {
+    --type-tracking-scale: 0;
+    --type-tracking-tight: 0;
+    --type-tracking-wide: 0;
+  }
   [dir="rtl"] .rtl-mirror {
     transform: scaleX(-1);
   }
@@ -690,13 +712,13 @@
     var(--motion-easing-enter);
   --animate-dialog-out: dialog-out var(--motion-duration-fast)
     var(--motion-easing-exit) both;
-  --animate-drawer-in-right: drawer-in-right var(--motion-duration-slow)
+  --animate-drawer-in-end: drawer-in-end var(--motion-duration-slow)
     var(--motion-easing-enter);
-  --animate-drawer-out-right: drawer-out-right var(--motion-duration-base)
+  --animate-drawer-out-end: drawer-out-end var(--motion-duration-base)
     var(--motion-easing-exit) both;
-  --animate-drawer-in-left: drawer-in-left var(--motion-duration-slow)
+  --animate-drawer-in-start: drawer-in-start var(--motion-duration-slow)
     var(--motion-easing-enter);
-  --animate-drawer-out-left: drawer-out-left var(--motion-duration-base)
+  --animate-drawer-out-start: drawer-out-start var(--motion-duration-base)
     var(--motion-easing-exit) both;
   --animate-accordion-down: accordion-down var(--motion-duration-base)
     var(--motion-easing-enter);
@@ -737,24 +759,26 @@
       transform: scale(0.96);
     }
   }
-  @keyframes drawer-in-right {
+  /* A drawer travels its own width from the inline edge it sits on. The
+     sign flips the travel in RTL, where the end edge is the left one. */
+  @keyframes drawer-in-end {
     from {
-      transform: translateX(100%);
+      transform: translateX(calc(100% * var(--direction-sign, 1)));
     }
   }
-  @keyframes drawer-out-right {
+  @keyframes drawer-out-end {
     to {
-      transform: translateX(100%);
+      transform: translateX(calc(100% * var(--direction-sign, 1)));
     }
   }
-  @keyframes drawer-in-left {
+  @keyframes drawer-in-start {
     from {
-      transform: translateX(-100%);
+      transform: translateX(calc(-100% * var(--direction-sign, 1)));
     }
   }
-  @keyframes drawer-out-left {
+  @keyframes drawer-out-start {
     to {
-      transform: translateX(-100%);
+      transform: translateX(calc(-100% * var(--direction-sign, 1)));
     }
   }
   /* Radix measures the content and publishes its height for exactly this. */
@@ -822,4 +846,20 @@
   transition-property: width;
   transition-duration: var(--motion-duration-base);
   transition-timing-function: var(--motion-easing-enter);
+}
+
+
+/* ═══ LTR island ══════════════════════════════════════════════════════
+   Technical text reads left to right in every locale: a metric, an IP
+   address, a SIP trace, an ID, a one-time code. Inside an RTL sentence the
+   bidi algorithm would otherwise reorder its punctuation — "-5%" becomes
+   "5%-", "10.0.0.1:5060" comes apart at the colon.
+
+   `isolate` keeps the run from disturbing the text around it. Put it on the
+   element that holds the value, not on a container: on a block it also makes
+   `text-start` mean left, which is right for a column of numbers and wrong
+   for a paragraph.                                                        */
+@utility ltr-island {
+  direction: ltr;
+  unicode-bidi: isolate;
 }

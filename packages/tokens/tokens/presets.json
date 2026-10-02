@@ -80,9 +80,9 @@
     }
   },
   "fonts": {
-    "$description": "Known families: the CSS fallback stack, and Figma's style name for each weight (it differs by font — Inter says \"Semi Bold\", JetBrains Mono says \"SemiBold\").",
+    "$description": "Known families: the CSS fallback stack, and Figma's style name for each weight (it differs by font — Inter says \"Semi Bold\", JetBrains Mono says \"SemiBold\"). Every sans stack carries Noto Sans Arabic and Noto Sans Hebrew straight after the family itself: Inter and the others have no Arabic or Hebrew glyphs, and without a named fallback each OS supplies a different one. Noto Sans Arabic covers Persian. The mono stack carries them too: a mono role sometimes holds a word (a Progress label is metric/md), and with no named fallback Arabic there lands in whatever monospace the OS has, unjoined. A browser fetches a fallback face only when the text needs it.",
     "Inter": {
-      "stack": "Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "stack": "Inter, 'Noto Sans Arabic', 'Noto Sans Hebrew', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       "styles": {
         "400": "Regular",
         "500": "Medium",
@@ -91,7 +91,16 @@
       }
     },
     "JetBrains Mono": {
-      "stack": "'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace",
+      "stack": "'JetBrains Mono', 'Noto Sans Arabic', 'Noto Sans Hebrew', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace",
+      "styles": {
+        "400": "Regular",
+        "500": "Medium",
+        "600": "SemiBold",
+        "700": "Bold"
+      }
+    },
+    "Noto Sans": {
+      "stack": "'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Hebrew', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       "styles": {
         "400": "Regular",
         "500": "Medium",
@@ -100,7 +109,7 @@
       }
     },
     "Manrope": {
-      "stack": "Manrope, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "stack": "Manrope, 'Noto Sans Arabic', 'Noto Sans Hebrew', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
       "styles": {
         "400": "Regular",
         "500": "Medium",

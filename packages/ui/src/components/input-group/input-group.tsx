@@ -152,7 +152,8 @@ export function InputGroupText({
     <span
       data-slot="input-group-text"
       className={cn(
-        "text-code-md whitespace-nowrap text-content-neutral-subtle",
+        // A prefix or suffix is technical text — "https://", "ms", ".ir.com".
+        "ltr-island text-code-md whitespace-nowrap text-content-neutral-subtle",
         className,
       )}
       {...props}

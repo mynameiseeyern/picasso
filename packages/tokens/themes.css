@@ -81,6 +81,8 @@
    The ramp is NOT modular (11·12·13·14·16·18·20·24·30·36 — the ratios
    vary), so a compact variant is authored, not computed.                */
 
+/* No Noto here, on purpose: "system" means the OS's own faces, and every
+   OS has its own for Arabic and Hebrew too. */
 [data-type="system"] {
   --type-family-sans: ui-sans-serif, system-ui, -apple-system,
                       "Segoe UI", Roboto, sans-serif;

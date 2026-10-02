@@ -123,7 +123,15 @@ export function KpiTile({
         data-slot="kpi-tile-content"
         className={cn("flex flex-col p-4", meter ? "gap-3" : "gap-2")}
       >
-        <div className="flex items-baseline gap-1">
+        {/* A measurement is one figure: the value, then its unit, left to
+            right in every locale — "-0.4 %", never "% -0.4". The row is the
+            island, and in an RTL tile it sits at the inline start, which is
+            the right. A unit that is a word in the page's language belongs
+            in the label instead. */}
+        <div
+          data-slot="kpi-tile-figure"
+          className="ltr-island flex items-baseline gap-1 rtl:justify-end"
+        >
           <span
             data-slot="kpi-tile-value"
             className="text-metric-xl text-content-neutral-emphasis"

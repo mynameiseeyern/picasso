@@ -1,5 +1,7 @@
+import * as React from "react";
 import type { Preview } from "@storybook/react";
 import { withThemeByClassName } from "@storybook/addon-themes";
+import { DirectionProvider } from "../src/components/direction/direction";
 import "./preview.css";
 
 /* The five theme axes are data-* attributes on the root element, so they can be
@@ -43,16 +45,34 @@ const preview: Preview = {
     },
     a11y: { test: "error" },
   },
-  globalTypes: Object.fromEntries(
-    Object.entries(axes).map(([key, { name, options }]) => [
-      key,
-      {
-        description: `${name} theme axis`,
-        defaultValue: "default",
-        toolbar: { title: name, items: options as unknown as string[], dynamicTitle: true },
+  globalTypes: {
+    ...Object.fromEntries(
+      Object.entries(axes).map(([key, { name, options }]) => [
+        key,
+        {
+          description: `${name} theme axis`,
+          defaultValue: "default",
+          toolbar: { title: name, items: options as unknown as string[], dynamicTitle: true },
+        },
+      ]),
+    ),
+    /* Reading direction. Not a theme axis — it is a property of the page —
+     * but it belongs on the same toolbar, because a component that has only
+     * ever been looked at left-to-right has not been looked at. */
+    direction: {
+      description: "Reading direction",
+      defaultValue: "ltr",
+      toolbar: {
+        title: "Direction",
+        icon: "transfer",
+        items: [
+          { value: "ltr", title: "Left to right" },
+          { value: "rtl", title: "Right to left" },
+        ],
+        dynamicTitle: true,
       },
-    ]),
-  ),
+    },
+  },
   decorators: [
     (Story, context) => {
       const root = document.documentElement;
@@ -61,7 +81,11 @@ const preview: Preview = {
         if (!value || value === "default") root.removeAttribute(`data-${key}`);
         else root.setAttribute(`data-${key}`, value);
       }
-      return Story();
+      /* Both halves, as an app must set them: the attribute for CSS, the
+       * provider for Radix. On <html>, so portalled content gets it too. */
+      const direction = context.globals.direction === "rtl" ? "rtl" : "ltr";
+      root.setAttribute("dir", direction);
+      return React.createElement(DirectionProvider, { direction }, Story());
     },
     withThemeByClassName({
       themes: { light: "", dark: "dark" },

@@ -25,7 +25,7 @@ import {
   drawerPanelVariants,
 } from "./drawer";
 
-type Side = "right" | "left" | "expanded";
+type Side = "end" | "start" | "expanded";
 
 function RecordFixture({
   side,
@@ -138,33 +138,39 @@ describe("Drawer", () => {
   // Whole classes, not substrings — `border-line-neutral-muted` contains "border-l".
   const classes = (s: string) => s.split(/\s+/);
 
-  /* eslint-disable picasso/no-physical-properties --
-     asserts Drawer's deliberately physical `side` classes; the decision to
-     rename the variants to start/end lives in drawer.tsx */
   it("puts the border on the inner edge, and nowhere else", () => {
-    expect(classes(drawerPanelVariants({ side: "right" }))).toContain(
-      "border-l",
+    expect(classes(drawerPanelVariants({ side: "end" }))).toContain("border-s");
+    expect(classes(drawerPanelVariants({ side: "end" }))).not.toContain(
+      "border-e",
     );
-    expect(classes(drawerPanelVariants({ side: "right" }))).not.toContain(
-      "border-r",
+    expect(classes(drawerPanelVariants({ side: "start" }))).toContain(
+      "border-e",
     );
-    expect(classes(drawerPanelVariants({ side: "left" }))).toContain(
-      "border-r",
-    );
-    expect(classes(drawerPanelVariants({ side: "left" }))).not.toContain(
-      "border-l",
+    expect(classes(drawerPanelVariants({ side: "start" }))).not.toContain(
+      "border-s",
     );
   });
-  /* eslint-enable picasso/no-physical-properties */
+
+  it("names an edge of the reading direction, never a side", () => {
+    // `side="right"` that stayed on the right in Arabic would open over the
+    // sidebar. The variants are start / end, and so is every class in them.
+    for (const side of ["end", "start"] as const) {
+      const all = classes(drawerPanelVariants({ side }));
+      expect(all).toContain(`${side}-0`);
+      for (const cls of all) {
+        expect(cls).not.toMatch(/(^|:)(left|right)-|border-[lr]$|-(left|right)$/);
+      }
+    }
+  });
 
   it("sizes the side panels 480 and 640, and insets the expanded one instead", () => {
-    expect(drawerPanelVariants({ side: "right", size: "default" })).toContain(
+    expect(drawerPanelVariants({ side: "end", size: "default" })).toContain(
       "w-120",
     );
-    expect(drawerPanelVariants({ side: "right", size: "wide" })).toContain(
+    expect(drawerPanelVariants({ side: "end", size: "wide" })).toContain(
       "w-160",
     );
-    expect(drawerPanelVariants({ side: "left", size: "wide" })).toContain(
+    expect(drawerPanelVariants({ side: "start", size: "wide" })).toContain(
       "w-160",
     );
     const expanded = drawerPanelVariants({ side: "expanded", size: "wide" });
@@ -176,8 +182,8 @@ describe("Drawer", () => {
   });
 
   it("carries no radius on a side panel", () => {
-    expect(drawerPanelVariants({ side: "right" })).not.toContain("rounded");
-    expect(drawerPanelVariants({ side: "left" })).not.toContain("rounded");
+    expect(drawerPanelVariants({ side: "end" })).not.toContain("rounded");
+    expect(drawerPanelVariants({ side: "start" })).not.toContain("rounded");
     expect(drawerPanelVariants({ side: "expanded" })).toContain("rounded-2xl");
   });
 
@@ -297,15 +303,15 @@ describe("Drawer", () => {
 
   it("slides in from its own edge, and not at all under reduced motion", async () => {
     const user = userEvent.setup();
-    render(<RecordFixture side="left" />);
+    render(<RecordFixture side="start" />);
     const dialog = await open(user);
-    expect(dialog).toHaveAttribute("data-side", "left");
+    expect(dialog).toHaveAttribute("data-side", "start");
     expect(dialog).toHaveClass(
-      "motion-safe:data-[state=open]:animate-drawer-in-left",
-      "motion-safe:data-[state=closed]:animate-drawer-out-left",
+      "motion-safe:data-[state=open]:animate-drawer-in-start",
+      "motion-safe:data-[state=closed]:animate-drawer-out-start",
     );
     expect(dialog).not.toHaveClass(
-      "motion-safe:data-[state=open]:animate-drawer-in-right",
+      "motion-safe:data-[state=open]:animate-drawer-in-end",
     );
   });
 });
