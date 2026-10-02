@@ -1,14 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { contrast, hexToRgb } from "../../../tokens/build/ramp.mjs";
+// The import must stay on one line: @ts-expect-error covers only the line below it.
+// prettier-ignore
 // @ts-expect-error — plain .mjs build module
-import {
-  BRANDS,
-  brandLayer,
-  core,
-  resolver,
-  semantic,
-  onColourOverrides,
-} from "../../../tokens/build/brands.mjs";
+import { BRANDS, brandLayer, core, resolver, semantic, onColourOverrides } from "../../../tokens/build/brands.mjs";
 
 /**
  * Contrast as a build gate, not a review activity.

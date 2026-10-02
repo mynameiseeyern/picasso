@@ -7,6 +7,15 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Added
 
+- **`npm run format` and `npm run format:check`**, scoped to `packages/ui/src`,
+  with Prettier declared as a dev dependency. All of `packages/ui/src` is now
+  formatted, so a format-on-save no longer drags unrelated lines into a diff.
+  **Figma impact** — none.
+- **An `Invalid` story for Select and Password input, and a test each for
+  Select, Number input and Password input.** The treatment was already there
+  (`aria-invalid` turns the border to `border/input/invalid`); nothing showed
+  it or guarded it. **Figma impact** — none; Figma already draws all three.
+
 - **`Illustration` — product spot illustrations that answer the pointer.**
   Three drawings, redrawn from the Spotkit spots on Picasso semantics with
   Lucide glyphs: `issue-alerts`, `fleet-health`, `call-readiness`. Each
@@ -48,6 +57,12 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   switching `Type`.
 
 ### ⚠️ Changed (visual)
+
+- **Avatar's offline dot is `fg/neutral/subtle`.** It was resting on
+  `bg/neutral/subtle-pressed` — a state token at rest, and neutral-200 in
+  light, so the dot nearly vanished against its white ring. Now neutral-500
+  in both themes. **Figma impact** — none; this is what Figma's Status icon
+  already draws.
 
 - **Resting neutral fills take `bg/neutral/muted`, so they show on any
   surface.** Secondary **Button** (with `muted-hovered` / `-pressed`), the
