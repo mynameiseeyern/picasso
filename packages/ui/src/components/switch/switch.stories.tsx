@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 import { Switch } from "./switch";
+import { FieldOption } from "../field/field";
 
 import guidance from "./guidance.json";
 import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
@@ -71,15 +72,9 @@ export const WithLabel: Story = {
   name: "With a label",
   parameters: { controls: { disable: true } },
   render: () => (
-    <div className="flex items-center gap-2.5">
-      <Switch id="notifications" defaultChecked />
-      <label
-        htmlFor="notifications"
-        className="text-body-md text-content-neutral-emphasis"
-      >
-        Send notifications
-      </label>
-    </div>
+    <FieldOption control={<Switch defaultChecked />}>
+      Send notifications
+    </FieldOption>
   ),
 };
 
@@ -88,20 +83,9 @@ export const WithLabel: Story = {
 const Setting = ({
   label,
   ...rest
-}: { label: string } & React.ComponentProps<typeof Switch>) => {
-  const id = `sw-${React.useId()}`;
-  return (
-    <div className="flex items-center gap-2.5">
-      <Switch id={id} {...rest} />
-      <label
-        htmlFor={id}
-        className="text-body-md text-content-neutral-emphasis"
-      >
-        {label}
-      </label>
-    </div>
-  );
-};
+}: { label: string } & React.ComponentProps<typeof Switch>) => (
+  <FieldOption control={<Switch {...rest} />}>{label}</FieldOption>
+);
 
 export const DoAndDont: Story = {
   name: "Do and Don't",

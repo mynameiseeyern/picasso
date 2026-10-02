@@ -139,6 +139,8 @@ export function DialogTitle({
           aria-label={closeLabel}
           className={
             "inline-flex size-4 shrink-0 items-center justify-center rounded-xs " +
+            // the target reaches past the icon; the box stays 16
+            "relative after:absolute after:-inset-2 pointer-coarse:after:-inset-3.5 " +
             "text-content-neutral-subtle outline-none transition-colors " +
             "hover:text-content-neutral-emphasis " +
             "focus-visible:ring-2 focus-visible:ring-line-focused focus-visible:ring-offset-2 " +

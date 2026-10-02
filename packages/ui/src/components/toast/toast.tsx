@@ -48,7 +48,8 @@ import { cn } from "@/lib/utils";
  */
 const toastVariants = cva(
   "flex w-115 max-w-full items-center gap-2 rounded-md border px-2.5 py-2 shadow-md outline-none " +
-    // Motion. It arrives from the right edge over motion/duration/slow and
+    // Motion. It arrives from the edge its viewport sits on (inline end: the
+    // right, or the left under dir="rtl") over motion/duration/slow and
     // leaves the same way over base, whether it timed out, was closed or
     // was swiped; reduced motion switches both off.
     "motion-safe:data-[state=open]:animate-toast-in motion-safe:data-[state=closed]:animate-toast-out " +
@@ -132,7 +133,14 @@ const ToastContext = React.createContext<{
   appearance: "emphasis",
 });
 
-/** Wrap the app once. Radix owns the queue, the timers and the swipe. */
+/**
+ * Wrap the app once. Radix owns the queue, the timers and the swipe.
+ *
+ * ⚠️ RTL: the viewport and the slide mirror on their own, the swipe does
+ * not — Radix's `swipeDirection` is physical and defaults to "right". Pass
+ * `swipeDirection="left"` in an RTL locale, or a swipe sends the toast one
+ * way and the exit takes it the other.
+ */
 export function ToastProvider(
   props: React.ComponentProps<typeof ToastPrimitive.Provider>,
 ) {
@@ -307,6 +315,11 @@ export function ToastClose({
       data-slot="toast-close"
       aria-label={label}
       className={cn(
+        // ⚠️ 16 square, under the 24 floor. The expanded-hit-area trick the
+        // other dismissers use cannot work here: the Toast clips its own
+        // content (overflow-hidden for the swipe), so a ::after reaching past
+        // the button is cut off at the edge. Fixing it means giving the
+        // button a real box, which changes the Toast's header row. Raised.
         "flex size-4 shrink-0 cursor-pointer items-center justify-center self-start rounded-xs " +
           "outline-none focus-visible:ring-2 focus-visible:ring-line-focused " +
           "focus-visible:ring-offset-2 focus-visible:ring-offset-surface-card",

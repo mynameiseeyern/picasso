@@ -159,6 +159,8 @@ export function AlertTitle({
           aria-label={ctx.dismissLabel}
           className={cn(
             "flex size-4 shrink-0 items-center justify-center rounded-xs",
+            // the target reaches past the icon; the box stays 16
+            "relative after:absolute after:-inset-2 pointer-coarse:after:-inset-3.5 ",
             "outline-none transition-colors",
             "hover:bg-surface-layer-on-emphasis-subtle",
             "focus-visible:bg-surface-layer-on-emphasis-subtle",

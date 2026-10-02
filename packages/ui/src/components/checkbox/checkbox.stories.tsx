@@ -6,6 +6,7 @@ import {
   FieldControl,
   FieldDescription,
   FieldLabel,
+  FieldOption,
 } from "../field/field";
 
 import guidance from "./guidance.json";
@@ -100,30 +101,31 @@ export const ParentAndChildren: Story = {
     const none = probes.every((p) => !p);
     return (
       <div className="flex flex-col gap-3">
-        <div className="flex items-center gap-2.5">
-          <Checkbox
-            checked={all ? true : none ? false : "indeterminate"}
-            onCheckedChange={(v) => setProbes(probes.map(() => v === true))}
-            aria-label="All probes"
-          />
-          <span className="text-label-md text-content-neutral-emphasis">
-            All probes
-          </span>
-        </div>
+        <FieldOption
+          control={
+            <Checkbox
+              checked={all ? true : none ? false : "indeterminate"}
+              onCheckedChange={(v) => setProbes(probes.map(() => v === true))}
+            />
+          }
+        >
+          All probes
+        </FieldOption>
         <div className="flex flex-col gap-2.5 ps-6">
           {["SYD-03", "MEL-01", "BNE-02"].map((name, i) => (
-            <div key={name} className="flex items-center gap-2.5">
-              <Checkbox
-                checked={probes[i]}
-                onCheckedChange={(v) =>
-                  setProbes(probes.map((p, j) => (i === j ? v === true : p)))
-                }
-                aria-label={name}
-              />
-              <span className="text-body-md text-content-neutral-emphasis">
-                {name}
-              </span>
-            </div>
+            <FieldOption
+              key={name}
+              control={
+                <Checkbox
+                  checked={probes[i]}
+                  onCheckedChange={(v) =>
+                    setProbes(probes.map((p, j) => (i === j ? v === true : p)))
+                  }
+                />
+              }
+            >
+              {name}
+            </FieldOption>
           ))}
         </div>
       </div>
@@ -137,10 +139,7 @@ const Row = ({
   label,
   ...rest
 }: { label: string } & React.ComponentProps<typeof Checkbox>) => (
-  <div className="flex items-center gap-2.5">
-    <Checkbox aria-label={label} {...rest} />
-    <span className="text-body-md text-content-neutral-emphasis">{label}</span>
-  </div>
+  <FieldOption control={<Checkbox {...rest} />}>{label}</FieldOption>
 );
 
 export const DoAndDont: Story = {

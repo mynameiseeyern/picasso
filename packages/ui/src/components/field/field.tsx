@@ -149,7 +149,7 @@ export function FieldLabel({
             type="button"
             aria-label={`About ${typeof children === "string" ? children : "this field"}`}
             data-slot="field-help"
-            className="inline-flex size-4 items-center justify-center rounded-full text-content-neutral-subtle outline-none hover:text-content-neutral-emphasis focus-visible:ring-2 focus-visible:ring-line-focused"
+            className="inline-flex size-4 items-center justify-center rounded-full text-content-neutral-subtle outline-none hover:text-content-neutral-emphasis focus-visible:ring-2 focus-visible:ring-line-focused relative after:absolute after:-inset-2 pointer-coarse:after:-inset-3.5"
           >
             <CircleHelp aria-hidden className="size-4" />
           </button>

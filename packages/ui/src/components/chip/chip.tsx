@@ -119,6 +119,9 @@ export function Chip({
           onClick={onRemove}
           className={
             "-me-1 inline-flex size-4 shrink-0 cursor-pointer items-center justify-center " +
+            // the target reaches past the icon; a 24-tall chip cannot hold a
+            // 44 box, so the box stays 16 and the hit area does not
+            "relative after:absolute after:-inset-2 pointer-coarse:after:-inset-3.5 " +
             "rounded-full outline-none transition-colors " +
             "hover:bg-surface-neutral-subtle-hovered " +
             "focus-visible:ring-2 focus-visible:ring-line-focused " +

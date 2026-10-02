@@ -6,6 +6,7 @@ import {
   FieldDescription,
   FieldError,
   FieldLabel,
+  FieldOption,
 } from "../field/field";
 
 import guidance from "./guidance.json";
@@ -165,17 +166,12 @@ function Labelled({
   React.ComponentProps<typeof Radio>,
   "value"
 >) {
-  const id = `radio-${React.useId()}`;
+  // FieldOption generates the id and hangs htmlFor off it, so the row is the
+  // target rather than the 16px dot.
   return (
-    <div className="flex items-center gap-2.5">
-      <Radio id={id} value={value} {...rest} />
-      <label
-        htmlFor={id}
-        className="text-body-md text-content-neutral-emphasis"
-      >
-        {label}
-      </label>
-    </div>
+    <FieldOption control={<Radio value={value} {...rest} />}>
+      {label}
+    </FieldOption>
   );
 }
 

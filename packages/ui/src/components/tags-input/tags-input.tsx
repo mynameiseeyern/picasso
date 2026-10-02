@@ -51,7 +51,7 @@ export function InputChip({
           }
           disabled={disabled}
           onClick={onRemove}
-          className="inline-flex size-4 items-center justify-center rounded-full outline-none hover:bg-surface-neutral-subtle-hovered focus-visible:ring-2 focus-visible:ring-line-focused disabled:pointer-events-none"
+          className="inline-flex size-4 items-center justify-center rounded-full outline-none hover:bg-surface-neutral-subtle-hovered focus-visible:ring-2 focus-visible:ring-line-focused disabled:pointer-events-none relative after:absolute after:-inset-2 pointer-coarse:after:-inset-3.5"
         >
           <X aria-hidden className="size-3" />
         </button>

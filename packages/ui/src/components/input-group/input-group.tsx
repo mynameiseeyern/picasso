@@ -222,6 +222,8 @@ export function InputGroupTooltip({
           data-slot="input-group-tooltip"
           className={cn(
             "inline-flex size-4 items-center justify-center rounded-full text-content-neutral-subtle " +
+              // the target reaches past the icon; the box stays 16
+              "relative after:absolute after:-inset-2 pointer-coarse:after:-inset-3.5 " +
               "outline-none hover:text-content-neutral-emphasis focus-visible:ring-2 focus-visible:ring-line-focused",
             className,
           )}
