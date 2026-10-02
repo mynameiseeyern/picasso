@@ -8,6 +8,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
   dropdownMenuItemVariants,
 } from "./dropdown-menu";
@@ -124,5 +127,32 @@ describe("DropdownMenu", () => {
     const item = await screen.findByRole("menuitem", { name: /Copy id/ });
     // Padding plus body/md's line-height renders 29 against the drawn 28.
     expect(item.className).toContain("h-7");
+  });
+
+  it("grows from its trigger on the motion tokens, and so does a submenu", async () => {
+    const user = userEvent.setup();
+    render(
+      <DropdownMenu>
+        <DropdownMenuTrigger>Actions</DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>Move to</DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              <DropdownMenuItem>Sydney</DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+        </DropdownMenuContent>
+      </DropdownMenu>,
+    );
+    await user.click(screen.getByText("Actions"));
+    await screen.findByRole("menu");
+    await user.keyboard("{ArrowDown}{ArrowRight}");
+    await screen.findByText("Sydney");
+    for (const slot of ["dropdown-menu-content", "dropdown-menu-sub-content"])
+      expect(document.querySelector(`[data-slot=${slot}]`)).toHaveClass(
+        "origin-(--radix-dropdown-menu-content-transform-origin)",
+        "motion-safe:data-[state=open]:animate-popover-in",
+        "motion-safe:data-[state=closed]:animate-popover-out",
+      );
   });
 });

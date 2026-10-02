@@ -425,6 +425,12 @@
   [dir="rtl"] .rtl-mirror {
     transform: scaleX(-1);
   }
+  /* A Toast arrives from, and leaves to, the edge its viewport sits on: the
+     inline end. There is no logical translate, so the toast keyframes read
+     the edge from here and it flips with the reading direction. */
+  [dir="rtl"] {
+    --toast-edge: -100%;
+  }
 }
 
 /* ═══ Layer (z-index) ═══════════════════════════════════════════════════
@@ -659,6 +665,16 @@
    Dialog scales with `transform`, which composes with the `translate`
    Tailwind uses to centre it — the two are separate properties.
 
+   The small surfaces that hang off a trigger — Popover, Dropdown menu,
+   Select's menu, Tooltip — are the exception to the first rule: they take
+   the fast step both ways. They are small and they open under the pointer,
+   so the base step reads as lag, and there is nothing shorter to leave on.
+   They grow from the corner nearest their trigger; each component points
+   `transform-origin` at the origin Radix publishes for it.
+
+   Toast and Bottom sheet travel their own length from the edge they live
+   on, so they take the Drawer's timing: slow in, base out.
+
    Every component reaches these through `motion-safe:`, so under reduced
    motion nothing animates at all. A `motion-reduce:animate-none` override
    does not work here: it loses the cascade to the data-state rule.       */
@@ -685,6 +701,18 @@
   --animate-accordion-down: accordion-down var(--motion-duration-base)
     var(--motion-easing-enter);
   --animate-accordion-up: accordion-up var(--motion-duration-fast)
+    var(--motion-easing-exit) both;
+  --animate-popover-in: popover-in var(--motion-duration-fast)
+    var(--motion-easing-enter);
+  --animate-popover-out: popover-out var(--motion-duration-fast)
+    var(--motion-easing-exit) both;
+  --animate-sheet-in: sheet-in var(--motion-duration-slow)
+    var(--motion-easing-enter);
+  --animate-sheet-out: sheet-out var(--motion-duration-base)
+    var(--motion-easing-exit) both;
+  --animate-toast-in: toast-in var(--motion-duration-slow)
+    var(--motion-easing-enter);
+  --animate-toast-out: toast-out var(--motion-duration-base)
     var(--motion-easing-exit) both;
 
   @keyframes fade-in {
@@ -746,4 +774,52 @@
       height: 0;
     }
   }
+  @keyframes popover-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+  @keyframes popover-out {
+    to {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+  @keyframes sheet-in {
+    from {
+      transform: translateY(100%);
+    }
+  }
+  @keyframes sheet-out {
+    to {
+      transform: translateY(100%);
+    }
+  }
+  /* Toast leaves the way a swipe sends it: to the inline end, which is the
+     right unless --toast-edge says otherwise (it does under dir="rtl"). The
+     swipe itself is carried by `translate`, a separate property, so a toast
+     let go halfway carries on from where the finger left it. */
+  @keyframes toast-in {
+    from {
+      opacity: 0;
+      transform: translateX(var(--toast-edge, 100%));
+    }
+  }
+  @keyframes toast-out {
+    to {
+      opacity: 0;
+      transform: translateX(var(--toast-edge, 100%));
+    }
+  }
+}
+
+/* The Sidebar's rail changing width. A transition rather than an animation
+   because nothing mounts or unmounts — the same element is 256 or 48. It is
+   a utility because `transition-[width]` is an arbitrary value, and a
+   duration typed into a component is what the motion tokens are for.     */
+@utility transition-rail {
+  transition-property: width;
+  transition-duration: var(--motion-duration-base);
+  transition-timing-function: var(--motion-easing-enter);
 }

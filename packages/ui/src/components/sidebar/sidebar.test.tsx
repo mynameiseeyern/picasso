@@ -355,3 +355,16 @@ describe('Sidebar mobile="fullscreen" (phones)', () => {
     ).toBeInTheDocument();
   });
 });
+
+describe("Sidebar motion", () => {
+  it("changes width on the motion tokens, and instantly under reduced motion", async () => {
+    const user = userEvent.setup();
+    render(<Fixture />);
+    const rail = document.querySelector("[data-slot=sidebar]")!;
+    expect(rail).toHaveClass("w-64", "motion-safe:transition-rail");
+    await user.click(screen.getByRole("button", { name: "Collapse sidebar" }));
+    // The same element, so the width has something to travel from.
+    expect(document.querySelector("[data-slot=sidebar]")).toBe(rail);
+    expect(rail).toHaveClass("w-12", "motion-safe:transition-rail");
+  });
+});

@@ -86,6 +86,8 @@ export function DropdownMenuContent({
         className={cn(
           overlaySurfaceVariants({ density: "compact" }),
           "min-w-40 max-h-(--radix-dropdown-menu-content-available-height) overflow-y-auto",
+          "origin-(--radix-dropdown-menu-content-transform-origin)",
+          "motion-safe:data-[state=open]:animate-popover-in motion-safe:data-[state=closed]:animate-popover-out",
           className,
         )}
         {...props}
@@ -222,6 +224,8 @@ export function DropdownMenuSubContent({
         className={cn(
           overlaySurfaceVariants({ density: "compact" }),
           "min-w-40",
+          "origin-(--radix-dropdown-menu-content-transform-origin)",
+          "motion-safe:data-[state=open]:animate-popover-in motion-safe:data-[state=closed]:animate-popover-out",
           className,
         )}
         {...props}

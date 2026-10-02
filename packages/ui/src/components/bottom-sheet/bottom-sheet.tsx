@@ -28,10 +28,13 @@ import { overlayScrimVariants } from "../overlay/overlay";
  * Built on Radix Dialog, like Drawer: Esc and a tap on the scrim close it,
  * focus is trapped while it is open and returns to the trigger after.
  *
- * ⚠️ The handle does not drag. There are no motion tokens yet, and a sheet
- * whose only exit is a gesture is a sheet a keyboard or switch user cannot
- * leave — so the close button is always drawn, and the handle is decoration.
- * No motion either, for the same reason as Drawer.
+ * Motion: the sheet rises from the bottom edge over motion/duration/slow and
+ * drops back over base, the same timing as Drawer; the scrim fades. Reduced
+ * motion switches both off. Figma draws none of this.
+ *
+ * ⚠️ The handle does not drag. A sheet whose only exit is a gesture is a
+ * sheet a keyboard or switch user cannot leave — so the close button is
+ * always drawn, and the handle is decoration.
  *
  * ⚠️ Not for navigation. A phone's main nav is full screen
  * (SidebarMobile); a sheet is for one decision about the page beneath it.
@@ -87,6 +90,7 @@ export function BottomSheetContent({
           "fixed inset-x-0 bottom-0 z-modal flex max-h-5/6 flex-col " +
             "rounded-t-2xl border-t border-line-neutral-muted bg-surface-overlay " +
             "shadow-lg outline-none",
+          "motion-safe:data-[state=open]:animate-sheet-in motion-safe:data-[state=closed]:animate-sheet-out",
           className,
         )}
         {...props}

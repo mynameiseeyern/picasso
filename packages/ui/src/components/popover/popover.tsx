@@ -104,10 +104,14 @@ export function PopoverContent({
           aria-describedby={parts.description > 0 ? descriptionId : undefined}
           // The surface lands on Content itself — Radix positions and animates
           // this node, and a styled wrapper would leave the shadow behind.
+          // Motion goes on with or without the surface: it grows from the
+          // corner nearest the trigger, and not at all under reduced motion.
           className={cn(
             surface
               ? cn(overlaySurfaceVariants({ density: "comfortable" }), "w-72")
               : "z-floating",
+            "origin-(--radix-popover-content-transform-origin)",
+            "motion-safe:data-[state=open]:animate-popover-in motion-safe:data-[state=closed]:animate-popover-out",
             className,
           )}
           {...props}

@@ -1,12 +1,12 @@
 ---
 title: Motion
-description: A small duration and easing scale for overlays and disclosure, plus colour transitions, the Loader and illustrations. Reduced motion is honoured everywhere.
+description: A small duration and easing scale for everything that opens, closes or changes size, plus colour transitions, the Loader and illustrations. Reduced motion is honoured everywhere.
 ---
 
 # Motion
 
-Picasso animates four things: overlays and disclosure, colour, the Loader,
-and illustrations. Everything else changes instantly.
+Picasso animates four things: surfaces that open, close or change size;
+colour; the Loader; and illustrations. Everything else changes instantly.
 
 ## The scale
 
@@ -15,15 +15,20 @@ as `--motion-*`). They exist for surfaces that arrive and leave.
 
 | Token | Value | For |
 |---|---|---|
-| `motion/duration/fast` | 150ms | Leaving, and small things: a scrim fading out, a dialog closing, an accordion row collapsing |
-| `motion/duration/base` | 200ms | Arriving: a scrim, a dialog, an accordion row opening. Also a drawer leaving |
-| `motion/duration/slow` | 300ms | A large surface travelling a long way: a drawer sliding in |
+| `motion/duration/fast` | 150ms | Leaving, and small things: a scrim fading out, a dialog closing, an accordion row collapsing; a popover, menu or tooltip both ways |
+| `motion/duration/base` | 200ms | Arriving: a scrim, a dialog, an accordion row opening. Also a drawer, toast or bottom sheet leaving, and the sidebar changing width |
+| `motion/duration/slow` | 300ms | A surface travelling its own length: a drawer, toast or bottom sheet sliding in |
 | `motion/easing/enter` | `cubic-bezier(0, 0, 0.2, 1)` | Decelerate — anything arriving |
 | `motion/easing/exit` | `cubic-bezier(0.4, 0, 1, 1)` | Accelerate — anything going away |
 
 Two rules: **arriving takes the longer step and decelerates; leaving takes the
 shorter step and accelerates**, so dismissing always feels quicker than
 opening.
+
+One exception: the small surfaces that hang off a trigger — Popover, Dropdown
+menu, Select's menu, Tooltip — take the fast step both ways. They open under
+the pointer, so the base step reads as lag, and there is nothing shorter to
+leave on.
 
 A component never states a duration or a curve. `theme.css` composes the
 tokens into named animations, and the component asks for one:
@@ -34,6 +39,10 @@ tokens into named animations, and the component asks for one:
 | `animate-dialog-in` · `-out` | Dialog, and the expanded Drawer | fade and scale from 96%: base enter · fast exit |
 | `animate-drawer-in-right` · `-out-right` (and `-left`) | Side Drawer | slide from its edge: slow enter · base exit |
 | `animate-accordion-down` · `-up` | Accordion content | height, to the value Radix measures: base enter · fast exit |
+| `animate-popover-in` · `-out` | Popover, Dropdown menu and its submenus, Select's menu, Tooltip | fade and scale from 96%, from the corner nearest the trigger: fast both ways |
+| `animate-toast-in` · `-out` | Toast | fade and slide from the inline end (the right; the left in RTL): slow enter · base exit |
+| `animate-sheet-in` · `-out` | Bottom sheet | slide from the bottom edge: slow enter · base exit |
+| `transition-rail` | The Sidebar's rail | width only: base, decelerating, both ways |
 
 Each is applied under `motion-safe:` on Radix's `data-state`:
 
@@ -47,10 +56,27 @@ loses the cascade to the `data-state` rule and the animation still runs
 unmounts on `animationend` and the surface would otherwise flash back for a
 frame.
 
-**Not animated yet:** Popover, Tooltip, Dropdown menu, Select, Toast, the
-Sidebar's collapse and the Bottom sheet. They change instantly until someone
-gives them an entry in the table above. A Bottom sheet that follows a drag
-needs a spring, which this scale does not describe.
+Four details the table does not show:
+
+- **The anchored surfaces grow from their trigger.** Each one points
+  `transform-origin` at the origin Radix publishes for it
+  (`origin-(--radix-popover-content-transform-origin)` and its siblings), so a
+  menu opening below-left of its button grows from that corner.
+- **A Tooltip animates its delayed open only.** Moving along a row of
+  triggers, Radix opens the next tooltip instantly; a fade on each would make
+  the row feel slower.
+- **A Toast follows a swipe.** It tracks the finger, carries on from where it
+  is let go and settles back if the swipe is abandoned. Following a finger is
+  not animation, so it stays on under reduced motion; only the settle is
+  switched off. The slide mirrors in RTL by itself; the swipe does not, so an
+  RTL app passes `swipeDirection="left"` to `ToastProvider`.
+- **The Sidebar moves its width and nothing else.** It is a transition, not an
+  animation, because nothing mounts or unmounts. The labels leave and arrive
+  at once; the page beside it reflows as the rail moves.
+
+**Still instant:** the Sidebar's full-screen phone nav, and a Bottom sheet
+does not follow a drag — that needs a spring, which this scale does not
+describe.
 
 Figma carries the five tokens as variables (three numbers in milliseconds,
 two strings), hidden from pickers: a static frame cannot show a transition,

@@ -53,6 +53,11 @@ export function TooltipContent({
         className={cn(
           "z-floating max-w-xs rounded-md bg-surface-neutral-emphasis px-3 py-1 " +
             "text-body-xs text-content-on-neutral-emphasis text-balance",
+          // Only the delayed open animates. Radix opens the next tooltip
+          // instantly while the pointer is moving along a row of triggers,
+          // and a fade on each one would make the row feel slower.
+          "origin-(--radix-tooltip-content-transform-origin)",
+          "motion-safe:data-[state=delayed-open]:animate-popover-in motion-safe:data-[state=closed]:animate-popover-out",
           className,
         )}
         {...props}

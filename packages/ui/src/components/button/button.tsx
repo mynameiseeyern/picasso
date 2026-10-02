@@ -16,9 +16,12 @@ import { cn } from "@/lib/utils";
  * Height is 28/32/36/40 on both sides. Figma drew 24/28/32/36 until 2 Oct
  * 2026 and was moved to match (Ee's call), so md is 36 beside a 36 Input.
  *
- * ⚠️ Padding and type size still differ. Figma is 8 (xs) and 10 everywhere
- * else, with label/md at every size; this is shadcn's 10/12/16/24, with
- * label/sm at xs and sm. Not reconciled — raised.
+ * Padding (10/12/16/24), gap (6/6/8/8), label (label/sm at xs and sm) and
+ * icon size (14 at xs) match Figma too, since the same day.
+ *
+ * One thing Figma cannot follow: `has-[>svg]` trims the padding a step when
+ * a button carries an icon. Figma shows the icon with a toggle and cannot
+ * change padding from one, so a button with an icon is 4–8px wider there.
  */
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md " +

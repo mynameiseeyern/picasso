@@ -236,16 +236,18 @@ export function Sidebar({
       data-slot="sidebar"
       data-collapsed={collapsed || undefined}
       className={cn(
-        // No width transition: there are no motion tokens yet, and an
-        // arbitrary one is what `no-arbitrary-values` exists to stop.
+        // The width change runs on motion/duration/base (`transition-rail`,
+        // in theme.css) and is instant under reduced motion. Only the width
+        // moves: the labels leave and arrive at once, and the ones still
+        // there truncate while the rail is between sizes.
         // The right edge is drawn in Figma as border/neutral/subtle, which
         // was invisible in both themes — it was neutral-100 in light, the
         // same as bg/sidebar, and neutral-900 in dark, the same as both
         // bg/sidebar and bg/app. subtle has since been retired into muted
         // (there is no room on the ramp for a border below muted that is
         // not also a surface), so the edge reads in both themes now.
-        "flex shrink-0 flex-col border-r border-line-neutral-muted " +
-          "bg-surface-sidebar",
+        "flex shrink-0 flex-col border-e border-line-neutral-muted " +
+          "bg-surface-sidebar motion-safe:transition-rail",
         collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH,
         className,
       )}
@@ -543,7 +545,7 @@ export function SidebarMenuItem({
 
 const sidebarMenuButtonVariants = cva(
   "group/menu-button flex w-full cursor-pointer items-center gap-2 rounded-md p-2 " +
-    "text-left text-content-neutral-emphasis outline-none transition-colors " +
+    "text-start text-content-neutral-emphasis outline-none transition-colors " +
     "hover:bg-surface-sidebar-hovered active:bg-surface-sidebar-pressed " +
     "focus-visible:border-line-primary-emphasis focus-visible:bg-surface-sidebar " +
     "focus-visible:ring-2 focus-visible:ring-line-focused " +
@@ -644,7 +646,7 @@ const sidebarMenuSubVariants = cva("flex flex-col gap-1 py-0.5", {
     variant: {
       default: "",
       indent: "px-1.5",
-      border: "ms-4 border-l border-line-neutral-muted ps-4",
+      border: "ms-4 border-s border-line-neutral-muted ps-4",
     },
   },
   defaultVariants: { variant: "default" },

@@ -129,4 +129,16 @@ describe("Select", () => {
       "aria-invalid:border-line-input-invalid",
     );
   });
+
+  it("opens its menu on the motion tokens, and not at all under reduced motion", async () => {
+    setup();
+    await userEvent.click(
+      screen.getByRole("button", { name: /Filter actions/ }),
+    );
+    expect(document.querySelector("[data-slot=select-menu]")).toHaveClass(
+      "origin-(--radix-popover-content-transform-origin)",
+      "motion-safe:data-[state=open]:animate-popover-in",
+      "motion-safe:data-[state=closed]:animate-popover-out",
+    );
+  });
 });

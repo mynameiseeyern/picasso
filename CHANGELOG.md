@@ -26,9 +26,27 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   the longer step and decelerates; leaving takes the shorter and accelerates.
   All of it sits under `motion-safe:`, so reduced motion gets no animation.
   Components ask for a named animation (`animate-dialog-in`, …) and never
-  state a duration or curve. Popover, Tooltip, menus, Toast, Sidebar and
-  Bottom sheet are not animated yet. **Figma impact** — five `motion/*`
+  state a duration or curve. **Figma impact** — five `motion/*`
   variables in Primitives, hidden from pickers; nothing moves on canvas.
+
+- **Motion for everything else that opens, closes or changes size.**
+  **Popover**, **Dropdown menu** (and its submenus), **Select**'s menu and
+  **Tooltip** fade and scale from the corner nearest their trigger
+  (`animate-popover-in` · `-out`, fast both ways — they are small and open
+  under the pointer, so the base step reads as lag). A Tooltip only animates
+  its delayed open; the instant open Radix gives the next trigger along a row
+  stays instant. **Toast** slides in from the edge its viewport sits on (the
+  right; the left under `dir="rtl"`) and leaves the same way
+  (`animate-toast-in` · `-out`), and now follows a swipe: it tracks the
+  finger, carries on from where it is let go, and settles back if the swipe
+  is abandoned. Radix's `swipeDirection` is physical, so an RTL app passes
+  `swipeDirection="left"` to `ToastProvider`. **Bottom sheet** rises from the bottom edge and drops back
+  (`animate-sheet-in` · `-out`); Toast and Bottom sheet take the Drawer's
+  timing, slow in and base out. The **Sidebar**'s rail changes width over
+  `motion/duration/base` (`transition-rail`). All of it sits under
+  `motion-safe:`; under reduced motion everything is instant, and a Toast
+  still follows the finger because that is not animation. No new tokens.
+  **Figma impact** — none; nothing moves on canvas.
 
 - **`npm run format` and `npm run format:check`**, scoped to `packages/ui/src`,
   with Prettier declared as a dev dependency. All of `packages/ui/src` is now
@@ -62,8 +80,10 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   action column widened from 60 to 64 to hold the 32px icon button, and
   nothing else overflowed. **Code impact** — none. In a consuming file, every
   Button grows 4px on update; a layout drawn tight around one may need a nudge.
-  Padding and label size still differ between the two sides (Figma 8 / 10 with
-  `label/md` throughout; code 10 / 12 / 16 / 24 with `label/sm` at xs and sm).
+  Padding (10 / 12 / 16 / 24), gap (6 / 6 / 8 / 8) and icon size (14 at xs)
+  were aligned to code the same day, so a Button is also wider: `md` goes from
+  62 to 74 with the same label. Code trims padding when a button has an icon;
+  Figma cannot do that from a toggle, so those are 4–8px wider in Figma.
 
 - **Figma's Input button has no `Type` axis.** 24 variants become 12
   (`State` × `Size`). Button and Select trigger differed only by an icon and
@@ -101,6 +121,14 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   switching `Type`.
 
 ### ⚠️ Changed (visual)
+
+- **Dark `bg/disabled` is neutral-700 and dark `fg/disabled` is neutral-500.**
+  The fill was neutral-800, the card colour, so a disabled Button or Chip on
+  a dark card was a label with no box. It now shows on the page (1.71) and on
+  a card (1.42), and the label on it reads at 2.2:1, the softness light
+  already had. Disabled text on a dark surface is more legible than before,
+  and is now the same grey as `fg/neutral/subtle` in dark. Light is unchanged.
+  **Figma impact** — the two Semantic variables' Dark values, already applied.
 
 - **Disabled and on is grey, on Switch and Radio.** A disabled Switch that is
   on, and a disabled Radio that is selected, were still full primary and read
