@@ -79,6 +79,13 @@ export const NEUTRALS = own(NEUTRAL_RAMPS).map(([id]) => ({ id, label: cap(id) }
 export type Theme = {
   name: string;
   brand: string; // hex
+  /* Eleven literal stops, when the brand carries its own. `colour.ramp` in
+   * brand.json is the format's own escape hatch — Clarion's stops are
+   * Marketing's and differ from the generated ones at all eleven — so the
+   * builder has to be able to hold them too, or importing Clarion would show
+   * a blue that is not Clarion's. Null means "generate from base", which is
+   * what a brand without supplied values does. */
+  ramp: Ramp | null;
   neutral: string;
   radius: string;
   spacing: string;
@@ -89,6 +96,7 @@ export type Theme = {
 export const DEFAULT_THEME: Theme = {
   name: 'my-brand',
   brand: '#007FAB',
+  ramp: null,
   neutral: 'cool',
   radius: 'default',
   spacing: 'default',
@@ -127,7 +135,7 @@ export type Resolved = {
 };
 
 export function resolve(theme: Theme): Resolved {
-  const ramp = buildRamp(theme.brand);
+  const ramp = theme.ramp ?? buildRamp(theme.brand);
   const neutral = NEUTRAL_RAMPS[theme.neutral] ?? NEUTRAL_RAMPS.cool;
   const space = SPACING.find((s) => s.id === theme.spacing)!.ladder;
   const radius = RADIUS.find((r) => r.id === theme.radius)!.value;
@@ -241,7 +249,9 @@ export function toJson(theme: Theme) {
     {
       $description: `${theme.name} — exported from the Picasso theme builder. Each field picks from presets.json. colour.ramp pins the eleven stops; omit it and the build generates them from colour.base.`,
       name: theme.name,
-      colour: { base: theme.brand.toUpperCase() },
+      colour: theme.ramp
+        ? { base: theme.brand.toUpperCase(), ramp: upper(theme.ramp) }
+        : { base: theme.brand.toUpperCase() },
       neutral: theme.neutral,
       radius: theme.radius,
       spacing: theme.spacing,
@@ -251,6 +261,19 @@ export function toJson(theme: Theme) {
     2,
   );
 }
+
+/** The stops `colour.base` alone would produce — what Regenerate goes back to. */
+export const generatedRamp = (theme: Theme) => buildRamp(theme.brand);
+
+/** True when the stops in play are the ones the base would generate, so the
+ *  builder knows whether to say the two have come apart. */
+export function rampMatchesBase(theme: Theme) {
+  if (!theme.ramp) return true;
+  const gen = buildRamp(theme.brand);
+  return STEPS.every((s) => theme.ramp![s].toUpperCase() === gen[s].toUpperCase());
+}
+
+const upper = (r: Ramp) => Object.fromEntries(STEPS.map((s) => [s, r[s].toUpperCase()]));
 
 /** Where the exported brand.json belongs in the repo. */
 export const brandPath = (theme: Theme) => `packages/tokens/tokens/brands/${slug(theme.name)}/brand.json`;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Check, Copy, Download, Moon, RotateCcw, Sun } from 'lucide-react';
+import { AlertCircle, Check, Copy, Download, Moon, RotateCcw, Sun, Upload, Wand2, X } from 'lucide-react';
 import { BrandColorPicker } from '@/components/brand-color-picker';
 import { BrandFlow } from '@/components/brand-flow';
 import {
@@ -16,11 +16,13 @@ import {
   brandPath,
   googleFontsUrl,
   isPresetFont,
+  rampMatchesBase,
   resolve,
   toCss,
   toJson,
   type Theme,
 } from '@/lib/theme';
+import { ImportError, MultipleBrands, importTheme } from '@/lib/theme-import';
 
 /* The preview is the Storybook "Theming/Preview" story in an iframe. It is the
  * real components on the real tokens; the builder only drives the axes on the
@@ -34,11 +36,76 @@ export function ThemeBuilder() {
   const [copied, setCopied] = useState<'css' | 'json' | null>(null);
   const [tab, setTab] = useState<'readme' | 'css' | 'json'>('readme');
   const frame = useRef<HTMLIFrameElement>(null);
+  const picker = useRef<HTMLInputElement>(null);
+
+  /* Import state. `notice` is what came in and what could not be honoured;
+     `problem` is a file that could not be read at all; `choose` is a CSS file
+     holding more than one brand, waiting on which. */
+  const [notice, setNotice] = useState<{ title: string; warnings: string[] } | null>(null);
+  const [problem, setProblem] = useState<string | null>(null);
+  const [choose, setChoose] = useState<{ ids: string[]; text: string } | null>(null);
+  const [dropping, setDropping] = useState(false);
+
+  /* What is being typed into the code panel. The panel shows the draft while
+     it exists so the caret stays put; the theme only moves when the draft
+     parses. Any control change drops it, because the control is then the
+     newer statement of intent. */
+  const [draft, setDraft] = useState<{ tab: 'css' | 'json'; text: string; error: string | null } | null>(null);
 
   const resolved = useMemo(() => resolve(theme), [theme]);
   const css = useMemo(() => toCss(theme, resolved), [theme, resolved]);
   const json = useMemo(() => toJson(theme), [theme, resolved]);
-  const set = <K extends keyof Theme>(k: K, v: Theme[K]) => setTheme((t) => ({ ...t, [k]: v }));
+  const set = <K extends keyof Theme>(k: K, v: Theme[K]) => {
+    setDraft(null);
+    setTheme((t) => ({ ...t, [k]: v }));
+  };
+
+  /* Editing one stop makes the whole ramp the brand's own: brand.json takes
+     eleven stops or none, so there is no such thing as one supplied stop. */
+  const setStop = (step: number, hex: string) => set('ramp', { ...resolved.ramp, [step]: hex });
+
+  const apply = (text: string, brand?: string) => {
+    try {
+      const r = importTheme(text, { brand });
+      setTheme(r.theme);
+      setDraft(null);
+      setChoose(null);
+      setProblem(null);
+      setNotice({
+        title: `${r.id ?? 'Brand'} — read from ${r.from === 'json' ? 'brand.json' : 'CSS'}`,
+        warnings: r.warnings,
+      });
+    } catch (e) {
+      if (e instanceof MultipleBrands) {
+        setChoose({ ids: e.ids, text });
+        setNotice(null);
+        setProblem(null);
+        return;
+      }
+      setProblem(e instanceof ImportError ? e.message : `Could not read that file — ${(e as Error).message}`);
+      setNotice(null);
+      setChoose(null);
+    }
+  };
+
+  const openFile = async (file: File | null | undefined) => {
+    if (file) apply(await file.text());
+  };
+
+  /* Typing in the panel runs the same importer the file picker does, so a
+     value typed here and a value imported from a file cannot be read two
+     different ways. */
+  const editCode = (text: string, which: 'css' | 'json') => {
+    try {
+      const r = importTheme(text);
+      setTheme(r.theme);
+      setDraft({ tab: which, text, error: null });
+    } catch (e) {
+      setDraft({ tab: which, text, error: (e as Error).message });
+    }
+  };
+
+  const matchesBase = rampMatchesBase(theme);
 
   /* Fonts with no presets.json entry: the build still works, but with a
      generic stack and Inter-style weight names in the Figma export. */
@@ -100,7 +167,24 @@ export function ThemeBuilder() {
   const on = resolved.onColour[dark ? 'dark' : 'light'];
 
   return (
-    <main className="mx-auto w-full max-w-[1600px] px-4 py-6 md:px-6">
+    <main
+      className={`mx-auto w-full max-w-[1600px] px-4 py-6 md:px-6 ${dropping ? 'outline-2 outline-offset-[-8px] outline-dashed outline-fd-primary' : ''}`}
+      onDragOver={(e) => {
+        if (!e.dataTransfer.types.includes('Files')) return;
+        e.preventDefault();
+        setDropping(true);
+      }}
+      onDragLeave={(e) => {
+        if (e.currentTarget.contains(e.relatedTarget as Node)) return;
+        setDropping(false);
+      }}
+      onDrop={(e) => {
+        if (!e.dataTransfer.files.length) return;
+        e.preventDefault();
+        setDropping(false);
+        void openFile(e.dataTransfer.files[0]);
+      }}
+    >
       <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
           <span className="ir-pill bg-ir-panel-grey text-ir-purple dark:bg-white/10 dark:text-ir-corporate-blue">Theming</span>
@@ -111,6 +195,19 @@ export function ThemeBuilder() {
           </p>
         </div>
         <div className="flex gap-2">
+          <input
+            ref={picker}
+            type="file"
+            accept=".json,.css,application/json,text/css"
+            className="sr-only"
+            onChange={(e) => {
+              void openFile(e.target.files?.[0]);
+              e.target.value = '';
+            }}
+          />
+          <button type="button" onClick={() => picker.current?.click()} className="btn-ghost">
+            <Upload className="size-4" aria-hidden /> Import
+          </button>
           <button type="button" onClick={() => setDark((d) => !d)} className="btn-ghost" aria-pressed={dark}>
             {dark ? <Sun className="size-4" aria-hidden /> : <Moon className="size-4" aria-hidden />}
             {dark ? 'Light preview' : 'Dark preview'}
@@ -120,6 +217,45 @@ export function ThemeBuilder() {
           </button>
         </div>
       </header>
+
+      {problem ? (
+        <Banner tone="problem" onDismiss={() => setProblem(null)}>
+          <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden />
+          <p>{problem}</p>
+        </Banner>
+      ) : null}
+
+      {choose ? (
+        <Banner tone="note" onDismiss={() => setChoose(null)}>
+          <div>
+            <p className="font-medium">That file holds {choose.ids.length} brands. Which one?</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {choose.ids.map((id) => (
+                <button key={id} type="button" className="btn-ghost" onClick={() => apply(choose.text, id)}>
+                  {id}
+                </button>
+              ))}
+            </div>
+          </div>
+        </Banner>
+      ) : null}
+
+      {notice ? (
+        <Banner tone={notice.warnings.length ? 'note' : 'ok'} onDismiss={() => setNotice(null)}>
+          <div>
+            <p className="font-medium">{notice.title}</p>
+            {notice.warnings.length ? (
+              <ul className="mt-1 list-disc space-y-1 pl-4 text-fd-muted-foreground">
+                {notice.warnings.map((w) => (
+                  <li key={w}>{w}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-1 text-fd-muted-foreground">Every value mapped to a preset. Edit and download.</p>
+            )}
+          </div>
+        </Banner>
+      ) : null}
 
       <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
         {/* Controls */}
@@ -148,16 +284,40 @@ export function ThemeBuilder() {
               aria-invalid={!validHex}
               spellCheck={false}
             />
-            <div className="mt-3 grid grid-cols-11 gap-0.5" aria-label="Generated ramp">
+            {/* Each stop is editable. A label wrapping a hidden colour input
+                rather than a styled <input type="color">: the native control
+                cannot be made to fill a cell the same way across browsers,
+                and the swatch IS the control here. */}
+            <div className="mt-3 grid grid-cols-11 gap-0.5" aria-label="Brand ramp">
               {STEPS_LABELS.map((s) => (
-                <span
+                <label
                   key={s}
-                  title={`brand/${s} ${resolved.ramp[s]}`}
-                  className="h-7 first:rounded-l-md last:rounded-r-md"
+                  title={`brand/${s} ${resolved.ramp[s]} — click to edit`}
+                  className="block h-7 cursor-pointer first:rounded-l-md last:rounded-r-md"
                   style={{ background: resolved.ramp[s] }}
-                />
+                >
+                  <input
+                    type="color"
+                    className="sr-only"
+                    value={resolved.ramp[s]}
+                    onChange={(e) => setStop(s, e.target.value)}
+                    aria-label={`Brand ${s}`}
+                  />
+                </label>
               ))}
             </div>
+            {theme.ramp && !matchesBase ? (
+              <div className="mt-2">
+                <p className="text-xs text-fd-muted-foreground">
+                  These stops came with the brand — they are not what{' '}
+                  <span className="font-mono">{theme.brand.toUpperCase()}</span> generates. Kept as written, and
+                  exported as <span className="font-mono">colour.ramp</span>.
+                </p>
+                <button type="button" className="btn-ghost mt-1.5" onClick={() => set('ramp', null)}>
+                  <Wand2 className="size-3.5" aria-hidden /> Regenerate from base
+                </button>
+              </div>
+            ) : null}
             <p className="mt-2 text-xs text-fd-muted-foreground">
               Emphasis {dark ? '500' : '600'} <span className="font-mono">{on.surface}</span> — {on.ink === 'light' ? 'white' : 'dark'} text at{' '}
               <span className="font-mono">{(on.ink === 'light' ? on.onWhite : on.onDark).toFixed(2)}:1</span>
@@ -258,14 +418,55 @@ export function ThemeBuilder() {
             {tab === 'readme' ? (
               <BrandFlow />
             ) : (
-              <pre className="max-h-[420px] overflow-auto p-4 font-mono text-xs leading-relaxed">
-                <code>{tab === 'css' ? css : json}</code>
-              </pre>
+              <>
+                {/* Editable, and read by the same importer the file picker
+                    uses — so a value typed here and the same value imported
+                    from a file cannot be understood two different ways. */}
+                <textarea
+                  className="block max-h-[420px] min-h-[280px] w-full resize-y overflow-auto bg-transparent p-4 font-mono text-xs leading-relaxed outline-none"
+                  spellCheck={false}
+                  value={draft?.tab === tab ? draft.text : tab === 'css' ? css : json}
+                  onChange={(e) => editCode(e.target.value, tab)}
+                  aria-label={tab === 'css' ? 'Generated CSS, editable' : 'brand.json, editable'}
+                  aria-invalid={draft?.tab === tab && !!draft.error}
+                />
+                {draft?.tab === tab && draft.error ? (
+                  <p className="flex items-start gap-2 border-t border-fd-border px-4 py-2 text-xs text-ir-red">
+                    <AlertCircle className="mt-0.5 size-3.5 shrink-0" aria-hidden />
+                    {draft.error} — the preview is still showing the last version that read.
+                  </p>
+                ) : null}
+              </>
             )}
           </section>
         </div>
       </div>
     </main>
+  );
+}
+
+function Banner({
+  tone,
+  onDismiss,
+  children,
+}: {
+  tone: 'ok' | 'note' | 'problem';
+  onDismiss: () => void;
+  children: React.ReactNode;
+}) {
+  const ring =
+    tone === 'problem'
+      ? 'border-ir-red/40 bg-ir-red/5'
+      : tone === 'note'
+        ? 'border-fd-border bg-fd-muted'
+        : 'border-fd-border bg-fd-card';
+  return (
+    <div role={tone === 'problem' ? 'alert' : 'status'} className={`mb-6 flex gap-3 rounded-xl border p-3 text-sm ${ring}`}>
+      {children}
+      <button type="button" onClick={onDismiss} className="ml-auto self-start rounded p-1 hover:bg-fd-accent" aria-label="Dismiss">
+        <X className="size-4" aria-hidden />
+      </button>
+    </div>
   );
 }
 
