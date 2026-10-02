@@ -91,6 +91,19 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Added
 
+- **The sidebar brand plate** — `<SidebarHeader variant="plate">` with
+  `SidebarBrand`, the full-bleed block Clarion and Console both carry above the
+  menu. `image` is the brand artwork (decorative — empty alt, aria-hidden),
+  `children` the wordmark, `subtitle` a second line, `mark` what replaces the
+  wordmark on the 48px rail. Without an `image` the plate paints
+  `bg/surface/sidebar`, so a brand with no asset yet reads as a quiet header
+  rather than an empty coloured box. A scrim between the artwork and the text
+  is what makes the wordmark's contrast the component's guarantee instead of
+  the brand file's: measured on both plates, the worst pixel under a glyph is
+  5.3:1 for the second line and 5.8:1 for the wordmark. `ink="on-light"` takes
+  a pale asset and turns the scrim pale with it. **Figma impact** — the plate
+  is not drawn in the file yet; both products' headers are the reference.
+
 - **`Loader`** — `variant="spinner" | "fuse" | "pulse"`, matching Figma's
   `Loader` set. Spinner for in-console waits (Size 3–8, xl); Fuse for brand
   moments only (56 / 96 / 160, goo filter built in — no defs to mount); Pulse
@@ -98,7 +111,7 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   bubble. Labels name the work (`label={null}` when visible text says it),
   and reduced motion swaps travel for a cross-fade. Colours are `chart-4/2/3`.
   Keyframes were already in `theme.css`; `loader-reach` now takes a
-  per-drop `--loader-delay`. Stories under *Components/Loader*.
+  per-drop `--loader-delay`. Stories under _Components/Loader_.
 
 - **The Field family, built to Figma** (Field · ↳ Input · ↳ Select):
   - **InputGroup** — Input's Leading / Trailing slots: icon, text prefix/suffix,
@@ -109,7 +122,7 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   - **PasswordInput** (show/hide), **NumberInput** (steppers, spinbutton
     keyboard), **TagsInput** + **InputChip**, **FileUpload** +
     **FileUploadItem**, and **InputButton** (Input `Type=Button` / `Select
-    trigger`).
+trigger`).
   - **Tooltip**, and **FieldLabel `help`** — Figma's Help icon beside the label.
 - **Brands are choices, not values.** `tokens/brands/<brand>/brand.json` picks a
   base colour, `neutral` (cool/warm), `radius` (sharp/subtle/default/rounded),

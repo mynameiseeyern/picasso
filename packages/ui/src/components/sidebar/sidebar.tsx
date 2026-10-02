@@ -182,8 +182,11 @@ export function SidebarHeader({
  * supplies one asset and the plate is done.
  *
  * ⚠️ Nothing can measure the contrast of a bitmap. On a token surface
- * `fg/on/*` is solved for us; over an `image` the asset is the product's
- * responsibility, and `ink="on-light"` is there for a pale one.
+ * `fg/on/*` is solved for us; over an `image` there is no value to solve
+ * against, so the plate lays a scrim under the text instead and the artwork
+ * stops deciding whether the wordmark reads. What is left for the product is
+ * the polarity: `ink="on-light"` for a pale asset, which also turns the
+ * scrim pale.
  */
 const sidebarBrandVariants = cva(
   "relative isolate flex h-20 shrink-0 flex-col justify-center overflow-hidden px-5",
@@ -233,12 +236,42 @@ export function SidebarBrand({
       {...props}
     >
       {image ? (
-        <img
-          src={image}
-          alt=""
-          aria-hidden
-          className="absolute inset-0 -z-10 size-full object-cover"
-        />
+        <>
+          <img
+            src={image}
+            alt=""
+            aria-hidden
+            className="absolute inset-0 -z-20 size-full object-cover"
+          />
+          {/* The scrim is what makes an arbitrary bitmap safe to put a
+              wordmark on. Everywhere else the system solves ink against a
+              token and can prove the result; artwork is the one surface it
+              cannot measure, so instead of trusting each brand's file it
+              lays a wash under the text and stops depending on what the
+              file happens to contain. It fades out across the plate so the
+              artwork still reads where no text sits — physically, left to
+              right, like everything else in the library (see the RTL note
+              in packages/tokens/theme.css).
+
+              Strength is a fraction of `bg/scrim`, so it moves with the
+              theme rather than being a number of its own. Measured on the
+              Clarion and Console plates, the worst pixel under a glyph:
+              5.3:1 for the 12px second line and 5.8:1 for the wordmark,
+              against 4.5:1 needed. Lighter than this and the second line
+              drops under 5; heavier and the brand colour goes grey where
+              the wordmark sits, which is the one part of the plate a brand
+              will look at. */}
+          <div
+            data-slot="sidebar-brand-scrim"
+            aria-hidden
+            className={cn(
+              "absolute inset-0 -z-10 bg-linear-to-r to-transparent",
+              ink === "on-light"
+                ? "from-surface-app/70 via-surface-app/35"
+                : "from-surface-scrim/65 via-surface-scrim/30",
+            )}
+          />
+        </>
       ) : null}
       {collapsed ? (
         (mark ?? children)

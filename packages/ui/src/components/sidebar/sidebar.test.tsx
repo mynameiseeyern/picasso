@@ -220,6 +220,44 @@ describe("SidebarBrand", () => {
     ).toContain("text-content-neutral-emphasis");
   });
 
+  it("lays a scrim under the text, because no one can measure a bitmap", () => {
+    const { container } = plate(
+      <SidebarBrand image="/brand.png">Clarion</SidebarBrand>,
+    );
+    const scrim = container.querySelector('[data-slot="sidebar-brand-scrim"]')!;
+    expect(scrim).toBeInTheDocument();
+    expect(scrim).toHaveAttribute("aria-hidden");
+    expect(scrim.className).toContain("from-surface-scrim/65");
+  });
+
+  it("turns the scrim pale when the ink is dark", () => {
+    const { container } = plate(
+      <SidebarBrand image="/pale.png" ink="on-light">
+        Clarion
+      </SidebarBrand>,
+    );
+    expect(
+      container.querySelector('[data-slot="sidebar-brand-scrim"]')!.className,
+    ).toContain("from-surface-app/70");
+  });
+
+  it("has nothing to scrim when the plate is a token surface", () => {
+    const { container } = plate(<SidebarBrand>Vantage</SidebarBrand>);
+    expect(
+      container.querySelector('[data-slot="sidebar-brand-scrim"]'),
+    ).toBeNull();
+  });
+
+  it("stacks the scrim over the artwork and under the wordmark", () => {
+    const { container } = plate(
+      <SidebarBrand image="/brand.png">Clarion</SidebarBrand>,
+    );
+    expect(container.querySelector("img")!.className).toContain("-z-20");
+    expect(
+      container.querySelector('[data-slot="sidebar-brand-scrim"]')!.className,
+    ).toContain("-z-10");
+  });
+
   it("shows the wordmark and its second line when expanded", () => {
     plate(<SidebarBrand subtitle="powered by Iris">CLARION</SidebarBrand>);
     expect(screen.getByText("CLARION")).toBeInTheDocument();

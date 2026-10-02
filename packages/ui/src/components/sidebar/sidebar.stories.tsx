@@ -30,6 +30,8 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "./sidebar";
+import clarionPlate from "../../brand-assets/Clarion.svg";
+import consolePlate from "../../brand-assets/Console.svg";
 
 const meta: Meta<typeof SidebarProvider> = {
   title: "Components/Sidebar",
@@ -184,19 +186,6 @@ export const SubmenuVariants: Story = {
   ),
 };
 
-/* An obvious stand-in, not anyone's artwork: the real plates are brand assets
-   that each product ships. */
-const PLACEHOLDER_PLATE =
-  "data:image/svg+xml," +
-  encodeURIComponent(
-    '<svg xmlns="http://www.w3.org/2000/svg" width="256" height="80">' +
-      '<defs><linearGradient id="g" x1="0" y1="1" x2="1" y2="0">' +
-      '<stop offset="0" stop-color="#1D4ED8"/>' +
-      '<stop offset="1" stop-color="#9333EA"/>' +
-      "</linearGradient></defs>" +
-      '<rect width="256" height="80" fill="url(#g)"/></svg>',
-  );
-
 function PlateRail({
   caption,
   children,
@@ -259,16 +248,12 @@ export const BrandPlate: Story = {
   render: () => (
     <div className="flex flex-wrap gap-6 p-6">
       <PlateRail caption="Lockup over a second line">
-        <SidebarBrand
-          image={PLACEHOLDER_PLATE}
-          subtitle="powered by Iris"
-          mark="C"
-        >
+        <SidebarBrand image={clarionPlate} subtitle="powered by Iris" mark="C">
           CLARION
         </SidebarBrand>
       </PlateRail>
       <PlateRail caption="One word">
-        <SidebarBrand image={PLACEHOLDER_PLATE} mark="I">
+        <SidebarBrand image={consolePlate} mark="I">
           Iris
         </SidebarBrand>
       </PlateRail>
@@ -278,11 +263,7 @@ export const BrandPlate: Story = {
         </SidebarBrand>
       </PlateRail>
       <PlateRail caption="Collapsed to 48" collapsed>
-        <SidebarBrand
-          image={PLACEHOLDER_PLATE}
-          subtitle="powered by Iris"
-          mark="C"
-        >
+        <SidebarBrand image={clarionPlate} subtitle="powered by Iris" mark="C">
           CLARION
         </SidebarBrand>
       </PlateRail>

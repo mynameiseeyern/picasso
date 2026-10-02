@@ -52,9 +52,9 @@
     },
     {
       "id": "plate-image-contrast",
-      "dont": "Assume the wordmark reads on whatever image the product supplies.",
-      "do": "Look at the asset, and pass ink=\"on-light\" when it is pale.",
-      "why": "On a token surface fg/on/* is solved by measurement. Nothing can measure a bitmap, so an image is the one place in the system where contrast is the product's responsibility."
+      "dont": "Darken the artwork yourself, or restyle the plate, to get the wordmark to read.",
+      "do": "Supply the asset as drawn, and pass ink=\"on-light\" when it is pale.",
+      "why": "On a token surface fg/on/* is solved by measurement; a bitmap has no value to solve against. So the plate lays a scrim under the text and the artwork no longer decides whether the wordmark reads. The one thing the file still settles is polarity — light artwork takes dark ink and a pale scrim."
     },
     {
       "id": "plate-subtitle-opacity",
@@ -69,6 +69,7 @@
     "The PanelLeft glyph is aria-hidden; the button's label is its name.",
     "Collapsing changes width with no transition, deliberately: there are no motion tokens yet, so the change is instant rather than arbitrarily timed.",
     "The plate's image is decorative — empty alt and aria-hidden. The wordmark is the accessible text, so a plate whose wordmark is itself artwork needs real text beside it or a label.",
+    "A scrim sits between the artwork and the text, so the wordmark's contrast comes from the component rather than from whatever the brand's file happens to contain. Removing it, or replacing the plate's background, takes that guarantee with it.",
     "Collapsed to 48 the wordmark is replaced by `mark`, so the mark has to still identify the product. A letter does; an abstract glyph on its own does not.",
     "The plate is not a control. If it should navigate home, the product wraps it in a link — it does not become one by sitting at the top."
   ]
