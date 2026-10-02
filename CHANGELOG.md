@@ -121,6 +121,12 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Fixed
 
+- **Progress track was invisible in light mode**, so the bar had no visible
+  end. The track moves from `bg/neutral/subtle` (neutral-50 — the app
+  background itself) to `bg/neutral/muted-pressed` (neutral-200 / neutral-700),
+  the same "empty" value Skeleton and Meter use. **Figma impact** — the
+  `Progress` track is rebound to match.
+
 - **Calendar range: mid-range day numbers were unreadable** — white on
   `bg/primary/subtle` in light, near-black on it in dark (about 1.1:1). The
   tokens were right; `selected` and `range_middle` both styled the day button

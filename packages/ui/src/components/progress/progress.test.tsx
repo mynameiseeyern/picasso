@@ -26,6 +26,15 @@ describe("Progress", () => {
     expect(screen.getByRole("progressbar")).toHaveAttribute("aria-valuenow", "0");
   });
 
+  it("draws a track you can see, so the bar has an end", () => {
+    render(<Progress value={40} />);
+    // bg/neutral/subtle is the app background in light, so the track vanished
+    // and 40% read as a short bar rather than 40% of something.
+    const bar = screen.getByRole("progressbar");
+    expect(bar).toHaveClass("bg-surface-neutral-muted-pressed");
+    expect(bar).not.toHaveClass("bg-surface-neutral-subtle");
+  });
+
   it("moves the indicator by a custom property, not an inline transform", () => {
     render(<Progress value={30} />);
     const ind = screen.getByRole("progressbar").querySelector("[data-slot=progress-indicator]");
