@@ -162,7 +162,13 @@ function Fuse({ size }: { size: FuseSize }) {
       </svg>
       <span
         aria-hidden
-        className="absolute inset-0 filter-(--loader-goo) animate-loader-turn motion-reduce:animate-none"
+        // overflow-hidden because the three drop wrappers are rotated copies
+        // of the full box, and a rotated square's corners reach past it. They
+        // paint nothing out there — the drops are well inside — but the boxes
+        // still count as scrollable overflow, which is a horizontal scrollbar
+        // on a phone caused by something invisible. Measured: 99px past a 360
+        // container before this.
+        className="absolute inset-0 overflow-hidden filter-(--loader-goo) animate-loader-turn motion-reduce:animate-none"
       >
         {drops.map((drop) => (
           <span key={drop.turn} className={cn("absolute inset-0", drop.turn)}>
