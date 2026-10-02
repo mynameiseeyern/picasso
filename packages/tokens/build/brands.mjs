@@ -168,6 +168,10 @@ const SCOPES = [
   [/^paragraphIndent\//, ["PARAGRAPH_INDENT"]],
   [/^screen\//, ["WIDTH_HEIGHT"]],
   [/^size\//, ["WIDTH_HEIGHT"]],
+  // layer/* is the z-index scale. Figma has no z-index to bind, so these are
+  // hidden from every picker: they exist so the scale can be read in the file
+  // and so both sides carry the same tokens.
+  [/^layer\//, []],
 ];
 const scopesFor = (name) => (SCOPES.find(([re]) => re.test(name)) ?? [null, []])[1];
 const figmaName = (path) => path.replaceAll(".", "/");
@@ -186,6 +190,7 @@ export function figmaExport(id) {
     if (t.$type === "color") add(name, "COLOR", hex8(v), t.$description);
     else if (t.$type === "dimension" || t.$type === "fontSizes") add(name, "FLOAT", toPx(v), t.$description);
     else if (t.$type === "fontWeights") add(name, "FLOAT", Number(v));
+    else if (t.$type === "number") add(name, "FLOAT", Number(v), t.$description);
     else if (t.$type === "fontFamilies") add(name, "STRING", L.fonts[path.split(".").pop()].name);
     // lineHeights / letterSpacing / typography live in the text styles:
     // Figma variables cannot hold % line heights or em tracking.

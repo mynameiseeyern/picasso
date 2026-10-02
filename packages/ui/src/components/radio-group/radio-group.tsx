@@ -22,7 +22,10 @@ import { cn } from "@/lib/utils";
  *   hover off  bg/input/hovered              hover on  dot -emphasis-hovered
  *   focus      ring/focus
  *   on         border/primary/emphasis, the box colour unchanged
- *   disabled   bg/input/disabled, colours otherwise unchanged
+ *   disabled   bg/input/disabled, border/input/disabled
+ *   disabled on  bg/disabled, border/input/disabled, dot fg/disabled — the
+ *              pairing a disabled checked Checkbox takes (decided 2 Oct; the
+ *              ring and dot were full primary, which read as live)
  *   invalid    ring/focus-danger over the resting colours
  *
  * ⚠️ Figma's 1.5px border **cannot render in a browser.** Chrome floors a
@@ -42,7 +45,13 @@ const radioVariants = cva(
     // invalid is a danger ring over whatever the radio is doing
     "aria-invalid:shadow-ring-focus-danger " +
     "disabled:cursor-not-allowed " +
-    "disabled:bg-surface-input-disabled disabled:hover:bg-surface-input-disabled",
+    "disabled:bg-surface-input-disabled disabled:hover:bg-surface-input-disabled " +
+    "disabled:border-line-input-disabled " +
+    // disabled AND selected — grey, not primary, so it does not read as live.
+    // The pairing a disabled checked Checkbox takes; the dot is the mark.
+    "disabled:data-[state=checked]:bg-surface-disabled " +
+    "disabled:data-[state=checked]:hover:bg-surface-disabled " +
+    "disabled:data-[state=checked]:border-line-input-disabled",
   {
     variants: {
       size: {
@@ -94,6 +103,7 @@ export function Radio({ className, size, ...props }: RadioProps) {
           className={cn(
             "rounded-full bg-surface-primary-emphasis transition-colors",
             "group-hover:bg-surface-primary-emphasis-hovered",
+            "group-disabled:bg-content-disabled group-disabled:group-hover:bg-content-disabled",
           )}
         />
       </RadioGroupPrimitive.Indicator>

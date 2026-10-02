@@ -139,8 +139,10 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   modal because Radix portals menus to `document.body`, where one opened
   inside a dialog has no parent to be scoped by. The scrim moves from `z-50`
   to 800, so it no longer shares a value with the dialog it dims and the
-  stacking stops depending on DOM order. **Figma impact** — `layer/*` arrives
-  as Primitives on the next Picasso Sync; nothing moves on canvas.
+  stacking stops depending on DOM order. **Figma impact** — `layer/*` is six
+  number variables in Primitives, hidden from every picker because Figma has
+  no z-index to bind them to; they are there to be read. Nothing moves on
+  canvas.
 - **`data-spacing="comfortable"` is now `relaxed`**, and scales the whole
   ladder ×1.25 instead of moving the base to 6px.
 - **Tokens Studio removed.** `$themes.json` / `$metadata.json` are gone and

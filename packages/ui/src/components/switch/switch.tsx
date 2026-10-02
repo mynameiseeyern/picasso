@@ -21,6 +21,9 @@ import { cn } from "@/lib/utils";
  *   focus      ring/focus + border/input/focused
  *   on         bg/primary/emphasis, no border
  *   disabled   bg/input/disabled, border/input/disabled
+ *   disabled on  bg/disabled, border/input/disabled, knob fg/disabled — the
+ *              pairing a disabled checked Checkbox takes (decided 2 Oct; it
+ *              was full primary, which read as live)
  *   invalid    ring/focus-danger over the resting colours
  *
  * ⚠️ Figma draws the track border at **1.5px, which no browser can render** —
@@ -49,7 +52,13 @@ const switchVariants = cva(
     "aria-invalid:shadow-ring-focus-danger " +
     "disabled:cursor-not-allowed " +
     "disabled:bg-surface-input-disabled disabled:border-line-input-disabled " +
-    "disabled:hover:border-line-input-disabled",
+    "disabled:hover:border-line-input-disabled " +
+    // disabled AND on — grey, not primary, so it does not read as live.
+    // The same pairing as a disabled checked Checkbox: bg/disabled, and the
+    // mark (here the knob) in fg/disabled.
+    "disabled:data-[state=checked]:bg-surface-disabled " +
+    "disabled:data-[state=checked]:border-line-input-disabled " +
+    "disabled:data-[state=checked]:hover:bg-surface-disabled",
   {
     variants: {
       size: {
@@ -81,8 +90,10 @@ export function Switch({ className, size, ...props }: SwitchProps) {
         data-slot="switch-thumb"
         className={cn(
           "pointer-events-none block rounded-full shadow-sm ring-0",
-          // White in both modes, as Figma draws it.
+          // White in both modes, as Figma draws it — except disabled and
+          // on, where the knob is the mark and takes fg/disabled.
           "bg-white",
+          "group-disabled:group-data-[state=checked]:bg-content-disabled",
           "translate-x-0 transition-transform duration-150 ease-out",
         )}
       />

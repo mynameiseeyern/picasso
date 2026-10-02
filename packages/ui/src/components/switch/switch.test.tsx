@@ -77,6 +77,18 @@ describe("Switch", () => {
     expect(sw.className).toContain("disabled:border-line-input-disabled");
   });
 
+  it("goes grey when disabled and on, so it does not read as live", () => {
+    render(<Switch aria-label="Notifications" disabled defaultChecked />);
+    const sw = screen.getByRole("switch", { name: "Notifications" });
+    expect(sw.className).toContain(
+      "disabled:data-[state=checked]:bg-surface-disabled",
+    );
+    // The knob is the mark, so it takes fg/disabled as a Checkbox's tick does.
+    expect(sw.querySelector("[data-slot=switch-thumb]")!.className).toContain(
+      "group-disabled:group-data-[state=checked]:bg-content-disabled",
+    );
+  });
+
   it("does not toggle when disabled", async () => {
     const onChange = vi.fn();
     render(

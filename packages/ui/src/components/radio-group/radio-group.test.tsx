@@ -66,9 +66,18 @@ describe("RadioGroup", () => {
     render(<Group defaultValue="low" disabled />);
     const low = screen.getByRole("radio", { name: "Low" });
     expect(low).toBeDisabled();
-    // Figma changes only the fill when disabled — the border and the dot keep
-    // their resting colours.
     expect(low.className).toContain("disabled:bg-surface-input-disabled");
-    expect(low.className).not.toContain("disabled:data-[state=checked]:border");
+    expect(low.className).toContain("disabled:border-line-input-disabled");
+    // Selected and disabled goes grey — ring, fill and dot — so it does not
+    // read as live. The same pairing as a disabled checked Checkbox.
+    expect(low.className).toContain(
+      "disabled:data-[state=checked]:bg-surface-disabled",
+    );
+    expect(low.className).toContain(
+      "disabled:data-[state=checked]:border-line-input-disabled",
+    );
+    expect(low.querySelector("[data-slot=radio-dot]")!.className).toContain(
+      "group-disabled:bg-content-disabled",
+    );
   });
 });
