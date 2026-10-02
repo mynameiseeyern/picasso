@@ -49,7 +49,7 @@ const avatarVariants = cva(
         md: "size-10 text-heading-sm",
       },
       variant: {
-        default: "bg-surface-neutral-subtle text-content-neutral-muted",
+        default: "bg-surface-neutral-muted text-content-neutral-muted",
         inverse: "bg-surface-neutral-emphasis text-content-on-neutral-emphasis",
       },
       ring: { true: "ring-1 ring-inset ring-surface-card", false: "" },

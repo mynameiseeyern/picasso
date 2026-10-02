@@ -8,7 +8,7 @@ describe("Kbd", () => {
     const el = screen.getByText("Ctrl");
     expect(el.tagName).toBe("KBD");
     expect(el).toHaveAttribute("data-slot", "kbd");
-    expect(el).toHaveClass("bg-surface-neutral-subtle", "text-content-neutral-muted", "h-5");
+    expect(el).toHaveClass("bg-surface-neutral-muted", "text-content-neutral-muted", "h-5");
   });
 
   it("uses radius/sm, not a larger radius", () => {

@@ -166,6 +166,7 @@ export function SidebarProvider({
 
 export interface SidebarProps extends React.ComponentProps<"aside"> {
   /**
+   * Figma: `Sidebar / Phone nav (full screen)` 40000659:33057.
    * `"fullscreen"`: below md the rail is not drawn inline — SidebarTrigger
    * opens the same tree full screen over the page instead, with a collapse
    * button on the brand plate, 44-tall items, and picking an item closes it.

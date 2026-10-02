@@ -60,7 +60,7 @@ const badgeVariants = cva(
         variant: "subtle",
         color: "neutral",
         class:
-          "bg-surface-neutral-subtle border-line-neutral-muted text-content-neutral-emphasis",
+          "bg-surface-neutral-muted border-line-neutral-muted text-content-neutral-emphasis",
       },
       {
         variant: "subtle",

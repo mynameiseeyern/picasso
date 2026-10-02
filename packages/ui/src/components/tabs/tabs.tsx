@@ -89,7 +89,7 @@ const tabsTriggerVariants = cva(
         gray:
           "rounded-lg px-2.5 py-2 enabled:hover:bg-surface-neutral-subtle-hovered " +
           "enabled:hover:text-content-neutral-emphasis " +
-          "data-[state=active]:bg-surface-neutral-subtle data-[state=active]:text-content-neutral-emphasis",
+          "data-[state=active]:bg-surface-neutral-muted data-[state=active]:text-content-neutral-emphasis",
         brand:
           "rounded-lg border border-transparent px-2.5 py-2 " +
           "enabled:hover:text-content-neutral-emphasis " +

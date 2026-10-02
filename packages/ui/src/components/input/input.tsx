@@ -42,7 +42,7 @@ const inputVariants = cva(
     "[&:not(:read-only)]:hover:border-line-input-hovered " +
     // :read-only also matches a disabled input, so exclude it — otherwise the
     // two treatments fight over the same element.
-    "[&:read-only:not(:disabled)]:bg-surface-neutral-subtle " +
+    "[&:read-only:not(:disabled)]:bg-surface-neutral-muted " +
     "[&:read-only:not(:disabled)]:cursor-default " +
     "focus-visible:border-line-input-focused focus-visible:ring-2 " +
     "focus-visible:ring-line-focused focus-visible:ring-offset-2 " +

@@ -169,7 +169,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
                   data-slot="select-count"
                   className={cn(
                     "inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full border px-1 tabular-nums",
-                    "border-line-neutral-muted bg-surface-neutral-subtle text-label-sm text-content-neutral-emphasis",
+                    "border-line-neutral-muted bg-surface-neutral-muted text-label-sm text-content-neutral-emphasis",
                   )}
                 >
                   <span aria-hidden>{count}</span>

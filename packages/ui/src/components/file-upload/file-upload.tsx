@@ -99,7 +99,7 @@ export function FileUploadItem({ className, name, size, progress, onRemove, remo
       )}
       {...props}
     >
-      <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-surface-neutral-subtle text-content-neutral-muted [&>svg]:size-6">
+      <span aria-hidden className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-surface-neutral-muted text-content-neutral-muted [&>svg]:size-6">
         {icon ?? <FileIcon />}
       </span>
       <div className="flex min-w-0 flex-1 flex-col gap-1.5">

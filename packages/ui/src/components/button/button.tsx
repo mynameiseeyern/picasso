@@ -40,9 +40,9 @@ const buttonVariants = cva(
           "active:bg-surface-neutral-emphasis-pressed " +
           "[&:disabled:not([data-loading])]:bg-surface-disabled",
         secondary:
-          "border-line-neutral-emphasis bg-surface-neutral-subtle text-content-neutral-emphasis " +
-          "hover:bg-surface-neutral-subtle-hovered " +
-          "active:bg-surface-neutral-subtle-pressed " +
+          "border-line-neutral-emphasis bg-surface-neutral-muted text-content-neutral-emphasis " +
+          "hover:bg-surface-neutral-muted-hovered " +
+          "active:bg-surface-neutral-muted-pressed " +
           "[&:disabled:not([data-loading])]:bg-surface-disabled",
         destructive:
           "border-line-danger-muted bg-surface-danger-subtle text-content-on-danger-subtle " +

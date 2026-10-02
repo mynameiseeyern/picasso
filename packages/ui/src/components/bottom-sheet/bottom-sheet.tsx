@@ -6,7 +6,8 @@ import { Button } from "../button/button";
 import { overlayScrimVariants } from "../overlay/overlay";
 
 /**
- * BottomSheet — Figma `Bottom sheet` (Overlays). The phone-sized answer to a
+ * BottomSheet — Figma `Bottom sheet` 40000659:233 (Overlays → Bottom sheet),
+ * rows `Bottom sheet / Item` 40000658:32195. The phone-sized answer to a
  * Select or a filter Popover: a panel that rises from the bottom edge over the
  * scrim, so its choices sit where a thumb already is.
  *

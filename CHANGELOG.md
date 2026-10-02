@@ -36,6 +36,20 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### ⚠️ Changed (visual)
 
+- **Resting neutral fills take `bg/neutral/muted`, so they show on any
+  surface.** Secondary **Button** (with `muted-hovered` / `-pressed`), the
+  subtle neutral **Badge**, **Avatar**'s fallback, **Kbd**, the active **Tab**,
+  read-only **Input** and **Textarea**, the **Table** header, **Select**'s
+  count, **File upload**'s icon tile and **Stepper**'s current number. They
+  were on `subtle`, which matches the page in light and the card in dark, so
+  each vanished on one surface per theme. Now 1.08 on the page and 1.12 on a
+  card in light (was 1.00 / 1.05), 1.71 and 1.42 in dark (was 1.21 / 1.00).
+  An active Tab now equals a hovered Tab, and a Table header equals a hovered
+  row. Stepper's incomplete number stays on `subtle` — its `fg/neutral/subtle`
+  text would fall to 2.2:1 on muted in dark. Secondary's pressed text is
+  4.47:1 in dark. **Figma impact** — not applied yet; Figma still binds these
+  to `bg/neutral/subtle`.
+
 - **The neutral ramp runs subtle → muted → emphasis.** `bg/neutral` now has the
   shape of every status ramp, each step one palette step past the last.
   Light: `muted` is neutral-100 (was white), hover 200, pressed 300; `subtle`

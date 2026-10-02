@@ -27,9 +27,9 @@ const kbdVariants = cva(
         // Default and Neutral are identical in Figma today. Both are kept so a
         // design reads straight into props; collapse them together if Figma does.
         default:
-          "bg-surface-neutral-subtle border-line-inverse text-content-neutral-muted",
+          "bg-surface-neutral-muted border-line-inverse text-content-neutral-muted",
         neutral:
-          "bg-surface-neutral-subtle border-line-inverse text-content-neutral-muted",
+          "bg-surface-neutral-muted border-line-inverse text-content-neutral-muted",
         brand:
           "bg-surface-primary-subtle border-line-focused text-content-primary-emphasis",
         opaque:

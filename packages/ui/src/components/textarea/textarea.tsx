@@ -27,7 +27,7 @@ const textareaVariants = cva(
     "placeholder:text-content-neutral-subtle border-line-input-default " +
     "transition-colors outline-none " +
     "[&:not(:read-only)]:hover:border-line-input-hovered " +
-    "[&:read-only:not(:disabled)]:bg-surface-neutral-subtle " +
+    "[&:read-only:not(:disabled)]:bg-surface-neutral-muted " +
     "[&:read-only:not(:disabled)]:resize-none " +
     "focus-visible:border-line-input-focused focus-visible:ring-2 " +
     "focus-visible:ring-line-focused focus-visible:ring-offset-2 " +

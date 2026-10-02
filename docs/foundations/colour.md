@@ -89,6 +89,20 @@ is the first step that is seen everywhere. Before the change nine hover and
 pressed states were invisible on one surface in dark (a ghost button's hover on
 a card, a menu item's focus and a table row's hover on the page); none are now.
 
+**A resting fill that has to be seen takes `muted`.** Secondary Button, the
+subtle neutral Badge, Avatar's fallback, Kbd, the active Tab, a read-only Input
+or Textarea, the Table header, Select's count, File upload's icon tile and the
+Stepper's current number all rest on `bg/neutral/muted`, so they show on the
+page and on a card in both themes (1.08 / 1.12 in light, 1.71 / 1.42 in dark).
+Secondary Button hovers and presses along the muted ladder. Two things follow
+and are accepted: an active Tab is the same fill as a hovered one, and a Table
+header is the same fill as a hovered row — text weight and position tell them
+apart. The Stepper's *incomplete* number stays on `subtle`: its text is
+`fg/neutral/subtle`, which on the muted fill falls to 2.2:1 in dark.
+
+`subtle` is left for hover (`subtle-hovered`, `-pressed`) on things that are
+transparent or card-coloured at rest.
+
 **A fill that should match the card takes `bg/card`**, not a neutral step. The
 outline Button, a selected Chip, the outline Badge, the Avatar add button and
 the Stepper's empty indicator all rest on `bg/card` and hover through

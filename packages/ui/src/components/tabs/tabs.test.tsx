@@ -62,7 +62,7 @@ describe("Tabs", () => {
     expect(screen.getByRole("tablist").className).toContain("rounded-xl");
     expect(screen.getByRole("tab", { name: "Overview" }).className).toContain("text-label-md");
     rerender(<Fixture variant="gray" size="md" />);
-    expect(screen.getByRole("tab", { name: "Overview" }).className).toContain("data-[state=active]:bg-surface-neutral-subtle");
+    expect(screen.getByRole("tab", { name: "Overview" }).className).toContain("data-[state=active]:bg-surface-neutral-muted");
     expect(screen.getByRole("tab", { name: "Overview" }).className).toContain("text-label-lg");
   });
 

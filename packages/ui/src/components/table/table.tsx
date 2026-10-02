@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils";
  * FROM FIGMA (`Table (columns)` 40000377:22464 and `Table column`
  * 40000377:22458), as drawn:
  *
- *   header cell   h 40, padding 12/16, bg/neutral/subtle, border top AND
+ *   header cell   h 40, padding 12/16, bg/neutral/muted (Figma still binds
+ *                 subtle; moved 2 Oct so the band shows on any surface), border top AND
  *                 bottom, label/sm, fg/neutral/emphasis — 40 at BOTH sizes
  *   body cell     md: h 60, padding 0/16, body/md
  *                 sm: h 52, padding 0/12, body/sm
@@ -171,7 +172,7 @@ export function TableHead({ className, align, numeric, ...props }: TableHeadProp
       className={cn(
         // 40 tall at both sizes, and bordered top and bottom — the top border
         // is what separates it from the toolbar above.
-        "h-10 border-y border-line-neutral-muted bg-surface-neutral-subtle px-4",
+        "h-10 border-y border-line-neutral-muted bg-surface-neutral-muted px-4",
         "text-label-sm text-content-neutral-emphasis whitespace-nowrap",
         // A numeric column heads right with the figures, but stays in the
         // label face — Figma's header is label/sm whatever the column holds.

@@ -71,6 +71,9 @@ const stepperIndicatorVariants = cva(
         status: "complete",
         class: "bg-surface-primary-emphasis",
       },
+      // Incomplete stays on subtle while current takes muted. Its number is
+      // fg/neutral/subtle, which on the muted fill drops to 2.2:1 in dark —
+      // so the quiet step keeps the quiet fill and reads by its ring.
       {
         indicator: "number",
         status: "incomplete",
@@ -81,7 +84,7 @@ const stepperIndicatorVariants = cva(
         indicator: "number",
         status: "current",
         class:
-          "border-line-neutral-emphasis bg-surface-neutral-subtle text-content-neutral-emphasis",
+          "border-line-neutral-emphasis bg-surface-neutral-muted text-content-neutral-emphasis",
       },
       // Same status, different fill, decided by the indicator axis. As drawn.
       {

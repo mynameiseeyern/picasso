@@ -56,7 +56,7 @@ describe("Input", () => {
     const rw = screen.getByRole("textbox", { name: "Editable" });
     // Guidance sends people here instead of disabled, so it has to look unlike
     // an editable field — otherwise they will try to type into it.
-    expect(ro.className).toContain("[&:read-only:not(:disabled)]:bg-surface-neutral-subtle");
+    expect(ro.className).toContain("[&:read-only:not(:disabled)]:bg-surface-neutral-muted");
     expect(rw.className).toContain("[&:not(:read-only)]:hover:border-line-input-hovered");
     // ...and it is its own surface, not the disabled one: the two rules are
     // mutually exclusive by :not(:disabled), so they can never both apply.
