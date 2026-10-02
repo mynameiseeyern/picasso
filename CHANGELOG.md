@@ -58,6 +58,14 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### ⚠️ Changed (visual)
 
+- **Disabled and on is grey, on Switch and Radio.** A disabled Switch that is
+  on, and a disabled Radio that is selected, were still full primary and read
+  as live. They now take the pairing a disabled checked Checkbox already has:
+  `bg/disabled`, `border/input/disabled`, and the mark — the Switch's knob, the
+  Radio's dot — in `fg/disabled`. A disabled unselected Radio's ring also moves
+  to `border/input/disabled`, so all three controls agree. **Figma impact** —
+  the Switch and Radio `State=Disabled` variants are redrawn to match.
+
 - **Avatar's offline dot is `fg/neutral/subtle`.** It was resting on
   `bg/neutral/subtle-pressed` — a state token at rest, and neutral-200 in
   light, so the dot nearly vanished against its white ring. Now neutral-500
