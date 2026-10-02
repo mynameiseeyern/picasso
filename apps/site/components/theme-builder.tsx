@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, Copy, Download, Moon, RotateCcw, Sun } from 'lucide-react';
 import { BrandColorPicker } from '@/components/brand-color-picker';
+import { BrandFlow } from '@/components/brand-flow';
 import {
   DEFAULT_THEME,
   MONO_FONTS,
@@ -31,7 +32,7 @@ export function ThemeBuilder() {
   const [dark, setDark] = useState(false);
   const [ready, setReady] = useState(false);
   const [copied, setCopied] = useState<'css' | 'json' | null>(null);
-  const [tab, setTab] = useState<'css' | 'json'>('css');
+  const [tab, setTab] = useState<'readme' | 'css' | 'json'>('readme');
   const frame = useRef<HTMLIFrameElement>(null);
 
   const resolved = useMemo(() => resolve(theme), [theme]);
@@ -217,22 +218,26 @@ export function ThemeBuilder() {
           <section className="rounded-xl border border-fd-border">
             <div className="flex flex-wrap items-center gap-2 border-b border-fd-border px-3 py-2">
               <div role="tablist" className="flex gap-1">
-                {(['css', 'json'] as const).map((t) => (
+                {(['readme', 'css', 'json'] as const).map((t) => (
                   <button key={t} role="tab" aria-selected={tab === t} onClick={() => setTab(t)} className="tab">
-                    {t === 'css' ? 'tokens.css — preview' : 'brand.json'}
+                    {t === 'readme' ? 'readme' : t === 'css' ? 'tokens.css — preview' : 'brand.json'}
                   </button>
                 ))}
               </div>
-              <div className="ml-auto flex gap-2">
-                <button type="button" className="btn-ghost" onClick={() => copy(tab)}>
-                  {copied === tab ? <Check className="size-4" aria-hidden /> : <Copy className="size-4" aria-hidden />}
-                  {copied === tab ? 'Copied' : 'Copy'}
-                </button>
-                <button type="button" className="btn-ghost" onClick={() => download(tab)}>
-                  <Download className="size-4" aria-hidden /> Download
-                </button>
-              </div>
+              {/* Copy and Download act on a file. The readme is not one. */}
+              {tab === 'readme' ? null : (
+                <div className="ml-auto flex gap-2">
+                  <button type="button" className="btn-ghost" onClick={() => copy(tab)}>
+                    {copied === tab ? <Check className="size-4" aria-hidden /> : <Copy className="size-4" aria-hidden />}
+                    {copied === tab ? 'Copied' : 'Copy'}
+                  </button>
+                  <button type="button" className="btn-ghost" onClick={() => download(tab)}>
+                    <Download className="size-4" aria-hidden /> Download
+                  </button>
+                </div>
+              )}
             </div>
+            {tab === 'readme' ? null : (
             <p className="border-b border-fd-border px-4 py-2 text-xs text-fd-muted-foreground">
               {tab === 'json' ? (
                 <>
@@ -249,9 +254,14 @@ export function ThemeBuilder() {
                 </>
               )}
             </p>
-            <pre className="max-h-[420px] overflow-auto p-4 font-mono text-xs leading-relaxed">
-              <code>{tab === 'css' ? css : json}</code>
-            </pre>
+            )}
+            {tab === 'readme' ? (
+              <BrandFlow />
+            ) : (
+              <pre className="max-h-[420px] overflow-auto p-4 font-mono text-xs leading-relaxed">
+                <code>{tab === 'css' ? css : json}</code>
+              </pre>
+            )}
           </section>
         </div>
       </div>
