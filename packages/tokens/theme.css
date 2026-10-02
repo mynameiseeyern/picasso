@@ -471,7 +471,10 @@
    across a 976 column at 1280. min(100%, …) so one tile still fits a
    column narrower than the minimum instead of overflowing it. */
 @utility grid-cols-tiles {
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--space-56)), 1fr));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, var(--space-56)), 1fr)
+  );
 }
 
 /* A control and its label as one row: the control column is as wide as the
@@ -639,5 +642,108 @@
     filter: drop-shadow(
       0 2px 2.5px color-mix(in srgb, var(--palette-black) 55%, transparent)
     );
+  }
+}
+
+/* ═══ Overlay and disclosure motion ═══════════════════════════════════
+   The durations and curves are tokens (motion/* in core.json, arriving as
+   --motion-*). They are composed into animations here, so a component asks
+   for `animate-dialog-in` and never states a duration or a curve itself.
+
+   Two rules run through all of it. Arriving takes the longer step and
+   decelerates; leaving takes the shorter step and accelerates, so closing
+   always feels quicker than opening. And the leaving animations hold their
+   last frame (`both`), because Radix unmounts on animationend and without
+   it the surface flashes back for a frame before it goes.
+
+   Dialog scales with `transform`, which composes with the `translate`
+   Tailwind uses to centre it — the two are separate properties.
+
+   Every component reaches these through `motion-safe:`, so under reduced
+   motion nothing animates at all. A `motion-reduce:animate-none` override
+   does not work here: it loses the cascade to the data-state rule.       */
+@theme inline {
+  --ease-enter: var(--motion-easing-enter);
+  --ease-exit: var(--motion-easing-exit);
+
+  --animate-fade-in: fade-in var(--motion-duration-base)
+    var(--motion-easing-enter);
+  --animate-fade-out: fade-out var(--motion-duration-fast)
+    var(--motion-easing-exit) both;
+  --animate-dialog-in: dialog-in var(--motion-duration-base)
+    var(--motion-easing-enter);
+  --animate-dialog-out: dialog-out var(--motion-duration-fast)
+    var(--motion-easing-exit) both;
+  --animate-drawer-in-right: drawer-in-right var(--motion-duration-slow)
+    var(--motion-easing-enter);
+  --animate-drawer-out-right: drawer-out-right var(--motion-duration-base)
+    var(--motion-easing-exit) both;
+  --animate-drawer-in-left: drawer-in-left var(--motion-duration-slow)
+    var(--motion-easing-enter);
+  --animate-drawer-out-left: drawer-out-left var(--motion-duration-base)
+    var(--motion-easing-exit) both;
+  --animate-accordion-down: accordion-down var(--motion-duration-base)
+    var(--motion-easing-enter);
+  --animate-accordion-up: accordion-up var(--motion-duration-fast)
+    var(--motion-easing-exit) both;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+  @keyframes dialog-out {
+    to {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+  @keyframes drawer-in-right {
+    from {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes drawer-out-right {
+    to {
+      transform: translateX(100%);
+    }
+  }
+  @keyframes drawer-in-left {
+    from {
+      transform: translateX(-100%);
+    }
+  }
+  @keyframes drawer-out-left {
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  /* Radix measures the content and publishes its height for exactly this. */
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
   }
 }

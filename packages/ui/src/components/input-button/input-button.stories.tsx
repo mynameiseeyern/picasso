@@ -9,7 +9,7 @@ const meta: Meta<typeof InputButton> = {
     docs: {
       description: {
         component:
-          "Figma Input `Type=Button` / `Type=Select trigger`: a button dressed as a field, for opening a picker. " +
+          "Figma's `Input button`: a button dressed as a field, for opening a picker. " +
           "Select uses it as its trigger.",
       },
     },

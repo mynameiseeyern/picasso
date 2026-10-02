@@ -108,4 +108,14 @@ describe("Accordion", () => {
     expect(accordionItemVariants({ divider: true })).toContain("pt-6");
     expect(accordionItemVariants({ divider: false })).not.toContain("border-t");
   });
+
+  it("opens and closes on the motion tokens, and not at all under reduced motion", async () => {
+    const user = userEvent.setup();
+    render(<Fixture />);
+    await user.click(screen.getByRole("button"));
+    expect(document.querySelector("[data-slot=accordion-content]")).toHaveClass(
+      "motion-safe:data-[state=open]:animate-accordion-down",
+      "motion-safe:data-[state=closed]:animate-accordion-up",
+    );
+  });
 });

@@ -261,6 +261,10 @@ StyleDictionary.registerFormat({
       // each one in an @utility, because Tailwind v4 has no --z-index-*
       // namespace to bind to the way --breakpoint-* binds to screen/*.
       else if (token.path[0] === "layer") rootDecls.push(decl);
+      // motion/* is durations and easings. They emit as --motion-*; theme.css
+      // composes them into the --animate-* utilities components use, so a
+      // component never states a duration or a curve of its own.
+      else if (token.path[0] === "motion") rootDecls.push(decl);
       else if (token.path[0] === "shared") rootDecls.push(decl);
       else
         throw new Error(

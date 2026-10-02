@@ -81,7 +81,7 @@ describe("Switch", () => {
     render(<Switch aria-label="Notifications" disabled defaultChecked />);
     const sw = screen.getByRole("switch", { name: "Notifications" });
     expect(sw.className).toContain(
-      "disabled:data-[state=checked]:bg-surface-disabled",
+      "disabled:data-[state=checked]:bg-surface-input-disabled",
     );
     // The knob is the mark, so it takes fg/disabled as a Checkbox's tick does.
     expect(sw.querySelector("[data-slot=switch-thumb]")!.className).toContain(

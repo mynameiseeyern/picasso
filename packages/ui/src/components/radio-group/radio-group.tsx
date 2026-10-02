@@ -23,7 +23,7 @@ import { cn } from "@/lib/utils";
  *   focus      ring/focus
  *   on         border/primary/emphasis, the box colour unchanged
  *   disabled   bg/input/disabled, border/input/disabled
- *   disabled on  bg/disabled, border/input/disabled, dot fg/disabled — the
+ *   disabled on  bg/input/disabled, border/input/disabled, dot fg/disabled — the
  *              pairing a disabled checked Checkbox takes (decided 2 Oct; the
  *              ring and dot were full primary, which read as live)
  *   invalid    ring/focus-danger over the resting colours
@@ -49,8 +49,8 @@ const radioVariants = cva(
     "disabled:border-line-input-disabled " +
     // disabled AND selected — grey, not primary, so it does not read as live.
     // The pairing a disabled checked Checkbox takes; the dot is the mark.
-    "disabled:data-[state=checked]:bg-surface-disabled " +
-    "disabled:data-[state=checked]:hover:bg-surface-disabled " +
+    "disabled:data-[state=checked]:bg-surface-input-disabled " +
+    "disabled:data-[state=checked]:hover:bg-surface-input-disabled " +
     "disabled:data-[state=checked]:border-line-input-disabled",
   {
     variants: {

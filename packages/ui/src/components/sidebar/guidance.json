@@ -81,7 +81,7 @@
     "The active item sets aria-current=\"page\" as well as the treatment, so \"current\" survives when colour does not.",
     "The collapse toggle carries aria-expanded and an aria-label that changes with state — \"Expand sidebar\" or \"Collapse sidebar\" — because the icon alone never says which way it goes.",
     "The PanelLeft glyph is aria-hidden; the button's label is its name.",
-    "Collapsing changes width with no transition, deliberately: there are no motion tokens yet, so the change is instant rather than arbitrarily timed.",
+    "Collapsing changes width with no transition. The motion tokens cover overlays and the accordion; the rail is not animated yet, so the change is instant rather than arbitrarily timed.",
     "The plate's image is decorative — empty alt and aria-hidden. The wordmark is the accessible text, so a plate whose wordmark is itself artwork needs real text beside it or a label.",
     "A scrim sits between the artwork and the text, so the wordmark's contrast comes from the component rather than from whatever the brand's file happens to contain. Removing it, or replacing the plate's background, takes that guarantee with it.",
     "Collapsed to 48 the wordmark is replaced by `mark`, so the mark has to still identify the product. A letter does; an abstract glyph on its own does not.",

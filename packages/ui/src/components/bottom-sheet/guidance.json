@@ -31,7 +31,7 @@
       "id": "handle-is-decoration",
       "dont": "Rely on the handle — or a swipe — as the way to close.",
       "do": "Always draw the close button; the handle only says 'this is a sheet'.",
-      "why": "A gesture-only exit cannot be reached by keyboard or switch control, and there are no motion tokens to make a drag feel right yet."
+      "why": "A gesture-only exit cannot be reached by keyboard or switch control, and a drag needs motion that follows the finger, which the motion tokens (fixed durations for overlays) do not describe."
     },
     {
       "id": "never-full-height",

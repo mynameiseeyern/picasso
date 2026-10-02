@@ -38,6 +38,14 @@ export {
   type RadioProps,
 } from "./components/radio-group/radio-group";
 export {
+  SegmentedControl,
+  SegmentedControlItem,
+  segmentedControlVariants,
+  segmentedControlItemVariants,
+  type SegmentedControlProps,
+  type SegmentedControlItemProps,
+} from "./components/segmented-control/segmented-control";
+export {
   Switch,
   switchVariants,
   type SwitchProps,

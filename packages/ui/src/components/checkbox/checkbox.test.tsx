@@ -48,7 +48,7 @@ describe("Checkbox", () => {
     const box = screen.getByRole("checkbox");
     // Figma painted this at full primary, identical to a live one.
     expect(box.className).toContain(
-      "disabled:data-[state=checked]:bg-surface-disabled",
+      "disabled:data-[state=checked]:bg-surface-input-disabled",
     );
     expect(box).toBeDisabled();
   });

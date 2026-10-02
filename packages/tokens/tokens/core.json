@@ -792,5 +792,37 @@
       "$value": 3200,
       "$description": "Toast. Clears a modal and anything floating above it; GovTech's local layers run to 2400, so 3200 leaves the gap intact."
     }
+  },
+  "motion": {
+    "$description": "How long things take and how they accelerate. Small on purpose: three durations and two curves cover an overlay arriving, an overlay leaving and a row opening. Entering uses the longer step and decelerates; leaving uses the shorter step and accelerates, so dismissing always feels quicker than opening. Reduced motion switches every one of these off.",
+    "duration": {
+      "fast": {
+        "$type": "duration",
+        "$value": "150ms",
+        "$description": "Leaving, and small things: a scrim fading out, a dialog closing, an accordion row collapsing."
+      },
+      "base": {
+        "$type": "duration",
+        "$value": "200ms",
+        "$description": "Arriving: a scrim, a dialog, an accordion row opening. Also a drawer leaving."
+      },
+      "slow": {
+        "$type": "duration",
+        "$value": "300ms",
+        "$description": "A large surface travelling a long way: a drawer sliding in."
+      }
+    },
+    "easing": {
+      "enter": {
+        "$type": "cubicBezier",
+        "$value": "cubic-bezier(0, 0, 0.2, 1)",
+        "$description": "Decelerate. Starts at speed and settles — for anything arriving."
+      },
+      "exit": {
+        "$type": "cubicBezier",
+        "$value": "cubic-bezier(0.4, 0, 1, 1)",
+        "$description": "Accelerate. Starts slowly and leaves at speed — for anything going away."
+      }
+    }
   }
 }

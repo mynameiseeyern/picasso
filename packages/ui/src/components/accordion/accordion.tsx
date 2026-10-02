@@ -37,8 +37,9 @@ import { cn } from "@/lib/utils";
  * `divider` draws the rule **above** an item, with 24 of padding under it, so
  * a list of items is separated without a trailing rule at the bottom.
  *
- * No motion: Radix exposes `--radix-accordion-content-height` for a height
- * transition, but the system has no motion tokens yet and Figma draws none.
+ * Motion (2 Oct): a row opens over motion/duration/base and closes over
+ * fast, animating to the height Radix measures and publishes as
+ * `--radix-accordion-content-height`. Reduced motion switches it off.
  */
 type AccordionVariant = "faq" | "default";
 type IconPosition = "left" | "right";
@@ -179,6 +180,7 @@ export function AccordionContent({
       data-slot="accordion-content"
       className={cn(
         "overflow-hidden text-body-lg text-content-neutral-muted",
+        "motion-safe:data-[state=open]:animate-accordion-down motion-safe:data-[state=closed]:animate-accordion-up",
         className,
       )}
       {...props}

@@ -14,9 +14,12 @@ import {
   BottomSheetTrigger,
 } from "./bottom-sheet";
 import { Button } from "../button/button";
-import { ButtonGroup } from "../button-group/button-group";
 import { Checkbox } from "../checkbox/checkbox";
 import { Radio, RadioGroup } from "../radio-group/radio-group";
+import {
+  SegmentedControl,
+  SegmentedControlItem,
+} from "../segmented-control/segmented-control";
 import {
   InputGroup,
   InputGroupAddon,
@@ -165,7 +168,8 @@ export const WithSearch: Story = {
   ),
 };
 
-/** Sort: one of a few, so a RadioGroup — and the order is a ButtonGroup. */
+/** Sort: one of a few, so a RadioGroup — and the order, which also stays
+ * selected, is a SegmentedControl rather than a ButtonGroup. */
 export const Sort: Story = {
   render: () => (
     <BottomSheet>
@@ -193,14 +197,14 @@ export const Sort: Story = {
               </BottomSheetItem>
             ))}
           </RadioGroup>
-          <ButtonGroup>
-            <Button variant="secondary">
+          <SegmentedControl fullWidth aria-label="Order" defaultValue="asc">
+            <SegmentedControlItem value="asc">
               <ArrowUp aria-hidden /> Ascending
-            </Button>
-            <Button variant="outline">
+            </SegmentedControlItem>
+            <SegmentedControlItem value="desc">
               <ArrowDown aria-hidden /> Descending
-            </Button>
-          </ButtonGroup>
+            </SegmentedControlItem>
+          </SegmentedControl>
         </BottomSheetBody>
         <BottomSheetFooter>
           <BottomSheetClose asChild>

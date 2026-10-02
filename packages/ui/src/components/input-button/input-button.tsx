@@ -4,9 +4,11 @@ import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * InputButton — Figma's `Input button` set (40000625:566), whose `Type` axis is
- * Button | Select trigger: a button dressed as a field, for things that open a picker rather than take typing
- * (a date, a filter, a select).
+ * InputButton — Figma's `Input button` set (40000625:566): a button dressed as
+ * a field, for things that open a picker rather than take typing (a date, a
+ * filter, a select). Figma's `Icon` swap is `icon` here and its
+ * `Show Badge number` toggle is `adornment`; until 2 Oct 2026 Figma drew
+ * those as a `Type` axis (Button | Select trigger).
  *
  * It is a <button>, not a read-only input. It does one thing — open something
  * — and a screen reader should say "button", with aria-expanded telling it

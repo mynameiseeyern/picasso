@@ -79,7 +79,12 @@ export function OverlaySurface({
  * dialog a dialog, not the dimming. A scrim that announces itself is one more
  * thing between the person and the content.
  */
-const overlayScrimVariants = cva("fixed inset-0 z-overlay bg-surface-scrim");
+const overlayScrimVariants = cva(
+  "fixed inset-0 z-overlay bg-surface-scrim " +
+    // Fades with the surface it sits behind. Radix sets data-state on the
+    // overlay; a scrim rendered on its own has none and does not animate.
+    "motion-safe:data-[state=open]:animate-fade-in motion-safe:data-[state=closed]:animate-fade-out",
+);
 
 export function OverlayScrim({
   className,

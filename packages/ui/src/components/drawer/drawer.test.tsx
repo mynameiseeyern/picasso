@@ -291,10 +291,17 @@ describe("Drawer", () => {
     );
   });
 
-  it("records the side on the panel so a consumer can hook motion onto it later", async () => {
+  it("slides in from its own edge, and not at all under reduced motion", async () => {
     const user = userEvent.setup();
     render(<RecordFixture side="left" />);
     const dialog = await open(user);
     expect(dialog).toHaveAttribute("data-side", "left");
+    expect(dialog).toHaveClass(
+      "motion-safe:data-[state=open]:animate-drawer-in-left",
+      "motion-safe:data-[state=closed]:animate-drawer-out-left",
+    );
+    expect(dialog).not.toHaveClass(
+      "motion-safe:data-[state=open]:animate-drawer-in-right",
+    );
   });
 });

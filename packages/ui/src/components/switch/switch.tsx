@@ -21,7 +21,7 @@ import { cn } from "@/lib/utils";
  *   focus      ring/focus + border/input/focused
  *   on         bg/primary/emphasis, no border
  *   disabled   bg/input/disabled, border/input/disabled
- *   disabled on  bg/disabled, border/input/disabled, knob fg/disabled — the
+ *   disabled on  bg/input/disabled, border/input/disabled, knob fg/disabled — the
  *              pairing a disabled checked Checkbox takes (decided 2 Oct; it
  *              was full primary, which read as live)
  *   invalid    ring/focus-danger over the resting colours
@@ -54,11 +54,11 @@ const switchVariants = cva(
     "disabled:bg-surface-input-disabled disabled:border-line-input-disabled " +
     "disabled:hover:border-line-input-disabled " +
     // disabled AND on — grey, not primary, so it does not read as live.
-    // The same pairing as a disabled checked Checkbox: bg/disabled, and the
+    // The same pairing as a disabled checked Checkbox: bg/input/disabled, and the
     // mark (here the knob) in fg/disabled.
-    "disabled:data-[state=checked]:bg-surface-disabled " +
+    "disabled:data-[state=checked]:bg-surface-input-disabled " +
     "disabled:data-[state=checked]:border-line-input-disabled " +
-    "disabled:data-[state=checked]:hover:bg-surface-disabled",
+    "disabled:data-[state=checked]:hover:bg-surface-input-disabled",
   {
     variants: {
       size: {

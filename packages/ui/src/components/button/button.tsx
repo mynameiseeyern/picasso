@@ -13,9 +13,12 @@ import { cn } from "@/lib/utils";
  *
  * MEASUREMENTS come from shadcn — height, padding, gap, radius.
  *
- * ⚠️ These disagree on height. Figma is 24/28/32/36; shadcn is 28/32/36/40.
- * We take shadcn's, so every button is one step taller than the current
- * Figma component. Deliberate, and Figma is reconciled to match.
+ * Height is 28/32/36/40 on both sides. Figma drew 24/28/32/36 until 2 Oct
+ * 2026 and was moved to match (Ee's call), so md is 36 beside a 36 Input.
+ *
+ * ⚠️ Padding and type size still differ. Figma is 8 (xs) and 10 everywhere
+ * else, with label/md at every size; this is shadcn's 10/12/16/24, with
+ * label/sm at xs and sm. Not reconciled — raised.
  */
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md " +

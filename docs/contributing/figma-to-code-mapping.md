@@ -33,8 +33,11 @@ each variant out of the set and combine the lifted ones into a new set. The
 component nodes and their keys survive, so every instance keeps pointing at the
 same thing and keeps its overrides.
 
-An axis is still right when it changes paint inside one component. `Input
-button` keeps `Type` = Button | Select trigger because both are `InputButton`.
+An axis is still right when it changes paint inside one component. When the
+values differ only by what is present, it is booleans instead: `Input button`
+had `Type` = Button | Select trigger until 2 Oct 2026, and the two differed by
+an icon and a count badge, so it is now one set with a swappable `Icon` and a
+`Show Badge number` toggle — the same call as Chip.
 
 ## 2. A continuous value is a number in code
 

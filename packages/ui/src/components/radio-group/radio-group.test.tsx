@@ -71,7 +71,7 @@ describe("RadioGroup", () => {
     // Selected and disabled goes grey — ring, fill and dot — so it does not
     // read as live. The same pairing as a disabled checked Checkbox.
     expect(low.className).toContain(
-      "disabled:data-[state=checked]:bg-surface-disabled",
+      "disabled:data-[state=checked]:bg-surface-input-disabled",
     );
     expect(low.className).toContain(
       "disabled:data-[state=checked]:border-line-input-disabled",

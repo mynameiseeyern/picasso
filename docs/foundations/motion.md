@@ -1,12 +1,60 @@
 ---
 title: Motion
-description: Colour transitions, the Loader and illustrations, and nothing else. Reduced motion substitutes rather than deletes.
+description: A small duration and easing scale for overlays and disclosure, plus colour transitions, the Loader and illustrations. Reduced motion is honoured everywhere.
 ---
 
 # Motion
 
-Picasso animates three things: colour, the Loader, and illustrations.
-Everything else changes instantly.
+Picasso animates four things: overlays and disclosure, colour, the Loader,
+and illustrations. Everything else changes instantly.
+
+## The scale
+
+Three durations and two curves, as tokens (`motion/*` in `core.json`, emitted
+as `--motion-*`). They exist for surfaces that arrive and leave.
+
+| Token | Value | For |
+|---|---|---|
+| `motion/duration/fast` | 150ms | Leaving, and small things: a scrim fading out, a dialog closing, an accordion row collapsing |
+| `motion/duration/base` | 200ms | Arriving: a scrim, a dialog, an accordion row opening. Also a drawer leaving |
+| `motion/duration/slow` | 300ms | A large surface travelling a long way: a drawer sliding in |
+| `motion/easing/enter` | `cubic-bezier(0, 0, 0.2, 1)` | Decelerate — anything arriving |
+| `motion/easing/exit` | `cubic-bezier(0.4, 0, 1, 1)` | Accelerate — anything going away |
+
+Two rules: **arriving takes the longer step and decelerates; leaving takes the
+shorter step and accelerates**, so dismissing always feels quicker than
+opening.
+
+A component never states a duration or a curve. `theme.css` composes the
+tokens into named animations, and the component asks for one:
+
+| Utility | Used by | Timing |
+|---|---|---|
+| `animate-fade-in` · `-out` | The scrim behind Dialog and Drawer | base enter · fast exit |
+| `animate-dialog-in` · `-out` | Dialog, and the expanded Drawer | fade and scale from 96%: base enter · fast exit |
+| `animate-drawer-in-right` · `-out-right` (and `-left`) | Side Drawer | slide from its edge: slow enter · base exit |
+| `animate-accordion-down` · `-up` | Accordion content | height, to the value Radix measures: base enter · fast exit |
+
+Each is applied under `motion-safe:` on Radix's `data-state`:
+
+```tsx
+"motion-safe:data-[state=open]:animate-dialog-in motion-safe:data-[state=closed]:animate-dialog-out"
+```
+
+Use `motion-safe:`, not a `motion-reduce:animate-none` override — the override
+loses the cascade to the `data-state` rule and the animation still runs
+(measured). The leaving animations hold their last frame, because Radix
+unmounts on `animationend` and the surface would otherwise flash back for a
+frame.
+
+**Not animated yet:** Popover, Tooltip, Dropdown menu, Select, Toast, the
+Sidebar's collapse and the Bottom sheet. They change instantly until someone
+gives them an entry in the table above. A Bottom sheet that follows a drag
+needs a spring, which this scale does not describe.
+
+Figma carries the five tokens as variables (three numbers in milliseconds,
+two strings), hidden from pickers: a static frame cannot show a transition,
+so the tokens are the spec.
 
 ## Colour transitions
 
@@ -68,22 +116,24 @@ Under reduced motion nothing travels. Lift changes state without the slide,
 magnify moves the accent and leaves the sizes alone, and sequence does not
 run — the drawing at rest already says what it means.
 
-## There is no duration or easing scale
+## Outside the scale
 
-No `--duration-fast`, no `--ease-standard`, and no transition on a control
-but colour. A Drawer opens instantly; a Sidebar collapses instantly. The
-Loader's and the illustrations' timings are authored for those two things and
-are not a scale to borrow from: `transition-illustration` on a Dialog is as
-off-system as `duration-300`.
+The Loader's and the illustrations' timings are authored for those two things
+and are not part of the scale: `transition-illustration` on a Dialog is as
+off-system as `duration-300`. A control still carries nothing but
+`transition-colors`.
 
-So a component that wants motion uses `transition-colors` or does without, and
-says which in a comment. Do not reach for `duration-300` or an arbitrary
-`ease-[…]`: the linter refuses the arbitrary value, and a bare Tailwind
-duration is a number outside the system.
+So a component that wants motion uses one of the named animations above, or
+`transition-colors`, or does without — and says which in a comment. Do not
+reach for `duration-300` or an arbitrary `ease-[…]`: the linter refuses the
+arbitrary value, and a bare Tailwind duration is a number outside the system.
+If a new surface needs to move, add a named animation to `theme.css` built
+from the `motion/*` tokens.
 
 ## Reduced motion is not optional
 
-Every animation honours `prefers-reduced-motion`. Skeleton carries
+Every animation honours `prefers-reduced-motion`. Overlays and the Accordion
+sit under `motion-safe:`, so they simply appear; Skeleton carries
 `motion-reduce:animate-none`; Loader stops all travel and substitutes a fade,
 because the component still has to say "working" when it cannot move:
 

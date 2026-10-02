@@ -22,10 +22,13 @@ import { cn } from "@/lib/utils";
  * cannot draw it.
  *
  * The disabled treatment is NOT a departure. A disabled checked box takes
- * bg/disabled with an fg/disabled mark, which is exactly Button's disabled
- * pairing, and Figma draws the same (Ee's call, 28 Sept). The mark sits at
- * 2.24:1 against its surface — soft, and the same softness as every disabled
- * button label, which is the point: it reads as inactive without the state
+ * bg/input/disabled with an fg/disabled mark (Ee's calls, 28 Sept and 2 Oct),
+ * and Figma draws the same. The fill was bg/disabled until 2 Oct: the two are
+ * the same colour in light, but in dark bg/disabled is the card itself, so on
+ * a card the box vanished and only the tick was left. bg/input/disabled is the
+ * fill the box already has when disabled and unchecked — a dark well on a
+ * card, with its border showing on the page. Switch and Radio do the same.
+ * The mark stays soft on purpose: it reads as inactive without the state
  * becoming unreadable.
  */
 const checkboxVariants = cva(
@@ -54,8 +57,8 @@ const checkboxVariants = cva(
     // disabled, including checked — see the doc block
     "disabled:cursor-not-allowed disabled:hover:bg-surface-input-disabled " +
     "disabled:bg-surface-input-disabled disabled:border-line-input-disabled " +
-    "disabled:data-[state=checked]:bg-surface-disabled " +
-    "disabled:data-[state=indeterminate]:bg-surface-disabled " +
+    "disabled:data-[state=checked]:bg-surface-input-disabled " +
+    "disabled:data-[state=indeterminate]:bg-surface-input-disabled " +
     "disabled:data-[state=checked]:border-line-input-disabled " +
     "disabled:data-[state=indeterminate]:border-line-input-disabled " +
     "disabled:data-[state=checked]:text-content-disabled " +

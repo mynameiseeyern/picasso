@@ -7,6 +7,29 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Added
 
+- **`SegmentedControl`** — a choice that stays selected, as one control: a
+  muted track with the current option on a raised thumb. `SegmentedControl`
+  and `SegmentedControlItem`, `size="sm" | "md"` (32 / 36, Button's and
+  Input's heights) and `fullWidth`. It is a radio group — one option always
+  selected, arrow keys move it — so it is not a ButtonGroup (actions, nothing
+  stays pressed) and not Tabs (panels). The Bottom sheet's Sort story now
+  uses it for Ascending / Descending, where it had borrowed a ButtonGroup
+  with a Secondary button standing in for "selected". **Figma impact** — new
+  `Segmented control` set (`Size` × `Full width`) and its `_Segment` part, on a
+  new page under Forms; the mobile Sort sheet uses it.
+
+- **Motion tokens, and the first three things that use them.**
+  `motion/duration/fast` 150ms, `base` 200ms, `slow` 300ms, and
+  `motion/easing/enter` and `exit`. **Dialog** fades and scales in, **Drawer**
+  slides in from its edge (the expanded one scales like a Dialog), their scrim
+  fades, and **Accordion** rows open to their measured height. Arriving takes
+  the longer step and decelerates; leaving takes the shorter and accelerates.
+  All of it sits under `motion-safe:`, so reduced motion gets no animation.
+  Components ask for a named animation (`animate-dialog-in`, …) and never
+  state a duration or curve. Popover, Tooltip, menus, Toast, Sidebar and
+  Bottom sheet are not animated yet. **Figma impact** — five `motion/*`
+  variables in Primitives, hidden from pickers; nothing moves on canvas.
+
 - **`npm run format` and `npm run format:check`**, scoped to `packages/ui/src`,
   with Prettier declared as a dev dependency. All of `packages/ui/src` is now
   formatted, so a format-on-save no longer drags unrelated lines into a diff.
@@ -31,6 +54,27 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   outside the console, and never as a duration scale for controls.
 
 ### ⚠️ Changed (Figma structure)
+
+- **Figma's Button is the height code has always been: 28 / 32 / 36 / 40**
+  (xs to lg, and the four icon sizes), up from 24 / 28 / 32 / 36. A `md`
+  button is now 36, the height of an Input. Heights are bound to `space/7`
+  to `space/10`. Every Button instance in the file follows; the table's
+  action column widened from 60 to 64 to hold the 32px icon button, and
+  nothing else overflowed. **Code impact** — none. In a consuming file, every
+  Button grows 4px on update; a layout drawn tight around one may need a nudge.
+  Padding and label size still differ between the two sides (Figma 8 / 10 with
+  `label/md` throughout; code 10 / 12 / 16 / 24 with `label/sm` at xs and sm).
+
+- **Figma's Input button has no `Type` axis.** 24 variants become 12
+  (`State` × `Size`). Button and Select trigger differed only by an icon and
+  a count badge, which is presence, not paint: the icon is now a swappable
+  `Icon` and the badge is the `Show Badge number` toggle, default off. The
+  text is bound to `Value` in every variant (the Select trigger's was not).
+  `Leading`, `Trailing` and the two addon properties are gone; nothing used
+  them. All 21 instances were migrated and show what they showed before.
+  **Code impact** — none; `InputButton` already took `icon` and `adornment`.
+  In a consuming file, an instance that was `Type=Button` will need its icon
+  and badge set by hand after the library update.
 
 - **Figma's Button group keeps its first and last buttons, and toggles the
   four between them.** `Button 1` and `Button 6` are no longer properties;
@@ -60,11 +104,15 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 - **Disabled and on is grey, on Switch and Radio.** A disabled Switch that is
   on, and a disabled Radio that is selected, were still full primary and read
-  as live. They now take the pairing a disabled checked Checkbox already has:
-  `bg/disabled`, `border/input/disabled`, and the mark — the Switch's knob, the
-  Radio's dot — in `fg/disabled`. A disabled unselected Radio's ring also moves
-  to `border/input/disabled`, so all three controls agree. **Figma impact** —
-  the Switch and Radio `State=Disabled` variants are redrawn to match.
+  as live. They now take the pairing a disabled checked Checkbox has:
+  `bg/input/disabled`, `border/input/disabled`, and the mark — the Switch's
+  knob, the Radio's dot — in `fg/disabled`. A disabled unselected Radio's ring
+  also moves to `border/input/disabled`, so all three controls agree.
+  **Checkbox's own disabled-checked fill moves from `bg/disabled` to
+  `bg/input/disabled`**: identical in light, but in dark `bg/disabled` is the
+  card colour, so on a card the box vanished and only the tick showed.
+  **Figma impact** — the Switch, Radio and Checkbox `State=Disabled` variants
+  are redrawn to match.
 
 - **Avatar's offline dot is `fg/neutral/subtle`.** It was resting on
   `bg/neutral/subtle-pressed` — a state token at rest, and neutral-200 in

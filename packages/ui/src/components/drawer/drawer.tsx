@@ -39,20 +39,27 @@ import { overlayScrimVariants } from "../overlay/overlay";
  * 45 and the footer 69 rather than 64. Both are padding-driven here — no
  * fixed height to fight the button.
  *
- * No motion. Figma draws none, and the system has no transition tokens for
- * overlays yet. A drawer that slides is the obvious next question; it wants
- * a token, not a one-off keyframe here.
+ * Motion (2 Oct): a side drawer slides in from its edge over
+ * motion/duration/slow and back out over base; the expanded drawer, which
+ * has no edge to come from, scales in like a Dialog. The scrim fades with
+ * it. Reduced motion switches all of it off. Figma draws none of this — a
+ * static frame cannot — so the tokens in core.json are the spec.
  */
 const drawerPanelVariants = cva(
   "fixed z-modal flex flex-col bg-surface-card shadow-lg outline-none",
   {
     variants: {
       side: {
-        right: "inset-y-0 right-0 border-l border-line-neutral-muted",
-        left: "inset-y-0 left-0 border-r border-line-neutral-muted",
+        right:
+          "inset-y-0 right-0 border-l border-line-neutral-muted " +
+          "motion-safe:data-[state=open]:animate-drawer-in-right motion-safe:data-[state=closed]:animate-drawer-out-right",
+        left:
+          "inset-y-0 left-0 border-r border-line-neutral-muted " +
+          "motion-safe:data-[state=open]:animate-drawer-in-left motion-safe:data-[state=closed]:animate-drawer-out-left",
         // Inset on all four sides; size does not apply.
         expanded:
-          "inset-x-20 inset-y-10 rounded-2xl border border-line-neutral-muted",
+          "inset-x-20 inset-y-10 rounded-2xl border border-line-neutral-muted " +
+          "motion-safe:data-[state=open]:animate-dialog-in motion-safe:data-[state=closed]:animate-dialog-out",
       },
       size: { default: "", wide: "" },
     },

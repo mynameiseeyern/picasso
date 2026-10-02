@@ -172,6 +172,8 @@ const SCOPES = [
   // hidden from every picker: they exist so the scale can be read in the file
   // and so both sides carry the same tokens.
   [/^layer\//, []],
+  // motion/* has nothing to bind to in Figma either: hidden, there to be read.
+  [/^motion\//, []],
 ];
 const scopesFor = (name) => (SCOPES.find(([re]) => re.test(name)) ?? [null, []])[1];
 const figmaName = (path) => path.replaceAll(".", "/");
@@ -191,6 +193,9 @@ export function figmaExport(id) {
     else if (t.$type === "dimension" || t.$type === "fontSizes") add(name, "FLOAT", toPx(v), t.$description);
     else if (t.$type === "fontWeights") add(name, "FLOAT", Number(v));
     else if (t.$type === "number") add(name, "FLOAT", Number(v), t.$description);
+    // Durations go across as a number of milliseconds; a curve as its string.
+    else if (t.$type === "duration") add(name, "FLOAT", parseFloat(v), t.$description);
+    else if (t.$type === "cubicBezier") add(name, "STRING", String(v), t.$description);
     else if (t.$type === "fontFamilies") add(name, "STRING", L.fonts[path.split(".").pop()].name);
     // lineHeights / letterSpacing / typography live in the text styles:
     // Figma variables cannot hold % line heights or em tracking.

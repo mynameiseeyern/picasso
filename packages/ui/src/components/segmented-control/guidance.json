@@ -1,0 +1,51 @@
+{
+  "component": "SegmentedControl",
+  "summary": "A choice that stays selected, as one control: two to five short options on a track, with the current one on a raised thumb.",
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "40000682:211"
+  },
+  "structureFrom": "code",
+  "measurementsFrom": "code",
+  "examples": "complete",
+  "pairs": [
+    {
+      "id": "choice-not-actions",
+      "dont": "Use a ButtonGroup with one button styled as selected.",
+      "do": "Use a SegmentedControl when one option stays selected.",
+      "why": "Nothing in a ButtonGroup stays pressed, so a faked selected state reads as two different buttons. The thumb on a track says one of these is the current value."
+    },
+    {
+      "id": "always-one-selected",
+      "dont": "Leave the control with nothing selected.",
+      "do": "Start with one option selected.",
+      "why": "It is a radio group: once something is chosen there is no way back to nothing, and an empty track looks broken rather than unanswered."
+    },
+    {
+      "id": "short-and-few",
+      "dont": "Put six options, or labels that need a sentence, on one track.",
+      "do": "Keep it to two to five short labels. Beyond that, use Select or a RadioGroup.",
+      "why": "Every option shares one row. Past five, or with long labels, the segments get too narrow to read or the control overflows on a phone."
+    },
+    {
+      "id": "value-not-view",
+      "dont": "Use it to switch between panels of different content.",
+      "do": "Use Tabs when each option shows a different panel.",
+      "why": "A segmented control sets a value and is announced as a radio group. Tabs own a panel each and are announced as tabs. The two look alike and promise different things.",
+      "example": false
+    },
+    {
+      "id": "label-the-group",
+      "dont": "Leave the control without a name.",
+      "do": "Give it an aria-label, or a visible label beside it: \"Order\", \"View\".",
+      "why": "\"Ascending, radio, 1 of 2\" does not say what is being ordered. The group's name supplies it.",
+      "example": false
+    }
+  ],
+  "a11y": [
+    "role=\"radiogroup\" with role=\"radio\" items, so it is announced as one choice with a position: \"Ascending, radio, 1 of 2\".",
+    "One tab stop. Left and Right arrows move the selection, as in any radio group.",
+    "It needs a name: aria-label on the control, or aria-labelledby pointing at a visible label.",
+    "Selection is carried by the thumb and by the label's colour, not by colour alone."
+  ]
+}
