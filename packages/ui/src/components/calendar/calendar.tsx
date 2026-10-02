@@ -120,15 +120,23 @@ export function Calendar({
       outside: "[&_button]:text-content-neutral-subtle",
       disabled:
         "[&_button]:pointer-events-none [&_button]:bg-surface-disabled [&_button]:text-content-disabled",
+      // ⚠️ react-day-picker marks every day in a range as `selected`,
+      // including the middle. Unscoped, this rule and `range_middle` both
+      // set the button's text and fill at the same specificity, and
+      // stylesheet order decided the winner: the middle kept its pale fill
+      // but took the white text — white on bg/primary/subtle. `range-middle`
+      // is a marker class (no styles of its own) so the solid treatment
+      // skips the middle outright instead of racing it.
       selected:
-        "[&_button]:bg-surface-primary-emphasis [&_button]:text-content-on-primary-emphasis " +
-        "[&_button]:hover:bg-surface-primary-emphasis-hovered",
+        "[&:not(.range-middle)_button]:bg-surface-primary-emphasis " +
+        "[&:not(.range-middle)_button]:text-content-on-primary-emphasis " +
+        "[&:not(.range-middle)_button]:hover:bg-surface-primary-emphasis-hovered",
       // The run between the ends is one continuous block: the cell is
       // filled and its button is square and transparent so no gaps show.
       range_start: "rounded-l-md bg-surface-primary-subtle",
       range_end: "rounded-r-md bg-surface-primary-subtle",
       range_middle:
-        "bg-surface-primary-subtle [&_button]:rounded-none [&_button]:bg-transparent " +
+        "range-middle bg-surface-primary-subtle [&_button]:rounded-none [&_button]:bg-transparent " +
         "[&_button]:text-content-neutral-muted [&_button]:hover:bg-surface-primary-subtle-hovered",
       hidden: "invisible",
       ...classNames,

@@ -121,6 +121,13 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Fixed
 
+- **Calendar range: mid-range day numbers were unreadable** — white on
+  `bg/primary/subtle` in light, near-black on it in dark (about 1.1:1). The
+  tokens were right; `selected` and `range_middle` both styled the day button
+  at the same specificity and stylesheet order picked the white text. The solid
+  selected treatment now skips the middle of a range, so those days read
+  `fg/neutral/muted` on `bg/primary/subtle` as in Figma. No Figma change.
+
 - **Figma now matches the repo.** Clarion brand ramp (all 11 stops, e.g.
   `brand/600` #0079AD → #007FAB), `vis/indigo/500·600`, six missing
   `vis/amber` and `vis/lime` stops, dark `bg/scrim` alpha. Variables are scoped

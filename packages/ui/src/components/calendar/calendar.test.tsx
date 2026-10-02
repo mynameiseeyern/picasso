@@ -87,6 +87,31 @@ describe("Calendar", () => {
     ).not.toBeNull();
   });
 
+  it("keeps the white-on-solid treatment off the middle of a range", () => {
+    const { container } = render(
+      <Calendar
+        mode="range"
+        month={JAN}
+        selected={{ from: new Date(2026, 0, 10), to: new Date(2026, 0, 14) }}
+      />,
+    );
+    // react-day-picker marks the whole run as selected, middle included. The
+    // solid fill and its white text must skip the middle, or the day numbers
+    // go white on bg/primary/subtle.
+    const middle = [...container.querySelectorAll("[role=gridcell].range-middle")];
+    expect(middle).toHaveLength(3);
+    for (const cell of middle) {
+      expect(cell).toHaveAttribute("data-selected", "true");
+      expect(cell.className).toContain(
+        "[&:not(.range-middle)_button]:text-content-on-primary-emphasis",
+      );
+      expect(cell.className).not.toMatch(
+        /(^|\s)\[&_button\]:text-content-on-primary-emphasis/,
+      );
+      expect(cell.className).toContain("[&_button]:text-content-neutral-muted");
+    }
+  });
+
   it("dims the days that belong to the neighbouring months", () => {
     const { container } = render(<Calendar month={JAN} showOutsideDays />);
     expect(container.querySelectorAll("[data-outside]").length).toBeGreaterThan(
