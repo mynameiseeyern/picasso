@@ -339,6 +339,7 @@ export {
   type SidebarMenuButtonProps,
   type SidebarMenuSubProps,
   type SidebarProviderProps,
+  type SidebarProps,
 } from "./components/sidebar/sidebar";
 export {
   Stepper,
@@ -384,3 +385,17 @@ export {
   type IllustrationName,
   type IllustrationProps,
 } from "./components/illustration/illustration";
+export {
+  BottomSheet,
+  BottomSheetBody,
+  BottomSheetClose,
+  BottomSheetCloseButton,
+  BottomSheetContent,
+  BottomSheetDescription,
+  BottomSheetFooter,
+  BottomSheetHeader,
+  BottomSheetItem,
+  BottomSheetTitle,
+  BottomSheetTrigger,
+  type BottomSheetContentProps,
+} from "./components/bottom-sheet/bottom-sheet";

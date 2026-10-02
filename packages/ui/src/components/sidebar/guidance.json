@@ -61,6 +61,20 @@
       "dont": "Dim the second line with opacity.",
       "do": "Let size and weight carry the hierarchy.",
       "why": "There is no on-primary ink below emphasis to reach for, and opacity on text produces a contrast ratio nobody has measured. body/xs under heading/sm separates them without inventing a colour."
+    },
+    {
+      "id": "phone-nav",
+      "dont": "Show the rail inline on a phone, or squeeze the page beside a 256 rail.",
+      "do": "Below md, set `mobile=\"fullscreen\"`: the trigger opens the nav full screen, the brand plate carries a 44 collapse button, items are 44 tall, and picking one closes it.",
+      "why": "On the Clarion prototype the inline rail left a 390 phone with about 140 for the page. The icon-only rail is no answer either — below md it is the memory test this guidance already rules out.",
+      "source": "Clarion Endpoints mobile"
+    },
+    {
+      "id": "phone-nav-holds-the-extras",
+      "dont": "Keep Help, theme and other global actions in a 48 top bar on a phone.",
+      "do": "Move them into the phone nav's footer — Help & support, Dark theme as a Switch — and keep the bar to trigger, breadcrumb and account.",
+      "why": "Every icon in the bar costs the breadcrumb width; with three of them the workspace name truncated to a few letters. The nav is one tap away and has room.",
+      "source": "Clarion Endpoints mobile — top bar option B"
     }
   ],
   "a11y": [

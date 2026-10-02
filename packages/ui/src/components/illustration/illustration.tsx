@@ -446,7 +446,11 @@ function FleetHealth({ interactive }: { interactive: boolean }) {
  * accumulate, it has broken the brand rule, not improved the animation.
  *
  * No script. The loop is `group-hover` on the root, so it costs nothing at
- * rest and stops the moment the pointer leaves.                            */
+ * rest and stops the moment the pointer leaves.
+ *
+ * ⚠️ `motion-safe:` on the hover class, not `motion-reduce:animate-none`
+ * beside it. A hover variant is emitted after `motion-reduce:`, so the
+ * override loses and the loop runs anyway — which is what it did at first.  */
 const CHECKS = [
   { Icon: Headset, x: 28, y: 40, wire: "M44 48C53.5 48 53.5 69 63 69" },
   { Icon: Monitor, x: 116, y: 40, wire: "M116 48C106.5 48 106.5 69 97 69" },
@@ -474,7 +478,7 @@ function CallReadiness({ interactive }: { interactive: boolean }) {
             className={cn(
               line,
               interactive &&
-                "group-hover/illustration:animate-illustration-flow motion-reduce:animate-none",
+                "motion-safe:group-hover/illustration:animate-illustration-flow",
             )}
           />
           <rect
@@ -495,7 +499,7 @@ function CallReadiness({ interactive }: { interactive: boolean }) {
               height={16}
               rx={5}
               strokeWidth={1}
-              className="stroke-line-primary-emphasis opacity-0 group-hover/illustration:animate-illustration-check motion-reduce:animate-none"
+              className="stroke-line-primary-emphasis opacity-0 motion-safe:group-hover/illustration:animate-illustration-check"
             />
           )}
           <Icon

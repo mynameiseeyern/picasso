@@ -243,13 +243,25 @@ describe("sequence — call readiness", () => {
     for (const ring of rings(container)) {
       const cls = ring.getAttribute("class")!;
       expect(cls).toContain("opacity-0");
-      expect(cls).toContain("group-hover/illustration:animate-illustration-check");
+      expect(cls).toContain(
+        "motion-safe:group-hover/illustration:animate-illustration-check",
+      );
     }
   });
 
   it("does not run under reduced motion", () => {
+    // Guarded with motion-safe: on the hover class itself. A
+    // `motion-reduce:animate-none` beside it loses to the hover variant in
+    // the cascade, so the loop would run for the people who asked it not to.
     const { container } = render(<Illustration name="call-readiness" />);
-    for (const el of container.querySelectorAll('[class*="animate-illustration"]'))
-      expect(el.getAttribute("class")).toContain("motion-reduce:animate-none");
+    const animated = [
+      ...container.querySelectorAll('[class*="animate-illustration"]'),
+    ];
+    expect(animated).toHaveLength(8);
+    for (const el of animated) {
+      const cls = el.getAttribute("class")!;
+      expect(cls).toMatch(/motion-safe:group-hover\/illustration:animate-illustration-/);
+      expect(cls).not.toMatch(/(^|\s)group-hover\/illustration:animate-/);
+    }
   });
 });

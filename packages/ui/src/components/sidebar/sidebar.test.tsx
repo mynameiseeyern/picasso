@@ -277,3 +277,69 @@ describe("SidebarBrand", () => {
     expect(screen.queryByText("powered by Iris")).toBeNull();
   });
 });
+
+describe("Sidebar mobile=\"fullscreen\" (phones)", () => {
+  const setPhone = (phone: boolean) => {
+    window.matchMedia = ((q: string) => ({
+      matches: phone && q.includes("max-width"),
+      media: q,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    })) as unknown as typeof window.matchMedia;
+  };
+  function Phone({ onPick }: { onPick?: () => void }) {
+    return (
+      <SidebarProvider>
+        <Sidebar mobile="fullscreen">
+          <SidebarHeader variant="plate"><SidebarBrand>CLARION</SidebarBrand></SidebarHeader>
+          <SidebarContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton onClick={onPick}><SidebarMenuLabel>Endpoints</SidebarMenuLabel></SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarContent>
+        </Sidebar>
+        <SidebarTrigger />
+      </SidebarProvider>
+    );
+  }
+
+  it("draws no inline rail on a phone; the trigger opens the nav full screen", async () => {
+    setPhone(true);
+    render(<Phone />);
+    expect(screen.queryByText("Endpoints")).toBeNull();
+    const trigger = screen.getByRole("button", { name: "Open navigation" });
+    await userEvent.click(trigger);
+    const dialog = screen.getByRole("dialog", { name: "Navigation" });
+    expect(dialog.className).toContain("inset-0");
+    expect(trigger).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("puts a collapse button on the plate, and it closes the nav", async () => {
+    setPhone(true);
+    render(<Phone />);
+    await userEvent.click(screen.getByRole("button", { name: "Open navigation" }));
+    await userEvent.click(screen.getByRole("button", { name: "Collapse navigation" }));
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("makes items 44 tall and closes when one is picked", async () => {
+    setPhone(true);
+    const onPick = vi.fn();
+    render(<Phone onPick={onPick} />);
+    await userEvent.click(screen.getByRole("button", { name: "Open navigation" }));
+    const item = screen.getByRole("button", { name: "Endpoints" });
+    expect(item.className).toContain("h-11");
+    await userEvent.click(item);
+    expect(onPick).toHaveBeenCalled();
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("changes nothing from md up", async () => {
+    setPhone(false);
+    render(<Phone />);
+    expect(screen.getByText("Endpoints")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Collapse sidebar" })).toBeInTheDocument();
+  });
+});

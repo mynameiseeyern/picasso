@@ -1,7 +1,8 @@
 import * as React from "react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { PanelLeft } from "lucide-react";
+import { PanelLeft, PanelLeftClose } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -56,6 +57,30 @@ const SIDEBAR_WIDTH_COLLAPSED = "w-12";
 interface SidebarContextValue {
   collapsed: boolean;
   setCollapsed: (v: boolean) => void;
+  /** Below md, with a `mobile="fullscreen"` Sidebar mounted. */
+  phone: boolean;
+  mobileOpen: boolean;
+  setMobileOpen: (v: boolean) => void;
+  registerMobile: (on: boolean) => void;
+  /** True for parts rendered inside the full-screen phone nav. */
+  inMobile: boolean;
+}
+
+/* md is 768 in the tokens and in Tailwind; below it is a phone. */
+const PHONE_QUERY = "(max-width: 767.98px)";
+function usePhone() {
+  const [phone, setPhone] = React.useState(
+    () => typeof window !== "undefined" && window.matchMedia?.(PHONE_QUERY).matches === true,
+  );
+  React.useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia(PHONE_QUERY);
+    const on = () => setPhone(mq.matches);
+    on();
+    mq.addEventListener?.("change", on);
+    return () => mq.removeEventListener?.("change", on);
+  }, []);
+  return phone;
 }
 const SidebarContext = React.createContext<SidebarContextValue | null>(null);
 
@@ -70,6 +95,9 @@ export interface SidebarProviderProps extends React.ComponentProps<"div"> {
   collapsed?: boolean;
   defaultCollapsed?: boolean;
   onCollapsedChange?: (collapsed: boolean) => void;
+  /** The full-screen phone nav's open state (Sidebar `mobile="fullscreen"`). */
+  mobileOpen?: boolean;
+  onMobileOpenChange?: (open: boolean) => void;
 }
 
 export function SidebarProvider({
@@ -77,9 +105,22 @@ export function SidebarProvider({
   collapsed,
   defaultCollapsed = false,
   onCollapsedChange,
+  mobileOpen: mobileOpenProp,
+  onMobileOpenChange,
   ...props
 }: SidebarProviderProps) {
   const [uncontrolled, setUncontrolled] = React.useState(defaultCollapsed);
+  const [mobileUncontrolled, setMobileUncontrolled] = React.useState(false);
+  const [hasMobile, setHasMobile] = React.useState(false);
+  const isPhone = usePhone();
+  const mobileOpen = mobileOpenProp ?? mobileUncontrolled;
+  const setMobileOpen = React.useCallback(
+    (next: boolean) => {
+      if (mobileOpenProp === undefined) setMobileUncontrolled(next);
+      onMobileOpenChange?.(next);
+    },
+    [mobileOpenProp, onMobileOpenChange],
+  );
   const isControlled = collapsed !== undefined;
   const value = isControlled ? collapsed : uncontrolled;
 
@@ -91,9 +132,22 @@ export function SidebarProvider({
     [isControlled, onCollapsedChange],
   );
 
-  const ctx = React.useMemo(
-    () => ({ collapsed: value, setCollapsed }),
-    [value, setCollapsed],
+  const phone = isPhone && hasMobile;
+  // Crossing back up to md closes the phone nav, so it never reopens as a stale overlay.
+  React.useEffect(() => {
+    if (!phone && mobileOpen) setMobileOpen(false);
+  }, [phone, mobileOpen, setMobileOpen]);
+  const ctx = React.useMemo<SidebarContextValue>(
+    () => ({
+      collapsed: value,
+      setCollapsed,
+      phone,
+      mobileOpen,
+      setMobileOpen,
+      registerMobile: setHasMobile,
+      inMobile: false,
+    }),
+    [value, setCollapsed, phone, mobileOpen, setMobileOpen],
   );
 
   return (
@@ -110,11 +164,60 @@ export function SidebarProvider({
   );
 }
 
+export interface SidebarProps extends React.ComponentProps<"aside"> {
+  /**
+   * `"fullscreen"`: below md the rail is not drawn inline — SidebarTrigger
+   * opens the same tree full screen over the page instead, with a collapse
+   * button on the brand plate, 44-tall items, and picking an item closes it.
+   * From md up nothing changes. Opt-in for now; see guidance `phone-nav`.
+   */
+  mobile?: "fullscreen";
+  /** Accessible name of the phone nav dialog. */
+  mobileLabel?: string;
+}
+
 export function Sidebar({
   className,
+  mobile,
+  mobileLabel = "Navigation",
+  children,
   ...props
-}: React.ComponentProps<"aside">) {
-  const { collapsed } = useSidebar();
+}: SidebarProps) {
+  const ctx = useSidebar();
+  const { collapsed, registerMobile } = ctx;
+  React.useEffect(() => {
+    if (mobile !== "fullscreen") return;
+    registerMobile(true);
+    return () => registerMobile(false);
+  }, [mobile, registerMobile]);
+
+  if (mobile === "fullscreen" && ctx.phone) {
+    return (
+      <DialogPrimitive.Root open={ctx.mobileOpen} onOpenChange={ctx.setMobileOpen}>
+        <DialogPrimitive.Portal>
+          <DialogPrimitive.Content
+            data-slot="sidebar-mobile"
+            aria-describedby={undefined}
+            className="fixed inset-0 z-modal flex outline-none"
+          >
+            <DialogPrimitive.Title className="sr-only">{mobileLabel}</DialogPrimitive.Title>
+            {/* The same tree, expanded and touch-sized. */}
+            <SidebarContext.Provider value={{ ...ctx, collapsed: false, inMobile: true }}>
+              <aside
+                data-slot="sidebar"
+                data-mobile
+                className={cn("flex size-full flex-col bg-surface-sidebar", className)}
+                {...props}
+              >
+                {children}
+              </aside>
+            </SidebarContext.Provider>
+          </DialogPrimitive.Content>
+        </DialogPrimitive.Portal>
+      </DialogPrimitive.Root>
+    );
+  }
+
   return (
     <aside
       data-slot="sidebar"
@@ -134,7 +237,9 @@ export function Sidebar({
         className,
       )}
       {...props}
-    />
+    >
+      {children}
+    </aside>
   );
 }
 
@@ -221,7 +326,7 @@ export function SidebarBrand({
   children,
   ...props
 }: SidebarBrandProps) {
-  const { collapsed } = useSidebar();
+  const { collapsed, inMobile, setMobileOpen } = useSidebar();
   return (
     <div
       data-slot="sidebar-brand"
@@ -288,6 +393,23 @@ export function SidebarBrand({
           ) : null}
         </>
       )}
+      {inMobile ? (
+        // The phone nav's way out, where the thumb that opened it already is.
+        // 44 square; ink follows the plate's.
+        <button
+          type="button"
+          data-slot="sidebar-mobile-close"
+          aria-label="Collapse navigation"
+          onClick={() => setMobileOpen(false)}
+          className={
+            "absolute end-2 top-2 flex size-11 cursor-pointer items-center justify-center rounded-md " +
+            "outline-none transition-colors hover:bg-surface-layer-on-emphasis-subtle " +
+            "focus-visible:ring-2 focus-visible:ring-line-focused [&_svg]:size-5"
+          }
+        >
+          <PanelLeftClose aria-hidden className="rtl-mirror" />
+        </button>
+      ) : null}
     </div>
   );
 }
@@ -436,9 +558,10 @@ export function SidebarMenuButton({
   asChild,
   active = false,
   size,
+  onClick,
   ...props
 }: SidebarMenuButtonProps) {
-  const { collapsed } = useSidebar();
+  const { collapsed, inMobile, setMobileOpen } = useSidebar();
   const Comp = asChild ? Slot : "button";
   return (
     <Comp
@@ -449,9 +572,16 @@ export function SidebarMenuButton({
         sidebarMenuButtonVariants({ active, size }),
         // The collapsed rail is a 32 square with only the icon in it.
         collapsed && "size-8 justify-center p-2",
+        // A thumb needs 44; the 32 rail rows are pointer-sized.
+        inMobile && size !== "lg" && "h-11",
         className,
       )}
       {...(asChild ? {} : { type: "button" as const })}
+      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+        onClick?.(e);
+        // Picking a page closes the phone nav — it was only ever in the way.
+        if (inMobile && !e.defaultPrevented) setMobileOpen(false);
+      }}
       {...props}
     />
   );
@@ -576,14 +706,14 @@ export function SidebarTrigger({
   children,
   ...props
 }: React.ComponentProps<"button">) {
-  const { collapsed, setCollapsed } = useSidebar();
+  const { collapsed, setCollapsed, phone, mobileOpen, setMobileOpen } = useSidebar();
   return (
     <button
       type="button"
       data-slot="sidebar-trigger"
-      aria-expanded={!collapsed}
-      aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-      onClick={() => setCollapsed(!collapsed)}
+      aria-expanded={phone ? mobileOpen : !collapsed}
+      aria-label={phone ? "Open navigation" : collapsed ? "Expand sidebar" : "Collapse sidebar"}
+      onClick={() => (phone ? setMobileOpen(!mobileOpen) : setCollapsed(!collapsed))}
       className={cn(
         "flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-md " +
           "text-content-neutral-muted outline-none transition-colors " +

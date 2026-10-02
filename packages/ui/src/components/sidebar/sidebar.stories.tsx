@@ -7,8 +7,11 @@ import {
   Gauge,
   Plus,
   Server,
+  CircleHelp,
+  Moon,
   Settings,
 } from "lucide-react";
+import { Switch } from "../switch/switch";
 import {
   Sidebar,
   SidebarContent,
@@ -269,4 +272,70 @@ export const BrandPlate: Story = {
       </PlateRail>
     </div>
   ),
+};
+
+/**
+ * Phones (below md): `mobile="fullscreen"` takes the rail off the page and the
+ * trigger opens the same tree full screen — collapse button on the plate,
+ * 44-tall items, picking one closes it. Help and theme live in its footer, so
+ * the top bar keeps only the trigger, the breadcrumb and the account.
+ * Switch the viewport to a phone to try it.
+ */
+export const PhoneNav: Story = {
+  parameters: { viewport: { defaultViewport: "mobile1" }, layout: "fullscreen" },
+  render: () => {
+    const [active, setActive] = React.useState("Endpoints");
+    return (
+      <div className="h-svh">
+        <SidebarProvider>
+          <Sidebar mobile="fullscreen">
+            <SidebarHeader variant="plate">
+              <SidebarBrand image={clarionPlate} subtitle="powered by Iris" mark="C">CLARION</SidebarBrand>
+            </SidebarHeader>
+            <SidebarContent>
+              <SidebarGroup>
+                <SidebarGroupLabel>Workspace</SidebarGroupLabel>
+                <SidebarMenu>
+                  {NAV.slice(0, 3).map((item) => (
+                    <SidebarMenuItem key={item.label}>
+                      <SidebarMenuButton active={active === item.label} onClick={() => setActive(item.label)}>
+                        <item.icon aria-hidden />
+                        <SidebarMenuLabel>{item.label}</SidebarMenuLabel>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroup>
+            </SidebarContent>
+            <SidebarFooter>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton>
+                    <CircleHelp aria-hidden />
+                    <SidebarMenuLabel>Help & support</SidebarMenuLabel>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+                <SidebarMenuItem>
+                  <label className="flex h-11 items-center gap-2 px-2 text-body-md text-content-neutral-emphasis">
+                    <Moon aria-hidden className="size-4" />
+                    <span className="flex-1">Dark theme</span>
+                    <Switch />
+                  </label>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarFooter>
+          </Sidebar>
+          <SidebarInset>
+            <header className="flex h-12 items-center gap-2 border-b border-line-neutral-muted px-4">
+              <SidebarTrigger />
+              <span className="text-label-md text-content-neutral-emphasis">{active}</span>
+            </header>
+            <div className="p-4 text-body-md text-content-neutral-muted">
+              On a phone the trigger opens the nav full screen; from md up it collapses the rail as usual.
+            </div>
+          </SidebarInset>
+        </SidebarProvider>
+      </div>
+    );
+  },
 };
