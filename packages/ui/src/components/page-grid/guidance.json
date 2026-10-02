@@ -1,0 +1,40 @@
+{
+  "component": "KpiRow and ChartGrid",
+  "summary": "The two grids a product page is made of — tiles that auto-fill, charts that step 1 → 2 → 3 on the content column.",
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "40000622:1068"
+  },
+  "structureFrom": "Content width — wide screens (the 1920 and 2560 frames)",
+  "measurementsFrom": "docs/foundations/responsive.md and the Layout and breakpoints story",
+  "pairs": [
+    {
+      "id": "use-the-grid",
+      "dont": "Write grid grid-cols-tiles gap-gutter, or grid-cols-1 @3xl:grid-cols-2 @7xl:grid-cols-3, by hand on a page.",
+      "do": "Use KpiRow and ChartGrid.",
+      "why": "The rule used to live only in a sentence, so every product re-derived it and could drift without anyone noticing. A rule in a component is a rule that runs."
+    },
+    {
+      "id": "container-not-viewport",
+      "dont": "Reach for xl: or 2xl: inside the content column.",
+      "do": "Let the grid answer to its container.",
+      "why": "The viewport knows nothing about the rail, the page padding, a width cap or an open drawer. The same grid gets 976 at a 1280 viewport with the rail open and 1184 with it collapsed, so a viewport breakpoint is wrong at the width the grid was actually given."
+    },
+    {
+      "id": "full-row-things-are-siblings",
+      "dont": "Put a table or a time series in a ChartGrid.",
+      "do": "Put it beside the grid.",
+      "why": "Tables and time series take the full row at every width — they are not one of three columns, they are the row. A cell that must always span every column is not a cell."
+    },
+    {
+      "id": "height-is-the-chart-s",
+      "dont": "Give the grid an aspect ratio so the charts scale with it.",
+      "do": "Give the chart a fixed height range, 240–320.",
+      "why": "An aspect ratio makes a chart grow tall on a wide screen, which nobody asked for. The grid sets columns and gap; height is the chart's own business."
+    }
+  ],
+  "a11y": [
+    "Both are presentational containers — they add no role and no landmark, so the tiles and cards inside keep whatever semantics they came with.",
+    "Column count changes with the container, not with a media query, so a zoomed page reflows the same way a narrow one does. Reflow at 400% is a container question here, which is the point."
+  ]
+}
