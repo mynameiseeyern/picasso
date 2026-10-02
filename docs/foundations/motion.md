@@ -37,7 +37,7 @@ tokens into named animations, and the component asks for one:
 |---|---|---|
 | `animate-fade-in` · `-out` | The scrim behind Dialog and Drawer | base enter · fast exit |
 | `animate-dialog-in` · `-out` | Dialog, and the expanded Drawer | fade and scale from 96%: base enter · fast exit |
-| `animate-drawer-in-right` · `-out-right` (and `-left`) | Side Drawer | slide from its edge: slow enter · base exit |
+| `animate-drawer-in-end` · `-out-end` (and `-start`) | Side Drawer | slide from its edge, the other way in RTL: slow enter · base exit |
 | `animate-accordion-down` · `-up` | Accordion content | height, to the value Radix measures: base enter · fast exit |
 | `animate-popover-in` · `-out` | Popover, Dropdown menu and its submenus, Select's menu, Tooltip | fade and scale from 96%, from the corner nearest the trigger: fast both ways |
 | `animate-toast-in` · `-out` | Toast | fade and slide from the inline end (the right; the left in RTL): slow enter · base exit |
@@ -68,8 +68,8 @@ Four details the table does not show:
 - **A Toast follows a swipe.** It tracks the finger, carries on from where it
   is let go and settles back if the swipe is abandoned. Following a finger is
   not animation, so it stays on under reduced motion; only the settle is
-  switched off. The slide mirrors in RTL by itself; the swipe does not, so an
-  RTL app passes `swipeDirection="left"` to `ToastProvider`.
+  switched off. In RTL the slide mirrors in CSS and `ToastProvider` turns the
+  swipe round from the direction provider.
 - **The Sidebar moves its width and nothing else.** It is a transition, not an
   animation, because nothing mounts or unmounts. The labels leave and arrive
   at once; the page beside it reflows as the rail moves.

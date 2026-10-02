@@ -13,7 +13,9 @@ import { overlayScrimVariants } from "../overlay/overlay";
  * filters and drilldowns"* — the place for work too long or too wide for a
  * Dialog, without sending anyone to another page.
  *
- * Two axes, five variants, not six. Type is Right | Left | Expanded; Size is
+ * Two axes, five variants, not six. Side is End | Start | Expanded (the axis
+ * was `Type` = Right | Left | Expanded until 2 Oct 2026, renamed in Figma the
+ * same day the prop was); Size is
  * Default (480) | Wide (640). **Expanded has no Wide** — the file says
  * Expanded is already the wide one, so `size` is ignored there rather than
  * silently doing nothing surprising.

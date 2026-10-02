@@ -210,11 +210,11 @@ describe("RTL: text that does not follow the page", () => {
         <Progress value={40} label="Uploading" />
       </>,
     );
-    // Value and unit are one island, so "-0.4 %" cannot come out "% -0.4",
-    // and it is pushed to the inline start of an RTL tile.
-    const figure = cls(container.querySelector("[data-slot=kpi-tile-figure]"));
-    expect(figure).toContain("ltr-island");
-    expect(figure).toContain("rtl:justify-end");
+    // Value and unit are one island, so "-0.4 %" cannot come out "% -0.4".
+    // The row around it is not, so the comparison stays at the inline end.
+    const figure = container.querySelector("[data-slot=kpi-tile-figure]");
+    expect(cls(figure)).toContain("ltr-island");
+    expect(cls(figure?.parentElement ?? null)).not.toContain("ltr-island");
     expect(
       container
         .querySelector("[data-slot=kpi-tile-unit]")

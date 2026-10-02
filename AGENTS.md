@@ -125,6 +125,23 @@ text-left       text-start
 Icons that encode direction (chevrons, arrows, back/forward) mirror via
 `.rtl-mirror`. Clocks, checkmarks, logos and media controls do not.
 
+Arabic, Hebrew and Persian are supported; the whole of it is in
+`docs/foundations/rtl.md`. What a class swap does not cover:
+
+- **A place in a prop is logical too** — `side="end"`, never `side="right"`.
+- **A translate has no logical form.** Give it an `rtl:` twin with the sign
+  turned (`translate-x-4 rtl:-translate-x-4`); a keyframe multiplies by
+  `--direction-sign`.
+- **Script that measures** — pointer position, arrow keys, a swipe — reads
+  `useDirection()`. Radix reads the same provider, not the DOM.
+- **Technical text stays left-to-right**: put `ltr-island` on a metric, an IP
+  address, an ID, a code. Digits are Latin in every locale.
+- **Never mirror** a chart's time axis, a check mark, a clock, a logo or an
+  illustration.
+
+`picasso/no-physical-properties` catches the classes; `src/__tests__/rtl.test.tsx`
+holds the rest.
+
 ---
 
 ## 7. Component architecture

@@ -5,7 +5,50 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ## Unreleased
 
+### ⚠️ Breaking
+
+- **Drawer's `side` is `start` / `end`, not `left` / `right`.** `end` is the
+  default and is where `right` was in a left-to-right page; in Arabic, Hebrew
+  and Persian it is the left, opposite the sidebar. **Code impact** — replace
+  `side="right"` with `side="end"` and `side="left"` with `side="start"`;
+  TypeScript refuses the old values. `data-side` and the motion utilities
+  (`animate-drawer-in-end`, `-out-end`, `-in-start`, `-out-start`) are renamed
+  to match. **Figma impact** — applied the same day: the Drawer's variant
+  axis `Type` = Right | Left | Expanded is now `Side` = End | Start |
+  Expanded. The five variants were renamed in place, so every component key
+  and every instance carried across; a design that overrides the axis shows
+  the new names on update. The page's own copy and the set's description say
+  the same. Drawer / Header keeps its own `Type` axis (Record | Title).
+
 ### Added
+
+- **Right-to-left: Arabic, Hebrew and Persian.** `docs/foundations/rtl.md` is
+  the whole of it.
+  - **`DirectionProvider` and `useDirection`** — Radix reads direction from a
+    provider, not the DOM; without it the layout mirrors and the arrow keys do
+    not. Storybook's toolbar has a **Direction** control that sets both.
+  - **Scales mirror.** Progress and File upload fill from the inline start;
+    Threshold slider draws, measures the pointer and reads the arrow keys from
+    the inline start, as Radix's Slider does.
+  - **Switch's knob travels to the inline end.** In RTL it used to slide out
+    of its own track.
+  - **Toast is swiped away toward the edge it came from** — `ToastProvider`
+    sets Radix's `swipeDirection` from the direction.
+  - **Calendar** hands the direction to its grid.
+  - **Icons mirror**: Breadcrumb's separator, Dropdown menu's submenu chevron
+    and the Sidebar trigger now carry `rtl-mirror`. The Sidebar brand scrim
+    fades from the inline start.
+  - **`ltr-island`** — a utility for technical text, which reads left to right
+    in every locale. On KPI tile's figure, Progress's value, Table's numeric
+    cells, Number input, OTP, Input group text and Threshold slider's
+    readings. A numeric column is right-aligned in every locale.
+  - **`--direction-sign`** (1 or -1) for keyframes that travel sideways.
+  - **Letter-spacing is zero under an Arabic-script `lang`.**
+  - A test that fails when a directional icon is added without `rtl-mirror`.
+- **Noto Sans, Noto Sans Arabic and Noto Sans Hebrew.** Every font stack, sans
+  and mono, carries the Arabic and Hebrew faces after the family itself, so
+  those scripts look the same on every OS. Noto Sans is a selectable sans in
+  the theme builder. Code only — nothing changes in Figma.
 
 - **`SegmentedControl`** — a choice that stays selected, as one control: a
   muted track with the current option on a raised thumb. `SegmentedControl`

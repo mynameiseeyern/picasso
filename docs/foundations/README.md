@@ -13,6 +13,7 @@ description: The scales everything else is built from.
 | [Colour](colour.md) | Three semantic families, one utility word each |
 | [Elevation](elevation.md) | Five shadow steps and six layers |
 | [Motion](motion.md) | What animates, and what deliberately does not |
+| [Right-to-left](rtl.md) | Arabic, Hebrew and Persian: what mirrors, what must not, and how to set it up |
 | [Icons](icons.md) | Lucide, sized by the parent, hidden unless it is the label |
 | [Accessibility](accessibility.md) | WCAG 2.1 AA as a build gate |
 
