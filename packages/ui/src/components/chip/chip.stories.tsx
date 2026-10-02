@@ -178,7 +178,7 @@ export const DoAndDont: Story = {
         dont={
           <>
             <div className="flex gap-2">
-              <HandRolled className="border-line-neutral-muted bg-surface-neutral-muted">
+              <HandRolled className="border-line-neutral-muted bg-surface-card">
                 Melbourne
               </HandRolled>
               <Chip>Sydney</Chip>

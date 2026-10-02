@@ -135,8 +135,8 @@ describe("Sidebar", () => {
   });
 
   it("hovers and presses on the rail's own pair, never the page's", () => {
-    // bg/sidebar is neutral-100 in light — the value subtle-hovered and
-    // muted-hovered both resolve to — so the standard hover is invisible here.
+    // bg/sidebar is neutral-100 in light — the value subtle-hovered resolves
+    // to — so the standard hover is invisible here.
     render(<Fixture />);
     for (const slot of [
       "sidebar-menu-button",

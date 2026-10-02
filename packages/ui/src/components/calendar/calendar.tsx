@@ -17,7 +17,7 @@ import { cn } from "@/lib/utils";
  * Measured: card 248 wide at radius/xl on bg/card with a
  * border/neutral/muted edge; day cell 32 at radius/md in label/lg; weekday
  * header fg/neutral/muted; arrows 32 at radius/md on bg/card, hovering to
- * bg/neutral/muted-hovered. Selected is bg/primary/emphasis with
+ * bg/neutral/subtle-hovered. Selected is bg/primary/emphasis with
  * fg/on/primary-emphasis, today is bg/primary/subtle, a day outside the
  * month drops to fg/neutral/subtle, and a range's middle is
  * bg/primary/subtle with square corners so the run reads as one block.
@@ -85,13 +85,13 @@ export function Calendar({
       button_previous:
         "inline-flex size-8 cursor-pointer items-center justify-center rounded-md " +
         "bg-surface-card text-content-neutral-emphasis outline-none transition-colors " +
-        "hover:bg-surface-neutral-muted-hovered " +
+        "hover:bg-surface-neutral-subtle-hovered " +
         "focus-visible:ring-2 focus-visible:ring-line-focused " +
         "disabled:pointer-events-none disabled:text-content-disabled",
       button_next:
         "inline-flex size-8 cursor-pointer items-center justify-center rounded-md " +
         "bg-surface-card text-content-neutral-emphasis outline-none transition-colors " +
-        "hover:bg-surface-neutral-muted-hovered " +
+        "hover:bg-surface-neutral-subtle-hovered " +
         "focus-visible:ring-2 focus-visible:ring-line-focused " +
         "disabled:pointer-events-none disabled:text-content-disabled",
 
@@ -111,7 +111,7 @@ export function Calendar({
       day_button: cn(
         "flex size-full cursor-pointer items-center justify-center rounded-md " +
           "text-content-neutral-muted outline-none transition-colors " +
-          "hover:bg-surface-neutral-muted-hovered " +
+          "hover:bg-surface-neutral-subtle-hovered " +
           "focus-visible:ring-2 focus-visible:ring-line-focused",
       ),
 

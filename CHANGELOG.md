@@ -20,6 +20,28 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### ⚠️ Changed (visual)
 
+- **The neutral ramp runs subtle → muted → emphasis.** `bg/neutral` now has the
+  shape of every status ramp, each step one palette step past the last.
+  Light: `muted` is neutral-100 (was white), hover 200, pressed 300; `subtle`
+  is unchanged at 50 / 100 / 200. Dark: `subtle` is 800 / 700 / 600 (was
+  950 / 900 / 800) and `muted` is 700 / 600 / 500 (was 900 / 800 / 700).
+  `emphasis` is unchanged.
+  **Light does not move**: the fills that rested on the old white `muted` —
+  outline **Button**, selected **Chip**, outline **Badge**, the **Avatar** add
+  button, **Stepper**'s empty indicator — now rest on `bg/card`, and their hover
+  and pressed (with ghost Button's and **Calendar**'s) take
+  `bg/neutral/subtle-hovered` / `-pressed`, the same values as before.
+  **Dark does move**, on purpose: every hover and pressed now shows on both the
+  page and a card (nine did not — ghost and outline hover on a card, menu focus
+  and row hover on the page), and resting `subtle` fills are the card colour
+  rather than recessed below the page, so on a dark card they show by their
+  border only, as they already do on the page in light.
+  **File upload**'s progress track takes `bg/layer/emphasis` like Progress; it
+  was resting on `subtle-pressed`.
+  Supersedes the 1 Oct light `muted-hovered` / `muted-pressed` entry below.
+  **Figma impact** — the six Semantic variables move in Light and Dark, and
+  fills bound to the old `muted` trio are rebound so light keeps its pixels.
+
 - **The 1440 breakpoint is `wide-laptop`, not `laptop`.** 1024 and 1280 are
   laptop widths too, so the plain name did not say which it meant. Token
   `screen/desktop/wide-laptop`, `--breakpoint-wide-laptop`, class

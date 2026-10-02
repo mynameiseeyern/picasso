@@ -33,7 +33,8 @@ import { cn } from "@/lib/utils";
  *
  * Measured from the file: 32 tall, pill radius, 12 of horizontal padding,
  * gap 6, label/md at 13px Medium, icons at 14. Rest is unfilled on
- * border/neutral/muted; hover, focus and press take the neutral muted ramp;
+ * border/neutral/muted; a selected or focused chip is bg/card; hover and
+ * press take the neutral subtle ramp;
  * disabled is bg/disabled with fg/disabled.
  */
 const chipVariants = cva(
@@ -42,12 +43,12 @@ const chipVariants = cva(
     "[&_svg]:size-3.5 [&_svg]:shrink-0",
   {
     variants: {
-      selected: { true: "bg-surface-neutral-muted", false: "" },
+      selected: { true: "bg-surface-card", false: "" },
       interactive: {
         true:
-          "cursor-pointer hover:bg-surface-neutral-muted-hovered " +
-          "active:bg-surface-neutral-muted-pressed " +
-          "focus-visible:bg-surface-neutral-muted focus-visible:ring-2 " +
+          "cursor-pointer hover:bg-surface-neutral-subtle-hovered " +
+          "active:bg-surface-neutral-subtle-pressed " +
+          "focus-visible:bg-surface-card focus-visible:ring-2 " +
           "focus-visible:ring-line-focused focus-visible:ring-offset-2 " +
           "focus-visible:ring-offset-surface-app " +
           "disabled:pointer-events-none disabled:bg-surface-disabled disabled:text-content-disabled",

@@ -114,7 +114,7 @@ export function FileUploadItem({ className, name, size, progress, onRemove, remo
             aria-valuemin={0}
             aria-valuemax={100}
             aria-valuenow={Math.round(progress)}
-            className="h-1.5 w-full overflow-hidden rounded-sm bg-surface-neutral-subtle-pressed"
+            className="h-1.5 w-full overflow-hidden rounded-sm bg-surface-layer-emphasis"
           >
             <div
               className="h-full w-full rounded-sm bg-surface-primary-emphasis transition-transform translate-x-(--upload-offset)"

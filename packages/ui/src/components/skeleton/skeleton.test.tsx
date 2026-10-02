@@ -22,9 +22,9 @@ describe("Skeleton", () => {
 
   it("takes a visible surface, not the one that matches the page", () => {
     const { container } = render(<Skeleton />);
-    // bg/neutral/subtle is the app background in light and bg/neutral/muted
-    // is the card, so a skeleton on either would be invisible on one of them.
-    // bg/layer/* is the neutral that is seen on any surface.
+    // bg/neutral/subtle is the app background in light and the card in dark,
+    // so a skeleton on it would be invisible on one of them. bg/layer/* is a
+    // tint, and is seen on any surface.
     const cls = container.querySelector("[data-slot=skeleton]")!.className;
     expect(cls).toContain("bg-surface-layer-muted");
     expect(cls).not.toContain("bg-surface-neutral-");

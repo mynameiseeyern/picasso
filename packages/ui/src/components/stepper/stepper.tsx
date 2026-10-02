@@ -59,7 +59,7 @@ const stepperIndicatorVariants = cva(
       {
         indicator: "check",
         status: "incomplete",
-        class: "border-line-neutral-muted bg-surface-neutral-muted",
+        class: "border-line-neutral-muted bg-surface-card",
       },
       {
         indicator: "check",

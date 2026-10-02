@@ -31,9 +31,7 @@ describe("Chip", () => {
     // check is the only thing distinguishing them in three of five states.
     expect(check()).not.toBeNull();
     expect(screen.getByRole("button")).toHaveAttribute("aria-pressed", "true");
-    expect(chipVariants({ selected: true })).toContain(
-      "bg-surface-neutral-muted",
-    );
+    expect(chipVariants({ selected: true })).toContain("bg-surface-card");
   });
 
   it("does not nest a button inside a button when removable", async () => {
@@ -71,10 +69,10 @@ describe("Chip", () => {
   it("drops the interactive states when it is not a control", () => {
     // A removable token is not itself clickable, so it takes no hover fill.
     expect(chipVariants({ interactive: false })).not.toContain(
-      "hover:bg-surface-neutral-muted-hovered",
+      "hover:bg-surface-neutral-subtle-hovered",
     );
     expect(chipVariants({ interactive: true })).toContain(
-      "hover:bg-surface-neutral-muted-hovered",
+      "hover:bg-surface-neutral-subtle-hovered",
     );
   });
 

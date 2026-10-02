@@ -273,8 +273,8 @@ const avatarAddVariants = cva(
       size: { xs: "size-6", sm: "size-8", md: "size-10" },
       variant: {
         default:
-          "bg-surface-neutral-muted border-line-neutral-muted text-content-neutral-subtle " +
-          "enabled:hover:bg-surface-neutral-muted-hovered enabled:hover:text-content-neutral-muted",
+          "bg-surface-card border-line-neutral-muted text-content-neutral-subtle " +
+          "enabled:hover:bg-surface-neutral-subtle-hovered enabled:hover:text-content-neutral-muted",
         inverse:
           "bg-surface-neutral-emphasis border-line-inverse text-content-on-neutral-emphasis " +
           "enabled:hover:bg-surface-neutral-emphasis-hovered",

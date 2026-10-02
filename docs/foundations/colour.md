@@ -50,57 +50,73 @@ bg / danger / subtle / hovered
 `fg/on/<surface>` is the foreground guaranteed to pass contrast on that surface —
 `text-content-on-primary-emphasis` sits on `bg-surface-primary-emphasis`.
 
-## Hover and pressed step away from the surface
+## The neutral ramp runs subtle → muted → emphasis
 
-A hover is one palette step past the surface it sits on, and pressed is one
-step past that. The neutral ladders in light:
+Prominence is contrast: **subtle** is the quietest fill, **muted** is one palette
+step stronger, **emphasis** is the solid. `bg/neutral` has the same shape as
+`bg/primary`, `bg/danger` and the other status ramps (50 → 100 → 600 there;
+50 → 100 → 800 here), and hover and pressed are one and two steps further on.
 
-| | rest | hover | pressed |
+| Light | rest | hover | pressed |
 |---|---|---|---|
 | `bg/neutral/subtle` | 50 | 100 | 200 |
-| `bg/neutral/muted` | white | 100 | 200 |
+| `bg/neutral/muted` | 100 | 200 | 300 |
+| `bg/neutral/emphasis` | 800 | 900 | 950 |
 | `bg/sidebar` | 100 | 200 | 300 |
 
-`muted` skips 50 on purpose: `bg/app` is neutral-50, so a hover that landed
-there was invisible on the page. The cost is that light `muted` and `subtle`
-share a ladder from hover onward while dark keeps them one step apart
-(900 → 800 → 700 against 950 → 900 → 800).
+| Dark | rest | hover | pressed |
+|---|---|---|---|
+| `bg/neutral/subtle` | 800 | 700 | 600 |
+| `bg/neutral/muted` | 700 | 600 | 500 |
+| `bg/neutral/emphasis` | 100 | 50 | white |
+| `bg/sidebar` | 950 | 900 | 800 |
+
+Until 2 Oct 2026 light `muted` was white and dark ran 950 then 900 — muted was
+lighter than subtle in light, and in dark the order ran away from contrast.
+
+**What each step is seen on.** The page is neutral-50 in light and 900 in dark;
+a card is white and 800.
+
+| | on the page | on a card |
+|---|---|---|
+| `subtle`, light | matches it (1.00) | faint (1.05) |
+| `subtle`, dark | shows (1.21) | matches it (1.00) |
+| `muted` | shows in both themes | shows in both themes |
+| every hover and pressed | shows | shows |
+
+So `subtle` matches one surface in each theme and shows on the other; `muted`
+is the first step that is seen everywhere. Before the change nine hover and
+pressed states were invisible on one surface in dark (a ghost button's hover on
+a card, a menu item's focus and a table row's hover on the page); none are now.
+
+**A fill that should match the card takes `bg/card`**, not a neutral step. The
+outline Button, a selected Chip, the outline Badge, the Avatar add button and
+the Stepper's empty indicator all rest on `bg/card` and hover through
+`bg/neutral/subtle-hovered` and `-pressed`. Light is pixel-identical to before.
 
 **Anything on the sidebar takes `bg/sidebar-hovered` and `bg/sidebar-pressed`**,
-never the neutral pair. The rail is neutral-100 in light, which is the value
-both neutral hovers resolve to — a hover that equals its surface cannot render.
+never the neutral pair. The rail is neutral-100 in light, which is what
+`bg/neutral/subtle-hovered` and `bg/neutral/muted` resolve to — a hover that
+equals its surface cannot render.
 
-## Two neutrals: one matches the surface, one is seen on it
-
-Prominence runs **subtle → muted → emphasis**, lightest contrast to strongest.
-Every intent ramp, every `fg/*` ramp and every `border/*` ramp does. **Resting
-`bg/neutral` is the exception, on purpose** — and knowing why saves reaching for
-the wrong one.
-
-| | subtle | muted | emphasis | What it is for |
-|---|---|---|---|---|
-| `bg/neutral/*` | neutral-50 — the page | white — the card | neutral-800 | A resting fill that **matches its surface**: ghost and outline buttons, chips, inputs, tabs. The visible steps are its hover and pressed. |
-| `bg/layer/*` | 4% ink | 8% ink | 14% ink | A neutral fill that must be **seen**: tracks, empty segments, skeletons, wells. |
+## Tracks and skeletons take `bg/layer/*`
 
 `bg/layer/*` is a translucent tint of the ink colour (white in dark), so it runs
 in contrast order and reads the same on the page, on a card and on a tinted
-panel:
+panel. It is for neutral fills that are part of a picture rather than a
+control: tracks, empty segments, skeletons, wells.
 
 | Contrast with what is behind it | subtle | muted | emphasis |
 |---|---|---|---|
 | Light | 1.08 | 1.17 | 1.34 |
 | Dark | 1.14–1.17 | 1.33–1.38 | 1.75–1.80 |
 
-**The rule:**
+Thin things take `emphasis` (Progress, Slider and File upload tracks, Meter's
+empty segments); large areas take `muted` (Skeleton).
 
-- If the fill should disappear at rest and only show on interaction, use
-  `bg/neutral/subtle` (on the page) or `bg/neutral/muted` (on a card).
-- If the fill has to be visible at rest, use `bg/layer/*`. Thin things take
-  `emphasis` (Progress and Slider tracks, Meter's empty segments); large areas
-  take `muted` (Skeleton).
-- **Never use a state token for a resting fill.** `-hovered` and `-pressed`
-  describe an action. If a pressed token is the only one that shows, the
-  element wants `bg/layer/*`.
+**Never use a state token for a resting fill.** `-hovered` and `-pressed`
+describe an action. If a pressed token is the only one that shows, the element
+wants `bg/neutral/muted` or `bg/layer/*`.
 
 ## Dark mode is free
 

@@ -11,12 +11,11 @@ import { cn } from "@/lib/utils";
  * match. `Shape` is the only axis — Block and Circle — because size is the one
  * thing no variant can enumerate: a skeleton mirrors whatever is arriving.
  *
- * The surface is **bg/layer/muted**. The layer ramp is the neutral ramp for
- * fills that must be seen — a translucent tint that runs subtle → muted →
- * emphasis in contrast order and reads the same on the page, on a card and
- * in both modes. bg/neutral/subtle and muted are not that: they are resting
- * fills that match the page (#f8fafc) and the card (#fff), so each vanishes
- * on one of the two. Skeleton sat on bg/neutral/muted-pressed until 2 Oct —
+ * The surface is **bg/layer/muted** — a translucent tint that runs subtle →
+ * muted → emphasis in contrast order and reads the same on the page, on a
+ * card, on the sidebar and in both modes. bg/neutral/* is opaque, so its
+ * contrast depends on what it lands on: subtle matches the page in light and
+ * the card in dark. Skeleton sat on bg/neutral/muted-pressed until 2 Oct —
  * visible, but a state token doing a resting job. `muted` rather than
  * `emphasis` because a skeleton covers large areas and should stay quiet;
  * thin tracks (Progress, Slider, Meter) take `emphasis`.

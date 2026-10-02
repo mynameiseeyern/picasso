@@ -30,7 +30,7 @@ describe("Badge", () => {
     // 40 of Figma's 120 variants collapse to 8 for this reason. It means
     // `variant="outline" color="danger"` is not a red badge — and never was.
     expect(screen.getByTestId("b").className).toBe(danger);
-    expect(danger).toContain("bg-surface-neutral-muted");
+    expect(danger).toContain("bg-surface-card");
   });
 
   it("takes the dot from the status palette, not its own colour", () => {

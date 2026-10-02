@@ -51,16 +51,16 @@ const buttonVariants = cva(
           "focus-visible:ring-line-danger-emphasis " +
           "[&:disabled:not([data-loading])]:bg-surface-disabled",
         outline:
-          "border-line-neutral-muted bg-surface-neutral-muted text-content-neutral-emphasis " +
-          "hover:bg-surface-neutral-muted-hovered " +
-          "active:bg-surface-neutral-muted-pressed " +
+          "border-line-neutral-muted bg-surface-card text-content-neutral-emphasis " +
+          "hover:bg-surface-neutral-subtle-hovered " +
+          "active:bg-surface-neutral-subtle-pressed " +
           "[&:disabled:not([data-loading])]:bg-surface-disabled",
         // Transparent at rest — a ghost that carries a resting fill reads as
         // Outline, and the hierarchy between primary and tertiary collapses.
         ghost:
           "bg-transparent text-content-neutral-emphasis " +
-          "hover:bg-surface-neutral-muted-hovered " +
-          "active:bg-surface-neutral-muted-pressed " +
+          "hover:bg-surface-neutral-subtle-hovered " +
+          "active:bg-surface-neutral-subtle-pressed " +
           "[&:disabled:not([data-loading])]:bg-transparent",
         // A text link, not a button in a box: no fill, no border, no radius.
         // Not underlined at rest — fg/link/* carries it at 7.66:1, and a

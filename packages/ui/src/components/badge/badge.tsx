@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
  *   md        padding 2/4, label/sm      lg   padding 4/8, label/lg
  *   subtle    bg/<c>/subtle + border/<c>/muted + fg/<c>/emphasis
  *   emphasis  bg/<c>/emphasis, no border, fg/on/<c>-emphasis
- *   outline   bg/neutral/muted + border/neutral/muted + fg/neutral/emphasis
+ *   outline   bg/card + border/neutral/muted + fg/neutral/emphasis
  *   dot       8px, from the STATUS palette — success→healthy, danger→critical
  *   icon      12px        avatar  16px
  *
@@ -47,7 +47,7 @@ const badgeVariants = cva(
         emphasis: "border-transparent",
         // Colourless on purpose — see the note above.
         outline:
-          "bg-surface-neutral-muted border-line-neutral-muted text-content-neutral-emphasis",
+          "bg-surface-card border-line-neutral-muted text-content-neutral-emphasis",
       },
       size: {
         md: "px-1 py-0.5 text-label-sm [&>svg]:size-3",

@@ -22,11 +22,11 @@ import { cn } from "@/lib/utils";
  * ⚠️ The track was drawn on bg/neutral/subtle. That is neutral-50 in light —
  * the app background itself, and one step off a white card — so the track
  * vanished and the bar had no visible end: 40% read as a short bar, not as
- * 40% of something. Corrected to bg/layer/emphasis: the layer ramp is the
- * neutral ramp for fills that must be SEEN (subtle → muted → emphasis, in
- * contrast order, on any surface), where bg/neutral/subtle and muted are
- * resting fills that match the page and the card. A resting track also
- * should not borrow a state word like "pressed". Slider and Meter take the
+ * 40% of something. Corrected to bg/layer/emphasis: a translucent tint that
+ * reads the same on the page, on a card and in both modes, which is what a
+ * thin track needs — bg/neutral/muted (one step past subtle since 2 Oct) is
+ * still only 1.05 on the page in light. A resting track also should not
+ * borrow a state word like "pressed". Slider, Meter and File upload take the
  * same token. Figma corrected to match.
  *
  * Figma pins Percent to 0/25/50/75/100 because a variant set needs discrete

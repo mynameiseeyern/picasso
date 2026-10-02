@@ -28,9 +28,8 @@ import { cn } from "@/lib/utils";
  *
  * ⭐ Hover is bg/sidebar-hovered and pressed is bg/sidebar-pressed — the
  * rail's own pair, not bg/neutral/subtle-hovered. The rail is neutral-100
- * in light, which is exactly what subtle-hovered (and, since 1 Oct,
- * muted-hovered) resolves to, so the standard hover painted the rail's own
- * colour and nothing moved. The sidebar pair is one step past the rail in
+ * in light, which is exactly what subtle-hovered resolves to, so the
+ * standard hover painted the rail's own colour and nothing moved. The sidebar pair is one step past the rail in
  * both themes: 200 then 300 in light, 900 then 800 in dark. Anything that
  * sits on bg/sidebar takes this pair. Figma draws subtle-hovered; this is a
  * correction under rule 2 (a hover that equals its surface cannot render).

@@ -49,17 +49,18 @@
       },
       "muted": {
         "$type": "color",
-        "$value": "{palette.white}"
+        "$value": "{palette.neutral.100}",
+        "$description": "One step above subtle, as on every status ramp (50 → 100). Was white, which made muted lighter than subtle and invisible on a card. A fill that wants to match the card takes bg/card. Decided 2 Oct 2026."
       },
       "muted-hovered": {
         "$type": "color",
-        "$value": "{palette.neutral.100}",
-        "$description": "Was neutral-50, the same value as bg/app, so hover on a Chip, a ghost or outline Button and an Avatar was invisible on the page. Light muted and light subtle now share a ladder from hover onward; dark keeps them one step apart. Decided 1 Oct 2026 with that cost stated."
+        "$value": "{palette.neutral.200}",
+        "$description": "One step above muted, and one above subtle-hovered — the two ladders run in parallel, a step apart, as they do in dark."
       },
       "muted-pressed": {
         "$type": "color",
-        "$value": "{palette.neutral.200}",
-        "$description": "Moved with muted-hovered, which would otherwise have landed on the same value."
+        "$value": "{palette.neutral.300}",
+        "$description": "Two steps above muted."
       },
       "emphasis": {
         "$type": "color",
