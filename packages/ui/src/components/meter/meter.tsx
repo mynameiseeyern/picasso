@@ -10,7 +10,9 @@ import { cn } from "@/lib/utils";
  * FROM FIGMA (`Drilldown / Meter`, 1462:1192), and from its own description:
  *
  *   10 segments, 8 tall, gap 4, radius/xs
- *   lit segments take status/<tone>; the rest take border/neutral/muted
+ *   lit segments take status/<tone>; the rest take bg/layer/emphasis
+ *   (a correction — it was border/neutral/muted, a border token used as a
+ *   fill; the layer ramp is the neutral for fills that must be seen)
  *   Fill moves in 20% STEPS, always rounding UP — 0.6/5 lights 20%,
  *   3.2/5 lights 80% — so any non-zero value lights at least one step
  *   `unknown` lights nothing: no reading is not the same as zero
@@ -40,7 +42,7 @@ const LIT: Record<MeterStatus, string> = {
   // thing from a reading nobody grades, and the file has no variant for it.
   // The bar stays empty, because a grey "amount" would be a number we do
   // not have. Added deliberately; raised rather than assumed.
-  unknown: "bg-line-neutral-muted",
+  unknown: "bg-surface-layer-emphasis",
 };
 
 /** Segments lit for a value, in 20% steps, rounded up. Exported for tests. */
@@ -85,7 +87,7 @@ export function Meter({
           data-lit={i < lit || undefined}
           className={cn(
             "h-2 flex-1 rounded-xs",
-            i < lit ? LIT[status] : "bg-line-neutral-muted",
+            i < lit ? LIT[status] : "bg-surface-layer-emphasis",
           )}
         />
       ))}

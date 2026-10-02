@@ -11,12 +11,15 @@ import { cn } from "@/lib/utils";
  * match. `Shape` is the only axis — Block and Circle — because size is the one
  * thing no variant can enumerate: a skeleton mirrors whatever is arriving.
  *
- * The surface is **bg/neutral/muted-pressed**, chosen by measuring rather than
- * by name — the neutral ramp is not monotonic. In light mode `muted` is #fff
- * and `subtle` is #f8fafc, so both vanish against a card or the app
- * background respectively; `subtle-pressed` is #202939 in dark, which is the
- * card. muted-pressed (#eef2f6 / #364152) is the only one of them visible on
- * both surfaces in both modes.
+ * The surface is **bg/layer/muted**. The layer ramp is the neutral ramp for
+ * fills that must be seen — a translucent tint that runs subtle → muted →
+ * emphasis in contrast order and reads the same on the page, on a card and
+ * in both modes. bg/neutral/subtle and muted are not that: they are resting
+ * fills that match the page (#f8fafc) and the card (#fff), so each vanishes
+ * on one of the two. Skeleton sat on bg/neutral/muted-pressed until 2 Oct —
+ * visible, but a state token doing a resting job. `muted` rather than
+ * `emphasis` because a skeleton covers large areas and should stay quiet;
+ * thin tracks (Progress, Slider, Meter) take `emphasis`.
  *
  * `aria-hidden`, always. A skeleton is a picture of content, and a screen
  * reader that announces twelve empty boxes has told the person nothing. The
@@ -31,7 +34,7 @@ import { cn } from "@/lib/utils";
  * only two — a block, and the circle that stands in for an avatar.
  */
 const skeletonVariants = cva(
-  "animate-pulse bg-surface-neutral-muted-pressed motion-reduce:animate-none",
+  "animate-pulse bg-surface-layer-muted motion-reduce:animate-none",
   {
     variants: {
       shape: {

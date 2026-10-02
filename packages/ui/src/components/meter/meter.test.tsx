@@ -37,7 +37,7 @@ describe("Meter", () => {
     expect(m.children).toHaveLength(10);
     expect(lit(m)).toBe(8);
     expect(m.children[0]).toHaveClass("bg-status-healthy");
-    expect(m.children[9]).toHaveClass("bg-line-neutral-muted");
+    expect(m.children[9]).toHaveClass("bg-surface-layer-emphasis");
   });
 
   it("shows nothing at all when the status is unknown", () => {

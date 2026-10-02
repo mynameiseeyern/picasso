@@ -61,7 +61,7 @@ describe("Slider", () => {
     expect(document.querySelector("[data-slot=slider-track]")).toHaveClass(
       "h-1.5",
       "rounded-sm",
-      "bg-surface-neutral-subtle-pressed",
+      "bg-surface-layer-emphasis",
     );
     expect(document.querySelector("[data-slot=slider-thumb]")).toHaveClass(
       "size-4",

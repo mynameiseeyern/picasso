@@ -31,7 +31,7 @@ describe("Progress", () => {
     // bg/neutral/subtle is the app background in light, so the track vanished
     // and 40% read as a short bar rather than 40% of something.
     const bar = screen.getByRole("progressbar");
-    expect(bar).toHaveClass("bg-surface-neutral-muted-pressed");
+    expect(bar).toHaveClass("bg-surface-layer-emphasis");
     expect(bar).not.toHaveClass("bg-surface-neutral-subtle");
   });
 

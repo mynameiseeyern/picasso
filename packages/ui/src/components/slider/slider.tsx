@@ -16,9 +16,15 @@ import { cn } from "@/lib/utils";
  * prop here. Unlike Chip's five sets, this axis genuinely changes what is
  * drawn.
  *
- * Measured: track 6 tall at radius/sm on bg/neutral/subtle-pressed, range on
+ * Measured: track 6 tall at radius/sm on bg/layer/emphasis, range on
  * bg/primary/emphasis (bg/primary/emphasis-hovered on hover), thumb 16 round
  * on bg/card with a 2px border/primary/emphasis and shadow/xs.
+ *
+ * ⚠️ **The track is a correction.** It was drawn on bg/neutral/subtle-pressed,
+ * which in dark is neutral-800 — the card itself — so the track vanished on
+ * any card, and a resting track should not borrow a state word. It takes
+ * bg/layer/emphasis, the system's token for a neutral fill that must be
+ * seen on any surface; Progress and Meter use the same. Figma corrected.
  *
  * ⚠️ **Disabled is a correction.** All three Types draw `State=Disabled`
  * pixel-identical to `State=Default` — same fills, same strokes, same
@@ -64,7 +70,7 @@ export function Slider({ className, thumbLabels, ...props }: SliderProps) {
       <SliderPrimitive.Track
         data-slot="slider-track"
         className={cn(
-          "relative grow overflow-hidden rounded-sm bg-surface-neutral-subtle-pressed",
+          "relative grow overflow-hidden rounded-sm bg-surface-layer-emphasis",
           "h-1.5 w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5",
         )}
       >

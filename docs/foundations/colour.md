@@ -70,6 +70,38 @@ share a ladder from hover onward while dark keeps them one step apart
 never the neutral pair. The rail is neutral-100 in light, which is the value
 both neutral hovers resolve to — a hover that equals its surface cannot render.
 
+## Two neutrals: one matches the surface, one is seen on it
+
+Prominence runs **subtle → muted → emphasis**, lightest contrast to strongest.
+Every intent ramp, every `fg/*` ramp and every `border/*` ramp does. **Resting
+`bg/neutral` is the exception, on purpose** — and knowing why saves reaching for
+the wrong one.
+
+| | subtle | muted | emphasis | What it is for |
+|---|---|---|---|---|
+| `bg/neutral/*` | neutral-50 — the page | white — the card | neutral-800 | A resting fill that **matches its surface**: ghost and outline buttons, chips, inputs, tabs. The visible steps are its hover and pressed. |
+| `bg/layer/*` | 4% ink | 8% ink | 14% ink | A neutral fill that must be **seen**: tracks, empty segments, skeletons, wells. |
+
+`bg/layer/*` is a translucent tint of the ink colour (white in dark), so it runs
+in contrast order and reads the same on the page, on a card and on a tinted
+panel:
+
+| Contrast with what is behind it | subtle | muted | emphasis |
+|---|---|---|---|
+| Light | 1.08 | 1.17 | 1.34 |
+| Dark | 1.14–1.17 | 1.33–1.38 | 1.75–1.80 |
+
+**The rule:**
+
+- If the fill should disappear at rest and only show on interaction, use
+  `bg/neutral/subtle` (on the page) or `bg/neutral/muted` (on a card).
+- If the fill has to be visible at rest, use `bg/layer/*`. Thin things take
+  `emphasis` (Progress and Slider tracks, Meter's empty segments); large areas
+  take `muted` (Skeleton).
+- **Never use a state token for a resting fill.** `-hovered` and `-pressed`
+  describe an action. If a pressed token is the only one that shows, the
+  element wants `bg/layer/*`.
+
 ## Dark mode is free
 
 Semantics alias primitives, and **dark mode overrides semantics** while the

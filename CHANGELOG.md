@@ -20,6 +20,15 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### ⚠️ Changed (visual)
 
+- **`bg/layer/*` is the neutral ramp for fills that must be seen**; resting
+  `bg/neutral/subtle` and `muted` are fills that match the page and the card.
+  Four components move onto it: **Progress** and **Slider** tracks and
+  **Meter**'s empty segments take `bg/layer/emphasis`; **Skeleton** takes
+  `bg/layer/muted`. Progress no longer uses a `-pressed` token at rest, Slider's
+  track no longer vanishes on a card in dark, and Meter stops using a border
+  token as a fill. The rule is in `docs/foundations/colour.md`.
+  **Figma impact** — the same four are rebound to match.
+
 - **Light `bg/neutral/muted-hovered` is neutral-100 and `muted-pressed` is
   neutral-200**, each one step darker. Hover was neutral-50 — the value of
   `bg/app` — so a Chip, a ghost or outline Button and an Avatar showed no hover

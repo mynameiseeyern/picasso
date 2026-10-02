@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
  *
  * FROM FIGMA (`Progress` 2298:15158), as drawn:
  *
- *   track      8 tall, full radius, bg/neutral/muted-pressed
+ *   track      8 tall, full radius, bg/layer/emphasis
  *   indicator  full radius, bg/primary/emphasis (brand) or
  *              bg/neutral/emphasis (neutral)
  *   label      optional row above, space-between, both sides metric/md
@@ -22,10 +22,12 @@ import { cn } from "@/lib/utils";
  * ⚠️ The track was drawn on bg/neutral/subtle. That is neutral-50 in light —
  * the app background itself, and one step off a white card — so the track
  * vanished and the bar had no visible end: 40% read as a short bar, not as
- * 40% of something. Corrected to bg/neutral/muted-pressed (neutral-200 /
- * neutral-700), which shows on the app background and on a card in both
- * modes, and is the same "empty" value Skeleton and Meter use. Figma
- * corrected to match.
+ * 40% of something. Corrected to bg/layer/emphasis: the layer ramp is the
+ * neutral ramp for fills that must be SEEN (subtle → muted → emphasis, in
+ * contrast order, on any surface), where bg/neutral/subtle and muted are
+ * resting fills that match the page and the card. A resting track also
+ * should not borrow a state word like "pressed". Slider and Meter take the
+ * same token. Figma corrected to match.
  *
  * Figma pins Percent to 0/25/50/75/100 because a variant set needs discrete
  * options. Here it is a number: the bar is drawn by width, so the steps were
@@ -78,7 +80,7 @@ export function Progress({
         // and omits aria-valuenow when value is null — which is exactly how
         // an indeterminate bar should announce itself.
         value={pct}
-        className={cn("relative h-2 w-full overflow-hidden rounded-full bg-surface-neutral-muted-pressed")}
+        className={cn("relative h-2 w-full overflow-hidden rounded-full bg-surface-layer-emphasis")}
         {...props}
       >
         <ProgressPrimitive.Indicator
