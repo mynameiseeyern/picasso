@@ -112,6 +112,14 @@ export {
   type KpiStatus,
 } from "./components/kpi-tile/kpi-tile";
 export {
+  KpiRow,
+  ChartGrid,
+  kpiRowVariants,
+  chartGridVariants,
+  type KpiRowProps,
+  type ChartGridProps,
+} from "./components/page-grid/page-grid";
+export {
   Progress,
   progressIndicatorVariants,
   type ProgressProps,
