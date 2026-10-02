@@ -19,20 +19,23 @@ import presets from '@ir/tokens/presets.json';
  */
 
 export const SANS_FONTS = [
-  { id: 'inter', label: 'Inter', family: 'Inter', google: 'Inter:wght@400;500;600' },
-  { id: 'manrope', label: 'Manrope', family: 'Manrope', google: 'Manrope:wght@400;500;600' },
-  { id: 'geist', label: 'Geist', family: 'Geist', google: 'Geist:wght@400;500;600' },
-  { id: 'plex', label: 'IBM Plex Sans', family: 'IBM Plex Sans', google: 'IBM+Plex+Sans:wght@400;500;600' },
-  { id: 'source', label: 'Source Sans 3', family: 'Source Sans 3', google: 'Source+Sans+3:wght@400;500;600' },
-  { id: 'system', label: 'System', family: null, google: null },
+  { id: 'inter', label: 'Inter', family: 'Inter' },
+  { id: 'manrope', label: 'Manrope', family: 'Manrope' },
+  { id: 'geist', label: 'Geist', family: 'Geist' },
+  { id: 'figtree', label: 'Figtree', family: 'Figtree' },
+  { id: 'dm-sans', label: 'DM Sans', family: 'DM Sans' },
+  { id: 'public-sans', label: 'Public Sans', family: 'Public Sans' },
+  { id: 'plex', label: 'IBM Plex Sans', family: 'IBM Plex Sans' },
+  { id: 'source', label: 'Source Sans 3', family: 'Source Sans 3' },
+  { id: 'system', label: 'System', family: null },
 ] as const;
 
 export const MONO_FONTS = [
-  { id: 'jetbrains', label: 'JetBrains Mono', family: 'JetBrains Mono', google: 'JetBrains+Mono:wght@400;500' },
-  { id: 'geist-mono', label: 'Geist Mono', family: 'Geist Mono', google: 'Geist+Mono:wght@400;500' },
-  { id: 'plex-mono', label: 'IBM Plex Mono', family: 'IBM Plex Mono', google: 'IBM+Plex+Mono:wght@400;500' },
-  { id: 'fira', label: 'Fira Code', family: 'Fira Code', google: 'Fira+Code:wght@400;500' },
-  { id: 'system-mono', label: 'System', family: null, google: null },
+  { id: 'jetbrains', label: 'JetBrains Mono', family: 'JetBrains Mono' },
+  { id: 'geist-mono', label: 'Geist Mono', family: 'Geist Mono' },
+  { id: 'plex-mono', label: 'IBM Plex Mono', family: 'IBM Plex Mono' },
+  { id: 'fira', label: 'Fira Code', family: 'Fira Code' },
+  { id: 'system-mono', label: 'System', family: null },
 ] as const;
 
 /* The build's own fallbacks (build/brands.mjs `font()`), so a font with no
@@ -114,14 +117,6 @@ const EMPHASIS = { light: 600, dark: 500 } as const;
  * Only `primary` can differ at all: every other on-colour sits on a surface
  * no brand touches. */
 const DEFAULT_ON_INK = { light: 'light', dark: 'dark' } as const;
-
-export function googleFontsUrl(theme: Theme) {
-  const fams = [
-    SANS_FONTS.find((f) => f.id === theme.sans)?.google,
-    MONO_FONTS.find((f) => f.id === theme.mono)?.google,
-  ].filter(Boolean);
-  return fams.length ? `https://fonts.googleapis.com/css2?${fams.map((f) => `family=${f}`).join('&')}&display=swap` : null;
-}
 
 export type Resolved = {
   ramp: Ramp;

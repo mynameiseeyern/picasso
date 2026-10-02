@@ -14,7 +14,6 @@ import {
   STEPS_LABELS,
   brandId,
   brandPath,
-  googleFontsUrl,
   isPresetFont,
   rampMatchesBase,
   resolve,
@@ -136,17 +135,9 @@ export function ThemeBuilder() {
     root.classList.toggle('dark', dark);
     doc.body.style.padding = '0';
 
-    const url = googleFontsUrl(theme);
-    let link = doc.getElementById('picasso-fonts') as HTMLLinkElement | null;
-    if (url) {
-      if (!link) {
-        link = doc.createElement('link');
-        link.id = 'picasso-fonts';
-        link.rel = 'stylesheet';
-        doc.head.appendChild(link);
-      }
-      if (link.href !== url) link.href = url;
-    } else link?.remove();
+    // Nothing is fetched for the font: every family the builder offers is
+    // self-hosted in the preview's own stylesheet. Setting the family is the
+    // whole job.
   }, [theme, resolved, dark, ready]);
 
   const copy = async (kind: 'css' | 'json') => {
