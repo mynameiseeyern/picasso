@@ -15,7 +15,7 @@ const LANE: Record<Lane, { label: string; className: string }> = {
 function Pill({ lane }: { lane: Lane }) {
   const l = LANE[lane];
   return (
-    <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold tracking-wide ring-1 ring-inset ${l.className}`}>
+    <span className={`rounded-full px-2 py-0.5 text-xs font-semibold tracking-wide ring-1 ring-inset ${l.className}`}>
       {l.label}
     </span>
   );
@@ -23,7 +23,7 @@ function Pill({ lane }: { lane: Lane }) {
 
 function Cmd({ children }: { children: React.ReactNode }) {
   return (
-    <pre className="mt-2 overflow-x-auto rounded-lg border border-fd-border bg-fd-muted/60 px-3 py-2 font-mono text-[12px] leading-relaxed">
+    <pre className="mt-2 overflow-x-auto rounded-lg border border-fd-border bg-fd-muted/60 px-3 py-2 font-mono text-xs leading-relaxed">
       <code>{children}</code>
     </pre>
   );
@@ -45,10 +45,10 @@ function Step({
   return (
     <li className="relative flex gap-4 pb-6 last:pb-0">
       {/* the rail */}
-      {!last ? <span aria-hidden className="absolute left-[15px] top-9 bottom-0 w-px bg-fd-border" /> : null}
+      {!last ? <span aria-hidden className="absolute start-3.75 top-9 bottom-0 w-px bg-fd-border" /> : null}
       <span
         aria-hidden
-        className="z-10 flex size-8 shrink-0 items-center justify-center rounded-full border border-fd-border bg-fd-background font-mono text-[13px] font-semibold"
+        className="z-10 flex size-8 shrink-0 items-center justify-center rounded-full border border-fd-border bg-fd-background font-mono text-sm font-semibold"
       >
         {n}
       </span>
@@ -57,20 +57,23 @@ function Step({
           <h3 className="text-sm font-semibold">{title}</h3>
           <Pill lane={lane} />
         </div>
-        <div className="mt-1.5 space-y-1.5 text-[13px] leading-relaxed text-fd-muted-foreground">{children}</div>
+        <div className="mt-1.5 space-y-1.5 text-sm leading-relaxed text-fd-muted-foreground">{children}</div>
       </div>
     </li>
   );
 }
 
 const M = ({ children }: { children: React.ReactNode }) => (
-  <span className="font-mono text-fd-foreground">{children}</span>
+  /* wrap-anywhere: these carry file paths and token names, unbreakable runs
+     wider than a 360px viewport. Breaking them also drops the min-content of
+     any grid or flex item they sit in. */
+  <span className="font-mono text-fd-foreground wrap-anywhere">{children}</span>
 );
 
 export function BrandFlow() {
   return (
     <div className="p-4 sm:p-6">
-      <p className="mb-6 max-w-2xl text-[13px] leading-relaxed text-fd-muted-foreground">
+      <p className="mb-6 max-w-2xl text-sm leading-relaxed text-fd-muted-foreground">
         A brand is five choices in one file. Everything else — the ramps, the on-colours, the CSS, the
         Figma variables — is generated from it, so these steps are the whole job.
       </p>
@@ -112,16 +115,16 @@ export function BrandFlow() {
         </Step>
 
         <li className="relative flex gap-4 pb-6">
-          <span aria-hidden className="absolute left-[15px] top-9 bottom-0 w-px bg-fd-border" />
+          <span aria-hidden className="absolute start-3.75 top-9 bottom-0 w-px bg-fd-border" />
           <span
             aria-hidden
-            className="z-10 flex size-8 shrink-0 rotate-45 items-center justify-center rounded-[6px] border border-amber-500/50 bg-fd-background"
+            className="z-10 flex size-8 shrink-0 rotate-45 items-center justify-center rounded-md border border-fd-primary/50 bg-fd-background"
           >
-            <AlertTriangle className="size-3.5 -rotate-45 text-amber-600 dark:text-amber-500" />
+            <AlertTriangle className="size-3.5 -rotate-45 text-fd-primary" />
           </span>
           <div className="min-w-0 flex-1 pt-0.5">
             <h3 className="text-sm font-semibold">Does check pass?</h3>
-            <div className="mt-1.5 space-y-1.5 text-[13px] leading-relaxed text-fd-muted-foreground">
+            <div className="mt-1.5 space-y-1.5 text-sm leading-relaxed text-fd-muted-foreground">
               <p>
                 <strong className="font-semibold text-fd-foreground">A light brand colour is not a failure.</strong>{' '}
                 <M>fg/on/*</M> is measured, not chosen: white where white reaches 4.5:1,{' '}
@@ -193,12 +196,12 @@ export function BrandFlow() {
 
       <section className="mt-8 max-w-2xl rounded-xl border border-fd-border bg-fd-muted/40 p-4">
         <h3 className="text-sm font-semibold">Changing a brand later, from Figma</h3>
-        <p className="mt-1.5 text-[13px] leading-relaxed text-fd-muted-foreground">
+        <p className="mt-1.5 text-sm leading-relaxed text-fd-muted-foreground">
           A change can start in Figma, but it only counts once it is back in the repo — otherwise the next
           Sync overwrites it. Picasso Sync → <strong className="font-semibold text-fd-foreground">Export a brand</strong>, then:
         </p>
         <Cmd>{'npm run figma:import -- ~/Downloads/<brand>.figma-export.json --dry-run'}</Cmd>
-        <p className="mt-2 text-[13px] leading-relaxed text-fd-muted-foreground">
+        <p className="mt-2 text-sm leading-relaxed text-fd-muted-foreground">
           Drop <M>--dry-run</M> to write, review the <M>git diff</M>, then <M>npm run check</M>. The import
           writes nothing at all when a change breaks the model — a single radius step edited instead of the
           base, an axis matching no preset, or an <M>fg/on/*-emphasis</M> edited by hand when it is

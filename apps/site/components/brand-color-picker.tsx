@@ -42,8 +42,7 @@ export function BrandColorPicker({
   /* Typing a hex in the builder's own field has to reach the canvas. */
   useEffect(() => {
     if (colorValue.hex.toUpperCase() !== value.toUpperCase()) setFromString(value);
-    // setFromString is stable; re-running on it would loop
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // setFromString is stable; re-running on it would loop.
   }, [value]);
 
   return (

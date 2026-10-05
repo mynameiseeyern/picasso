@@ -159,7 +159,7 @@ export function ThemeBuilder() {
 
   return (
     <main
-      className={`mx-auto w-full max-w-[1600px] px-4 py-6 md:px-6 ${dropping ? 'outline-2 outline-offset-[-8px] outline-dashed outline-fd-primary' : ''}`}
+      className={`mx-auto w-full max-w-400 px-4 py-6 md:px-6 ${dropping ? 'outline-2 -outline-offset-8 outline-dashed outline-fd-primary' : ''}`}
       onDragOver={(e) => {
         if (!e.dataTransfer.types.includes('Files')) return;
         e.preventDefault();
@@ -236,7 +236,7 @@ export function ThemeBuilder() {
           <div>
             <p className="font-medium">{notice.title}</p>
             {notice.warnings.length ? (
-              <ul className="mt-1 list-disc space-y-1 pl-4 text-fd-muted-foreground">
+              <ul className="mt-1 list-disc space-y-1 ps-4 text-fd-muted-foreground">
                 {notice.warnings.map((w) => (
                   <li key={w}>{w}</li>
                 ))}
@@ -248,7 +248,7 @@ export function ThemeBuilder() {
         </Banner>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-[320px_1fr]">
+      <div className="grid gap-6 lg:grid-cols-panel">
         {/* Controls */}
         <aside className="space-y-7 lg:sticky lg:top-20 lg:self-start">
           <Section title="Name">
@@ -284,8 +284,8 @@ export function ThemeBuilder() {
                 <label
                   key={s}
                   title={`brand/${s} ${resolved.ramp[s]} — click to edit`}
-                  className="block h-7 cursor-pointer first:rounded-l-md last:rounded-r-md"
-                  style={{ background: resolved.ramp[s] }}
+                  className="block h-7 cursor-pointer bg-(--swatch) first:rounded-s-md last:rounded-e-md"
+                  style={{ "--swatch": resolved.ramp[s] } as React.CSSProperties}
                 >
                   <input
                     type="color"
@@ -361,7 +361,7 @@ export function ThemeBuilder() {
               ref={frame}
               src={PREVIEW_URL}
               title="Theme preview — real Picasso components"
-              className="block h-[1040px] w-full bg-white"
+              className="block h-260 w-full bg-white"
               onLoad={() => setReady(true)}
             />
           </div>
@@ -377,7 +377,7 @@ export function ThemeBuilder() {
               </div>
               {/* Copy and Download act on a file. The readme is not one. */}
               {tab === 'readme' ? null : (
-                <div className="ml-auto flex gap-2">
+                <div className="ms-auto flex gap-2">
                   <button type="button" className="btn-ghost" onClick={() => copy(tab)}>
                     {copied === tab ? <Check className="size-4" aria-hidden /> : <Copy className="size-4" aria-hidden />}
                     {copied === tab ? 'Copied' : 'Copy'}
@@ -414,7 +414,7 @@ export function ThemeBuilder() {
                     uses — so a value typed here and the same value imported
                     from a file cannot be understood two different ways. */}
                 <textarea
-                  className="block max-h-[420px] min-h-[280px] w-full resize-y overflow-auto bg-transparent p-4 font-mono text-xs leading-relaxed outline-none"
+                  className="block max-h-105 min-h-70 w-full resize-y overflow-auto bg-transparent p-4 font-mono text-xs leading-relaxed outline-none"
                   spellCheck={false}
                   value={draft?.tab === tab ? draft.text : tab === 'css' ? css : json}
                   onChange={(e) => editCode(e.target.value, tab)}
@@ -454,7 +454,7 @@ function Banner({
   return (
     <div role={tone === 'problem' ? 'alert' : 'status'} className={`mb-6 flex gap-3 rounded-xl border p-3 text-sm ${ring}`}>
       {children}
-      <button type="button" onClick={onDismiss} className="ml-auto self-start rounded p-1 hover:bg-fd-accent" aria-label="Dismiss">
+      <button type="button" onClick={onDismiss} className="ms-auto self-start rounded p-1 hover:bg-fd-accent" aria-label="Dismiss">
         <X className="size-4" aria-hidden />
       </button>
     </div>
@@ -482,7 +482,11 @@ function Segmented<T extends { id: string; label: string }>({
   hint?: (o: T) => string;
 }) {
   return (
-    <div role="radiogroup" className="grid gap-1" style={{ gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` }}>
+    <div
+      role="radiogroup"
+      className="grid grid-cols-count gap-1"
+      style={{ "--cols": options.length } as React.CSSProperties}
+    >
       {options.map((o) => (
         <button
           key={o.id}

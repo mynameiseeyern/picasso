@@ -86,4 +86,40 @@ export default defineConfig([
       "shadcn/require-static-classes": "error",
     },
   },
+  {
+    /* The site is not exempt. The theme builder renders the same components a
+       product does, and the docs pages are the first thing an engineer copies
+       from — a rule the library enforces and the site breaks teaches the
+       break. Same rules, same settings. */
+    files: ["apps/site/**/*.{ts,tsx}"],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: { ecmaFeatures: { jsx: true } },
+    },
+    plugins: {
+      shadcn,
+      picasso: { rules: { "no-physical-properties": noPhysicalProperties } },
+    },
+    settings: {
+      shadcn: {
+        ui: "packages/ui/src/components",
+        componentImports: ["^@ir/ui(/|$)"],
+        mergeFunctions: ["cn"],
+        variantFunctions: ["cva"],
+      },
+    },
+    rules: {
+      "picasso/no-physical-properties": "error",
+      /* fd-* is Fumadocs' own token namespace, declared in its package
+         stylesheet. @shadcn/lint only credits tokens the project itself
+         declares, so the docs shell's classes need naming here. They are
+         still tokens, not raw palette colours — ir-* and fd-* are the site
+         shell's whole vocabulary, and Picasso components never use either. */
+      "shadcn/no-raw-colors": ["error", { allow: ["*-fd-*"] }],
+      "shadcn/no-arbitrary-values": "error",
+      "shadcn/no-restyle": "warn",
+      "shadcn/no-inline-styles": "error",
+      "shadcn/require-static-classes": "error",
+    },
+  },
 ]);

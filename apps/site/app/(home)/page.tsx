@@ -62,7 +62,7 @@ export default function HomePage() {
         <div className="mx-auto w-full max-w-6xl px-6 pt-14 pb-20 md:pt-20 md:pb-28">
           <img src="/brand/ir-lockup-dark.svg" alt="Integrated Research" className="h-9 w-auto mb-14 md:mb-20" />
           <span className="ir-pill border border-white/20 text-ir-corporate-blue">Design system</span>
-          <h1 className="ir-display mt-6 text-[2.75rem] leading-none sm:text-6xl md:text-7xl lg:text-8xl max-w-5xl">
+          <h1 className="ir-display mt-6 text-display-hero leading-none sm:text-6xl md:text-7xl lg:text-8xl max-w-5xl">
             One system.
             <br />
             <span className="text-ir-corporate-blue">Every IR product.</span>
@@ -97,7 +97,7 @@ export default function HomePage() {
               <div className="text-4xl md:text-5xl font-semibold text-ir-corporate-blue tabular-nums tracking-tight">
                 {s.figure}
               </div>
-              <p className="mt-3 text-sm text-white/75 leading-snug max-w-[16rem]">{s.label}</p>
+              <p className="mt-3 text-sm text-white/75 leading-snug max-w-64">{s.label}</p>
             </div>
           ))}
         </div>
@@ -105,8 +105,8 @@ export default function HomePage() {
 
       {/* Two doors — light split (Panel Grey | White), brand §8. */}
       <section className="grid md:grid-cols-2">
-        <div className="bg-ir-panel-grey text-ir-rich-grey">
-          <div className="mx-auto max-w-xl px-6 py-16 md:py-20 md:ml-auto md:mr-0 md:pr-12">
+        <div className="min-w-0 bg-ir-panel-grey text-ir-rich-grey">
+          <div className="mx-auto max-w-xl px-6 py-16 md:py-20 md:ms-auto md:me-0 md:pe-12">
             <span className="ir-pill bg-white text-ir-purple">For designers</span>
             <h2 className="ir-display mt-5 text-4xl md:text-5xl">Start in Figma</h2>
             <p className="mt-5 text-ir-text-grey leading-relaxed">
@@ -122,13 +122,13 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-        <div className="bg-white text-ir-rich-grey">
-          <div className="mx-auto max-w-xl px-6 py-16 md:py-20 md:mr-auto md:ml-0 md:pl-12">
+        <div className="min-w-0 bg-white text-ir-rich-grey">
+          <div className="mx-auto max-w-xl px-6 py-16 md:py-20 md:me-auto md:ms-0 md:ps-12">
             <span className="ir-pill bg-ir-panel-grey text-ir-purple">For engineers</span>
             <h2 className="ir-display mt-5 text-4xl md:text-5xl">Install and theme</h2>
             <p className="mt-5 text-ir-text-grey leading-relaxed">
-              <code className="font-mono text-[0.9em]">@ir/tokens</code> and{' '}
-              <code className="font-mono text-[0.9em]">@ir/ui</code> on Tailwind v4 and Radix. Semantic utilities
+              <code className="font-mono text-inline-code">@ir/tokens</code> and{' '}
+              <code className="font-mono text-inline-code">@ir/ui</code> on Tailwind v4 and Radix. Semantic utilities
               only, never a raw value — and a linter that holds the line.
             </p>
             <pre className="mt-6 rounded-lg bg-ir-rich-grey text-white text-sm p-4 overflow-x-auto">
@@ -179,7 +179,7 @@ export default function HomePage() {
 
       {/* Agents — dark statement band (brand §9.1 Statement). */}
       <section className="ir-dark bg-ir-rich-grey text-white">
-        <div className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24 grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:items-center">
+        <div className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24 grid gap-12 lg:grid-cols-split-emphasis lg:items-center">
           <div>
             <span className="ir-pill border border-white/20 text-ir-corporate-blue">
               <Bot className="size-3.5" aria-hidden /> UI for agents
@@ -189,7 +189,7 @@ export default function HomePage() {
             </h2>
             <p className="mt-5 text-white/80 leading-relaxed max-w-xl">
               Every page here is also served as Markdown, and the whole system is published as a set of{' '}
-              <code className="font-mono text-[0.9em]">llms*.txt</code> files — including every semantic token
+              <code className="font-mono text-inline-code">llms*.txt</code> files — including every semantic token
               resolved to its light and dark value. Point your assistant at it and it writes on-system code.
             </p>
           </div>
@@ -212,7 +212,7 @@ export default function HomePage() {
       {/* Direction of truth — white closing statement. */}
       <section className="bg-white text-ir-rich-grey">
         <div className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
-          <div className="grid gap-10 md:grid-cols-[auto_1fr] md:items-start">
+          <div className="grid gap-10 md:grid-cols-icon-text md:items-start">
             <GitCommitHorizontal className="size-8 text-ir-red" aria-hidden strokeWidth={1.5} />
             <div>
               <h2 className="ir-display text-4xl md:text-5xl max-w-3xl">The repo is the source of truth</h2>

@@ -51,6 +51,40 @@
   --color-ir-line-grey: var(--ir-line-grey);
   --color-ir-text-grey: var(--ir-text-grey);
   --color-ir-mid-grey: var(--ir-mid-grey);
+
+  /* Hero base step. Between text-4xl and text-5xl on purpose: Oswald at 48px
+   * sets "Every IR product." wider than a 360px viewport, and the ramp above
+   * this (sm:text-6xl) is on the scale. */
+  --text-display-hero: 2.75rem;
+}
+
+/* Shapes Tailwind has no token for. Utilities, not plain classes, so they
+ * take variants (lg:grid-cols-panel). Same answer as packages/tokens. */
+
+/* Inline <code> inside prose: sized against its surroundings, not the scale,
+ * so it stays matched at every step of a responsive ramp. */
+@utility text-inline-code {
+  font-size: 0.9em;
+}
+
+/* Statement band: the copy column carries slightly more than its half. */
+@utility grid-cols-split-emphasis {
+  grid-template-columns: 1.1fr 1fr;
+}
+
+/* Icon beside a block of text, icon at its natural width. */
+@utility grid-cols-icon-text {
+  grid-template-columns: auto 1fr;
+}
+
+/* Theme builder: fixed control panel beside a fluid preview. */
+@utility grid-cols-panel {
+  grid-template-columns: 20rem 1fr;
+}
+
+/* Equal columns, count set per instance via --cols. */
+@utility grid-cols-count {
+  grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
 }
 
 html {
