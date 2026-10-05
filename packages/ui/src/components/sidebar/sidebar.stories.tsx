@@ -33,8 +33,8 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "./sidebar";
-import clarionPlate from "../../brand-assets/Clarion.svg";
-import consolePlate from "../../brand-assets/Console.svg";
+import clarionBrand from "../../brand-assets/Clarion.svg";
+import consoleBrand from "../../brand-assets/Console.svg";
 
 const meta: Meta<typeof SidebarProvider> = {
   title: "Components/Sidebar",
@@ -189,7 +189,7 @@ export const SubmenuVariants: Story = {
   ),
 };
 
-function PlateRail({
+function BrandRail({
   caption,
   children,
   collapsed,
@@ -204,7 +204,7 @@ function PlateRail({
       <div className="h-80">
         <SidebarProvider defaultCollapsed={collapsed}>
           <Sidebar>
-            <SidebarHeader variant="plate">{children}</SidebarHeader>
+            <SidebarHeader variant="brand">{children}</SidebarHeader>
             <SidebarContent>
               <SidebarGroup>
                 <SidebarMenu>
@@ -236,12 +236,12 @@ function PlateRail({
   );
 }
 
-export const BrandPlate: Story = {
+export const BrandHeader: Story = {
   parameters: {
     docs: {
       description: {
         story:
-          "The plate bleeds to three edges, so the header drops its padding " +
+          "The brand bleeds to three edges, so the header drops its padding " +
           "rather than a product cancelling it from outside. Without an image " +
           "it paints the rail's own surface — a brand with no artwork yet " +
           "reads as a quiet header, not an empty coloured box.",
@@ -250,26 +250,26 @@ export const BrandPlate: Story = {
   },
   render: () => (
     <div className="flex flex-wrap gap-6 p-6">
-      <PlateRail caption="Lockup over a second line">
-        <SidebarBrand image={clarionPlate} subtitle="powered by Iris" mark="C">
+      <BrandRail caption="Lockup over a second line">
+        <SidebarBrand image={clarionBrand} subtitle="powered by Iris" mark="C">
           CLARION
         </SidebarBrand>
-      </PlateRail>
-      <PlateRail caption="One word">
-        <SidebarBrand image={consolePlate} mark="I">
+      </BrandRail>
+      <BrandRail caption="One word">
+        <SidebarBrand image={consoleBrand} mark="I">
           Iris
         </SidebarBrand>
-      </PlateRail>
-      <PlateRail caption="No image — the neutral default">
+      </BrandRail>
+      <BrandRail caption="No image — the neutral default">
         <SidebarBrand subtitle="powered by Iris" mark="V">
           Vantage
         </SidebarBrand>
-      </PlateRail>
-      <PlateRail caption="Collapsed to 48" collapsed>
-        <SidebarBrand image={clarionPlate} subtitle="powered by Iris" mark="C">
+      </BrandRail>
+      <BrandRail caption="Collapsed to 48" collapsed>
+        <SidebarBrand image={clarionBrand} subtitle="powered by Iris" mark="C">
           CLARION
         </SidebarBrand>
-      </PlateRail>
+      </BrandRail>
     </div>
   ),
 };
@@ -277,7 +277,7 @@ export const BrandPlate: Story = {
 /**
  * Phones (below md): `mobile="drawer"` takes the rail off the page and the
  * trigger opens the same tree over it, as a panel from the inline start with a
- * strip of scrim left at the end — tap the strip to leave. Close on the plate,
+ * strip of scrim left at the end — tap the strip to leave. Close on the brand,
  * 44-tall items, picking one closes it. Help and theme live in its footer, so
  * the top bar keeps only the trigger, the breadcrumb and the account.
  * Switch the viewport to a phone to try it.
@@ -293,9 +293,9 @@ export const PhoneNav: Story = {
       <div className="h-svh">
         <SidebarProvider>
           <Sidebar mobile="drawer">
-            <SidebarHeader variant="plate">
+            <SidebarHeader variant="brand">
               <SidebarBrand
-                image={clarionPlate}
+                image={clarionBrand}
                 subtitle="powered by Iris"
                 mark="C"
               >

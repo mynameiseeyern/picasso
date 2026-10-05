@@ -65,10 +65,10 @@ interface SidebarContextValue {
   registerMobile: (on: boolean) => void;
   /** True for parts rendered inside the full-screen phone nav. */
   inMobile: boolean;
-  /* The brand plate decides its own ink from its artwork, and the header
-     draws the phone nav's close on top of that plate — so the header has to
-     be told. Null when there is no SidebarBrand, which is the case the close
-     has to survive: a header without a plate still needs a way out. */
+  /* The brand decides its own ink from its artwork, and the header draws the
+     phone nav's close on top of it — so the header has to be told. Null when
+     there is no SidebarBrand, which is the case the close has to survive: a
+     header with no brand still needs a way out. */
   brandInk: "on-dark" | "on-light" | null;
   registerBrandInk: (ink: "on-dark" | "on-light" | null) => void;
 }
@@ -198,7 +198,7 @@ export interface SidebarProps extends React.ComponentProps<"aside"> {
    * `"drawer"`: below md the rail is not drawn inline — SidebarTrigger opens
    * the same tree over the page instead, as a panel from the inline start
    * with a strip of scrim left at the end. 44-tall items, a close on the
-   * brand plate, and picking an item closes it. From md up nothing changes.
+   * brand, and picking an item closes it. From md up nothing changes.
    * Opt-in for now; see guidance `phone-nav`.
    *
    * `"fullscreen"` is the old name for the same thing, from when the panel
@@ -240,7 +240,15 @@ export function Sidebar({
           <DialogPrimitive.Content
             data-slot="sidebar-mobile"
             aria-describedby={undefined}
-            className="fixed inset-y-0 start-0 end-14 z-modal flex outline-none"
+            className={cn(
+              "fixed inset-y-0 start-0 end-14 z-modal flex outline-none",
+              /* The same travel as a Drawer on the start side — it is the
+                 same gesture, so it reads as one thing in the system. The
+                 scrim behind it already fades. --direction-sign signs the
+                 travel, so in RTL it comes from the other edge. */
+              "motion-safe:data-[state=open]:animate-drawer-in-start",
+              "motion-safe:data-[state=closed]:animate-drawer-out-start",
+            )}
           >
             <DialogPrimitive.Title className="sr-only">
               {mobileLabel}
@@ -296,11 +304,11 @@ export function Sidebar({
 
 const sidebarHeaderVariants = cva("flex flex-col", {
   variants: {
-    // `plate` exists for one reason: the brand block in Clarion and Iris runs
+    // `brand` exists for one reason: the brand block in Clarion and Iris runs
     // edge to edge and hard against the top, and padding is what stops it. A
     // product cannot cancel that padding from outside — no-restyle refuses the
     // class — so the header has to offer the shape itself.
-    variant: { default: "gap-2 p-2", plate: "gap-0 p-0" },
+    variant: { default: "gap-2 p-2", brand: "gap-0 p-0" },
   },
   defaultVariants: { variant: "default" },
 });
@@ -331,7 +339,7 @@ export function SidebarHeader({
       data-slot="sidebar-header"
       className={cn(
         sidebarHeaderVariants({ variant }),
-        // relative so the close can sit on the plate, which bleeds to all
+        // relative so the close can sit on the brand, which bleeds to all
         // three edges and leaves nowhere else to put it
         inMobile && "relative",
         className,
@@ -342,9 +350,9 @@ export function SidebarHeader({
       {/* The phone nav covers the page, and Escape is a keyboard key. Without
           this there is no way back out except the scrim, so the close ships
           with the header — the one part every nav has — rather than with the
-          brand plate, which a product may not use.
-          Its ink comes from the plate underneath it: white over dark artwork,
-          dark over pale. With no plate there is no artwork, so it takes the
+          brand, which a product may not use.
+          Its ink comes from the brand underneath it: white over dark artwork,
+          dark over pale. With no brand there is no artwork, so it takes the
           rail's own ink. */}
       {inMobile ? (
         <button
@@ -369,20 +377,20 @@ export function SidebarHeader({
   );
 }
 /**
- * The brand plate — the product's identity at the top of the rail.
+ * The brand — the product's identity at the top of the rail.
  *
- * Put it inside `<SidebarHeader variant="plate">`. 80 tall, bleeding to all
+ * Put it inside `<SidebarHeader variant="brand">`. 80 tall, bleeding to all
  * three edges, with the wordmark as children so each product brings its own:
  * Iris sets one word, Clarion sets a lockup over "powered by Iris".
  *
  * ⭐ Without an `image` it paints the rail's own surface, so a brand that has
- * not had a plate drawn yet reads as a quiet header rather than an empty
+ * not had brand artwork drawn yet reads as a quiet header rather than an empty
  * coloured box. The image is the normal path, not the exception — a new brand
- * supplies one asset and the plate is done.
+ * supplies one asset and the block is done.
  *
  * ⚠️ Nothing can measure the contrast of a bitmap. On a token surface
  * `fg/on/*` is solved for us; over an `image` there is no value to solve
- * against, so the plate lays a scrim under the text instead and the artwork
+ * against, so the block lays a scrim under the text instead and the artwork
  * stops deciding whether the wordmark reads. What is left for the product is
  * the polarity: `ink="on-light"` for a pale asset, which also turns the
  * scrim pale.
@@ -404,7 +412,7 @@ export interface SidebarBrandProps
   extends
     React.ComponentProps<"div">,
     VariantProps<typeof sidebarBrandVariants> {
-  /** The brand artwork. Covers the plate; decorative, so it carries no name. */
+  /** The brand artwork. Covers the block; decorative, so it carries no name. */
   image?: string;
   /** A second line under the wordmark — Clarion's "powered by Iris". */
   subtitle?: React.ReactNode;
@@ -422,8 +430,8 @@ export function SidebarBrand({
   ...props
 }: SidebarBrandProps) {
   const { collapsed, registerBrandInk } = useSidebar();
-  /* The header draws the close on top of this plate, so it has to know
-     whether the plate is dark. Without artwork there is nothing to sit on
+  /* The header draws the close on top of this, so it has to know whether the
+     brand is dark. Without artwork there is nothing to sit on
      and the ink is the rail's own. */
   const effectiveInk = image ? (ink ?? "on-dark") : "on-light";
   useIsoLayoutEffect(() => {
@@ -455,18 +463,18 @@ export function SidebarBrand({
               token and can prove the result; artwork is the one surface it
               cannot measure, so instead of trusting each brand's file it
               lays a wash under the text and stops depending on what the
-              file happens to contain. It fades out across the plate so the
+              file happens to contain. It fades out across the block so the
               artwork still reads where no text sits — physically, left to
               right, like everything else in the library (see the RTL note
               in packages/tokens/theme.css).
 
               Strength is a fraction of `bg/scrim`, so it moves with the
               theme rather than being a number of its own. Measured on the
-              Clarion and Console plates, the worst pixel under a glyph:
+              Clarion and Console artwork, the worst pixel under a glyph:
               5.3:1 for the 12px second line and 5.8:1 for the wordmark,
               against 4.5:1 needed. Lighter than this and the second line
               drops under 5; heavier and the brand colour goes grey where
-              the wordmark sits, which is the one part of the plate a brand
+              the wordmark sits, which is the one part of the block a brand
               will look at. */}
           <div
             data-slot="sidebar-brand-scrim"

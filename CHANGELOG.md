@@ -7,6 +7,14 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### ⚠️ Breaking
 
+- **`SidebarHeader`'s brand variant is `brand`, not `plate`.** Nobody outside
+  this repo knew what a "plate" was — including the design system's own owner,
+  which is the test a name has to pass. **Code impact** — replace
+  `variant="plate"` with `variant="brand"`; TypeScript refuses the old value.
+  Nothing renders differently. The prose follows the same rule: the block is
+  "the brand", the thing it sits in is "the header". **Figma impact** — the
+  phone nav's `Brand plate · 80` frame is renamed with it.
+
 - **Drawer's `side` is `start` / `end`, not `left` / `right`.** `end` is the
   default and is where `right` was in a left-to-right page; in Arabic, Hebrew
   and Persian it is the left, opposite the sidebar. **Code impact** — replace
@@ -222,12 +230,12 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   opens the same tree over the page from the inline start, with a strip of
   scrim left at the end edge — tapping it leaves, which a full-screen nav gave
   no way to do but hunt for the close. Picking an item closes it. The close
-  sits on the brand plate and takes its ink from the brand, so it stays legible
-  on brand artwork and on a plain plate. **Code impact** — none;
+  sits on the brand and takes its ink from it, so it stays legible on brand
+  artwork and on a plain header. **Code impact** — none;
   `mobile="fullscreen"` still works and is documented as the old name for the
   same thing. **Figma impact** — `Sidebar / Phone nav (full screen)` is
   `Sidebar / Phone nav (drawer)` and the frame draws a 334 panel beside a 56
-  scrim strip on a 390 phone; the plate's button is `Close navigation`.
+  scrim strip on a 390 phone; the header's button is `Close navigation`.
 
 - **Dark `bg/disabled` is neutral-700 and dark `fg/disabled` is neutral-500.**
   The fill was neutral-800, the card colour, so a disabled Button or Chip on
@@ -364,18 +372,17 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Added
 
-- **The sidebar brand plate** — `<SidebarHeader variant="plate">` with
+- **The sidebar brand** — `<SidebarHeader variant="brand">` with
   `SidebarBrand`, the full-bleed block Clarion and Console both carry above the
   menu. `image` is the brand artwork (decorative — empty alt, aria-hidden),
   `children` the wordmark, `subtitle` a second line, `mark` what replaces the
-  wordmark on the 48px rail. Without an `image` the plate paints
+  wordmark on the 48px rail. Without an `image` the block paints
   `bg/surface/sidebar`, so a brand with no asset yet reads as a quiet header
   rather than an empty coloured box. A scrim between the artwork and the text
   is what makes the wordmark's contrast the component's guarantee instead of
-  the brand file's: measured on both plates, the worst pixel under a glyph is
-  5.3:1 for the second line and 5.8:1 for the wordmark. `ink="on-light"` takes
-  a pale asset and turns the scrim pale with it. **Figma impact** — the plate
-  is not drawn in the file yet; both products' headers are the reference.
+  the brand file's: measured on both products' artwork, the worst pixel under a
+  glyph is 5.3:1 for the second line and 5.8:1 for the wordmark. `ink="on-light"`
+  takes a pale asset and turns the scrim pale with it.
 
 - **`Loader`** — `variant="spinner" | "fuse" | "pulse"`, matching Figma's
   `Loader` set. Spinner for in-console waits (Size 3–8, xl); Fuse for brand

@@ -171,24 +171,24 @@ describe("Sidebar", () => {
 });
 
 describe("SidebarBrand", () => {
-  const plate = (ui: React.ReactNode, collapsed = false) =>
+  const renderBrand = (ui: React.ReactNode, collapsed = false) =>
     render(
       <SidebarProvider defaultCollapsed={collapsed}>
         <Sidebar>
-          <SidebarHeader variant="plate">{ui}</SidebarHeader>
+          <SidebarHeader variant="brand">{ui}</SidebarHeader>
         </Sidebar>
       </SidebarProvider>,
     );
 
-  it("drops the header's padding so the plate can bleed", () => {
-    const { container } = plate(<SidebarBrand>Clarion</SidebarBrand>);
+  it("drops the header's padding so the brand can bleed", () => {
+    const { container } = renderBrand(<SidebarBrand>Clarion</SidebarBrand>);
     const header = container.querySelector('[data-slot="sidebar-header"]')!;
     expect(header.className).toContain("p-0");
     expect(header.className).not.toContain("p-2");
   });
 
   it("paints the rail's own surface when there is no image", () => {
-    const { container } = plate(<SidebarBrand>Vantage</SidebarBrand>);
+    const { container } = renderBrand(<SidebarBrand>Vantage</SidebarBrand>);
     const brand = container.querySelector('[data-slot="sidebar-brand"]')!;
     expect(brand.className).toContain("bg-surface-sidebar");
     // Nothing to measure a bitmap against, so the neutral case takes neutral ink.
@@ -196,8 +196,8 @@ describe("SidebarBrand", () => {
     expect(container.querySelector("img")).toBeNull();
   });
 
-  it("covers the plate with a decorative image, and flips the ink", () => {
-    const { container } = plate(
+  it("covers the block with a decorative image, and flips the ink", () => {
+    const { container } = renderBrand(
       <SidebarBrand image="/brand.png">Clarion</SidebarBrand>,
     );
     const brand = container.querySelector('[data-slot="sidebar-brand"]')!;
@@ -210,7 +210,7 @@ describe("SidebarBrand", () => {
   });
 
   it("takes on-light ink for a pale asset, which nothing can measure for us", () => {
-    const { container } = plate(
+    const { container } = renderBrand(
       <SidebarBrand image="/pale.png" ink="on-light">
         Clarion
       </SidebarBrand>,
@@ -221,7 +221,7 @@ describe("SidebarBrand", () => {
   });
 
   it("lays a scrim under the text, because no one can measure a bitmap", () => {
-    const { container } = plate(
+    const { container } = renderBrand(
       <SidebarBrand image="/brand.png">Clarion</SidebarBrand>,
     );
     const scrim = container.querySelector('[data-slot="sidebar-brand-scrim"]')!;
@@ -231,7 +231,7 @@ describe("SidebarBrand", () => {
   });
 
   it("turns the scrim pale when the ink is dark", () => {
-    const { container } = plate(
+    const { container } = renderBrand(
       <SidebarBrand image="/pale.png" ink="on-light">
         Clarion
       </SidebarBrand>,
@@ -241,15 +241,15 @@ describe("SidebarBrand", () => {
     ).toContain("from-surface-app/70");
   });
 
-  it("has nothing to scrim when the plate is a token surface", () => {
-    const { container } = plate(<SidebarBrand>Vantage</SidebarBrand>);
+  it("has nothing to scrim when the brand is a token surface", () => {
+    const { container } = renderBrand(<SidebarBrand>Vantage</SidebarBrand>);
     expect(
       container.querySelector('[data-slot="sidebar-brand-scrim"]'),
     ).toBeNull();
   });
 
   it("stacks the scrim over the artwork and under the wordmark", () => {
-    const { container } = plate(
+    const { container } = renderBrand(
       <SidebarBrand image="/brand.png">Clarion</SidebarBrand>,
     );
     expect(container.querySelector("img")!.className).toContain("-z-20");
@@ -259,13 +259,15 @@ describe("SidebarBrand", () => {
   });
 
   it("shows the wordmark and its second line when expanded", () => {
-    plate(<SidebarBrand subtitle="powered by Iris">CLARION</SidebarBrand>);
+    renderBrand(
+      <SidebarBrand subtitle="powered by Iris">CLARION</SidebarBrand>,
+    );
     expect(screen.getByText("CLARION")).toBeInTheDocument();
     expect(screen.getByText("powered by Iris")).toBeInTheDocument();
   });
 
   it("drops to the mark alone when the rail is collapsed", () => {
-    plate(
+    renderBrand(
       <SidebarBrand subtitle="powered by Iris" mark="C">
         CLARION
       </SidebarBrand>,
@@ -291,7 +293,7 @@ describe('Sidebar mobile="drawer" (phones)', () => {
     return (
       <SidebarProvider>
         <Sidebar mobile="drawer">
-          <SidebarHeader variant="plate">
+          <SidebarHeader variant="brand">
             <SidebarBrand>CLARION</SidebarBrand>
           </SidebarHeader>
           <SidebarContent>
@@ -349,10 +351,10 @@ describe('Sidebar mobile="drawer" (phones)', () => {
     ).toBeInTheDocument();
   });
 
-  it("gives a header with no brand plate a close too", async () => {
+  it("gives a header with no brand a close too", async () => {
     setPhone(true);
-    // the reason the close lives on the header and not the plate: a product
-    // that never draws a plate still has to be able to shut the nav
+    // the reason the close lives on the header and not the brand: a product
+    // that never draws one still has to be able to shut the nav
     render(
       <SidebarProvider>
         <Sidebar mobile="drawer" mobileLabel="Navigation">
@@ -376,21 +378,21 @@ describe('Sidebar mobile="drawer" (phones)', () => {
       screen.getByRole("button", { name: "Open navigation" }),
     );
     const close = screen.getByRole("button", { name: "Close navigation" });
-    // no plate, so no artwork to sit on — it takes the rail's own ink
+    // no brand, so no artwork to sit on — it takes the rail's own ink
     expect(close.className).toContain("text-content-neutral-emphasis");
     await userEvent.click(close);
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 
-  it("colours the close from the plate it sits on", async () => {
+  it("colours the close from the brand it sits on", async () => {
     setPhone(true);
-    // artwork, so the plate is dark and the close on top of it is light. The
+    // artwork, so the brand is dark and the close on top of it is light. The
     // shared Phone fixture has no image, which is why it takes the other
-    // branch — a plate with no artwork paints the rail's own surface.
+    // branch — a brand with no artwork paints the rail's own surface.
     render(
       <SidebarProvider>
         <Sidebar mobile="drawer" mobileLabel="Navigation">
-          <SidebarHeader variant="plate">
+          <SidebarHeader variant="brand">
             <SidebarBrand image="/brand.png">CLARION</SidebarBrand>
           </SidebarHeader>
           <SidebarContent>
@@ -427,7 +429,7 @@ describe('Sidebar mobile="drawer" (phones)', () => {
     ).not.toBeNull();
   });
 
-  it("puts a collapse button on the plate, and it closes the nav", async () => {
+  it("puts a collapse button on the brand, and it closes the nav", async () => {
     setPhone(true);
     render(<Phone />);
     await userEvent.click(

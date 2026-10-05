@@ -29,7 +29,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "../sidebar/sidebar";
-import clarionPlate from "../../brand-assets/Clarion.svg";
+import clarionBrand from "../../brand-assets/Clarion.svg";
 
 import { Badge } from "../badge/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "../card/card";
@@ -87,12 +87,12 @@ const NAV = [
 function Nav({ active }: { active: string }) {
   return (
     <Sidebar>
-      {/* The plate, not a hand-rolled mark and label: this is the block the
+      {/* The brand, not a hand-rolled mark and label: this is the block the
           product actually carries above the menu, and it is what the phone
           drawer opens with. It stays 80 when the rail collapses to 48 and
           crops to the brand's own letter. */}
-      <SidebarHeader variant="plate">
-        <SidebarBrand image={clarionPlate} subtitle="powered by Iris" mark="C">
+      <SidebarHeader variant="brand">
+        <SidebarBrand image={clarionBrand} subtitle="powered by Iris" mark="C">
           Clarion
         </SidebarBrand>
       </SidebarHeader>
