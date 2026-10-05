@@ -171,3 +171,40 @@ export const Interactive: Story = {
     );
   },
 };
+
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Every other story here pins a
+ * width well above that, so this is the one that shows what a phone does to
+ * it, and the one the overflow sweep can measure.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-8">
+      {/* Horizontal survives a phone only without its labels. */}
+      <Stepper value={2}>
+        {STEPS.map((s, i) => (
+          <StepperItem key={s.title} index={i}>
+            <StepperIndicator />
+            <StepperSeparator />
+          </StepperItem>
+        ))}
+      </Stepper>
+      {/* With labels to show, turn it: vertical is the phone layout. */}
+      <Stepper value={1} orientation="vertical">
+        {STEPS.map((s, i) => (
+          <StepperItem key={s.title} index={i}>
+            <StepperTrack>
+              <StepperIndicator />
+              <StepperSeparator />
+            </StepperTrack>
+            <StepperContent>
+              <StepperTitle>{s.title}</StepperTitle>
+              <StepperDescription>{s.description}</StepperDescription>
+            </StepperContent>
+          </StepperItem>
+        ))}
+      </Stepper>
+    </div>
+  ),
+};

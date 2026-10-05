@@ -120,3 +120,30 @@ export const Multiple: Story = {
     </div>
   ),
 };
+
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Every other story here pins a
+ * width well above that, so this is the one that shows what a phone does to
+ * it, and the one the overflow sweep can measure.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <div className="w-82">
+      <Accordion
+        type="single"
+        collapsible
+        defaultValue="q0"
+        variant={args.variant}
+        iconPosition={args.iconPosition}
+      >
+        {QUESTIONS.map((item, i) => (
+          <AccordionItem key={item.q} value={`q${i}`} divider={i > 0}>
+            <AccordionTrigger>{item.q}</AccordionTrigger>
+            <AccordionContent>{item.a}</AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </div>
+  ),
+};

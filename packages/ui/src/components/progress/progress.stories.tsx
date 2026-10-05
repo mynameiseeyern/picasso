@@ -98,3 +98,22 @@ export const Live: Story = {
     );
   },
 };
+
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Every other story here pins a
+ * width well above that, so this is the one that shows what a phone does to
+ * it, and the one the overflow sweep can measure.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-6">
+      <Progress value={42} label="Importing endpoints" />
+      <Progress
+        value={42}
+        label="Importing endpoints"
+        valueLabel="420 of 1,000"
+      />
+    </div>
+  ),
+};

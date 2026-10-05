@@ -326,3 +326,39 @@ export const DoAndDont: Story = {
     </GuidanceStory>
   ),
 };
+
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Every other story here pins a
+ * width well above that, so this is the one that shows what a phone does to
+ * it, and the one the overflow sweep can measure.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-82">
+      <Card>
+        <CardHeader>
+          <CardHeaderText>
+            <CardTitle>Sign in</CardTitle>
+            <CardDescription>
+              Use your Integrated Research account.
+            </CardDescription>
+          </CardHeaderText>
+        </CardHeader>
+        <CardContent>
+          <Field>
+            <FieldLabel required>Email</FieldLabel>
+            <Input type="email" placeholder="you@ir.com" />
+          </Field>
+          <Field>
+            <FieldLabel required>Password</FieldLabel>
+            <Input type="password" />
+          </Field>
+        </CardContent>
+        <CardFooter>
+          <Button>Sign in</Button>
+        </CardFooter>
+      </Card>
+    </div>
+  ),
+};

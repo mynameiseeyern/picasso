@@ -43,6 +43,12 @@
       "dont": "Use size=\"lg\" on a phone.",
       "do": "Use md below about 420 of column.",
       "why": "Six lg slots are 56 each with an 8 gap, so the row needs 376 before any page padding — measured at 376 against a 360 column. md is 48 and fits at 328. The slots do not shrink on purpose: a code you cannot read is worse than one you have to scroll to."
+    },
+    {
+      "id": "size-step-on-phones",
+      "dont": "Keep md on a phone and let the row scroll or spill.",
+      "do": "Drop to sm below md.",
+      "why": "Six md boxes are 352 wide with their separator and gaps, and a 360 phone leaves 328 after its gutters. sm is 304. A code is checked against another screen while it is typed, so a row that scrolls hides the digits being compared."
     }
   ],
   "a11y": [

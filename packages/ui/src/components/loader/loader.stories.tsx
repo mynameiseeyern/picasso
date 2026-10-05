@@ -147,3 +147,36 @@ export const NotForActions: Story = {
   name: "Actions use the button's loading state",
   render: () => <Button loading>Saving changes</Button>,
 };
+
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Every other story here pins a
+ * width well above that, so this is the one that shows what a phone does to
+ * it, and the one the overflow sweep can measure.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-4">
+      <Card>
+        <CardContent>
+          <div className="flex h-40 flex-col items-center justify-center gap-3">
+            <Loader variant="spinner" size="6" label="Loading trunks" />
+            <span className="text-xs text-content-neutral-muted">
+              Spinner · a panel refreshing
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardContent>
+          <div className="flex h-40 flex-col items-center justify-center gap-3">
+            <Loader variant="fuse" size={56} label="Setting up Clarion" />
+            <span className="text-xs text-content-neutral-muted">
+              Fuse · first run
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  ),
+};

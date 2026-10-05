@@ -54,9 +54,17 @@ beside it. A 16px box with nothing around it is a miss, not a tap.
 includes every phone width, and the type ramp is the same ramp. A narrow
 screen gets fewer columns, not smaller text.
 
-**The rail is not on a phone.** Below `md` the sidebar is a full-screen nav
-rather than a 48px strip, because a strip of icons on a phone spends the one
-dimension there is least of.
+**A row with fixed geometry takes a smaller size step, it does not scroll.**
+Six OTP boxes at `md` are 48 each: 288, plus a 16 separator and six 8 gaps is
+352, against the 328 a 360 phone leaves after its gutters. `sm` is 304 and
+fits. Where a component offers size steps, the phone takes the step that fits
+— adding a scroller to a field people type into hides the digits they are
+checking.
+
+**The rail is not on a phone.** Below `md` the sidebar is not a 48px strip —
+a strip of icons spends the one dimension there is least of. The trigger opens
+the same tree as a drawer over the page, from the inline start, with a strip
+of scrim left at the end edge to leave by.
 
 ## Claiming the phone contract
 

@@ -170,3 +170,37 @@ export const DoAndDont: Story = {
     </GuidanceStory>
   ),
 };
+
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Every other story here pins a
+ * width well above that, so this is the one that shows what a phone does to
+ * it, and the one the overflow sweep can measure.
+ *
+ * `sm`, not the default: six `md` boxes are 48 each, and with the 16
+ * separator and six 8 gaps the row is 352 — wider than the 328 there is. `sm`
+ * is 304 and fits. A code is read off another screen while it is typed, so a
+ * row that scrolls hides the digits being compared.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: function Render() {
+    const [value, setValue] = React.useState("");
+    return (
+      <div className="flex w-82 flex-col gap-4">
+        <Field>
+          <FieldLabel>Verification code</FieldLabel>
+          <p className="text-body-sm text-content-neutral-muted">
+            Sent by SMS to •••• 4821. It expires in 10 minutes.
+          </p>
+          <Six size="sm" value={value} onChange={setValue} />
+        </Field>
+        <div className="flex items-center gap-2">
+          <Button variant="secondary" onClick={() => setValue("")}>
+            Send a new code
+          </Button>
+          <Button disabled={value.length < 6}>Verify</Button>
+        </div>
+      </div>
+    );
+  },
+};
