@@ -275,8 +275,9 @@ export const BrandPlate: Story = {
 };
 
 /**
- * Phones (below md): `mobile="fullscreen"` takes the rail off the page and the
- * trigger opens the same tree full screen — collapse button on the plate,
+ * Phones (below md): `mobile="drawer"` takes the rail off the page and the
+ * trigger opens the same tree over it, as a panel from the inline start with a
+ * strip of scrim left at the end — tap the strip to leave. Close on the plate,
  * 44-tall items, picking one closes it. Help and theme live in its footer, so
  * the top bar keeps only the trigger, the breadcrumb and the account.
  * Switch the viewport to a phone to try it.
@@ -291,7 +292,7 @@ export const PhoneNav: Story = {
     return (
       <div className="h-svh">
         <SidebarProvider>
-          <Sidebar mobile="fullscreen">
+          <Sidebar mobile="drawer">
             <SidebarHeader variant="plate">
               <SidebarBrand
                 image={clarionPlate}
@@ -345,8 +346,8 @@ export const PhoneNav: Story = {
               </span>
             </header>
             <div className="p-4 text-body-md text-content-neutral-muted">
-              On a phone the trigger opens the nav full screen; from md up it
-              collapses the rail as usual.
+              On a phone the trigger opens the nav as a drawer over the page;
+              from md up it collapses the rail as usual.
             </div>
           </SidebarInset>
         </SidebarProvider>

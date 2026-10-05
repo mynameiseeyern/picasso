@@ -58,7 +58,7 @@ const SIDEBAR_WIDTH_COLLAPSED = "w-12";
 interface SidebarContextValue {
   collapsed: boolean;
   setCollapsed: (v: boolean) => void;
-  /** Below md, with a `mobile="fullscreen"` Sidebar mounted. */
+  /** Below md, with a `mobile="drawer"` Sidebar mounted. */
   phone: boolean;
   mobileOpen: boolean;
   setMobileOpen: (v: boolean) => void;
@@ -111,7 +111,7 @@ export interface SidebarProviderProps extends React.ComponentProps<"div"> {
   collapsed?: boolean;
   defaultCollapsed?: boolean;
   onCollapsedChange?: (collapsed: boolean) => void;
-  /** The full-screen phone nav's open state (Sidebar `mobile="fullscreen"`). */
+  /** The phone nav drawer's open state (Sidebar `mobile="drawer"`). */
   mobileOpen?: boolean;
   onMobileOpenChange?: (open: boolean) => void;
 }

@@ -278,7 +278,7 @@ describe("SidebarBrand", () => {
   });
 });
 
-describe('Sidebar mobile="fullscreen" (phones)', () => {
+describe('Sidebar mobile="drawer" (phones)', () => {
   const setPhone = (phone: boolean) => {
     window.matchMedia = ((q: string) => ({
       matches: phone && q.includes("max-width"),
@@ -290,7 +290,7 @@ describe('Sidebar mobile="fullscreen" (phones)', () => {
   function Phone({ onPick }: { onPick?: () => void }) {
     return (
       <SidebarProvider>
-        <Sidebar mobile="fullscreen">
+        <Sidebar mobile="drawer">
           <SidebarHeader variant="plate">
             <SidebarBrand>CLARION</SidebarBrand>
           </SidebarHeader>
