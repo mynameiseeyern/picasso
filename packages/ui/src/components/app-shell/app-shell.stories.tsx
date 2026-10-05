@@ -17,6 +17,7 @@ import {
 } from "../breadcrumb/breadcrumb";
 import {
   Sidebar,
+  SidebarBrand,
   SidebarContent,
   SidebarGroup,
   SidebarGroupLabel,
@@ -28,6 +29,7 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "../sidebar/sidebar";
+import clarionPlate from "../../brand-assets/Clarion.svg";
 
 import { Badge } from "../badge/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "../card/card";
@@ -85,16 +87,14 @@ const NAV = [
 function Nav({ active }: { active: string }) {
   return (
     <Sidebar>
-      <SidebarHeader>
-        <div className="flex items-center gap-2 px-1 text-label-md text-content-neutral-emphasis">
-          <span
-            aria-hidden
-            className="flex size-8 shrink-0 items-center justify-center rounded-md bg-surface-primary-emphasis text-label-sm text-content-on-primary-emphasis"
-          >
-            IR
-          </span>
-          <span className="truncate">Clarion</span>
-        </div>
+      {/* The plate, not a hand-rolled mark and label: this is the block the
+          product actually carries above the menu, and it is what the phone
+          drawer opens with. It stays 80 when the rail collapses to 48 and
+          crops to the brand's own letter. */}
+      <SidebarHeader variant="plate">
+        <SidebarBrand image={clarionPlate} subtitle="powered by Iris" mark="C">
+          Clarion
+        </SidebarBrand>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
