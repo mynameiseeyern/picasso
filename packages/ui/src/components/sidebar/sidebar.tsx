@@ -65,7 +65,20 @@ interface SidebarContextValue {
   registerMobile: (on: boolean) => void;
   /** True for parts rendered inside the full-screen phone nav. */
   inMobile: boolean;
+  /* The brand plate decides its own ink from its artwork, and the header
+     draws the phone nav's close on top of that plate — so the header has to
+     be told. Null when there is no SidebarBrand, which is the case the close
+     has to survive: a header without a plate still needs a way out. */
+  brandInk: "on-dark" | "on-light" | null;
+  registerBrandInk: (ink: "on-dark" | "on-light" | null) => void;
 }
+
+/* Registering in a layout effect, not an effect: the header paints the close
+   in the same frame the brand mounts, so there is no flash of the wrong ink.
+   Falls back to useEffect where there is no DOM, which is the only place
+   useLayoutEffect warns. */
+const useIsoLayoutEffect =
+  typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
 
 /* md is 768 in the tokens and in Tailwind; below it is a phone. */
 const PHONE_QUERY = "(max-width: 767.98px)";
@@ -147,6 +160,9 @@ export function SidebarProvider({
   React.useEffect(() => {
     if (hasMobile && !isPhone && mobileOpen) setMobileOpen(false);
   }, [hasMobile, isPhone, mobileOpen, setMobileOpen]);
+  const [brandInk, setBrandInk] = React.useState<"on-dark" | "on-light" | null>(
+    null,
+  );
   const ctx = React.useMemo<SidebarContextValue>(
     () => ({
       collapsed: value,
@@ -156,8 +172,10 @@ export function SidebarProvider({
       setMobileOpen,
       registerMobile: setHasMobile,
       inMobile: false,
+      brandInk,
+      registerBrandInk: setBrandInk,
     }),
-    [value, setCollapsed, phone, mobileOpen, setMobileOpen],
+    [value, setCollapsed, phone, mobileOpen, setMobileOpen, brandInk],
   );
 
   return (
@@ -292,20 +310,64 @@ export interface SidebarHeaderProps
     React.ComponentProps<"div">,
     VariantProps<typeof sidebarHeaderVariants> {}
 
+export interface SidebarHeaderCloseProps {
+  /** The name of the close shown in the phone nav. "Close", not
+   *  "Collapse": SidebarTrigger collapses the rail to 48 and this dismisses
+   *  an overlay, so two buttons called the same thing would do two different
+   *  things. */
+  closeLabel?: string;
+}
+
 export function SidebarHeader({
   className,
   variant,
+  closeLabel = "Close navigation",
+  children,
   ...props
-}: SidebarHeaderProps) {
+}: SidebarHeaderProps & SidebarHeaderCloseProps) {
+  const { inMobile, setMobileOpen, brandInk } = useSidebar();
   return (
     <div
       data-slot="sidebar-header"
-      className={cn(sidebarHeaderVariants({ variant }), className)}
+      className={cn(
+        sidebarHeaderVariants({ variant }),
+        // relative so the close can sit on the plate, which bleeds to all
+        // three edges and leaves nowhere else to put it
+        inMobile && "relative",
+        className,
+      )}
       {...props}
-    />
+    >
+      {children}
+      {/* The phone nav covers the page, and Escape is a keyboard key. Without
+          this there is no way back out except the scrim, so the close ships
+          with the header — the one part every nav has — rather than with the
+          brand plate, which a product may not use.
+          Its ink comes from the plate underneath it: white over dark artwork,
+          dark over pale. With no plate there is no artwork, so it takes the
+          rail's own ink. */}
+      {inMobile ? (
+        <button
+          type="button"
+          data-slot="sidebar-mobile-close"
+          aria-label={closeLabel}
+          onClick={() => setMobileOpen(false)}
+          className={cn(
+            "absolute end-2 top-2 flex size-11 cursor-pointer items-center justify-center rounded-md",
+            "outline-none transition-colors focus-visible:ring-2 focus-visible:ring-line-focused",
+            "[&_svg]:size-5",
+            brandInk === "on-dark" &&
+              "text-content-on-primary-emphasis hover:bg-surface-layer-on-emphasis-subtle",
+            brandInk !== "on-dark" &&
+              "text-content-neutral-emphasis hover:bg-surface-neutral-subtle-hovered",
+          )}
+        >
+          <PanelLeftClose aria-hidden className="rtl-mirror" />
+        </button>
+      ) : null}
+    </div>
   );
 }
-
 /**
  * The brand plate — the product's identity at the top of the rail.
  *
@@ -359,13 +421,21 @@ export function SidebarBrand({
   children,
   ...props
 }: SidebarBrandProps) {
-  const { collapsed, inMobile, setMobileOpen } = useSidebar();
+  const { collapsed, registerBrandInk } = useSidebar();
+  /* The header draws the close on top of this plate, so it has to know
+     whether the plate is dark. Without artwork there is nothing to sit on
+     and the ink is the rail's own. */
+  const effectiveInk = image ? (ink ?? "on-dark") : "on-light";
+  useIsoLayoutEffect(() => {
+    registerBrandInk(effectiveInk);
+    return () => registerBrandInk(null);
+  }, [effectiveInk, registerBrandInk]);
   return (
     <div
       data-slot="sidebar-brand"
       data-collapsed={collapsed || undefined}
       className={cn(
-        sidebarBrandVariants({ ink: image ? ink : "on-light" }),
+        sidebarBrandVariants({ ink: effectiveInk }),
         !image && "bg-surface-sidebar",
         collapsed && "items-center px-0",
         className,
@@ -432,23 +502,6 @@ export function SidebarBrand({
           ) : null}
         </>
       )}
-      {inMobile ? (
-        // The phone nav's way out, where the thumb that opened it already is.
-        // 44 square; ink follows the plate's.
-        <button
-          type="button"
-          data-slot="sidebar-mobile-close"
-          aria-label="Collapse navigation"
-          onClick={() => setMobileOpen(false)}
-          className={
-            "absolute end-2 top-2 flex size-11 cursor-pointer items-center justify-center rounded-md " +
-            "outline-none transition-colors hover:bg-surface-layer-on-emphasis-subtle " +
-            "focus-visible:ring-2 focus-visible:ring-line-focused [&_svg]:size-5"
-          }
-        >
-          <PanelLeftClose aria-hidden className="rtl-mirror" />
-        </button>
-      ) : null}
     </div>
   );
 }

@@ -349,6 +349,71 @@ describe('Sidebar mobile="fullscreen" (phones)', () => {
     ).toBeInTheDocument();
   });
 
+  it("gives a header with no brand plate a close too", async () => {
+    setPhone(true);
+    // the reason the close lives on the header and not the plate: a product
+    // that never draws a plate still has to be able to shut the nav
+    render(
+      <SidebarProvider>
+        <Sidebar mobile="drawer" mobileLabel="Navigation">
+          <SidebarHeader>
+            <span>Monitoring</span>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  <SidebarMenuLabel>Endpoints</SidebarMenuLabel>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarContent>
+        </Sidebar>
+        <SidebarTrigger />
+      </SidebarProvider>,
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Open navigation" }),
+    );
+    const close = screen.getByRole("button", { name: "Close navigation" });
+    // no plate, so no artwork to sit on — it takes the rail's own ink
+    expect(close.className).toContain("text-content-neutral-emphasis");
+    await userEvent.click(close);
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("colours the close from the plate it sits on", async () => {
+    setPhone(true);
+    // artwork, so the plate is dark and the close on top of it is light. The
+    // shared Phone fixture has no image, which is why it takes the other
+    // branch — a plate with no artwork paints the rail's own surface.
+    render(
+      <SidebarProvider>
+        <Sidebar mobile="drawer" mobileLabel="Navigation">
+          <SidebarHeader variant="plate">
+            <SidebarBrand image="/brand.png">CLARION</SidebarBrand>
+          </SidebarHeader>
+          <SidebarContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton>
+                  <SidebarMenuLabel>Endpoints</SidebarMenuLabel>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarContent>
+        </Sidebar>
+        <SidebarTrigger />
+      </SidebarProvider>,
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Open navigation" }),
+    );
+    expect(
+      screen.getByRole("button", { name: "Close navigation" }).className,
+    ).toContain("text-content-on-primary-emphasis");
+  });
+
   it("leaves a scrim behind the panel, so there is a page to go back to", async () => {
     setPhone(true);
     const { baseElement } = render(<Phone />);
@@ -369,7 +434,7 @@ describe('Sidebar mobile="fullscreen" (phones)', () => {
       screen.getByRole("button", { name: "Open navigation" }),
     );
     await userEvent.click(
-      screen.getByRole("button", { name: "Collapse navigation" }),
+      screen.getByRole("button", { name: "Close navigation" }),
     );
     expect(screen.queryByRole("dialog")).toBeNull();
   });
