@@ -163,7 +163,11 @@ export const Narrow: Story = {
   render: () => (
     <div className="flex w-82 flex-col gap-8">
       {figures.map((figure) => (
-        <Illustration key={figure.name} name={figure.name} interactive={false} />
+        <Illustration
+          key={figure.name}
+          name={figure.name}
+          interactive={false}
+        />
       ))}
     </div>
   ),

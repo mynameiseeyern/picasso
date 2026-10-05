@@ -22,6 +22,29 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Added
 
+- **A theme builder at `/theming`.** Paste or drop a `brand.json` or a
+  `tokens.css`, or start from a colour, and the five axes — brand, neutral
+  ramp, radius, typography, spacing — are editable in place beside a preview
+  of real Picasso components, not swatches. The eleven-stop brand ramp is
+  editable stop by stop; editing one makes the ramp the brand's own rather
+  than a generated one. What comes back out is the same `brand.json` the
+  importer reads, so a value typed here and the same value imported from a
+  file cannot be understood two different ways. **Figma impact** — none; it
+  reads and writes the repo's own format.
+- **Four more typefaces in the builder, self-hosted:** Figtree, DM Sans,
+  Public Sans and IBM Plex Mono, through `@fontsource`. Self-hosted rather
+  than linked, so a preview is the real face on every machine and the page
+  does not depend on a font CDN.
+- **`KpiRow` and `ChartGrid`** — the two layouts every console page was
+  rebuilding by hand. `KpiRow` is the tile row; `ChartGrid` takes `max={2}`
+  or `max={3}` and steps down through its own container's width, not the
+  viewport's, so a grid inside a narrowed panel folds when the panel does.
+- **`docs/foundations/responsive.md`** — the two contracts (the shell answers
+  to the viewport, everything else answers to its container) and six baseline
+  rules for a phone. Ten components that pinned their demo width from 384 to
+  960 now carry a **Narrow** story at 328, a 360 viewport minus its gutters,
+  so the overflow sweep has something to measure.
+
 - **Right-to-left: Arabic, Hebrew and Persian.** `docs/foundations/rtl.md` is
   the whole of it.
   - **`DirectionProvider` and `useDirection`** — Radix reads direction from a
@@ -114,6 +137,36 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   illustrations — and `docs/foundations/motion.md` says where the third stops:
   outside the console, and never as a duration scale for controls.
 
+### Fixed
+
+- **Every touch target meets the floor: 202 were under it, now none are.**
+  WCAG 2.2 AA (2.5.8) sets 24×24, with a spacing exception — a 24px circle on
+  the target must not reach another target's. Where a control is smaller than
+  the row it sits in, the row is the target; where it stands alone, an
+  expanded hit area reaches out from it. Those areas are pseudo-elements, so
+  they are invisible to `getBoundingClientRect`; they were verified by walking
+  `elementFromPoint` outward from each centre. Slider and Threshold slider
+  needed their own insets — a negative inset resolves against the padding box,
+  so a 3px border on a 16px thumb leaves only 10px to grow from, and the first
+  attempt produced an 18×38 target.
+- **`FieldOption` is one target.** The control and its text now sit inside one
+  `<label>`, on a subgrid so a description aligns under the text rather than
+  under the box, with the description outside the label and wired through
+  `aria-describedby` — reading it aloud on focus was repeating the option.
+  `min-h-6`, and `min-h-11` where the pointer is coarse.
+- **The 360px overflows.** Five candidates; four were artifacts of how they
+  were measured — `getBoundingClientRect` reports a rotated box as wide, and a
+  scrolling table is not a page overflow. The fifth was real.
+- **`apps/site` is linted under the design system's own rules.** The theme
+  builder and the landing page are the shop window for Picasso and were held
+  to nothing. 141 problems: 98 were the linter reading tokens from Storybook's
+  stylesheet instead of the site's, and the remaining 43 were real — raw
+  palette colours, off-scale values, inline styles and 13 physical properties.
+- **A lint rule for physical properties.** `@shadcn/lint` has no equivalent,
+  and the thing it guards — a component that reads correctly in both
+  directions — is invisible in every left-to-right screenshot. It caught the
+  drift that had accumulated since the RTL pass.
+
 ### ⚠️ Changed (Figma structure)
 
 - **Figma's Button is the height code has always been: 28 / 32 / 36 / 40**
@@ -164,6 +217,17 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   switching `Type`.
 
 ### ⚠️ Changed (visual)
+
+- **The phone sidebar is a drawer, not a full screen.** Below `md` the trigger
+  opens the same tree over the page from the inline start, with a strip of
+  scrim left at the end edge — tapping it leaves, which a full-screen nav gave
+  no way to do but hunt for the close. Picking an item closes it. The close
+  sits on the brand plate and takes its ink from the brand, so it stays legible
+  on brand artwork and on a plain plate. **Code impact** — none;
+  `mobile="fullscreen"` still works and is documented as the old name for the
+  same thing. **Figma impact** — `Sidebar / Phone nav (full screen)` is
+  `Sidebar / Phone nav (drawer)` and the frame draws a 334 panel beside a 56
+  scrim strip on a 390 phone; the plate's button is `Close navigation`.
 
 - **Dark `bg/disabled` is neutral-700 and dark `fg/disabled` is neutral-500.**
   The fill was neutral-800, the card colour, so a disabled Button or Chip on
