@@ -14,6 +14,11 @@ import {
   DropdownMenuTrigger,
 } from "./dropdown-menu";
 import { Button } from "../button/button";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { OverlaySurface } from "../overlay/overlay";
+import { dropdownMenuItemVariants } from "./dropdown-menu";
+import { cn } from "@/lib/utils";
 
 const meta: Meta<typeof DropdownMenu> = {
   title: "Components/DropdownMenu",
@@ -103,5 +108,81 @@ export const WithASubmenu: Story = {
         </DropdownMenuSub>
       </DropdownMenuContent>
     </DropdownMenu>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+/* The rows are drawn with the menu's own `dropdownMenuItemVariants`, because
+   DropdownMenuItem is a Radix primitive and only renders inside an open menu.
+   Same classes, same tokens — it is the real row, just not in a portal. */
+function Row({
+  children,
+  variant,
+  className,
+}: {
+  children: React.ReactNode;
+  variant?: "destructive";
+  className?: string;
+}) {
+  return (
+    <div className={cn(dropdownMenuItemVariants({ variant }), className)}>
+      {children}
+    </div>
+  );
+}
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("no-hover")}
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <OverlaySurface>
+              <Row>Rename</Row>
+              <Row className="bg-surface-neutral-subtle-hovered">Duplicate</Row>
+              <Row>Export</Row>
+            </OverlaySurface>
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <OverlaySurface>
+              <Row>Rename</Row>
+              <Row>Duplicate</Row>
+              <Row>Export</Row>
+            </OverlaySurface>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("destructive-last")}
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <OverlaySurface>
+              <Row>Rename</Row>
+              <Row variant="destructive">Delete endpoint</Row>
+              <Row>Export</Row>
+            </OverlaySurface>
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <OverlaySurface>
+              <Row>Rename</Row>
+              <Row>Export</Row>
+              <div className="my-1 h-px bg-line-neutral-muted" />
+              <Row variant="destructive">Delete endpoint</Row>
+            </OverlaySurface>
+          </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

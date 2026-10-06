@@ -12,13 +12,15 @@
       "id": "size-by-job",
       "dont": "Pick a width by eye.",
       "do": "sm for confirmations, md for short forms, lg for multi-section work.",
-      "why": "The file assigns each width a job. Anything bigger or longer belongs in a Drawer."
+      "why": "The file assigns each width a job. Anything bigger or longer belongs in a Drawer.",
+      "example": false
     },
     {
       "id": "interrupt-sparingly",
       "dont": "Open a dialog for something the page could say inline.",
       "do": "Keep modals for work that genuinely cannot continue around them.",
-      "why": "A modal takes the whole screen hostage. Spend that only where the interruption is the point."
+      "why": "A modal takes the whole screen hostage. Spend that only where the interruption is the point.",
+      "example": false
     },
     {
       "id": "name-the-action",
@@ -36,18 +38,21 @@
       "id": "one-way-out-at-least",
       "dont": "Remove the close from a dialog people might open by accident.",
       "do": "Leave the close on; drop it only when an answer is genuinely required.",
-      "why": "Escape and the close are the same promise. Taking both away traps anyone who opened it by mistake."
+      "why": "Escape and the close are the same promise. Taking both away traps anyone who opened it by mistake.",
+      "example": false
     },
     {
       "id": "no-stacking",
       "dont": "Open a dialog from inside a dialog.",
       "do": "Advance the content in place, or finish the first task.",
-      "why": "Two focus traps and two Escape handlers, and nobody can tell which layer they are answering."
+      "why": "Two focus traps and two Escape handlers, and nobody can tell which layer they are answering.",
+      "example": false
     }
   ],
   "a11y": [
     "Radix owns the focus trap, the Escape handler and the aria-modal wiring. A Dialog without a DialogTitle warns in development and leaves the dialog unnamed — give it one even when it is visually hidden.",
     "The close button takes closeLabel as its aria-label; the X glyph is aria-hidden.",
     "Its focus ring is offset against bg/card, not bg/app, because the button sits on the dialog surface."
-  ]
+  ],
+  "examples": "complete"
 }

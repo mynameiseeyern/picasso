@@ -14,6 +14,8 @@ import {
 import { Button } from "../button/button";
 import { Field, FieldControl, FieldLabel } from "../field/field";
 import { Input } from "../input/input";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 // The variants live on DialogContent, not on the Root, so the meta types
 // against its props — otherwise `size` is not a known arg.
@@ -163,5 +165,57 @@ export const MustAnswer: Story = {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("name-the-action")}
+        width="wide"
+        dont={
+          <div className="w-full rounded-md border border-line-neutral-muted">
+            <DialogFooter>
+              <Button variant="secondary">Cancel</Button>
+              <Button>OK</Button>
+            </DialogFooter>
+          </div>
+        }
+        do={
+          <div className="w-full rounded-md border border-line-neutral-muted">
+            <DialogFooter>
+              <Button variant="secondary">Keep endpoint</Button>
+              <Button>Delete endpoint</Button>
+            </DialogFooter>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("primary-on-the-right")}
+        width="wide"
+        dont={
+          <div className="w-full rounded-md border border-line-neutral-muted">
+            <DialogFooter>
+              <Button>Save changes</Button>
+              <Button variant="ghost">Cancel</Button>
+            </DialogFooter>
+          </div>
+        }
+        do={
+          <div className="w-full rounded-md border border-line-neutral-muted">
+            <DialogFooter>
+              <Button variant="secondary">Cancel</Button>
+              <Button>Save changes</Button>
+            </DialogFooter>
+          </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

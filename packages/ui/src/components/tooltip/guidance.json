@@ -18,30 +18,35 @@
       "id": "not-a-container",
       "dont": "Put links, buttons or a form inside a tooltip.",
       "do": "Use a Popover for anything interactive.",
-      "why": "A tooltip closes when the pointer leaves, so nothing inside it can reliably be clicked."
+      "why": "A tooltip closes when the pointer leaves, so nothing inside it can reliably be clicked.",
+      "example": false
     },
     {
       "id": "label-vs-description",
       "dont": "Rely on a tooltip to name an icon-only button.",
       "do": "Give the button an aria-label, and use the tooltip for the extra detail.",
-      "why": "A tooltip describes; it does not name. A control with no accessible name is unusable without one."
+      "why": "A tooltip describes; it does not name. A control with no accessible name is unusable without one.",
+      "example": false
     },
     {
       "id": "keep-it-short",
       "dont": "Write a paragraph.",
       "do": "One sentence, up to about two lines.",
-      "why": "It sits over the content the person is reading, and it leaves as soon as they move."
+      "why": "It sits over the content the person is reading, and it leaves as soon as they move.",
+      "example": false
     },
     {
       "id": "dont-restate",
       "dont": "Tooltip a 'Save' button with 'Save'.",
       "do": "Say what saving will do, or say nothing.",
-      "why": "A tooltip that repeats the label teaches people that tooltips are not worth opening."
+      "why": "A tooltip that repeats the label teaches people that tooltips are not worth opening.",
+      "example": false
     }
   ],
   "a11y": [
     "Radix points the trigger's aria-describedby at the content, so the tooltip describes the control rather than naming it.",
     "A tooltip is never the only place something is said. It does not appear on touch, and it is not reachable as content — an icon-only button still needs its own aria-label.",
     "The 300ms default delay is on the Provider. Lowering it per-tooltip makes a toolbar flicker as the pointer crosses it."
-  ]
+  ],
+  "examples": "complete"
 }

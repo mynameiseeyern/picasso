@@ -12,25 +12,29 @@
       "id": "drawer-or-dialog",
       "dont": "Reach for a Drawer because the Dialog felt cramped.",
       "do": "Use a Dialog for a focused interruption; a Drawer for work the page's context still matters to.",
-      "why": "A drawer leaves the page visible on purpose. If the page behind is irrelevant, the modal was the right shape."
+      "why": "A drawer leaves the page visible on purpose. If the page behind is irrelevant, the modal was the right shape.",
+      "example": false
     },
     {
       "id": "expanded-is-already-wide",
       "dont": "Set size=\"wide\" on an expanded drawer.",
       "do": "Pick Default 480 or Wide 640 for a side panel; Expanded ignores size.",
-      "why": "The file draws five variants, not six — Expanded is already the wide one, inset 80 by 40."
+      "why": "The file draws five variants, not six — Expanded is already the wide one, inset 80 by 40.",
+      "example": false
     },
     {
       "id": "name-a-record-drawer",
       "dont": "Ship a record header with no accessible name because it shows a counter instead of a title.",
       "do": "Pass `label` — \"Endpoint 3 of 227: probe-04\".",
-      "why": "\"3 of 227\" is not a name. Someone arriving by screen reader gets a dialog that will not say what it is."
+      "why": "\"3 of 227\" is not a name. Someone arriving by screen reader gets a dialog that will not say what it is.",
+      "example": false
     },
     {
       "id": "never-both-names",
       "dont": "Set `label` and render a DrawerTitle.",
       "do": "One or the other — `label` for record headers, DrawerTitle everywhere else.",
-      "why": "Both render a title with the same id and the hidden one wins, so the visible title is silently ignored."
+      "why": "Both render a title with the same id and the hidden one wins, so the visible title is silently ignored.",
+      "example": false
     },
     {
       "id": "stepper-follows-the-list",
@@ -54,7 +58,8 @@
       "id": "no-stacking",
       "dont": "Open a drawer from inside a drawer.",
       "do": "Replace the content in place, or step with previous and next.",
-      "why": "Two focus traps and two Escape handlers, and nobody can tell which layer they are answering."
+      "why": "Two focus traps and two Escape handlers, and nobody can tell which layer they are answering.",
+      "example": false
     }
   ],
   "a11y": [
@@ -62,5 +67,6 @@
     "label renders an sr-only DialogTitle. Without it Radix has no accessible name for the drawer and warns in development, so pass it even when the header already shows the name visually.",
     "Every header control — previous, next, expand, close — is an icon-only button taking its own label. The glyphs are all aria-hidden.",
     "The divider between header controls is aria-hidden; it is a drawn line, not a separator anyone needs announced."
-  ]
+  ],
+  "examples": "complete"
 }

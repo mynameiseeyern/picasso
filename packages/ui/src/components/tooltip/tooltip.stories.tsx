@@ -6,6 +6,16 @@ import {
   TooltipTrigger,
 } from "./tooltip";
 import { Button } from "../button/button";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Info } from "lucide-react";
+import {
+  Field,
+  FieldControl,
+  FieldDescription,
+  FieldLabel,
+} from "../field/field";
+import { Input } from "../input/input";
 
 const meta: Meta<typeof Tooltip> = {
   title: "Components/Tooltip",
@@ -87,5 +97,50 @@ export const SharedProvider: Story = {
         ))}
       </div>
     </TooltipProvider>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("never-the-only-copy")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <Field>
+              <FieldLabel>
+                Collector port
+                <Info
+                  aria-hidden
+                  className="size-4 text-content-neutral-muted"
+                />
+              </FieldLabel>
+              <FieldControl>
+                <Input defaultValue="8086" />
+              </FieldControl>
+            </Field>
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Field>
+              <FieldLabel>Collector port</FieldLabel>
+              <FieldControl>
+                <Input defaultValue="8086" />
+              </FieldControl>
+              <FieldDescription>
+                Must match the port the collector listens on.
+              </FieldDescription>
+            </Field>
+          </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

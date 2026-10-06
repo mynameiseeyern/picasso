@@ -12,7 +12,8 @@
       "id": "actions-not-values",
       "dont": "Use a dropdown menu to choose a value for a field.",
       "do": "Use Select for values; menus are for actions.",
-      "why": "A menu does something when you pick a row. A select stores what you picked — different promises, different keyboard behaviour."
+      "why": "A menu does something when you pick a row. A select stores what you picked — different promises, different keyboard behaviour.",
+      "example": false
     },
     {
       "id": "no-hover",
@@ -30,13 +31,15 @@
       "id": "shortcuts-must-be-real",
       "dont": "Show a shortcut the app has not bound.",
       "do": "Only show keys that actually work from that screen.",
-      "why": "A printed shortcut is a promise. People try it once, and stop trusting the menu when it does nothing."
+      "why": "A printed shortcut is a promise. People try it once, and stop trusting the menu when it does nothing.",
+      "example": false
     },
     {
       "id": "shallow-submenus",
       "dont": "Nest submenus more than one deep.",
       "do": "Flatten, or open a dialog for the complicated case.",
-      "why": "Each level is another hover corridor to keep the pointer inside, and each one loses people."
+      "why": "Each level is another hover corridor to keep the pointer inside, and each one loses people.",
+      "example": false
     }
   ],
   "a11y": [
@@ -45,5 +48,6 @@
     "Hover and keyboard focus are one state here, because Radix drives both through data-highlighted. There is no separate :focus-visible treatment to add.",
     "The submenu chevron is aria-hidden; the item's text is its name.",
     "CheckboxItem and RadioItem are deliberately not wrapped — use Radix's directly when a menu needs them, and they bring their own menuitemcheckbox and menuitemradio semantics."
-  ]
+  ],
+  "examples": "complete"
 }

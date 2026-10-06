@@ -25,6 +25,14 @@ import {
 import { Button } from "../button/button";
 import { Field, FieldControl, FieldLabel } from "../field/field";
 import { Input } from "../input/input";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+} from "lucide-react";
 
 // The variants live on DrawerContent, not on the Root, so the meta types
 // against its props — otherwise `side` and `size` are not known args.
@@ -198,8 +206,8 @@ export const Start: Story = {
         </DrawerHeader>
         <DrawerBody>
           <p className="text-body-sm text-content-neutral-muted">
-            The border sits on the inner edge: the inline end here, the
-            inline start on an end drawer.
+            The border sits on the inner edge: the inline end here, the inline
+            start on an end drawer.
           </p>
         </DrawerBody>
       </DrawerContent>
@@ -236,5 +244,96 @@ export const Expanded: Story = {
         </DrawerBody>
       </DrawerContent>
     </Drawer>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("stepper-follows-the-list")}
+        dont={
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon-sm" aria-label="Previous">
+              <ChevronLeft aria-hidden />
+            </Button>
+            <span className="text-body-sm text-content-neutral-muted">
+              3 of 227
+            </span>
+            <Button variant="ghost" size="icon-sm" aria-label="Next">
+              <ChevronRight aria-hidden />
+            </Button>
+          </div>
+        }
+        do={
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon-sm" aria-label="Previous">
+              <ChevronUp aria-hidden />
+            </Button>
+            <span className="text-body-sm text-content-neutral-muted">
+              3 of 227
+            </span>
+            <Button variant="ghost" size="icon-sm" aria-label="Next">
+              <ChevronDown aria-hidden />
+            </Button>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("footer-holds-the-commitment")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full space-y-2 rounded-md border border-line-neutral-muted p-3">
+            <p className="text-body-sm text-content-neutral-muted">Severity</p>
+            <Button size="sm">Apply</Button>
+            <p className="text-body-sm text-content-neutral-muted">Site</p>
+            <Button size="sm">Apply</Button>
+          </div>
+        }
+        do={
+          <div className="w-full overflow-hidden rounded-md border border-line-neutral-muted">
+            <div className="space-y-2 p-3">
+              <p className="text-body-sm text-content-neutral-muted">
+                Severity
+              </p>
+              <p className="text-body-sm text-content-neutral-muted">Site</p>
+            </div>
+            <DrawerFooter>
+              <Button variant="secondary" size="sm">
+                Reset
+              </Button>
+              <Button size="sm">Apply</Button>
+            </DrawerFooter>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("primary-on-the-right")}
+        width="wide"
+        dont={
+          <div className="w-full rounded-md border border-line-neutral-muted">
+            <DrawerFooter>
+              <Button>Apply</Button>
+              <Button variant="ghost">Reset</Button>
+            </DrawerFooter>
+          </div>
+        }
+        do={
+          <div className="w-full rounded-md border border-line-neutral-muted">
+            <DrawerFooter>
+              <Button variant="secondary">Reset</Button>
+              <Button>Apply</Button>
+            </DrawerFooter>
+          </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

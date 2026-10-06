@@ -11,6 +11,9 @@ import {
 import { Button } from "../button/button";
 import { Field, FieldControl, FieldLabel } from "../field/field";
 import { Input } from "../input/input";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { OverlaySurface } from "../overlay/overlay";
 
 const meta: Meta<typeof Popover> = {
   title: "Components/Popover",
@@ -126,5 +129,52 @@ export const WithAClose: Story = {
         </div>
       </PopoverContent>
     </Popover>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("give-it-a-name")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <OverlaySurface>
+              <div className="space-y-3">
+                <Field>
+                  <FieldLabel>Warning</FieldLabel>
+                  <FieldControl>
+                    <Input defaultValue="4.0" />
+                  </FieldControl>
+                </Field>
+              </div>
+            </OverlaySurface>
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <OverlaySurface>
+              <div className="space-y-3">
+                <PopoverHeader>
+                  <PopoverTitle>Thresholds</PopoverTitle>
+                </PopoverHeader>
+                <Field>
+                  <FieldLabel>Warning</FieldLabel>
+                  <FieldControl>
+                    <Input defaultValue="4.0" />
+                  </FieldControl>
+                </Field>
+              </div>
+            </OverlaySurface>
+          </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };
