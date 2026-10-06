@@ -31,10 +31,10 @@
       "example": false
     },
     {
-      "id": "handle-is-decoration",
-      "dont": "Rely on the handle — or a swipe — as the way to close.",
-      "do": "Always draw the close button; the handle only says 'this is a sheet'.",
-      "why": "A gesture-only exit cannot be reached by keyboard or switch control, and a drag needs motion that follows the finger, which the motion tokens (fixed durations) do not describe. The sheet does animate: it rises from the bottom edge and drops back, and does neither under prefers-reduced-motion."
+      "id": "drag-is-not-the-exit",
+      "dont": "Ship the drag as the way out, with nothing drawn to close the sheet.",
+      "do": "Draw the close button as well. The drag is a shortcut for a thumb; Escape, the scrim and the close button are the exits.",
+      "why": "A gesture-only exit cannot be reached by a keyboard or by switch control, and nothing on screen tells anyone the panel can be dragged. The handle hints at it and stays aria-hidden, so the drag is an addition to the three exits rather than a replacement for them."
     },
     {
       "id": "never-full-height",
@@ -60,7 +60,8 @@
   "a11y": [
     "Built on Radix Dialog: modal, focus trapped, Escape and a scrim tap close it, focus returns to the trigger.",
     "Give it a visible BottomSheetTitle, or `label` when there is none — never both.",
-    "The handle is aria-hidden; it is decoration, not a control.",
+    "The handle is aria-hidden: it hints at the drag, it is not a control. Everything the drag does is also reachable by keyboard.",
+    "The panel follows the finger under prefers-reduced-motion too — direct manipulation is not animation. Only the release, settle or dismiss, is instant.",
     "BottomSheetItem is a <label>, so the whole 48 row toggles the Checkbox or Radio inside it."
   ],
   "examples": "complete"

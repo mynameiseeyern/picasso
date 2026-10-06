@@ -7,6 +7,24 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### ⚠️ Breaking
 
+- **`screen/mobile/*` is `min` / `small` / `base` / `max`, not `sm` / `md` /
+  `lg` / `xl`.** The group's own description sets the rule — `lg:` means the
+  same thing in a token file, a Figma page name and a class name — and the
+  group broke it, because `screen/mobile/lg` was 390 while `screen/desktop/lg`
+  is 1024. Below `md` (768) there is one layout, so a phone has no breakpoints
+  to name, only widths to draw at; the new names say where each sits in the
+  range: 320 the floor, 375 the small one, 390 the canvas to design at, 428 the
+  ceiling. **Code impact** — none; nothing in the repo read these tokens.
+  **Figma impact** — the four renames are in the sync plugin's
+  `PICASSO_RENAMES`, which runs before matching, so a frame bound to one keeps
+  its binding. Without that the sync would have created four variables and
+  orphaned four. The group description also referred to a `screen/canvas/*`
+  group that has never existed; it now describes the two that do. Documented in
+  the breakpoints story, which covered `screen/desktop/*` and had never
+  mentioned the canvases — and writing them down surfaced a mismatch left as it
+  stands: every `Narrow` story is 328, a 360 phone minus its gutters, and 360
+  is not on the ladder, whose floor is 320.
+
 - **`SidebarHeader`'s brand variant is `brand`, not `plate`.** Nobody outside
   this repo knew what a "plate" was — including the design system's own owner,
   which is the test a name has to pass. **Code impact** — replace
@@ -29,6 +47,42 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   the same. Drawer / Header keeps its own `Type` axis (Record | Title).
 
 ### Added
+
+- **A spring — `motion/easing/settle` — and the bottom sheet drags.** The
+  handle and the header follow the finger downward. Released past a quarter of
+  the panel (floor 64px), or thrown faster than 0.5px/ms having travelled at
+  least 48, the sheet goes; short of that it settles back. Dragging up is
+  resisted rather than refused: the panel gives 24px and stops. `drag={false}`
+  opts out. **Code impact** — none required; every existing sheet gets it.
+  **Figma impact** — a sync adds one hidden `motion/easing/settle` STRING
+  variable; Figma draws no motion.
+
+  The token is `cubic-bezier(0.3, 1.35, 0.5, 1)` — about 4% past the target at
+  58% of the duration, measured at 3.3px on an 80px drag, with six frames past
+  the resting line. It is deliberately a curve and **not** stiffness/damping: a
+  physics spring is velocity-aware and only JS can run one, while every other
+  motion token here is something CSS takes straight. A gentler overshoot was
+  tried first and rejected — at 2% it is sub-pixel at the distances a thumb
+  actually drags, which would have left the curve indistinguishable from
+  `easing/enter` and not worth having. Use it with `duration/base`; there is no
+  settle duration.
+
+  Two things worth knowing about the implementation. The offset rides on the
+  `translate` property, not `transform`: they compose, so a dragged panel keeps
+  its offset while `animate-sheet-out` animates `transform`, and the sheet
+  leaves from where the finger left it instead of jumping back to the edge
+  first. `transition-settle` therefore transitions `translate` — transitioning
+  `transform` animates nothing at all, which is how the first version shipped
+  past a passing test suite and was caught only by measuring the rendered
+  result. And the panel follows the finger under `prefers-reduced-motion` too,
+  because direct manipulation is not animation; only the release is instant.
+
+  The guidance pair that said the handle is decoration named the exact blocker
+  this removes — “a drag needs motion that follows the finger, which the motion
+  tokens (fixed durations) do not describe” — and is rewritten as
+  `drag-is-not-the-exit`: the close button is still always drawn, the handle is
+  still `aria-hidden`, and the drag is an addition to Escape, the scrim and the
+  close button rather than a replacement for any of them.
 
 - **A display font role, and one step that uses it: `text-wordmark`.** A brand
   can now name a third family in its `brand.json` — `type.display` — alongside

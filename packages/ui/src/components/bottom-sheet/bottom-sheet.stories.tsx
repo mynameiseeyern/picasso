@@ -264,9 +264,10 @@ export const DoAndDont: Story = {
         }
       />
       <Guidance
-        pair={pair("handle-is-decoration")}
+        pair={pair("drag-is-not-the-exit")}
         dont={
           <Panel>
+            <div className="mx-auto mt-2 h-1 w-9 rounded-full bg-surface-layer-emphasis" />
             <div className="px-4 pt-2 pb-4 text-heading-md text-content-neutral-emphasis">
               Status
             </div>
@@ -274,6 +275,7 @@ export const DoAndDont: Story = {
         }
         do={
           <Panel>
+            <div className="mx-auto mt-2 h-1 w-9 rounded-full bg-surface-layer-emphasis" />
             <div className="flex items-center ps-4 pe-2 pt-2 pb-4">
               <span className="flex-1 text-heading-md text-content-neutral-emphasis">
                 Status

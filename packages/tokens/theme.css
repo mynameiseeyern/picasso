@@ -658,6 +658,26 @@
   }
 }
 
+/* The settle, for a surface the user dragged. This one motion cannot be a
+   keyframe: the panel is wherever the finger left it, so there is no `from` to
+   write — the return is a transition from a value set per-frame in JS.
+
+   It transitions `translate`, not `transform`, and that is the whole trick.
+   Tailwind's `translate-y-*` sets the `translate` property, which composes
+   with `transform` rather than replacing it — so a dragged panel can carry its
+   offset in `translate` while `animate-sheet-out` animates `transform`, and
+   the sheet leaves from wherever the finger left it instead of jumping back to
+   the edge first. Transitioning `transform` here animates nothing at all.
+
+   Pair it with `motion-safe:` like every other motion here; under reduced
+   motion the panel still follows the finger, because direct manipulation is
+   not animation, and only the release is instant. */
+@utility transition-settle {
+  transition-property: translate;
+  transition-duration: var(--motion-duration-base);
+  transition-timing-function: var(--motion-easing-settle);
+}
+
 @utility transition-illustration {
   transition-property: translate, fill, stroke, color, filter;
   transition-duration: 600ms;
@@ -707,6 +727,7 @@
 @theme inline {
   --ease-enter: var(--motion-easing-enter);
   --ease-exit: var(--motion-easing-exit);
+  --ease-settle: var(--motion-easing-settle);
 
   --animate-fade-in: fade-in var(--motion-duration-base)
     var(--motion-easing-enter);

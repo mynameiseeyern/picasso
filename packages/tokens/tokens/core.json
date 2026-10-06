@@ -807,7 +807,7 @@
     }
   },
   "motion": {
-    "$description": "How long things take and how they accelerate. Small on purpose: three durations and two curves cover an overlay arriving, an overlay leaving and a row opening. Entering uses the longer step and decelerates; leaving uses the shorter step and accelerates, so dismissing always feels quicker than opening. Reduced motion switches every one of these off.",
+    "$description": "How long things take and how they accelerate. Small on purpose: three durations and three curves cover an overlay arriving, an overlay leaving, a row opening, and a dragged surface settling back. Entering uses the longer step and decelerates; leaving uses the shorter step and accelerates, so dismissing always feels quicker than opening. Reduced motion switches every one of these off.",
     "duration": {
       "fast": {
         "$type": "duration",
@@ -835,6 +835,11 @@
         "$type": "cubicBezier",
         "$value": "cubic-bezier(0.4, 0, 1, 1)",
         "$description": "Accelerate. Starts slowly and leaves at speed — for anything going away."
+      },
+      "settle": {
+        "$type": "cubicBezier",
+        "$value": "cubic-bezier(0.3, 1.35, 0.5, 1)",
+        "$description": "Overshoot and come back — for something returning to where it already was, after a drag or a cancelled gesture, rather than arriving or leaving. Peaks about 4% past the target at 58% of the duration — 3.5px on a sheet dragged the 86px that dismisses a short one. Enough to read as weight; well short of a bounce. Anything gentler is sub-pixel at the distances a thumb actually drags, which would leave this curve indistinguishable from easing/enter and not worth having. This is the spring, and it is deliberately a curve and not stiffness/damping: a physics spring is velocity-aware and only JS can run one, while every other motion token here is something CSS can take straight. Use it with duration/base; there is no settle duration."
       }
     }
   }

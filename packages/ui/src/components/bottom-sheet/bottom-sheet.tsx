@@ -32,9 +32,18 @@ import { overlayScrimVariants } from "../overlay/overlay";
  * drops back over base, the same timing as Drawer; the scrim fades. Reduced
  * motion switches both off. Figma draws none of this.
  *
- * ⚠️ The handle does not drag. A sheet whose only exit is a gesture is a
- * sheet a keyboard or switch user cannot leave — so the close button is
- * always drawn, and the handle is decoration.
+ * Drag: the handle and the header follow the finger downward. Released past a
+ * quarter of the panel, or thrown, the sheet goes; short of that it settles
+ * back on motion/easing/settle, which overshoots a couple of percent so the
+ * return reads as weight. Dragging up is resisted rather than refused — the
+ * panel gives about 24px and stops. Under reduced motion the panel still
+ * follows the finger, because direct manipulation is not animation; only the
+ * release is instant.
+ *
+ * ⚠️ The drag is an addition, never the exit. A sheet whose only way out is a
+ * gesture is a sheet a keyboard or switch user cannot leave, so the close
+ * button is always drawn and the handle stays aria-hidden: it is an affordance
+ * for the gesture, not a control.
  *
  * ⚠️ Not for navigation. A phone's main nav is full screen
  * (SidebarMobile); a sheet is for one decision about the page beneath it.
@@ -66,17 +75,84 @@ export interface BottomSheetContentProps extends React.ComponentProps<
 > {
   /** Accessible name for a sheet with no visible `BottomSheetTitle`. Mutually exclusive with it. */
   label?: string;
-  /** The decorative handle. On by default; it never drags. */
+  /** The handle. On by default; it is the affordance for the drag, not a control. */
   handle?: boolean;
+  /** Drag the handle or header down to dismiss. On by default. */
+  drag?: boolean;
 }
 
 export function BottomSheetContent({
   className,
   label,
   handle = true,
+  drag = true,
   children,
   ...props
 }: BottomSheetContentProps) {
+  const dismiss = React.useRef<HTMLButtonElement | null>(null);
+  const from = React.useRef<{ id: number; y: number; t: number } | null>(null);
+  const [offset, setOffset] = React.useState(0);
+  const [settling, setSettling] = React.useState(false);
+
+  /* Where a press must not become a drag: the body scrolls, the footer holds
+     the actions, and anything focusable is a control the press belongs to. */
+  const inert = (t: HTMLElement) =>
+    !!t.closest(
+      "[data-slot='bottom-sheet-body'],[data-slot='bottom-sheet-footer']," +
+        "button,a,input,select,textarea,[role='button'],[role='slider']",
+    );
+
+  const start = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (!drag || !e.isPrimary || inert(e.target as HTMLElement)) return;
+    from.current = { id: e.pointerId, y: e.clientY, t: e.timeStamp };
+    setSettling(false);
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const move = (e: React.PointerEvent<HTMLDivElement>) => {
+    const d = from.current;
+    if (!d || e.pointerId !== d.id) return;
+    const dy = e.clientY - d.y;
+    /* Down follows the finger exactly. Up is resisted, not refused: the panel
+       gives a little so the gesture is acknowledged, then stops. */
+    setOffset(dy >= 0 ? dy : Math.max(dy / 4, -24));
+  };
+
+  const settle = () => {
+    from.current = null;
+    setSettling(true);
+    setOffset(0);
+  };
+
+  const end = (e: React.PointerEvent<HTMLDivElement>) => {
+    const d = from.current;
+    if (!d || e.pointerId !== d.id) return;
+    const dy = e.clientY - d.y;
+    /* px/ms, positive downward. A flick should not have to cover the
+       distance, and a slow drag past a quarter of the panel is a decision
+       rather than a wobble. */
+    const speed = dy / Math.max(e.timeStamp - d.t, 1);
+    if (
+      dy > Math.max(e.currentTarget.offsetHeight * 0.25, 64) ||
+      /* A throw still has to travel, or a twitch over a few milliseconds
+         reads as one. It travels less than a considered drag, which is the
+         point of measuring speed at all: on a 600-tall sheet that is 48
+         against 150. */
+      (speed > 0.5 && dy > 48)
+    ) {
+      from.current = null;
+      /* Radix owns closing — focus has to return to the trigger and the exit
+         animation has to run — so this goes through a real Close rather than
+         reaching for onOpenChange. The offset is left where it is: it lives in
+         `translate`, which composes with the `transform` that sheet-out
+         animates, so the panel leaves from where the finger left it instead of
+         jumping back to the edge first. */
+      dismiss.current?.click();
+      return;
+    }
+    settle();
+  };
+
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay
@@ -86,15 +162,40 @@ export function BottomSheetContent({
       <DialogPrimitive.Content
         data-slot="bottom-sheet-content"
         aria-describedby={undefined}
+        data-dragging={offset !== 0 ? "" : undefined}
+        onPointerDown={start}
+        onPointerMove={move}
+        onPointerUp={end}
+        onPointerCancel={settle}
+        onTransitionEnd={(e) => {
+          if (e.propertyName === "translate") setSettling(false);
+        }}
+        style={{ "--sheet-offset": `${offset}px` } as React.CSSProperties}
         className={cn(
           "fixed inset-x-0 bottom-0 z-modal flex max-h-5/6 flex-col " +
             "rounded-t-2xl border-t border-line-neutral-muted bg-surface-overlay " +
             "shadow-lg outline-none",
           "motion-safe:data-[state=open]:animate-sheet-in motion-safe:data-[state=closed]:animate-sheet-out",
+          /* Only while it matters: a standing transform makes the sheet a
+             containing block for anything fixed inside it. `translate-y` sets
+             the `translate` property, which is also what lets the offset
+             survive the exit animation — see transition-settle. */
+          (offset !== 0 || settling) && "translate-y-(--sheet-offset)",
+          settling && "motion-safe:transition-settle",
           className,
         )}
         {...props}
       >
+        {/* The drag's way of closing. Hidden from everyone — the drawn close
+            button is the control — and clicked programmatically so Radix runs
+            its own close. */}
+        <DialogPrimitive.Close
+          ref={dismiss}
+          data-slot="bottom-sheet-dismiss"
+          hidden
+          aria-hidden
+          tabIndex={-1}
+        />
         {label ? (
           <DialogPrimitive.Title className="sr-only">
             {label}
@@ -104,7 +205,10 @@ export function BottomSheetContent({
           <div
             aria-hidden
             data-slot="bottom-sheet-handle"
-            className="mx-auto mt-2 h-1 w-9 shrink-0 rounded-full bg-surface-layer-emphasis"
+            className={cn(
+              "mx-auto mt-2 h-1 w-9 shrink-0 touch-none rounded-full bg-surface-layer-emphasis select-none",
+              drag && "cursor-grab active:cursor-grabbing",
+            )}
           />
         ) : null}
         {children}
@@ -122,7 +226,10 @@ export function BottomSheetHeader({
     <div
       data-slot="bottom-sheet-header"
       className={cn(
-        "flex shrink-0 items-center gap-3 ps-4 pe-2 pt-2 pb-1",
+        // touch-none and select-none because the header is the drag's real
+        // target — 36 × 4 of handle is none. The body keeps its own
+        // touch-action, so it still scrolls.
+        "flex shrink-0 touch-none items-center gap-3 ps-4 pe-2 pt-2 pb-1 select-none",
         className,
       )}
       {...props}

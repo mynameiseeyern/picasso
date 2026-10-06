@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { beforeAll, describe, expect, it } from "vitest";
+import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   BottomSheet,
@@ -13,11 +13,11 @@ import {
   BottomSheetTrigger,
 } from "./bottom-sheet";
 
-function Fixture({ handle }: { handle?: boolean }) {
+function Fixture({ handle, drag }: { handle?: boolean; drag?: boolean }) {
   return (
     <BottomSheet>
       <BottomSheetTrigger>Open</BottomSheetTrigger>
-      <BottomSheetContent handle={handle}>
+      <BottomSheetContent handle={handle} drag={drag}>
         <BottomSheetHeader>
           <BottomSheetTitle>Status</BottomSheetTitle>
           <BottomSheetCloseButton />
@@ -72,7 +72,104 @@ describe("BottomSheet", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 
-  it("draws a decorative handle by default, and can drop it", async () => {
+  /* jsdom has no pointer capture and no layout. The capture calls are stubbed
+     so the handlers run; offsetHeight staying 0 is useful rather than a
+     problem — it pins the threshold at the 64px floor, so these assert the
+     floor and not a measured quarter-panel. */
+  beforeAll(() => {
+    Element.prototype.setPointerCapture = () => {};
+    Element.prototype.releasePointerCapture = () => {};
+  });
+
+  /** Drag the panel from the header by `dy`, then let go. */
+  async function dragBy(dy: number) {
+    const panel = screen.getByRole("dialog");
+    const grab = document.querySelector(
+      "[data-slot='bottom-sheet-header']",
+    ) as HTMLElement;
+    fireEvent.pointerDown(grab, { pointerId: 1, isPrimary: true, clientY: 0 });
+    fireEvent.pointerMove(panel, { pointerId: 1, clientY: dy });
+    fireEvent.pointerUp(panel, { pointerId: 1, clientY: dy });
+  }
+
+  it("follows the finger down, and settles back when the drag is short", async () => {
+    render(<Fixture />);
+    await userEvent.click(screen.getByText("Open"));
+    const panel = screen.getByRole("dialog");
+    const grab = document.querySelector(
+      "[data-slot='bottom-sheet-header']",
+    ) as HTMLElement;
+
+    fireEvent.pointerDown(grab, { pointerId: 1, isPrimary: true, clientY: 0 });
+    fireEvent.pointerMove(panel, { pointerId: 1, clientY: 40 });
+    expect(panel).toHaveClass("translate-y-(--sheet-offset)");
+    expect(panel.style.getPropertyValue("--sheet-offset")).toBe("40px");
+    expect(panel).toHaveAttribute("data-dragging");
+
+    fireEvent.pointerUp(panel, { pointerId: 1, clientY: 40 });
+    /* 40 is under the 64 floor and under the 48 a throw has to travel. The
+       speed half of that test cannot be exercised here: jsdom gives every
+       synthetic event the same timeStamp, so every drag looks instant. */
+    expect(screen.queryByRole("dialog")).not.toBeNull();
+    expect(panel.style.getPropertyValue("--sheet-offset")).toBe("0px");
+    expect(panel).toHaveClass("motion-safe:transition-settle");
+  });
+
+  it("resists an upward drag instead of refusing it", async () => {
+    render(<Fixture />);
+    await userEvent.click(screen.getByText("Open"));
+    const panel = screen.getByRole("dialog");
+    const grab = document.querySelector(
+      "[data-slot='bottom-sheet-header']",
+    ) as HTMLElement;
+    fireEvent.pointerDown(grab, { pointerId: 1, isPrimary: true, clientY: 0 });
+    fireEvent.pointerMove(panel, { pointerId: 1, clientY: -40 });
+    // A quarter of the travel, and capped at 24 however far the finger goes.
+    expect(panel.style.getPropertyValue("--sheet-offset")).toBe("-10px");
+    fireEvent.pointerMove(panel, { pointerId: 1, clientY: -400 });
+    expect(panel.style.getPropertyValue("--sheet-offset")).toBe("-24px");
+  });
+
+  it("dismisses on a drag past the floor", async () => {
+    render(<Fixture />);
+    await userEvent.click(screen.getByText("Open"));
+    await dragBy(120);
+    expect(screen.queryByRole("dialog")).toBeNull();
+  });
+
+  it("does not drag from the scrolling body", async () => {
+    render(<Fixture />);
+    await userEvent.click(screen.getByText("Open"));
+    const panel = screen.getByRole("dialog");
+    const body = document.querySelector(
+      "[data-slot='bottom-sheet-body']",
+    ) as HTMLElement;
+    fireEvent.pointerDown(body, { pointerId: 1, isPrimary: true, clientY: 0 });
+    fireEvent.pointerMove(panel, { pointerId: 1, clientY: 200 });
+    expect(panel).not.toHaveAttribute("data-dragging");
+    fireEvent.pointerUp(panel, { pointerId: 1, clientY: 200 });
+    expect(screen.queryByRole("dialog")).not.toBeNull();
+  });
+
+  it("leaves the drag out when drag={false}", async () => {
+    render(<Fixture drag={false} />);
+    await userEvent.click(screen.getByText("Open"));
+    await dragBy(200);
+    expect(screen.queryByRole("dialog")).not.toBeNull();
+  });
+
+  it("keeps a close button, so the gesture is never the only exit", async () => {
+    render(<Fixture />);
+    await userEvent.click(screen.getByText("Open"));
+    expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+    const hidden = document.querySelector(
+      "[data-slot='bottom-sheet-dismiss']",
+    )!;
+    expect(hidden).toHaveAttribute("hidden");
+    expect(hidden).toHaveAttribute("aria-hidden");
+  });
+
+  it("draws a handle by default, and can drop it", async () => {
     const { unmount } = render(<Fixture />);
     await userEvent.click(screen.getByText("Open"));
     const h = document.querySelector("[data-slot='bottom-sheet-handle']");
