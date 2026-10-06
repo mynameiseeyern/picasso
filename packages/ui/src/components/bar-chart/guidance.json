@@ -1,0 +1,46 @@
+{
+  "component": "BarChart",
+  "summary": "A measure compared across categories — calls per site, failures per cause, minutes per region. Grouped, or stacked when the parts make a whole.",
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": null,
+    "note": "Not drawn in Figma. Built in code first, on the shared chart furniture in chart/chart.tsx."
+  },
+  "structureFrom": "code",
+  "measurementsFrom": "code",
+  "pairs": [
+    {
+      "id": "bars-start-at-zero",
+      "dont": "Cut the baseline to make a small difference look like a big one.",
+      "do": "Start every bar at zero. Use a line chart if the interesting range is a narrow band well above it.",
+      "why": "A bar encodes its value as length, so a cut baseline multiplies the difference by whatever the author chose. There is no `yMin` on this component for exactly that reason."
+    },
+    {
+      "id": "stack-only-a-whole",
+      "dont": "Stack series people need to compare with each other.",
+      "do": "Stack only when the parts add to a total worth reading; group when the comparison is between the parts.",
+      "why": "In a stack only the bottom segment and the grand total share a baseline. Every segment in between floats on the ones below it, so comparing two middles across columns is comparing two things that start in different places."
+    },
+    {
+      "id": "cap-the-bar",
+      "dont": "Let bars grow to fill their slot, so a four-category chart is four slabs with no air.",
+      "do": "Leave the 24 cap alone; the gap between groups is what separates them.",
+      "why": "The space is doing work — it is what makes a group read as one thing and the next as another. A bar that fills its slot turns a chart into a wall.",
+      "example": false
+    },
+    {
+      "id": "category-labels-truncate",
+      "dont": "Rotate category labels to 45° to fit them in.",
+      "do": "Let them truncate, or turn the chart on its side, or shorten the category names.",
+      "why": "Angled text is measurably slower to read and the rotation grows with the category count, so the chart gets harder exactly as it gets busier. Truncation with the full name on hover keeps every label on one baseline.",
+      "example": false
+    }
+  ],
+  "a11y": [
+    "Like every chart here, the plot is `aria-hidden` and the numbers are carried by a visually-hidden table.",
+    "Each bar carries its own `title` — series, category and value — so a pointer can read one without a crosshair.",
+    "A missing value leaves the slot empty rather than drawing a zero-height bar, which would be indistinguishable from a real zero.",
+    "The 2px gap between touching bars is in the surface colour, so adjacent segments in a stack stay separable without a stroke."
+  ],
+  "examples": "complete"
+}

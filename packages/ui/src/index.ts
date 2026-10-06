@@ -218,6 +218,11 @@ export {
   type TimeSeriesChartProps,
 } from "./components/chart/time-series-chart";
 export {
+  BarChart,
+  type BarSeries,
+  type BarChartProps,
+} from "./components/bar-chart/bar-chart";
+export {
   Avatar,
   AvatarAddButton,
   AvatarGroup,
