@@ -139,6 +139,47 @@ export const LayoutAndBreakpoints: Story = {
         ]}
       />
 
+      <H2>Phone canvases</H2>
+      <P>
+        Below <Code>md</Code> (768) there is one layout, so a phone has no
+        breakpoints to name — only widths to draw at. Source:{" "}
+        <Code>screen/mobile/*</Code>. These deliberately sit off the t-shirt
+        ladder: <Code>lg</Code> has to mean 1024 in a token file, a Figma page
+        name and a class name alike, so a second <Code>lg</Code> meaning 390
+        could not stay. They say where they sit in the range instead.
+      </P>
+      <Grid
+        head={["Name", "Width", "Use"]}
+        rows={[
+          [
+            "min",
+            320,
+            "The floor — older and small Android. Nothing may break here; not a size to design at",
+          ],
+          [
+            "small",
+            375,
+            "iPhone SE and the standard iOS baseline. Still common, so check a layout here",
+          ],
+          [
+            "base",
+            390,
+            "The canvas to design at — iPhone 14/15, modern Android mid-range",
+          ],
+          [
+            "max",
+            428,
+            "The ceiling — iPhone Pro Max, large Android. Past this a phone layout stops growing, it does not stretch",
+          ],
+        ]}
+      />
+      <P>
+        Each component's <Code>Narrow</Code> story is 328 — a 360 phone minus
+        its gutters — because 360 is the commonest Android width and the one
+        the overflow sweep measures. 360 is not on the ladder above: the floor
+        there is 320, which is iPhone SE 1 era and nothing is checked at.
+      </P>
+
       <H2>Content width</H2>
       <P>
         Set per page with <Code>{'<AppShellContent width="…">'}</Code>. The

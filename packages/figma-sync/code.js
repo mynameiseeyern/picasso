@@ -18,6 +18,14 @@ const PICASSO_RENAMES = {
   "_type/style/inter-medium": "_type/style/sans-medium",
   "_type/style/inter-semibold": "_type/style/sans-semibold",
   "_type/style/inter-bold": "_type/style/sans-bold",
+  // The phone canvases came off Tailwind's t-shirt ladder: lg has to mean 1024
+  // wherever it appears, and screen/mobile/lg was 390. Renamed here rather
+  // than left to matching, so the frames bound to them keep their binding
+  // instead of the sync creating four new variables and orphaning four.
+  "screen/mobile/sm": "screen/mobile/min",
+  "screen/mobile/md": "screen/mobile/small",
+  "screen/mobile/lg": "screen/mobile/base",
+  "screen/mobile/xl": "screen/mobile/max",
 };
 
 async function picassoSync(payload, opts) {

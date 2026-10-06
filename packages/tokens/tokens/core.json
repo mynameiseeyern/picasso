@@ -464,25 +464,26 @@
   },
   "screen": {
     "mobile": {
-      "sm": {
+      "$description": "Phone widths to draw at — not breakpoints, and deliberately not on Tailwind’s t-shirt ladder. `lg` has to mean 1024 wherever it appears, so these carry names that say where they sit in the range instead: the floor, the small one, the one to design at, the ceiling. Below md (768) there is one layout, so a phone has no breakpoints to name — only canvases.",
+      "min": {
         "$type": "dimension",
         "$value": "320px",
-        "$description": "Minimum safe baseline — older/small Android"
+        "$description": "The floor — older/small Android. Nothing may break here; it is not a size to design at."
       },
-      "md": {
+      "small": {
         "$type": "dimension",
         "$value": "375px",
-        "$description": "iPhone SE, standard iOS baseline"
+        "$description": "iPhone SE and the standard iOS baseline. Still common, so a layout should be checked here."
       },
-      "lg": {
+      "base": {
         "$type": "dimension",
         "$value": "390px",
-        "$description": "iPhone 14/15, modern Android mid-range"
+        "$description": "The phone canvas to design at — iPhone 14/15 and modern Android mid-range."
       },
-      "xl": {
+      "max": {
         "$type": "dimension",
         "$value": "428px",
-        "$description": "iPhone Pro Max, large Android"
+        "$description": "The ceiling — iPhone Pro Max, large Android. Past this a phone layout should stop growing, not stretch."
       }
     },
     "desktop": {
@@ -517,7 +518,7 @@
         "$description": "Wide monitors / NOC displays"
       }
     },
-    "$description": "Breakpoints use Tailwind’s names and Tailwind’s values, so `lg:` means the same thing in a token file, a Figma page name and a class name. screen/canvas/* are sizes to draw at, not breakpoints."
+    "$description": "screen/desktop/* are the breakpoints: Tailwind’s names and Tailwind’s values, so `lg:` means the same thing in a token file, a Figma page name and a class name. screen/mobile/* are phone canvases — sizes to draw at, named off that ladder so a t-shirt size never means two widths."
   },
   "size": {
     "$description": "Layout measurements that are not breakpoints. content/* caps the page content column inside App shell — a max width, never a viewport width. Fluid pages have no cap and no token.",
