@@ -196,6 +196,28 @@ export {
   type SparklineTone,
 } from "./components/sparkline/sparkline";
 export {
+  ChartFrame,
+  ChartGridLines,
+  ChartLegend,
+  ChartTable,
+  ChartThreshold,
+  ChartXAxis,
+  ChartYAxis,
+  CHART_SLOTS,
+  niceScale,
+  seriesStroke,
+  seriesText,
+  type ChartFrameProps,
+  type ChartSize,
+  type LegendItem,
+  type Scale,
+} from "./components/chart/chart";
+export {
+  TimeSeriesChart,
+  type TimeSeries,
+  type TimeSeriesChartProps,
+} from "./components/chart/time-series-chart";
+export {
   Avatar,
   AvatarAddButton,
   AvatarGroup,

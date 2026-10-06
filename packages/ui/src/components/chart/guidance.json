@@ -1,0 +1,61 @@
+{
+  "component": "TimeSeriesChart",
+  "summary": "Something measured repeatedly, drawn against time — the workhorse chart: MOS per trunk, latency per site, calls per minute.",
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": null,
+    "note": "Not drawn in Figma. Built in code first, from the dataviz rules. The shared furniture — frame, scales, axes, grid, legend, threshold, hover layer, data table — lives in chart.tsx and is what every other chart type will be built from."
+  },
+  "structureFrom": "code",
+  "measurementsFrom": "code",
+  "pairs": [
+    {
+      "id": "colour-follows-the-entity",
+      "dont": "Assign colours by position in the filtered list, so hiding one trunk repaints every trunk below it.",
+      "do": "Give each series a stable `id` and pass the whole list; the chart keeps each series on the slot it was built with.",
+      "why": "People read a colour as a name. If filtering out Sydney turns Melbourne from purple to blue, every reading taken before the filter is now wrong, and nothing on screen says so."
+    },
+    {
+      "id": "gaps-not-zero",
+      "dont": "Fill a missing reading with 0, so a trunk that stopped reporting draws a cliff to the floor.",
+      "do": "Pass `null`. The line breaks, and the table says \"No data\".",
+      "why": "An endpoint going quiet and an endpoint scoring zero are different incidents with different responses. A line to the floor reports the second when the first happened."
+    },
+    {
+      "id": "area-is-for-one",
+      "dont": "Fill under several series at once and hope the overlaps read.",
+      "do": "Fill one series; draw several as lines.",
+      "why": "Overlapping translucent fills are the chart that looks informative and answers nothing — no overlap can be read as a value, and the series drawn last looks the largest. The component refuses `area` past one series rather than drawing it badly."
+    },
+    {
+      "id": "never-two-y-axes",
+      "dont": "Put latency and call count on one chart with a scale down each side.",
+      "do": "Two charts, or one chart with both measures indexed to a common base.",
+      "why": "A dual axis lets whoever drew it decide where the lines cross, because the two scales are chosen independently. It is the single most common way a chart misleads, and there is no API for it here.",
+      "example": false
+    },
+    {
+      "id": "fold-the-tail",
+      "dont": "Generate a ninth colour when there are more series than slots.",
+      "do": "Fold the tail into one \"Other\" series, or facet into small multiples.",
+      "why": "A generated hue lands wherever there is room, which is usually next to a colour already in use. Both alternatives are decisions about the data, so the chart warns rather than deciding silently.",
+      "example": false
+    },
+    {
+      "id": "values-live-in-the-table",
+      "dont": "Rely on the hover crosshair as the only way to read a number.",
+      "do": "Render the data table visibly where exact values matter, and keep the chart for the shape.",
+      "why": "The crosshair is pointer-only. Someone navigating by keyboard, or reading the page without a pointer, gets the visually-hidden table — which is the right answer for a screen reader and no answer at all for a sighted keyboard user.",
+      "example": false
+    }
+  ],
+  "a11y": [
+    "The plot is `aria-hidden` and the numbers are carried by a visually-hidden table, so a screen reader gets the data rather than a shape it cannot see.",
+    "`label` is required and becomes the table's caption — it is what the chart is of, in a sentence.",
+    "A gap reads as \"No data\" in the table rather than as an empty cell, which would be indistinguishable from a cell that failed to render.",
+    "The legend is always present from two series up and never for one, where the title names the series. Swatches carry identity; the text stays in ink, because a light series colour is illegible as text.",
+    "Legend toggles are real buttons with `aria-pressed`, and the last visible series cannot be hidden.",
+    "⚠️ The crosshair is pointer-only. There is no keyboard equivalent yet — see the Do and Don't."
+  ],
+  "examples": "complete"
+}
