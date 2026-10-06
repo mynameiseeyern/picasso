@@ -153,8 +153,8 @@ export const LayoutAndBreakpoints: Story = {
         rows={[
           [
             "min",
-            320,
-            "The floor — older and small Android. Nothing may break here; not a size to design at",
+            360,
+            "The floor, and what every Narrow story is cut from. The commonest Android viewport; nothing may break here",
           ],
           [
             "small",
@@ -174,10 +174,10 @@ export const LayoutAndBreakpoints: Story = {
         ]}
       />
       <P>
-        Each component's <Code>Narrow</Code> story is 328 — a 360 phone minus
-        its gutters — because 360 is the commonest Android width and the one
-        the overflow sweep measures. 360 is not on the ladder above: the floor
-        there is 320, which is iPhone SE 1 era and nothing is checked at.
+        Each component's <Code>Narrow</Code> story is 328 — the floor minus its
+        gutters — so the stories and the ladder measure the same phone. The
+        floor was 320 until the canvases were written down here, which is what
+        showed that nothing had ever been checked at it.
       </P>
 
       <H2>Content width</H2>

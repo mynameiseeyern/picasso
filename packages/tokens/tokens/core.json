@@ -467,13 +467,13 @@
       "$description": "Phone widths to draw at — not breakpoints, and deliberately not on Tailwind’s t-shirt ladder. `lg` has to mean 1024 wherever it appears, so these carry names that say where they sit in the range instead: the floor, the small one, the one to design at, the ceiling. Below md (768) there is one layout, so a phone has no breakpoints to name — only canvases.",
       "min": {
         "$type": "dimension",
-        "$value": "320px",
-        "$description": "The floor — older/small Android. Nothing may break here; it is not a size to design at."
+        "$value": "360px",
+        "$description": "The floor, and the width every Narrow story is cut from — 328 is 360 less its gutters. The commonest Android viewport by a wide margin. Nothing may break here; it is not a size to design at."
       },
       "small": {
         "$type": "dimension",
         "$value": "375px",
-        "$description": "iPhone SE and the standard iOS baseline. Still common, so a layout should be checked here."
+        "$description": "iPhone SE and the standard iOS baseline — 15px narrower than the floor on the short edge, so it is the iOS case to check rather than a second floor."
       },
       "base": {
         "$type": "dimension",

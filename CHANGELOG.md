@@ -21,9 +21,17 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   orphaned four. The group description also referred to a `screen/canvas/*`
   group that has never existed; it now describes the two that do. Documented in
   the breakpoints story, which covered `screen/desktop/*` and had never
-  mentioned the canvases — and writing them down surfaced a mismatch left as it
-  stands: every `Narrow` story is 328, a 360 phone minus its gutters, and 360
-  is not on the ladder, whose floor is 320.
+  mentioned the canvases.
+
+- **The phone floor is 360, not 320.** Writing the canvases down showed that
+  nothing had ever been checked at the floor: every `Narrow` story is 328 — a
+  360 phone minus its gutters — and 360 was not on the ladder at all, while 320
+  (iPhone SE 1 era) sat there as a floor no story and no overflow sweep ever
+  measured. `screen/mobile/min` is 360, which is both the commonest Android
+  viewport and what the sweep already measures, so the ladder and the stories
+  now describe the same phone. 375 stays as the iOS case to check rather than a
+  second floor. **Code impact** — none; nothing reads these tokens, and no
+  story width changes. **Figma impact** — a sync updates one FLOAT.
 
 - **`SidebarHeader`'s brand variant is `brand`, not `plate`.** Nobody outside
   this repo knew what a "plate" was — including the design system's own owner,
