@@ -34,6 +34,11 @@ export function InputChip({
     <span
       data-slot="input-chip"
       className={cn(
+        /* 28, where a standalone Chip is 32 — not a drift. This pill lives
+           inside the field, which is 36 at sm with py-1: 4 + 28 + 4 fills it
+           exactly. A 32 pill would leave 2 above and below and read as
+           jammed in. The two are different because one sits in a box and the
+           other does not. */
         "inline-flex h-7 max-w-full items-center gap-1.5 rounded-full border border-line-neutral-muted ps-3 text-label-md text-content-neutral-emphasis",
         onRemove ? "pe-1.5" : "pe-3",
         disabled && "text-content-disabled",
