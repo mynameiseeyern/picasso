@@ -3,7 +3,8 @@
   "summary": "The two grids a product page is made of — tiles that auto-fill, charts that step 1 → 2 → 3 on the content column.",
   "figma": {
     "fileKey": "v61McMI1fYNAN8DonhNjHQ",
-    "nodeId": "40000622:1068"
+    "nodeId": null,
+    "note": "Not drawn in Figma. KpiRow and ChartGrid were built in code first; the reflow rule they implement is documented on the App shell page (section 'Content width — wide screens', 40000622:1068), which is a docs section rather than a component."
   },
   "structureFrom": "Content width — wide screens (the 1920 and 2560 frames)",
   "measurementsFrom": "docs/foundations/responsive.md and the Layout and breakpoints story",
