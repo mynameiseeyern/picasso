@@ -1,0 +1,53 @@
+{
+  "component": "Sparkline",
+  "summary": "A chart stripped to its shape — one series, no axes, no labels, sized to sit beside the number it summarises.",
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": null,
+    "note": "Not drawn in Figma. Built in code first. Mark specs come from the dataviz rules rather than from the file: 2px round-capped line, 8px end dot with a 2px surface ring."
+  },
+  "structureFrom": "code",
+  "measurementsFrom": "code",
+  "pairs": [
+    {
+      "id": "pin-the-scale-across-a-column",
+      "dont": "Let every row scale to its own high and low, so a trunk wobbling by 0.1 draws the same mountain as one that fell by 2.0.",
+      "do": "Pass the same `min` and `max` to every sparkline in a column.",
+      "why": "A column of sparklines is read by comparing shapes. Auto-scaling each one independently makes every row look equally dramatic, which is the one thing the column was supposed to tell you apart. This is the most common way a sparkline lies."
+    },
+    {
+      "id": "gap-is-not-zero",
+      "dont": "Plot a missing reading as 0, so a trunk that stopped reporting draws a cliff to the floor.",
+      "do": "Pass `null` and leave the gap. A gap means nobody knows; the floor means someone measured zero.",
+      "why": "An endpoint going quiet and an endpoint scoring zero are different incidents with different responses, and a line to the floor reports the second when the first happened."
+    },
+    {
+      "id": "status-tone-needs-a-word",
+      "dont": "Turn the line red and leave it at that.",
+      "do": "Keep the badge, the status cell or the icon that says \"Critical\", and let the tone agree with it.",
+      "why": "Status colours are reserved and never travel alone — the same rule KpiTile already follows, for the same reason: colour is not readable by everyone and is gone entirely in a printout."
+    },
+    {
+      "id": "beside-the-number",
+      "dont": "Ship the line on its own as the reading.",
+      "do": "Put it next to the value it summarises — a KpiTile's number, a table row's figure.",
+      "why": "There is no axis, so the line carries direction and steadiness but no magnitude. On its own it says something changed and refuses to say from what to what.",
+      "example": false
+    },
+    {
+      "id": "no-axis-no-values",
+      "dont": "Add a crosshair, a tooltip or ticks to make it readable point by point.",
+      "do": "Use the time-series chart when the values matter, and keep this for the shape.",
+      "why": "A crosshair with no axis to read against is furniture pretending to be information, and a 24px-tall plot cannot resolve a value anyway. Growing a sparkline into a chart produces a bad chart rather than a good sparkline.",
+      "example": false
+    }
+  ],
+  "a11y": [
+    "`label` is required, and `null` is the explicit way to say the row or tile already names it — there is no default, because a label generated from the numbers would describe the data rather than the point.",
+    "With a label it is `role=\"img\"`; with `label={null}` it is `aria-hidden` and nothing is said only by the picture.",
+    "The line is 2px at every rendered size (`vector-effect=\"non-scaling-stroke\"`), so it does not thin out in a narrow column.",
+    "A status tone never carries the status alone — see the Do and Don't.",
+    "No hover, no focus, nothing interactive: there is nothing to read point by point and nothing to tab to."
+  ],
+  "examples": "complete"
+}

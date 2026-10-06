@@ -186,6 +186,16 @@ export {
   type SkeletonTextProps,
 } from "./components/skeleton/skeleton";
 export {
+  EmptyState,
+  emptyStateVariants,
+  type EmptyStateProps,
+} from "./components/empty-state/empty-state";
+export {
+  Sparkline,
+  type SparklineProps,
+  type SparklineTone,
+} from "./components/sparkline/sparkline";
+export {
   Avatar,
   AvatarAddButton,
   AvatarGroup,

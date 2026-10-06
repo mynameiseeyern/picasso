@@ -1,0 +1,53 @@
+{
+  "component": "EmptyState",
+  "summary": "What a data component shows when it is working and has found nothing — a title, a reason, and the thing to do about it.",
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": null,
+    "note": "Not drawn in Figma. Built in code first, from docs/content/empty-and-loading-states.md. `Error page` in the file is the nearest component and a different job — 404 and 500 are the app having failed."
+  },
+  "structureFrom": "code",
+  "measurementsFrom": "code",
+  "pairs": [
+    {
+      "id": "say-why-and-what-would-fill-it",
+      "dont": "Ship \"No data.\"",
+      "do": "Name what is missing and what would bring it back — \"No alerts in the last 24 hours. Widen the time range to see older activity.\"",
+      "why": "The whole component exists for this. A title with no reason leaves the reader unable to tell a working empty list from a broken one, which is why `description` is a required prop rather than an optional one."
+    },
+    {
+      "id": "empty-is-not-first-use",
+      "dont": "Use one state for both, so a product nobody has set up yet says \"No endpoints match your filters\".",
+      "do": "Empty asks for a change to the question; first use asks for setup and says what will appear once it is done.",
+      "why": "They need different actions. Offering \"Clear filters\" to someone who has never connected a source sends them looking for a filter that is not there — and implies they broke something.",
+      "example": false
+    },
+    {
+      "id": "partial-is-an-alert",
+      "dont": "Replace the chart with an empty state because one of four sources failed.",
+      "do": "Draw what loaded and put an Alert above it naming what did not.",
+      "why": "Partial means there IS something to show. A centred block in place of the data hides the part that worked, which is the \"never silently drop a source\" rule inverted — now the working sources are the ones dropped."
+    },
+    {
+      "id": "loading-is-a-skeleton",
+      "dont": "Show an empty state while the request is still in flight.",
+      "do": "Show a Skeleton, and the empty state only once the answer is known to be nothing.",
+      "why": "An empty state during a load is a wrong answer shown confidently. The guidance prefers a skeleton to a spinner because the layout is already known.",
+      "example": false
+    },
+    {
+      "id": "size-fits-the-hole",
+      "dont": "Put the 160 drawing inside a chart frame or a popover.",
+      "do": "Use `size=\"sm\"` there — an icon, tighter padding, no drawing. `md` is for a page, a table body or a panel.",
+      "why": "A drawing larger than the space it is explaining reads as a page that failed rather than a widget with nothing in it. `illustration` is ignored at `sm` so this cannot be got wrong by accident.",
+      "example": false
+    }
+  ],
+  "a11y": [
+    "A plain block of text in reading order — no role, so it does not announce itself on mount.",
+    "It is NOT a live region. A component that swaps a Skeleton for an empty state should announce that itself, where it knows the request finished; a role=\"status\" here would also fire on first paint.",
+    "The illustration is drawn with `label={null}` and `interactive={false}`: the title beside it says the same thing, and nothing in an empty state should answer the pointer.",
+    "`icon` is aria-hidden. Everything it suggests is in the title and description."
+  ],
+  "examples": "complete"
+}
