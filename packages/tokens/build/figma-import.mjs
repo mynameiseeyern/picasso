@@ -103,7 +103,10 @@ if (isNew || group("space/").some(changed)) {
   if (hit) { brand.spacing = hit[0]; changes.push(`${brandPath}: spacing → ${hit[0]}`); touched.add("brand"); }
   else refused.push("space/* matches no spacing preset — spacing is a preset × the default ladder; edit presets.json, not individual steps");
 }
-for (const role of ["sans", "mono"]) {
+for (const role of ["sans", "mono", "display"]) {
+  // A brand with no display of its own shows its sans in type/family/display.
+  // Writing that back would turn an inherited family into a declared one.
+  if (role === "display" && !brand.type.display) continue;
   const fam = inPrim.get(`type/family/${role}`);
   if (fam && brand.type[role] !== fam) { brand.type[role] = fam; changes.push(`${brandPath}: type.${role} → ${fam}`); touched.add("brand"); }
 }

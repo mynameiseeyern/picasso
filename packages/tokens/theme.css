@@ -396,6 +396,10 @@
   /* ---- fonts ---- */
   --font-sans: var(--type-family-sans);
   --font-mono: var(--type-family-mono);
+  /* No system override for this one (themes.css swaps sans under
+     data-type="system"): a product's display face is its mark, not a UI
+     preference, so it stays put when the rest goes native. */
+  --font-display: var(--type-family-display);
 }
 
 @layer base {

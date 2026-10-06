@@ -490,15 +490,15 @@ export function SidebarBrand({
         </>
       ) : null}
       {collapsed ? (
-        /* Same type as the wordmark: at 48 the mark IS the wordmark, and a
-           letter set in body text beside one set in heading/sm reads as two
-           different brands. */
-        <span data-slot="sidebar-brand-wordmark" className="text-heading-sm">
+        /* The same step as the wordmark, because at 48 the mark IS the
+           wordmark: a letter set in anything else beside the full name reads
+           as two different brands. */
+        <span data-slot="sidebar-brand-wordmark" className="text-wordmark">
           {mark ?? children}
         </span>
       ) : (
         <>
-          <span data-slot="sidebar-brand-wordmark" className="text-heading-sm">
+          <span data-slot="sidebar-brand-wordmark" className="text-wordmark">
             {children}
           </span>
           {/* Dimmer by size and weight, never by opacity — there is no

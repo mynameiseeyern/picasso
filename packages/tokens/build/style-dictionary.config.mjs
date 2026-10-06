@@ -199,25 +199,41 @@ StyleDictionary.registerFormat({
       if (token.$type === "typography" && typeof token.$value === "object") {
         const v = token.$value;
         const className = token.name;
-        rootDecls.push(`  --${className}-font-family: ${v.fontFamily};`);
-        rootDecls.push(`  --${className}-font-size: ${v.fontSize};`);
-        rootDecls.push(`  --${className}-font-weight: ${v.fontWeight};`);
-        rootDecls.push(`  --${className}-line-height: ${v.lineHeight};`);
-        rootDecls.push(`  --${className}-letter-spacing: ${v.letterSpacing};`);
+        // A step points at a primitive, and it has to still point at it in
+        // the emitted CSS — with the indirection inside the utility, not in a
+        // :root variable. A var() in a custom property is substituted where
+        // the property is DECLARED, so `--text-body-md-font-family:
+        // var(--type-family-sans)` on :root computes to Inter there and
+        // inherits as Inter: the step could never follow [data-brand],
+        // [data-type="compact"] or [data-type="system"]. That is why
+        // font-sans tracked the brand and every text-* step did not, and why
+        // the compact ramp and the system family swap were both silently
+        // inert. So each step's own variable is left UNDECLARED and used as
+        // the override slot: unset, it falls back to the primitive, resolved
+        // at the element; set on any scope, it wins.
+        const o = token.original?.$value ?? {};
+        const slot = (prop, cssProp) => {
+          const m = typeof o[prop] === "string" && o[prop].trim().match(/^\{([^}]+)\}$/);
+          const base = m ? `var(--${buildCssName({ path: m[1].split(".") })})` : v[prop];
+          return `var(--${className}-${cssProp}, ${base})`;
+        };
+        const tracking = slot("letterSpacing", "letter-spacing");
 
         const props = [
-          `  font-family: var(--${className}-font-family);`,
-          `  font-size: var(--${className}-font-size);`,
-          `  font-weight: var(--${className}-font-weight);`,
-          `  line-height: var(--${className}-line-height);`,
+          `  font-family: ${slot("fontFamily", "font-family")};`,
+          `  font-size: ${slot("fontSize", "font-size")};`,
+          `  font-weight: ${slot("fontWeight", "font-weight")};`,
+          `  line-height: ${slot("lineHeight", "line-height")};`,
           // Tracking is scaled, so one variable can switch it off. Arabic
           // script is joined and any letter-spacing pulls the joins apart;
           // theme.css sets --type-tracking-scale to 0 under those languages.
           // A role with no tracking is left alone: calc(0 * 1) is a number,
-          // not a length, and would be dropped at computed-value time.
+          // not a length, and would be dropped at computed-value time. This
+          // one test reads the resolved value, not the reference: calc()
+          // cannot be asked whether it is zero.
           Number.parseFloat(v.letterSpacing) === 0
-            ? `  letter-spacing: var(--${className}-letter-spacing);`
-            : `  letter-spacing: calc(var(--${className}-letter-spacing) * var(--type-tracking-scale, 1));`,
+            ? `  letter-spacing: ${tracking};`
+            : `  letter-spacing: calc(${tracking} * var(--type-tracking-scale, 1));`,
         ];
         if (v.textCase) props.push(`  text-transform: ${v.textCase};`);
         // `@utility`, not a plain `.class`. A bare class is invisible to

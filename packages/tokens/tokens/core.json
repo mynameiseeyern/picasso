@@ -756,6 +756,18 @@
             "letterSpacing": "{type.tracking.default}"
           }
         }
+      },
+      "wordmark": {
+        "$type": "typography",
+        "$description": "The product name in the rail's brand header, and the single letter it crops to at 48. The only step on the display family: uppercase and tracked out, because a condensed display face set in caps closes up at UI sizes.",
+        "$value": {
+          "fontFamily": "{type.family.display}",
+          "fontSize": "{type.size.2xl}",
+          "fontWeight": "{type.weight.semibold}",
+          "lineHeight": "{type.leading.snug}",
+          "letterSpacing": "{type.tracking.wide}",
+          "textCase": "uppercase"
+        }
       }
     }
   },

@@ -66,7 +66,14 @@ export function brandLayer(id) {
   const neutral = pick("neutral", b.neutral);
   const mult = pick("spacing", b.spacing);
   const radiusBase = pick("radius", b.radius);
-  const fonts = { sans: font(b.type.sans, "sans"), mono: font(b.type.mono, "mono") };
+  // display is optional. A brand that names none inherits its sans, so
+  // type/family/display always resolves and a product opts into a display
+  // face by naming one — no component has to branch on whether it exists.
+  const fonts = {
+    sans: font(b.type.sans, "sans"),
+    mono: font(b.type.mono, "mono"),
+    display: font(b.type.display ?? b.type.sans, "sans"),
+  };
   const colours = (o) => Object.fromEntries(own(o).map(([k, v]) => [k, { $type: "color", $value: v.toUpperCase() }]));
   const space = Object.fromEntries(
     own(presets.space).map(([k, v]) => [k, { $type: "dimension", $value: k === "px" ? "1px" : pxToRem(scaleSpace(toPx(v), mult, k)) }]),
@@ -74,12 +81,18 @@ export function brandLayer(id) {
   const layer = {
     id,
     name: b.name,
-    choices: { neutral: b.neutral, radius: b.radius, spacing: b.spacing, sans: b.type.sans, mono: b.type.mono, base: b.colour.base },
+    choices: { neutral: b.neutral, radius: b.radius, spacing: b.spacing, sans: b.type.sans, mono: b.type.mono, display: b.type.display ?? b.type.sans, base: b.colour.base },
     fonts,
     tokens: {
       $description: `Generated from brands/${id}/brand.json + presets.json. Do not edit.`,
       palette: { brand: colours(ramp), neutral: colours(neutral) },
-      type: { family: { sans: { $type: "fontFamilies", $value: fonts.sans.stack }, mono: { $type: "fontFamilies", $value: fonts.mono.stack } } },
+      type: {
+        family: {
+          sans: { $type: "fontFamilies", $value: fonts.sans.stack },
+          mono: { $type: "fontFamilies", $value: fonts.mono.stack },
+          display: { $type: "fontFamilies", $value: fonts.display.stack },
+        },
+      },
       radius: { base: { $type: "dimension", $value: radiusBase } },
       space,
     },

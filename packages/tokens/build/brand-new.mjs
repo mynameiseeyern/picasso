@@ -4,7 +4,7 @@
  *
  *   npm run brand:new -- prognosis --name Prognosis --base "#852CAA" \
  *     [--neutral cool|warm] [--radius sharp|subtle|default|rounded] \
- *     [--spacing compact|default|relaxed] [--sans Inter] [--mono "JetBrains Mono"]
+ *     [--spacing compact|default|relaxed] [--sans Inter] [--mono "JetBrains Mono"] [--display Oswald]
  *
  * Writes tokens/brands/<id>/brand.json. The ramp is generated from --base
  * (OKLCH, solved for white text) at build time; pin it later by adding
@@ -18,7 +18,7 @@ const argv = process.argv.slice(2);
 const id = argv[0];
 const arg = (k, d) => { const i = argv.indexOf(`--${k}`); return i < 0 ? d : argv[i + 1]; };
 const fail = (m) => { console.error(`brand:new — ${m}`); process.exit(1); };
-if (!id || id.startsWith("--") || !/^[a-z][a-z0-9-]*$/.test(id)) fail('usage: npm run brand:new -- <id> --base "#RRGGBB" [--name Name] [--neutral …] [--radius …] [--spacing …] [--sans …] [--mono …]');
+if (!id || id.startsWith("--") || !/^[a-z][a-z0-9-]*$/.test(id)) fail('usage: npm run brand:new -- <id> --base "#RRGGBB" [--name Name] [--neutral …] [--radius …] [--spacing …] [--sans …] [--mono …] [--display …]');
 const base = arg("base");
 if (!/^#[0-9a-f]{6}$/i.test(base ?? "")) fail("--base must be a hex colour like #852CAA");
 const dir = resolve(TOKENS_DIR, "brands", id);
@@ -36,9 +36,10 @@ const brand = {
   neutral: choose("neutral", arg("neutral", "cool")),
   radius: choose("radius", arg("radius", "default")),
   spacing: choose("spacing", arg("spacing", "default")),
-  type: { sans: arg("sans", "Inter"), mono: arg("mono", "JetBrains Mono") },
+  // No display default: a brand without one inherits its sans.
+  type: { sans: arg("sans", "Inter"), mono: arg("mono", "JetBrains Mono"), ...(arg("display", "") ? { display: arg("display", "") } : {}) },
 };
-for (const f of [brand.type.sans, brand.type.mono])
+for (const f of [brand.type.sans, brand.type.mono, brand.type.display].filter(Boolean))
   if (!presets.fonts[f]) console.warn(`note: "${f}" is not in presets.fonts — it gets a generic fallback stack and Inter-style weight names. Add it to presets.json if its Figma style names differ.`);
 
 mkdirSync(dir, { recursive: true });

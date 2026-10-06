@@ -66,6 +66,9 @@
 @import "@fontsource/ibm-plex-mono/latin-500.css";
 @import "@fontsource/fira-code/latin-400.css";
 @import "@fontsource/fira-code/latin-500.css";
+/* The display role. 600 only: text/wordmark is the one step on this family
+   and it is semibold, so a second weight would ship unused. */
+@import "@fontsource/oswald/latin-600.css";
 
 /* Scan the component + story sources for class names. */
 @source "../src";

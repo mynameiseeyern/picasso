@@ -22,6 +22,7 @@
   "spacing": "default",
   "type": {
     "sans": "Inter",
-    "mono": "JetBrains Mono"
+    "mono": "JetBrains Mono",
+    "display": "Oswald"
   }
 }
