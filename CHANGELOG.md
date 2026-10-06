@@ -30,6 +30,27 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Added
 
+- **A display font role, and one step that uses it: `text-wordmark`.** A brand
+  can now name a third family in its `brand.json` — `type.display` — alongside
+  `sans` and `mono`. Clarion names Oswald; the wordmark in the rail's brand
+  header, and the single letter it crops to on the 48 rail, are set in it:
+  20px, semibold, uppercase, tracked out, because a condensed display face set
+  in caps closes up at UI sizes. The role is optional and a brand that names
+  none inherits its sans, so `type/family/display` always resolves and no
+  component branches on whether a brand has one — Vantage names none and its
+  wordmark is Manrope. **Code impact** — none required; `SidebarBrand` picks
+  the new step up on its own. `font-display` is available as a Tailwind
+  utility, and `npm run brand:new` takes an optional `--display`. The
+  wordmark's `children` stay sentence case in code: the step carries the
+  uppercase. **Figma impact** — a sync adds a `type/family/display` variable
+  per brand, a `shared/text/wordmark` text style and the
+  `_type/style/display-semibold` helper it binds. The wordmark text in the
+  `Sidebar / SidebarHeader` set is hand-styled Oswald today and should be
+  rebound to the new text style; the drawn result does not change.
+  Unlike sans and mono, the display family does **not** swap under
+  `data-type="system"` — a product's display face is its mark, not a UI
+  preference, so it stays put when the rest goes native.
+
 - **A theme builder at `/theming`.** Paste or drop a `brand.json` or a
   `tokens.css`, or start from a colour, and the five axes — brand, neutral
   ramp, radius, typography, spacing — are editable in place beside a preview
@@ -146,6 +167,40 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   outside the console, and never as a duration scale for controls.
 
 ### Fixed
+
+- **Every `text-*` step now follows the brand, the density and the type
+  theme. None of them did.** `[data-brand]`, `[data-type="compact"]` and
+  `[data-type="system"]` each redeclare the `--type-*` primitives, and not one
+  of those redeclarations reached a single typography step: `font-sans`
+  tracked the brand while `text-body-md` — which nearly every component uses
+  — stayed Inter at the default ramp, so switching brand changed the colours
+  and left the type alone, the compact density changed nothing, and the system
+  type theme was inert. Two causes, both in the token build. A typography
+  token's `$value` is an object, so `value/ir/css-var-references` (which
+  filters for strings) skipped it and the format emitted the default brand's
+  resolved literals. Emitting the reference instead is not enough either: a
+  `var()` inside a custom property is substituted where the property is
+  *declared*, so `--text-body-md-font-family: var(--type-family-sans)` on
+  `:root` computes to Inter there and inherits as Inter. The indirection now
+  sits in the utility — `font-family: var(--text-body-md-font-family,
+  var(--type-family-sans))` — which resolves at the element. The step's own
+  variable is left undeclared and is the override slot: unset it falls back to
+  the primitive; set on any scope it wins. **Code impact** — none, and nothing
+  changes at the default brand and density, where the values were already
+  correct. The `--text-*-font-family` / `-font-size` / `-font-weight` /
+  `-line-height` / `-letter-spacing` declarations no longer appear in
+  `:root`; nothing in the repo read them. The Arabic and Hebrew tracking
+  kill-switch still collapses as it did. **Figma impact** — none; Figma binds
+  each text style to the variables directly and was never affected.
+
+- **The theme builder previewed a new brand's wordmark in Clarion's Oswald.**
+  It writes the preview's custom properties by hand rather than through
+  `brandLayer()`, and had no `--type-family-display`, so the wordmark kept
+  the default brand's display face while every other step followed the chosen
+  family. It now sets the display family to the chosen sans, which is what the
+  build generates for a `brand.json` that names no display face — the preview
+  and the export agree again. Combined with the fix above, changing the font
+  in the builder is visible for the first time.
 
 - **Every touch target meets the floor: 202 were under it, now none are.**
   WCAG 2.2 AA (2.5.8) sets 24×24, with a spacing exception — a 24px circle on

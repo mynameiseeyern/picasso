@@ -155,6 +155,11 @@ export function resolve(theme: Theme): Resolved {
   for (const [k, v] of own(neutral)) vars[`--palette-neutral-${k}`] = v;
   vars['--type-family-sans'] = sans;
   vars['--type-family-mono'] = mono;
+  // The builder has no display picker, so the brand it writes names no display
+  // face — and a brand that names none inherits its sans. Set it explicitly or
+  // the preview keeps the default brand's Oswald on the wordmark while every
+  // other step follows the chosen family.
+  vars['--type-family-display'] = sans;
   vars['--radius'] = radius;
   for (const [k, v] of Object.entries(space)) vars[`--space-${cssKey(k)}`] = v;
 
@@ -192,6 +197,7 @@ export function toCss(theme: Theme, r: Resolved) {
     `  /* type */`,
     L('type-family-sans', r.sans),
     L('type-family-mono', r.mono),
+    L('type-family-display', r.sans), // inherited: brand.json names no display
     ``,
     `  /* radius base — "${theme.radius}"; every radius step is a multiple of it */`,
     L('radius', r.radius),
