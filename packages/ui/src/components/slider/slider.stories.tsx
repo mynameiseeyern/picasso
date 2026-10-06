@@ -2,6 +2,10 @@ import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { Slider } from "./slider";
 import { Field, FieldLabel } from "../field/field";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { NumberInput } from "../number-input/number-input";
+import { FieldControl } from "../field/field";
 
 const meta: Meta<typeof Slider> = {
   title: "Components/Slider",
@@ -73,5 +77,63 @@ export const Disabled: Story = {
       <Slider defaultValue={[60]} />
       <Slider defaultValue={[60]} disabled />
     </div>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("show-the-number")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Field>
+            <FieldLabel>Sample rate</FieldLabel>
+            <Slider defaultValue={[60]} thumbLabels={["Sample rate"]} />
+          </Field>
+        }
+        do={
+          <Field>
+            <FieldLabel>Sample rate</FieldLabel>
+            <div className="flex items-center gap-3">
+              <Slider defaultValue={[60]} thumbLabels={["Sample rate"]} />
+              <span className="ltr-island text-body-sm tabular-nums text-content-neutral-emphasis">
+                60%
+              </span>
+            </div>
+          </Field>
+        }
+      />
+
+      <Guidance
+        pair={pair("not-for-precision")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Field>
+            <FieldLabel>Timeout (ms)</FieldLabel>
+            <Slider
+              defaultValue={[250]}
+              min={0}
+              max={10000}
+              thumbLabels={["Timeout"]}
+            />
+          </Field>
+        }
+        do={
+          <Field>
+            <FieldLabel>Timeout (ms)</FieldLabel>
+            <FieldControl>
+              <NumberInput defaultValue={250} min={0} max={10000} />
+            </FieldControl>
+          </Field>
+        }
+      />
+    </GuidanceStory>
   ),
 };

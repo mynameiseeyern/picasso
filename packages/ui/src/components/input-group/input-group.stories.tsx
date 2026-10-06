@@ -10,6 +10,8 @@ import {
   InputGroupTooltip,
 } from "./input-group";
 import { Button } from "../button/button";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 const meta: Meta<typeof InputGroup> = {
   title: "Components/InputGroup",
@@ -158,5 +160,61 @@ export const Sizes: Story = {
         </InputGroup>
       ))}
     </div>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("units-are-not-placeholders")}
+        width="wide"
+        dont={
+          <InputGroup>
+            <InputGroupInput placeholder="Threshold in ms" />
+          </InputGroup>
+        }
+        do={
+          <InputGroup>
+            <InputGroupInput defaultValue="250" />
+            <InputGroupAddon align="end">
+              <InputGroupText>ms</InputGroupText>
+            </InputGroupAddon>
+          </InputGroup>
+        }
+      />
+
+      <Guidance
+        pair={pair("one-job-per-side")}
+        width="wide"
+        dont={
+          <InputGroup>
+            <InputGroupInput defaultValue="250" />
+            <InputGroupAddon align="end">
+              <InputGroupText>ms</InputGroupText>
+              <InputGroupSpinner />
+              <Button size="xs" variant="ghost">
+                Reset
+              </Button>
+              <Button size="xs" variant="ghost">
+                Apply
+              </Button>
+            </InputGroupAddon>
+          </InputGroup>
+        }
+        do={
+          <InputGroup>
+            <InputGroupInput defaultValue="250" />
+            <InputGroupAddon align="end">
+              <InputGroupText>ms</InputGroupText>
+            </InputGroupAddon>
+          </InputGroup>
+        }
+      />
+    </GuidanceStory>
   ),
 };

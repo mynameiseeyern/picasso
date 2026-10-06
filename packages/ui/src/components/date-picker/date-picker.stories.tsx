@@ -3,6 +3,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 import type { DateRange } from "react-day-picker";
 import { DatePicker } from "./date-picker";
 import { Field, FieldLabel } from "../field/field";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { FieldControl, FieldDescription } from "../field/field";
 
 const meta: Meta<typeof DatePicker> = {
   title: "Components/Date picker",
@@ -104,4 +107,51 @@ export const InAField: Story = {
 export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => <DatePicker disabled value={new Date(2026, 0, 15)} />,
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("placeholder-is-not-a-value")}
+        width="wide"
+        dont={<DatePicker placeholder="6 Oct 2026" />}
+        do={<DatePicker placeholder="Pick a date" />}
+      />
+
+      <Guidance
+        pair={pair("unambiguous-format")}
+        width="wide"
+        dont={<DatePicker value={new Date(2026, 3, 3)} format="dd/MM/yyyy" />}
+        do={<DatePicker value={new Date(2026, 3, 3)} format="d MMM yyyy" />}
+      />
+
+      <Guidance
+        pair={pair("say-the-bounds")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Field>
+            <FieldLabel>From</FieldLabel>
+            <FieldControl>
+              <DatePicker placeholder="Pick a date" />
+            </FieldControl>
+          </Field>
+        }
+        do={
+          <Field>
+            <FieldLabel>From</FieldLabel>
+            <FieldControl>
+              <DatePicker placeholder="Pick a date" />
+            </FieldControl>
+            <FieldDescription>Data is kept for 13 months.</FieldDescription>
+          </Field>
+        }
+      />
+    </GuidanceStory>
+  ),
 };

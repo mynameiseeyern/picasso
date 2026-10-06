@@ -1,7 +1,10 @@
 {
   "component": "Select",
   "summary": "A searchable, multi-select filter. The trigger keeps its label and shows how many are chosen; nothing applies until Apply.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "1580:759" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "1580:759"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -9,25 +12,29 @@
       "id": "label-stays",
       "dont": "Replace the trigger's label with the chosen values.",
       "do": "Keep the label ('Filter actions…') and let the count badge say how many.",
-      "why": "Three values will not fit a 240px trigger, and a truncated list reads as one value. The label says what the filter is; the count says it is on."
+      "why": "Three values will not fit a 240px trigger, and a truncated list reads as one value. The label says what the filter is; the count says it is on.",
+      "example": false
     },
     {
       "id": "apply-not-live",
       "dont": "Apply each tick as it happens.",
       "do": "Collect ticks in a draft and commit once on Apply.",
-      "why": "Every tick in a filter re-queries the table behind it. Four live ticks are four reloads and a table jumping under the cursor."
+      "why": "Every tick in a filter re-queries the table behind it. Four live ticks are four reloads and a table jumping under the cursor.",
+      "example": false
     },
     {
       "id": "close-discards",
       "dont": "Keep a half-finished draft after Escape or a click away.",
       "do": "Treat closing without Apply as Cancel.",
-      "why": "Someone who closes the menu without applying has changed their mind. Keeping the draft surprises them the next time they open it."
+      "why": "Someone who closes the menu without applying has changed their mind. Keeping the draft surprises them the next time they open it.",
+      "example": false
     },
     {
       "id": "group-long-lists",
       "dont": "Show 30 options as one flat list.",
       "do": "Give options a group, and let search do the rest.",
-      "why": "Group labels turn scanning into skipping. Past about eight options, people search rather than scroll — the search box is focused on open for that reason."
+      "why": "Group labels turn scanning into skipping. Past about eight options, people search rather than scroll — the search box is focused on open for that reason.",
+      "example": false
     },
     {
       "id": "not-for-one-of-a-few",
@@ -40,5 +47,6 @@
     "The search is a combobox that owns the list through aria-activedescendant, so focus never leaves it: ArrowUp/Down move, Enter ticks, Ctrl/⌘+Enter applies, Escape closes.",
     "Options are role=option with aria-selected in an aria-multiselectable listbox. The checkbox is drawn, not a real control, so each row is announced once.",
     "The count badge is aria-hidden; the trigger's name includes ', N selected' as text."
-  ]
+  ],
+  "examples": "complete"
 }

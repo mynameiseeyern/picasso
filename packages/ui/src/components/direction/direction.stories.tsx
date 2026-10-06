@@ -20,6 +20,8 @@ import {
 } from "../table/table";
 import { Tabs, TabsList, TabsTrigger } from "../tabs/tabs";
 import { ThresholdSlider } from "../threshold-slider/threshold-slider";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 const meta: Meta<typeof DirectionProvider> = {
   title: "Foundations/Direction",
@@ -211,5 +213,33 @@ export const ArabicHebrewPersian: Story = {
       <Sampler text={copy.he} />
       <Sampler text={copy.fa} />
     </div>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("technical-text-stays-ltr")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div dir="rtl" className="w-full space-y-1">
+            <p className="text-body-sm text-content-neutral-muted">المضيف</p>
+            <p className="font-mono text-body-sm">10.4.12.80:8086</p>
+          </div>
+        }
+        do={
+          <div dir="rtl" className="w-full space-y-1">
+            <p className="text-body-sm text-content-neutral-muted">المضيف</p>
+            <p className="ltr-island font-mono text-body-sm">10.4.12.80:8086</p>
+          </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

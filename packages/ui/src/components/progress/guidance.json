@@ -24,7 +24,8 @@
       "id": "dont-fake-it",
       "dont": "Animate a bar to 90% and hold it there while you wait.",
       "do": "Show real progress, or an indeterminate bar, or nothing.",
-      "why": "A bar that stalls near the end is worse than no bar: it makes a promise about time and then visibly breaks it."
+      "why": "A bar that stalls near the end is worse than no bar: it makes a promise about time and then visibly breaks it.",
+      "example": false
     },
     {
       "id": "label-the-work",
@@ -42,5 +43,6 @@
   "a11y": [
     "Radix puts role=\"progressbar\" and the aria-value* attributes on the root, and omits aria-valuenow when value is null — which is exactly how an indeterminate progress bar should read.",
     "Pass null rather than 0 for work of unknown length. Zero means \"started, nothing done\"; null means \"no idea\", and they announce differently."
-  ]
+  ],
+  "examples": "complete"
 }

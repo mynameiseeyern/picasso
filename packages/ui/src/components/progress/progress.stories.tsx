@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 import { Progress } from "./progress";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Meter } from "../meter/meter";
 
 const meta: Meta<typeof Progress> = {
   title: "Components/Progress",
@@ -115,5 +118,87 @@ export const Narrow: Story = {
         valueLabel="420 of 1,000"
       />
     </div>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("progress-is-not-a-meter")}
+        width="wide"
+        dont={
+          <div className="w-full">
+            <Progress value={70} label="Disk usage" />
+          </div>
+        }
+        do={
+          <div className="flex w-full items-center gap-3">
+            <Meter value={3.5} max={5} />
+            <span className="ltr-island text-body-sm tabular-nums">3.5</span>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("unknown-is-not-zero")}
+        width="wide"
+        dont={
+          <div className="w-full">
+            <Progress value={0} label="Importing endpoints" />
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Progress value={null} label="Importing endpoints" valueLabel="—" />
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("label-the-work")}
+        width="wide"
+        dont={
+          <div className="w-full">
+            <Progress value={42} />
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Progress
+              value={42}
+              label="Importing endpoints"
+              valueLabel="420 of 1,000"
+            />
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("one-at-a-time")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full space-y-2">
+            {[20, 48, 71, 94].map((v) => (
+              <Progress key={v} value={v} />
+            ))}
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Progress
+              value={58}
+              label="Importing endpoints"
+              valueLabel="29 of 50"
+            />
+          </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

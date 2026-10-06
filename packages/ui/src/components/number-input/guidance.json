@@ -1,7 +1,10 @@
 {
   "component": "NumberInput",
   "summary": "A number with − / + steppers. For counts and small ranges.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "40000625:565" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "40000625:565"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -15,7 +18,8 @@
       "id": "bounds-are-props",
       "dont": "Validate the range afterwards with an error message.",
       "do": "Set min and max, so the steppers stop and blur clamps.",
-      "why": "A disabled + at the maximum says where the limit is before anyone hits it."
+      "why": "A disabled + at the maximum says where the limit is before anyone hits it.",
+      "example": false
     },
     {
       "id": "unit-beside",
@@ -28,5 +32,6 @@
     "role=spinbutton with aria-valuenow / min / max — what a native number input would announce, without its scroll-wheel and 'e' problems.",
     "ArrowUp/Down step, PageUp/Down step ×10, Home/End jump to the bounds.",
     "The steppers are tabIndex -1: keyboard users have the arrows, and two extra tab stops per field is a tax on every form."
-  ]
+  ],
+  "examples": "complete"
 }

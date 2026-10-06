@@ -24,13 +24,15 @@
       "id": "let-people-type",
       "dont": "Make the calendar the only way in for a date far from today.",
       "do": "Pair it with a field when the range is wide.",
-      "why": "A grid is the fast path for next Tuesday and the slow one for a date two years out."
+      "why": "A grid is the fast path for next Tuesday and the slow one for a date two years out.",
+      "example": false
     },
     {
       "id": "range-needs-both-ends",
       "dont": "Close the popover as soon as the first date is clicked in range mode.",
       "do": "Wait for both ends.",
-      "why": "Half a range is not an answer, and reopening to finish it loses the context of what was already picked."
+      "why": "Half a range is not an answer, and reopening to finish it loses the context of what was already picked.",
+      "example": false
     },
     {
       "id": "say-the-bounds",
@@ -43,5 +45,6 @@
     "The trigger is a <button>, not a text input. There is no typed-date path — Enter or Space opens the calendar, which autofocuses, so focus lands where the next keystroke is expected.",
     "The calendar icon is aria-hidden; the trigger's text is its accessible name, so an empty picker needs placeholder text that says what it selects.",
     "In range mode the popover stays open after the first date, because a range is not a complete answer until both ends are in."
-  ]
+  ],
+  "examples": "complete"
 }

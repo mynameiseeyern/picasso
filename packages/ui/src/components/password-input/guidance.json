@@ -1,7 +1,10 @@
 {
   "component": "PasswordInput",
   "summary": "A password field with a show / hide toggle.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "40000625:564" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "40000625:564"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -15,7 +18,8 @@
       "id": "new-password",
       "dont": "Leave autocomplete as current-password on a 'choose a password' field.",
       "do": "Set autoComplete='new-password' there.",
-      "why": "It is the signal password managers use to offer a strong generated password instead of filling an old one."
+      "why": "It is the signal password managers use to offer a strong generated password instead of filling an old one.",
+      "example": false
     },
     {
       "id": "no-confirm-field",
@@ -27,5 +31,6 @@
   "a11y": [
     "The eye is a button with aria-pressed and a label that says what it will do: 'Show password' / 'Hide password'.",
     "Autocorrect, autocapitalise and spellcheck are off, so a revealed password is not 'corrected'."
-  ]
+  ],
+  "examples": "complete"
 }

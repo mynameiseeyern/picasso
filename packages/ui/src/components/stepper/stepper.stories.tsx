@@ -10,6 +10,9 @@ import {
   StepperTitle,
   StepperTrack,
 } from "./stepper";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Progress } from "../progress/progress";
 
 const meta: Meta<typeof Stepper> = {
   title: "Components/Stepper",
@@ -206,5 +209,106 @@ export const Narrow: Story = {
         ))}
       </Stepper>
     </div>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+const NINE = Array.from({ length: 9 }, (_, i) => ({ title: `Step ${i + 1}` }));
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("three-to-five")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <Stepper value={2}>
+              {NINE.map((s, i) => (
+                <StepperItem key={s.title} index={i}>
+                  <StepperIndicator />
+                  <StepperSeparator />
+                </StepperItem>
+              ))}
+            </Stepper>
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Stepper value={2}>
+              {STEPS.map((s, i) => (
+                <StepperItem key={s.title} index={i}>
+                  <StepperIndicator />
+                  <StepperSeparator />
+                </StepperItem>
+              ))}
+            </Stepper>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("pick-the-layout-for-the-space")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <Stepper value={1} orientation="vertical">
+              {STEPS.slice(0, 2).map((s, i) => (
+                <StepperItem key={s.title} index={i}>
+                  <StepperTrack>
+                    <StepperIndicator />
+                    <StepperSeparator />
+                  </StepperTrack>
+                  <StepperContent>
+                    <StepperTitle>{s.title}</StepperTitle>
+                    <StepperDescription>{s.description}</StepperDescription>
+                  </StepperContent>
+                </StepperItem>
+              ))}
+            </Stepper>
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Stepper value={1}>
+              {STEPS.slice(0, 2).map((s, i) => (
+                <StepperItem key={s.title} index={i}>
+                  <StepperIndicator />
+                  <StepperSeparator />
+                </StepperItem>
+              ))}
+            </Stepper>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("not-a-progress-bar")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <Stepper value={2}>
+              {STEPS.map((s, i) => (
+                <StepperItem key={s.title} index={i}>
+                  <StepperIndicator />
+                  <StepperSeparator />
+                </StepperItem>
+              ))}
+            </Stepper>
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Progress value={62} label="Importing endpoints" />
+          </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

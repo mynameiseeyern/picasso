@@ -1,7 +1,10 @@
 {
   "component": "FileUpload",
   "summary": "Pick a file, and show chosen files as rows with size and progress.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "40000625:568" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "40000625:568"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "figma",
   "pairs": [
@@ -27,5 +30,6 @@
   "a11y": [
     "The native file input stays in the page (visually hidden), labelled by the whole field — so keyboard, accept filtering and form submission all behave natively.",
     "Upload progress is a progressbar named 'Uploading <file>' with aria-valuenow."
-  ]
+  ],
+  "examples": "complete"
 }

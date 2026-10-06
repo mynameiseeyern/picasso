@@ -19,13 +19,15 @@
       "id": "announce-once",
       "dont": "Let a screen reader meet twelve skeleton blocks.",
       "do": "Hide them (they already are) and announce the wait once on the region.",
-      "why": "Twelve empty boxes read out one at a time tells the person nothing about what is happening."
+      "why": "Twelve empty boxes read out one at a time tells the person nothing about what is happening.",
+      "example": false
     },
     {
       "id": "not-for-every-wait",
       "dont": "Flash skeletons for a request that usually takes 200ms.",
       "do": "Show them only past about half a second, or keep the old content in place.",
-      "why": "A skeleton that appears and vanishes reads as a glitch. Below the threshold, nothing at all is calmer."
+      "why": "A skeleton that appears and vanishes reads as a glitch. Below the threshold, nothing at all is calmer.",
+      "example": false
     },
     {
       "id": "not-a-spinner",
@@ -44,5 +46,6 @@
     "Always aria-hidden. A skeleton is a picture of content, and a screen reader reading twelve grey boxes has been told nothing.",
     "The container announces the wait once instead — aria-busy on the region, or a single polite live region saying \"Loading dashboards\". The skeletons stay silent underneath it.",
     "The pulse stops under prefers-reduced-motion via motion-reduce:animate-none, and the test asserts it."
-  ]
+  ],
+  "examples": "complete"
 }

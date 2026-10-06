@@ -56,5 +56,6 @@
     "The hover response is decoration. Nothing inside the picture is focusable and nothing is conveyed only by it, so a keyboard or screen-reader user misses nothing.",
     "Under prefers-reduced-motion nothing travels: lift changes state without the slide, magnify moves the accent and leaves the radii alone, and sequence does not run. The drawing at rest already says what it means.",
     "The glyphs inside are aria-hidden — the label speaks for the whole picture."
-  ]
+  ],
+  "examples": "complete"
 }

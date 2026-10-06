@@ -12,19 +12,22 @@
       "id": "always-a-fallback",
       "dont": "Render an avatar with only an image source.",
       "do": "Always give it initials or the generic person to fall back to.",
-      "why": "Profile pictures 404 more than anything else on a page. Without a fallback the layout collapses to an empty circle."
+      "why": "Profile pictures 404 more than anything else on a page. Without a fallback the layout collapses to an empty circle.",
+      "example": false
     },
     {
       "id": "name-the-status",
       "dont": "Let the dot be the only thing saying someone is offline.",
       "do": "Give AvatarStatus a label, and repeat the state in text nearby.",
-      "why": "A colour on a 10px dot is invisible to a screen reader and hard for anyone who does not know the convention."
+      "why": "A colour on a 10px dot is invisible to a screen reader and hard for anyone who does not know the convention.",
+      "example": false
     },
     {
       "id": "not-a-button",
       "dont": "Hang the only route to a profile off clicking the avatar.",
       "do": "Wrap it in a real link or button with a name.",
-      "why": "An avatar is an image. Nothing about it says it can be activated, and nothing announces where it goes."
+      "why": "An avatar is an image. Nothing about it says it can be activated, and nothing announces where it goes.",
+      "example": false
     },
     {
       "id": "initials-are-not-names",
@@ -49,5 +52,6 @@
     "AvatarStatus carries role=\"img\" with an aria-label — \"online\", \"3 unread\", or whatever label says. A dot that silently turns green tells a screen reader nothing.",
     "The User fallback icon and the verified badge are both aria-hidden; the status wrapper's label is the only text in it.",
     "The overflow \"+N\" button takes an explicit label. It is an icon and a number with no sentence of its own."
-  ]
+  ],
+  "examples": "complete"
 }

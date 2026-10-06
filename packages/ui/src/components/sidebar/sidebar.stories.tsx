@@ -35,6 +35,8 @@ import {
 } from "./sidebar";
 import clarionBrand from "../../brand-assets/Clarion.svg";
 import consoleBrand from "../../brand-assets/Console.svg";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 const meta: Meta<typeof SidebarProvider> = {
   title: "Components/Sidebar",
@@ -354,4 +356,164 @@ export const PhoneNav: Story = {
       </div>
     );
   },
+};
+
+const pair = pairOf(guidance);
+
+/* A rail on its own, so a figure can show one at a time. The provider is
+   what carries collapsed, so each example brings its own. */
+function Rail({
+  collapsed,
+  children,
+}: {
+  collapsed?: boolean;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="h-56">
+      <SidebarProvider defaultCollapsed={collapsed}>
+        <Sidebar>
+          <SidebarContent>{children}</SidebarContent>
+        </Sidebar>
+      </SidebarProvider>
+    </div>
+  );
+}
+
+const FLAT = [
+  "Overview",
+  "Endpoints",
+  "Trunks",
+  "Alerts",
+  "Reports",
+  "Collectors",
+];
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("labels-not-icons-alone")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Rail collapsed>
+            <SidebarGroup>
+              <SidebarMenu>
+                {NAV.slice(0, 4).map((item) => (
+                  <SidebarMenuItem key={item.label}>
+                    <SidebarMenuButton>
+                      <item.icon aria-hidden />
+                      <SidebarMenuLabel>{item.label}</SidebarMenuLabel>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroup>
+          </Rail>
+        }
+        do={
+          <Rail>
+            <SidebarGroup>
+              <SidebarMenu>
+                {NAV.slice(0, 4).map((item) => (
+                  <SidebarMenuItem key={item.label}>
+                    <SidebarMenuButton>
+                      <item.icon aria-hidden />
+                      <SidebarMenuLabel>{item.label}</SidebarMenuLabel>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroup>
+          </Rail>
+        }
+      />
+
+      <Guidance
+        pair={pair("group-what-belongs-together")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Rail>
+            <SidebarGroup>
+              <SidebarMenu>
+                {FLAT.map((label) => (
+                  <SidebarMenuItem key={label}>
+                    <SidebarMenuButton>
+                      <SidebarMenuLabel>{label}</SidebarMenuLabel>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroup>
+          </Rail>
+        }
+        do={
+          <Rail>
+            <SidebarGroup>
+              <SidebarGroupLabel>Monitoring</SidebarGroupLabel>
+              <SidebarMenu>
+                {FLAT.slice(0, 3).map((label) => (
+                  <SidebarMenuItem key={label}>
+                    <SidebarMenuButton>
+                      <SidebarMenuLabel>{label}</SidebarMenuLabel>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroup>
+            <SidebarGroup>
+              <SidebarGroupLabel>Administration</SidebarGroupLabel>
+              <SidebarMenu>
+                {FLAT.slice(3).map((label) => (
+                  <SidebarMenuItem key={label}>
+                    <SidebarMenuButton>
+                      <SidebarMenuLabel>{label}</SidebarMenuLabel>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroup>
+          </Rail>
+        }
+      />
+
+      <Guidance
+        pair={pair("badges-are-counts")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Rail>
+            <SidebarGroup>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton>
+                    <SidebarMenuLabel>Alerts</SidebarMenuLabel>
+                    <SidebarMenuBadge>Critical</SidebarMenuBadge>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroup>
+          </Rail>
+        }
+        do={
+          <Rail>
+            <SidebarGroup>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <SidebarMenuButton>
+                    <SidebarMenuLabel>Alerts</SidebarMenuLabel>
+                    <SidebarMenuBadge>12</SidebarMenuBadge>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroup>
+          </Rail>
+        }
+      />
+    </GuidanceStory>
+  ),
 };

@@ -7,6 +7,9 @@ import {
   FieldDescription,
   FieldLabel,
 } from "../field/field";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Radio, RadioGroup } from "../radio-group/radio-group";
 
 const actions: SelectOption[] = [
   { value: "probe.created", label: "Created", group: "Probe" },
@@ -102,4 +105,40 @@ export const Disabled: Story = {
 /** Invalid is `aria-invalid` on the trigger: the border turns red, and a Field sets it for you. */
 export const Invalid: Story = {
   args: { "aria-invalid": true },
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("not-for-one-of-a-few")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Select
+            label="Severity"
+            options={[
+              { value: "low", label: "Low" },
+              { value: "medium", label: "Medium" },
+              { value: "high", label: "High" },
+            ]}
+          />
+        }
+        do={
+          <RadioGroup aria-label="Severity" defaultValue="medium">
+            {["Low", "Medium", "High"].map((l) => (
+              <label key={l} className="flex items-center gap-2 text-body-sm">
+                <Radio value={l.toLowerCase()} />
+                {l}
+              </label>
+            ))}
+          </RadioGroup>
+        }
+      />
+    </GuidanceStory>
+  ),
 };

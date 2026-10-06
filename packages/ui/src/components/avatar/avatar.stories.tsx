@@ -7,6 +7,8 @@ import {
   AvatarImage,
   AvatarStatus,
 } from "./avatar";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 const meta: Meta<typeof Avatar> = {
   title: "Components/Avatar",
@@ -192,5 +194,97 @@ export const GroupOverflow: Story = {
         </Avatar>
       ))}
     </AvatarGroup>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+const TEAM = ["AB", "CD", "EF", "GH", "IJ", "KL", "MN", "OP"];
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("initials-are-not-names")}
+        width="wide"
+        dont={
+          <div className="flex flex-col gap-2">
+            {["AB", "CD", "EF"].map((i) => (
+              <Avatar key={i} size="sm">
+                <AvatarFallback>{i}</AvatarFallback>
+              </Avatar>
+            ))}
+          </div>
+        }
+        do={
+          <div className="flex flex-col gap-2">
+            {[
+              ["AB", "Ana Bianchi"],
+              ["CD", "Chen Davies"],
+              ["EF", "Eli Fraser"],
+            ].map(([i, name]) => (
+              <div key={i} className="flex items-center gap-2">
+                <Avatar size="sm">
+                  <AvatarFallback>{i}</AvatarFallback>
+                </Avatar>
+                <span className="text-body-sm">{name}</span>
+              </div>
+            ))}
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("size-with-the-row")}
+        width="wide"
+        dont={
+          <div className="flex flex-col gap-2">
+            <Avatar size="xs">
+              <AvatarFallback>AB</AvatarFallback>
+            </Avatar>
+            <Avatar size="md">
+              <AvatarFallback>CD</AvatarFallback>
+            </Avatar>
+            <Avatar size="sm">
+              <AvatarFallback>EF</AvatarFallback>
+            </Avatar>
+          </div>
+        }
+        do={
+          <div className="flex flex-col gap-2">
+            {["AB", "CD", "EF"].map((i) => (
+              <Avatar key={i} size="sm">
+                <AvatarFallback>{i}</AvatarFallback>
+              </Avatar>
+            ))}
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("cap-the-group")}
+        width="wide"
+        dont={
+          <AvatarGroup>
+            {TEAM.map((i) => (
+              <Avatar key={i} size="sm">
+                <AvatarFallback>{i}</AvatarFallback>
+              </Avatar>
+            ))}
+          </AvatarGroup>
+        }
+        do={
+          <AvatarGroup max={4}>
+            {TEAM.map((i) => (
+              <Avatar key={i} size="sm">
+                <AvatarFallback>{i}</AvatarFallback>
+              </Avatar>
+            ))}
+          </AvatarGroup>
+        }
+      />
+    </GuidanceStory>
   ),
 };

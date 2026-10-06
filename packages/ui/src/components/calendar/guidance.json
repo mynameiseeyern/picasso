@@ -12,13 +12,15 @@
       "id": "say-what-is-unavailable",
       "dont": "Grey out dates and leave people guessing why.",
       "do": "Say the rule near the calendar — \"data is kept for 13 months\".",
-      "why": "A disabled day looks the same whether it is in the past, outside a retention window or already booked. Only words separate them."
+      "why": "A disabled day looks the same whether it is in the past, outside a retention window or already booked. Only words separate them.",
+      "example": false
     },
     {
       "id": "two-months-for-a-range",
       "dont": "Ask for a range in a single month view.",
       "do": "Show two months when the span is likely to cross one.",
-      "why": "Most ranges cross a month boundary, and paging back and forth loses the first end of the selection from view."
+      "why": "Most ranges cross a month boundary, and paging back and forth loses the first end of the selection from view.",
+      "example": false
     },
     {
       "id": "not-for-distant-dates",
@@ -30,18 +32,21 @@
       "id": "today-is-not-selected",
       "dont": "Style today the same as the chosen day.",
       "do": "Keep today's subtle fill distinct from the selected day's solid one.",
-      "why": "They answer different questions — where am I, and what did I pick. Merged, the calendar appears to have chosen for you."
+      "why": "They answer different questions — where am I, and what did I pick. Merged, the calendar appears to have chosen for you.",
+      "example": false
     },
     {
       "id": "respect-the-week-start",
       "dont": "Hardcode Sunday or Monday as the first column.",
       "do": "Let the locale decide.",
-      "why": "People read the grid by shape as much as by number, and a week starting on the wrong day is misread rather than re-read."
+      "why": "People read the grid by shape as much as by number, and a week starting on the wrong day is misread rather than re-read.",
+      "example": false
     }
   ],
   "a11y": [
     "react-day-picker owns the grid semantics, the roving focus and arrow-key movement. Do not re-implement them.",
     "Only the chevron glyph is overridden, and it is aria-hidden — the navigation buttons take their names from react-day-picker, so changing its locale changes them.",
     "Disabled days keep pointer-events-none and fg/disabled but stay in the accessibility tree, which is what lets someone discover a date is unavailable rather than just failing to reach it."
-  ]
+  ],
+  "examples": "complete"
 }

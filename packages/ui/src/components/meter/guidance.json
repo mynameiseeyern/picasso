@@ -24,7 +24,8 @@
       "id": "needs-a-known-ceiling",
       "dont": "Use a meter for an unbounded number like calls per hour.",
       "do": "Use it where the maximum is real and known — MOS out of 5, a score out of 100.",
-      "why": "The bar is a fraction of something. With an invented ceiling, the fill is an opinion rather than a measurement."
+      "why": "The bar is a fraction of something. With an invented ceiling, the fill is an opinion rather than a measurement.",
+      "example": false
     },
     {
       "id": "unknown-shows-nothing",
@@ -37,5 +38,6 @@
     "The meter is aria-hidden and carries no ARIA value of its own, because it is drawn beside a number that already says the value.",
     "For a standalone meter with no visible number, give it role=\"meter\" and the aria-value* attributes yourself. The component does not guess.",
     "The unknown and neutral statuses are a colour difference only. If the distinction matters, the surrounding component has to say it in words."
-  ]
+  ],
+  "examples": "complete"
 }

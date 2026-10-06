@@ -6,6 +6,9 @@ import {
   FieldDescription,
   FieldLabel,
 } from "../field/field";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Input } from "../input/input";
 
 const meta: Meta<typeof PasswordInput> = {
   title: "Components/PasswordInput",
@@ -61,4 +64,69 @@ export const Disabled: Story = {
 /** Invalid is `aria-invalid`, not a prop: the border turns red, and a Field sets it for you. */
 export const Invalid: Story = {
   args: { "aria-invalid": true, defaultValue: "secret" },
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("always-offer-show")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Field>
+            <FieldLabel>Password</FieldLabel>
+            <FieldControl>
+              <Input type="password" defaultValue="hunter2!" />
+            </FieldControl>
+          </Field>
+        }
+        do={
+          <Field>
+            <FieldLabel>Password</FieldLabel>
+            <FieldControl>
+              <PasswordInput defaultValue="hunter2!" />
+            </FieldControl>
+          </Field>
+        }
+      />
+
+      <Guidance
+        pair={pair("no-confirm-field")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full space-y-3">
+            <Field>
+              <FieldLabel>Password</FieldLabel>
+              <FieldControl>
+                <PasswordInput />
+              </FieldControl>
+            </Field>
+            <Field>
+              <FieldLabel>Confirm password</FieldLabel>
+              <FieldControl>
+                <PasswordInput />
+              </FieldControl>
+            </Field>
+          </div>
+        }
+        do={
+          <Field>
+            <FieldLabel>Password</FieldLabel>
+            <FieldControl>
+              <PasswordInput />
+            </FieldControl>
+            <FieldDescription>
+              Reveal it to check what you typed.
+            </FieldDescription>
+          </Field>
+        }
+      />
+    </GuidanceStory>
+  ),
 };

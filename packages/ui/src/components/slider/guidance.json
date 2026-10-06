@@ -24,24 +24,28 @@
       "id": "name-both-thumbs",
       "dont": "Leave a range slider's two thumbs unlabelled.",
       "do": "Name them — Minimum and Maximum.",
-      "why": "A screen reader announces two controls both called \"slider\", with no way to tell which end is which."
+      "why": "A screen reader announces two controls both called \"slider\", with no way to tell which end is which.",
+      "example": false
     },
     {
       "id": "sensible-steps",
       "dont": "Leave step at 1 on a 0–10000 range.",
       "do": "Set a step that matches the precision the value actually has.",
-      "why": "Ten thousand keyboard presses to cross the track is not keyboard support."
+      "why": "Ten thousand keyboard presses to cross the track is not keyboard support.",
+      "example": false
     },
     {
       "id": "disabled-must-look-disabled",
       "dont": "Leave a disabled slider looking exactly like a live one.",
       "do": "Let the disabled treatment show.",
-      "why": "The file draws them identically today. People drag a control that cannot move and conclude the page is broken."
+      "why": "The file draws them identically today. People drag a control that cannot move and conclude the page is broken.",
+      "example": false
     }
   ],
   "a11y": [
     "Radix supplies role=\"slider\", the aria-value* attributes and arrow, Page and Home/End keys on every thumb.",
     "A range slider has two thumbs and therefore needs two names: pass thumbLabels, or both announce the same thing.",
     "Disabled removes the hover and focus effects as well as the pointer. A disabled control that still looks live is the same defect as one that looks disabled and is not."
-  ]
+  ],
+  "examples": "complete"
 }

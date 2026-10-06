@@ -21,19 +21,22 @@
       "id": "name-the-work",
       "dont": "Label it \"Loading\".",
       "do": "Name the work: \"Bringing your fleet online\", \"Iris is thinking\".",
-      "why": "The label is the only thing a screen reader hears, and 'Loading' tells the person nothing."
+      "why": "The label is the only thing a screen reader hears, and 'Loading' tells the person nothing.",
+      "example": false
     },
     {
       "id": "announce-once",
       "dont": "Leave the label on when visible text beside the loader says the same thing.",
       "do": "Pass label={null} so it is announced once.",
-      "why": "Hearing the same sentence twice reads as a bug."
+      "why": "Hearing the same sentence twice reads as a bug.",
+      "example": false
     },
     {
       "id": "no-flash",
       "dont": "Show a loader for a wait that usually ends in 300ms.",
       "do": "Rely on the show delay (Pulse waits 400ms by default; set delay for others).",
-      "why": "A loader that appears and vanishes reads as a glitch, not as work."
+      "why": "A loader that appears and vanishes reads as a glitch, not as work.",
+      "example": false
     },
     {
       "id": "actions-use-buttons",
@@ -46,5 +49,6 @@
     "A loader with text is role=\"status\" with aria-live=\"polite\" and the text in an sr-only span. A loader without text is aria-hidden, because an unlabelled live region announces an interruption that says nothing.",
     "Every animation stops under prefers-reduced-motion — but substitutes rather than deletes. Travel becomes a fade, because a spinner that simply stops looks broken rather than busy.",
     "The SVG filter that gives Fuse its gooey merge is aria-hidden and its id is generated with useId, so two loaders on one page cannot collide."
-  ]
+  ],
+  "examples": "complete"
 }

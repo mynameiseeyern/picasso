@@ -2,6 +2,9 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Loader } from "./loader";
 import { Button } from "../button/button";
 import { Card, CardContent } from "../card/card";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Skeleton } from "../skeleton/skeleton";
 
 const meta: Meta<typeof Loader> = {
   title: "Components/Loader",
@@ -178,5 +181,72 @@ export const Narrow: Story = {
         </CardContent>
       </Card>
     </div>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("skeleton-first")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="flex w-full justify-center">
+            <Loader variant="spinner" size="6" label="Loading endpoints" />
+          </div>
+        }
+        do={
+          <div className="w-full space-y-3" aria-busy>
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Skeleton className="h-4 flex-1" />
+                <Skeleton className="h-4 w-16" />
+              </div>
+            ))}
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("fuse-is-a-brand-moment")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Card>
+            <CardContent>
+              <div className="flex h-28 items-center justify-center">
+                <Loader variant="fuse" size={56} label="Refreshing trunks" />
+              </div>
+            </CardContent>
+          </Card>
+        }
+        do={
+          <Card>
+            <CardContent>
+              <div className="flex h-28 items-center justify-center">
+                <Loader variant="spinner" size="6" label="Refreshing trunks" />
+              </div>
+            </CardContent>
+          </Card>
+        }
+      />
+
+      <Guidance
+        pair={pair("actions-use-buttons")}
+        width="wide"
+        dont={
+          <div className="flex items-center gap-2">
+            <Button variant="secondary">Save changes</Button>
+            <Loader variant="spinner" size="4" label="Saving" />
+          </div>
+        }
+        do={<Button loading>Save changes</Button>}
+      />
+    </GuidanceStory>
   ),
 };

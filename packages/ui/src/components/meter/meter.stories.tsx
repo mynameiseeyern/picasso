@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Meter } from "./meter";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Progress } from "../progress/progress";
 
 const meta: Meta<typeof Meter> = {
   title: "Components/Meter",
@@ -88,5 +91,63 @@ export const Narrow: Story = {
         </div>
       ))}
     </div>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("never-alone")}
+        width="wide"
+        dont={
+          <div className="w-full">
+            <Meter value={3.5} max={5} />
+          </div>
+        }
+        do={
+          <div className="flex w-full items-center gap-3">
+            <Meter value={3.5} max={5} />
+            <span className="ltr-island text-body-sm tabular-nums">3.5</span>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("meter-is-not-progress")}
+        width="wide"
+        dont={
+          <div className="w-full">
+            <Meter value={4} max={5} />
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Progress value={72} label="Importing endpoints" />
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("unknown-shows-nothing")}
+        width="wide"
+        dont={
+          <div className="flex w-full items-center gap-3">
+            <Meter value={0} max={5} />
+            <span className="ltr-island text-body-sm tabular-nums">0</span>
+          </div>
+        }
+        do={
+          <div className="flex w-full items-center gap-3">
+            <Meter value={0} max={5} status="unknown" />
+            <span className="ltr-island text-body-sm tabular-nums">—</span>
+          </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

@@ -30,8 +30,7 @@
       "id": "technical-text-stays-ltr",
       "dont": "Let an IP address, a SIP trace, an ID or a metric take the page's direction.",
       "do": "Put ltr-island on the element that holds it.",
-      "why": "Inside right-to-left text the bidi algorithm reorders punctuation: -5% reads as 5%- and 10.0.0.1:5060 comes apart at the colon.",
-      "example": false
+      "why": "Inside right-to-left text the bidi algorithm reorders punctuation: -5% reads as 5%- and 10.0.0.1:5060 comes apart at the colon."
     },
     {
       "id": "not-everything-mirrors",
@@ -45,5 +44,6 @@
     "Direction is half of what a screen reader needs; the other half is lang on <html>. Set both, or Arabic text is read with the wrong voice.",
     "With the provider in place, arrow-key navigation in Tabs, Radio group, Slider and menus follows the visual order in both directions.",
     "DirectionProvider renders no element of its own, so it cannot change the accessibility tree."
-  ]
+  ],
+  "examples": "complete"
 }

@@ -2,6 +2,10 @@ import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import type { DateRange } from "react-day-picker";
 import { Calendar } from "./calendar";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { NumberInput } from "../number-input/number-input";
+import { Field, FieldControl, FieldLabel } from "../field/field";
 
 const meta: Meta<typeof Calendar> = {
   title: "Components/Calendar",
@@ -102,4 +106,29 @@ export const Multiple: Story = {
       />
     );
   },
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("not-for-distant-dates")}
+        width="wide"
+        stage="tall"
+        dont={<Calendar mode="single" />}
+        do={
+          <Field>
+            <FieldLabel>Year of birth</FieldLabel>
+            <FieldControl>
+              <NumberInput defaultValue={1994} min={1900} max={2026} />
+            </FieldControl>
+          </Field>
+        }
+      />
+    </GuidanceStory>
+  ),
 };

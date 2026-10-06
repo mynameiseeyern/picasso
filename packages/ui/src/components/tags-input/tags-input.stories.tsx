@@ -6,6 +6,9 @@ import {
   FieldDescription,
   FieldLabel,
 } from "../field/field";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Select } from "../select/select";
 
 const meta: Meta<typeof TagsInput> = {
   title: "Components/TagsInput",
@@ -69,5 +72,67 @@ export const Chip: Story = {
         Disabled
       </InputChip>
     </div>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("say-how-to-add")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Field>
+            <FieldLabel>Hosts</FieldLabel>
+            <FieldControl>
+              <TagsInput defaultValue={["probe-04"]} />
+            </FieldControl>
+          </Field>
+        }
+        do={
+          <Field>
+            <FieldLabel>Hosts</FieldLabel>
+            <FieldControl>
+              <TagsInput defaultValue={["probe-04"]} />
+            </FieldControl>
+            <FieldDescription>Separate hosts with a comma.</FieldDescription>
+          </Field>
+        }
+      />
+
+      <Guidance
+        pair={pair("fixed-set-is-select")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Field>
+            <FieldLabel>Region</FieldLabel>
+            <FieldControl>
+              <TagsInput defaultValue={["Sydney"]} />
+            </FieldControl>
+          </Field>
+        }
+        do={
+          <Field>
+            <FieldLabel>Region</FieldLabel>
+            <FieldControl>
+              <Select
+                label="Region"
+                options={[
+                  { value: "syd", label: "Sydney" },
+                  { value: "sin", label: "Singapore" },
+                  { value: "lon", label: "London" },
+                ]}
+              />
+            </FieldControl>
+          </Field>
+        }
+      />
+    </GuidanceStory>
   ),
 };

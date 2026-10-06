@@ -7,6 +7,9 @@ import {
   FieldError,
   FieldLabel,
 } from "../field/field";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Input } from "../input/input";
 
 const meta: Meta<typeof NumberInput> = {
   title: "Components/NumberInput",
@@ -70,5 +73,59 @@ export const InAField: Story = {
         </FieldError>
       </Field>
     </div>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("not-for-identifiers")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Field>
+            <FieldLabel>Collector port</FieldLabel>
+            <FieldControl>
+              <NumberInput defaultValue={8086} />
+            </FieldControl>
+          </Field>
+        }
+        do={
+          <Field>
+            <FieldLabel>Collector port</FieldLabel>
+            <FieldControl>
+              <Input inputMode="numeric" defaultValue="8086" />
+            </FieldControl>
+          </Field>
+        }
+      />
+
+      <Guidance
+        pair={pair("unit-beside")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Field>
+            <FieldLabel>Timeout</FieldLabel>
+            <FieldControl>
+              <NumberInput defaultValue={30} />
+            </FieldControl>
+          </Field>
+        }
+        do={
+          <Field>
+            <FieldLabel>Timeout (seconds)</FieldLabel>
+            <FieldControl>
+              <NumberInput defaultValue={30} />
+            </FieldControl>
+          </Field>
+        }
+      />
+    </GuidanceStory>
   ),
 };

@@ -18,7 +18,8 @@
       "id": "not-for-primary-content",
       "dont": "Hide the thing the page is about behind a closed section.",
       "do": "Collapse what most people will skip — edge cases, detail, history.",
-      "why": "Anything collapsed is not found, not read and not searchable on the page. That is the cost of every closed row."
+      "why": "Anything collapsed is not found, not read and not searchable on the page. That is the cost of every closed row.",
+      "example": false
     },
     {
       "id": "headings-are-headings",
@@ -30,7 +31,8 @@
       "id": "one-open-or-many",
       "dont": "Default to multiple open just to avoid choosing.",
       "do": "Single for comparison-free reading, multiple when people cross-reference sections.",
-      "why": "Single keeps the page short; multiple keeps two answers side by side. Which one is right depends on the reading, not the component."
+      "why": "Single keeps the page short; multiple keeps two answers side by side. Which one is right depends on the reading, not the component.",
+      "example": false
     },
     {
       "id": "divider-above",
@@ -43,5 +45,6 @@
     "Radix sets aria-expanded and aria-controls on the trigger and the region on the panel. Do not add your own.",
     "The chevron is aria-hidden, so the trigger's text is its entire accessible name — a trigger with only an icon has none.",
     "Focus is a 2px ring offset against bg/app. :focus-visible clears the browser outline globally, so a trigger without the ring has no focus indicator at all."
-  ]
+  ],
+  "examples": "complete"
 }

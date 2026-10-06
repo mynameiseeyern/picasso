@@ -5,6 +5,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./accordion";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 const meta: Meta<typeof Accordion> = {
   title: "Components/Accordion",
@@ -145,5 +147,100 @@ export const Narrow: Story = {
         ))}
       </Accordion>
     </div>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("icon-sets-the-expectation")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="a">
+                <AccordionTrigger>Is my data encrypted?</AccordionTrigger>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Accordion type="single" collapsible variant="faq">
+              <AccordionItem value="a">
+                <AccordionTrigger>Is my data encrypted?</AccordionTrigger>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("headings-are-headings")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="a">
+                <AccordionTrigger>More</AccordionTrigger>
+              </AccordionItem>
+              <AccordionItem value="b" divider>
+                <AccordionTrigger>Details</AccordionTrigger>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="a">
+                <AccordionTrigger>Retention and billing</AccordionTrigger>
+              </AccordionItem>
+              <AccordionItem value="b" divider>
+                <AccordionTrigger>Collector requirements</AccordionTrigger>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("divider-above")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="a">
+                <AccordionTrigger>Retention</AccordionTrigger>
+              </AccordionItem>
+              <AccordionItem value="b">
+                <AccordionTrigger>Collectors</AccordionTrigger>
+              </AccordionItem>
+            </Accordion>
+            <hr className="border-line-neutral-muted" />
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Accordion type="single" collapsible>
+              <AccordionItem value="a">
+                <AccordionTrigger>Retention</AccordionTrigger>
+              </AccordionItem>
+              <AccordionItem value="b" divider>
+                <AccordionTrigger>Collectors</AccordionTrigger>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

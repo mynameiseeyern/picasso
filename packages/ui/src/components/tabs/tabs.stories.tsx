@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Activity, Bell, Settings } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 const meta: Meta<typeof Tabs> = {
   title: "Components/Tabs",
@@ -171,5 +173,59 @@ export const FullWidth: Story = {
         </TabsList>
       </Tabs>
     </div>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+const LONG = [
+  "Overview",
+  "Trunks and gateways",
+  "Alert rules",
+  "Retention policy",
+  "Collector health",
+  "Scheduled reports",
+  "Access and roles",
+  "Billing history",
+  "Audit log",
+];
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("go-vertical-when-long")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <Tabs defaultValue={LONG[0]}>
+              <TabsList>
+                {LONG.map((l) => (
+                  <TabsTrigger key={l} value={l}>
+                    {l}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Tabs defaultValue={LONG[0]}>
+              <TabsList>
+                {LONG.slice(0, 4).map((l) => (
+                  <TabsTrigger key={l} value={l}>
+                    {l}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

@@ -12,7 +12,8 @@
       "id": "only-for-linear",
       "dont": "Use a stepper for a form people can fill in any order.",
       "do": "Use it when the steps genuinely run in sequence.",
-      "why": "A stepper promises an order. On a flow that has none it makes people hunt for a next button that was never the point."
+      "why": "A stepper promises an order. On a flow that has none it makes people hunt for a next button that was never the point.",
+      "example": false
     },
     {
       "id": "three-to-five",
@@ -30,7 +31,8 @@
       "id": "state-is-not-only-colour",
       "dont": "Rely on the fill alone to say which step is current.",
       "do": "Keep aria-current and the indicator's shape doing the work too.",
-      "why": "A completed step and a current one are both filled. The check, the dot and aria-current are what actually distinguish them."
+      "why": "A completed step and a current one are both filled. The check, the dot and aria-current are what actually distinguish them.",
+      "example": false
     },
     {
       "id": "not-a-progress-bar",
@@ -42,5 +44,6 @@
   "a11y": [
     "The current step sets aria-current=\"step\".",
     "The connectors and the state glyphs are aria-hidden — a completed step has to say \"completed\" in its text or its label, because a tick is a picture."
-  ]
+  ],
+  "examples": "complete"
 }

@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Skeleton, SkeletonText } from "./skeleton";
 import { Card, CardContent, CardHeader } from "../card/card";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Button } from "../button/button";
 
 const meta: Meta<typeof Skeleton> = {
   title: "Components/Skeleton",
@@ -92,5 +95,70 @@ export const Narrow: Story = {
         </div>
       ))}
     </div>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("match-the-real-thing")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full space-y-2">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+          </div>
+        }
+        do={
+          <div className="w-full space-y-3" aria-busy>
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="flex items-center gap-4">
+                <Skeleton className="h-4 flex-1" />
+                <Skeleton className="h-4 w-16" />
+                <Skeleton className="h-4 w-10" />
+              </div>
+            ))}
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("not-a-spinner")}
+        width="wide"
+        dont={<Skeleton className="h-9 w-28" />}
+        do={<Button loading>Save changes</Button>}
+      />
+
+      <Guidance
+        pair={pair("dont-skeleton-the-chrome")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full space-y-3">
+            <Skeleton className="h-5 w-32" />
+            <Skeleton className="h-9 w-24" />
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+          </div>
+        }
+        do={
+          <div className="w-full space-y-3">
+            <p className="text-label-md text-content-neutral-emphasis">
+              Endpoints
+            </p>
+            <Button size="sm">Add endpoint</Button>
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-full" />
+          </div>
+        }
+      />
+    </GuidanceStory>
   ),
 };

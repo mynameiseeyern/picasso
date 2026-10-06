@@ -2,6 +2,8 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Command } from "lucide-react";
 import { Button } from "../button/button";
 import { Kbd, KbdGroup } from "./kbd";
+import guidance from "./guidance.json";
+import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
 
 const backgrounds = [
   "default",
@@ -68,5 +70,37 @@ export const InButton: Story = {
         <Kbd background="on-emphasis">K</Kbd>
       </KbdGroup>
     </Button>
+  ),
+};
+
+const pair = pairOf(guidance);
+
+export const DoAndDont: Story = {
+  name: "Do and Don't",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <GuidanceStory>
+      <Guidance
+        pair={pair("on-emphasis-only-on-fills")}
+        dont={<Kbd background="on-emphasis">K</Kbd>}
+        do={
+          <Button>
+            Search
+            <Kbd background="on-emphasis">K</Kbd>
+          </Button>
+        }
+      />
+
+      <Guidance
+        pair={pair("group-combos")}
+        dont={<Kbd>Ctrl+K</Kbd>}
+        do={
+          <KbdGroup>
+            <Kbd>Ctrl</Kbd>
+            <Kbd>K</Kbd>
+          </KbdGroup>
+        }
+      />
+    </GuidanceStory>
   ),
 };

@@ -12,13 +12,15 @@
       "id": "siblings-of-one-thing",
       "dont": "Use tabs to move between different objects, or as page navigation.",
       "do": "Use them for views of one object — an endpoint's Overview, Trunks, Alerts.",
-      "why": "Tabs promise you are still looking at the same thing. Break that and people lose track of what they are on."
+      "why": "Tabs promise you are still looking at the same thing. Break that and people lose track of what they are on.",
+      "example": false
     },
     {
       "id": "pick-the-type-by-place",
       "dont": "Use a segmented control for page-level sections.",
       "do": "Underline for page sections, Minimal inside a card or drawer, Brand/Gray/Border for compact toggles.",
-      "why": "The file assigns each type a place. Segmented styles read as a control; underline reads as structure."
+      "why": "The file assigns each type a place. Segmented styles read as a control; underline reads as structure.",
+      "example": false
     },
     {
       "id": "go-vertical-when-long",
@@ -30,17 +32,20 @@
       "id": "no-tab-is-a-form-step",
       "dont": "Use tabs for a sequence someone must complete in order.",
       "do": "Use Stepper for order, tabs for free movement.",
-      "why": "Tabs say \"look wherever you like\". A sequence needs to say \"finish this first\"."
+      "why": "Tabs say \"look wherever you like\". A sequence needs to say \"finish this first\".",
+      "example": false
     },
     {
       "id": "keep-the-panel-still",
       "dont": "Let the panel resize the page as you move between tabs.",
       "do": "Give the panel a stable minimum height where the content varies.",
-      "why": "The tabs move under the pointer if the page reflows, and the next click lands on the wrong one."
+      "why": "The tabs move under the pointer if the page reflows, and the next click lands on the wrong one.",
+      "example": false
     }
   ],
   "a11y": [
     "Radix supplies the tablist, tab and tabpanel roles and arrow-key movement between tabs.",
     "The panel is focusable and carries its own ring, so keyboard users reach the content after the tab strip rather than tabbing through every tab first."
-  ]
+  ],
+  "examples": "complete"
 }
