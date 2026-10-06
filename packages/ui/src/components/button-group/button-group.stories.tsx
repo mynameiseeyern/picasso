@@ -13,6 +13,10 @@ import { ButtonGroup } from "./button-group";
 
 import guidance from "./guidance.json";
 import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import {
+  SegmentedControl,
+  SegmentedControlItem,
+} from "../segmented-control/segmented-control";
 
 const meta: Meta<typeof ButtonGroup> = {
   title: "Components/Button group",
@@ -223,6 +227,56 @@ export const DoAndDont: Story = {
               </Button>
             </ButtonGroup>
           </>
+        }
+      />
+
+      <Guidance
+        pair={pair("group-is-not-a-choice")}
+        width="wide"
+        dont={
+          <ButtonGroup aria-label="View as">
+            <Button variant="outline">Day</Button>
+            <Button variant="secondary">Week</Button>
+            <Button variant="outline">Month</Button>
+          </ButtonGroup>
+        }
+        do={
+          <SegmentedControl defaultValue="week" aria-label="View as">
+            <SegmentedControlItem value="day">Day</SegmentedControlItem>
+            <SegmentedControlItem value="week">Week</SegmentedControlItem>
+            <SegmentedControlItem value="month">Month</SegmentedControlItem>
+          </SegmentedControl>
+        }
+      />
+
+      <Guidance
+        pair={pair("keep-it-short")}
+        width="wide"
+        stage="tall"
+        dont={
+          <ButtonGroup aria-label="Actions">
+            {["Copy", "Move", "Rename", "Export", "Archive", "Share"].map(
+              (l) => (
+                <Button key={l} variant="outline" size="sm">
+                  {l}
+                </Button>
+              ),
+            )}
+          </ButtonGroup>
+        }
+        do={
+          <ButtonGroup aria-label="Actions">
+            <Button variant="outline" size="sm">
+              Copy
+            </Button>
+            <Button variant="outline" size="sm">
+              Export
+            </Button>
+            <Button variant="outline" size="sm">
+              More
+              <ChevronDown aria-hidden />
+            </Button>
+          </ButtonGroup>
         }
       />
     </GuidanceStory>

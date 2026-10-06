@@ -55,7 +55,8 @@
       "id": "help-is-background",
       "dont": "Put what someone needs to answer in the help tooltip.",
       "do": "Use help for background, and the hint for anything needed to fill the field in.",
-      "why": "A tooltip is hidden until someone thinks to open it, and not at all on touch. The hint is always there."
+      "why": "A tooltip is hidden until someone thinks to open it, and not at all on touch. The hint is always there.",
+      "example": false
     },
     {
       "id": "option-row-is-the-target",
@@ -67,7 +68,8 @@
       "id": "option-row-holds-one-control",
       "dont": "Put a help button or a remove control inside an option row.",
       "do": "Put it beside the row.",
-      "why": "The row is a <label>, so it forwards every click inside it to its control — a second button there would toggle the checkbox instead of doing its own job. FieldLabel's `help` sits outside the label for the same reason."
+      "why": "The row is a <label>, so it forwards every click inside it to its control — a second button there would toggle the checkbox instead of doing its own job. FieldLabel's `help` sits outside the label for the same reason.",
+      "example": false
     }
   ],
   "a11y": [
@@ -77,5 +79,6 @@
     "The required asterisk is aria-hidden; aria-required on the control is what assistive tech reads.",
     "The label names the control; a `description` is wired with aria-describedby instead, so a second line explains the option rather than becoming part of its name.",
     "Row height is 24 everywhere and 44 under (pointer: coarse), so a thumb gets a 44px target without desktop density changing. See docs/foundations/responsive.md."
-  ]
+  ],
+  "examples": "complete"
 }

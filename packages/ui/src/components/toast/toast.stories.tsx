@@ -371,6 +371,81 @@ export const DoAndDont: Story = {
           </>
         }
       />
+
+      <Guidance
+        pair={pair("toast-or-alert")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Screen>
+            <Sample
+              variant="warning"
+              appearance="subtle"
+              title="Your trial ends in 3 days"
+              action="Choose a plan"
+            />
+          </Screen>
+        }
+        do={
+          <Screen>
+            <Sample
+              variant="success"
+              appearance="subtle"
+              title="Plan updated"
+              description="Billing starts on 1 November."
+            />
+          </Screen>
+        }
+      />
+
+      <Guidance
+        pair={pair("emphasis-sparingly")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Screen>
+            <Sample
+              variant="success"
+              appearance="emphasis"
+              title="Endpoint saved"
+            />
+          </Screen>
+        }
+        do={
+          <Screen>
+            <Sample
+              variant="success"
+              appearance="subtle"
+              title="Endpoint saved"
+            />
+          </Screen>
+        }
+      />
+
+      <Guidance
+        pair={pair("one-tone-means-one-thing")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Screen>
+            <Sample
+              variant="destructive"
+              appearance="subtle"
+              title="Endpoint probe-04 deleted"
+            />
+          </Screen>
+        }
+        do={
+          <Screen>
+            <Sample
+              variant="destructive"
+              appearance="subtle"
+              title="Could not delete probe-04"
+              description="The collector did not respond."
+            />
+          </Screen>
+        }
+      />
     </GuidanceStory>
   ),
 };

@@ -1,7 +1,10 @@
 {
   "component": "Input",
   "summary": "A single-line text field. Always paired with a visible label.",
-  "figma": { "fileKey": "v61McMI1fYNAN8DonhNjHQ", "nodeId": "720:2119" },
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "720:2119"
+  },
   "structureFrom": "figma",
   "measurementsFrom": "shadcn",
   "pairs": [
@@ -40,18 +43,21 @@
       "id": "never-remove-the-ring",
       "dont": "Remove the focus ring because the border already changes.",
       "do": "Keep both — border/input/focused and the 2px ring.",
-      "why": "A 1px border change is not a sufficient focus indicator, and in dark mode it is nearly invisible. The ring is what satisfies SC 2.4.7."
+      "why": "A 1px border change is not a sufficient focus indicator, and in dark mode it is nearly invisible. The ring is what satisfies SC 2.4.7.",
+      "example": false
     },
     {
       "id": "size-is-density",
       "dont": "Reach for sm to fit more characters.",
       "do": "Pick the size by density — sm in a table row or toolbar, md in a form.",
-      "why": "Size changes height and text size, not width. Width comes from the layout, and a 32px field in a form reads as a filter rather than something to fill in."
+      "why": "Size changes height and text size, not width. Width comes from the layout, and a 32px field in a form reads as a filter rather than something to fill in.",
+      "example": false
     }
   ],
   "a11y": [
     "Every input needs a programmatic label — a <label htmlFor>, or aria-label when the label is genuinely visual chrome.",
     "Invalid state is aria-invalid, not a prop, so assistive tech gets it at the same time as the border colour.",
     "Do not use the native size attribute for width; it is measured in ex units and does not respond to the theme."
-  ]
+  ],
+  "examples": "complete"
 }

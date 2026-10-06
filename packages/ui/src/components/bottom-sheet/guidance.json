@@ -13,19 +13,22 @@
       "dont": "Open an anchored Popover or Select menu from a 32-tall trigger on a phone.",
       "do": "Below md (768), open the same choices in a BottomSheet; keep the Popover from md up.",
       "why": "On the Clarion Endpoints page the anchored menus clipped against a 390 viewport and put 32-tall rows under a thumb. The sheet starts where the thumb already is.",
-      "source": "Clarion Endpoints mobile — Status, Location and Sort"
+      "source": "Clarion Endpoints mobile — Status, Location and Sort",
+      "example": false
     },
     {
       "id": "apply-in-the-footer",
       "dont": "Apply each tick live while the sheet is still covering the result.",
       "do": "Collect ticks in a draft and commit on Apply, with the count — \"Apply · 2\". Clear sits beside it.",
-      "why": "The list being filtered is under the scrim, so a live change is one nobody can see. It also matches Select's apply-not-live rule."
+      "why": "The list being filtered is under the scrim, so a live change is one nobody can see. It also matches Select's apply-not-live rule.",
+      "example": false
     },
     {
       "id": "close-discards",
       "dont": "Keep the draft when the sheet is dismissed with the scrim, Escape or the close button.",
       "do": "Treat every way out except Apply as Cancel.",
-      "why": "Same rule as Select — a dismissal that half-commits leaves people unsure what is filtered."
+      "why": "Same rule as Select — a dismissal that half-commits leaves people unsure what is filtered.",
+      "example": false
     },
     {
       "id": "handle-is-decoration",
@@ -37,7 +40,8 @@
       "id": "never-full-height",
       "dont": "Let the sheet fill the screen.",
       "do": "Cap it (5/6 of the viewport) and scroll the body; leave the page peeking above.",
-      "why": "A sheet that covers everything reads as a new screen, and people stop expecting the scrim to take them back."
+      "why": "A sheet that covers everything reads as a new screen, and people stop expecting the scrim to take them back.",
+      "example": false
     },
     {
       "id": "rows-are-48",
@@ -49,7 +53,8 @@
       "id": "not-navigation",
       "dont": "Put the app's navigation in a bottom sheet.",
       "do": "Use SidebarMobile — the nav full screen — and keep sheets for one decision about the page beneath.",
-      "why": "Navigation leaves the page; a sheet is about the page. Mixing them makes Apply and 'go somewhere' look the same."
+      "why": "Navigation leaves the page; a sheet is about the page. Mixing them makes Apply and 'go somewhere' look the same.",
+      "example": false
     }
   ],
   "a11y": [
@@ -57,5 +62,6 @@
     "Give it a visible BottomSheetTitle, or `label` when there is none — never both.",
     "The handle is aria-hidden; it is decoration, not a control.",
     "BottomSheetItem is a <label>, so the whole 48 row toggles the Checkbox or Radio inside it."
-  ]
+  ],
+  "examples": "complete"
 }

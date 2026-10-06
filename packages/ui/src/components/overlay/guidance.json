@@ -12,7 +12,8 @@
       "id": "change-it-here",
       "dont": "Restyle the panel inside Popover, Dropdown menu or Dialog.",
       "do": "Change the surface, and let all of them move together.",
-      "why": "The file says so in as many words. Four near-identical floating cards is how a system stops looking like one system."
+      "why": "The file says so in as many words. Four near-identical floating cards is how a system stops looking like one system.",
+      "example": false
     },
     {
       "id": "density-by-content",
@@ -24,23 +25,27 @@
       "id": "surface-on-the-content",
       "dont": "Wrap Radix's Content in a styled div.",
       "do": "Put overlaySurfaceVariants on the Content element itself.",
-      "why": "Radix positions and animates that node. A wrapper leaves the shadow behind when it moves and breaks the exit animation."
+      "why": "Radix positions and animates that node. A wrapper leaves the shadow behind when it moves and breaks the exit animation.",
+      "example": false
     },
     {
       "id": "scrim-is-not-the-modal",
       "dont": "Rely on dimming to say something is modal.",
       "do": "Trap focus and label the panel; the scrim is decoration.",
-      "why": "A screen reader never sees the dimming. What makes a dialog modal is that nothing behind it can be reached."
+      "why": "A screen reader never sees the dimming. What makes a dialog modal is that nothing behind it can be reached.",
+      "example": false
     },
     {
       "id": "no-scrim-for-anchored",
       "dont": "Dim the page behind a popover or a menu.",
       "do": "Save the scrim for dialogs and drawers.",
-      "why": "A scrim says \"finish this first\". A menu you can dismiss by looking away is not making that demand."
+      "why": "A scrim says \"finish this first\". A menu you can dismiss by looking away is not making that demand.",
+      "example": false
     }
   ],
   "a11y": [
     "The scrim is aria-hidden. It is a dimming surface, not a control, and the dialog or drawer above it owns the modal semantics.",
     "Overlay supplies no roles of its own. Everything built on it — Dialog, Drawer — brings its own Radix primitive and its own accessible name."
-  ]
+  ],
+  "examples": "complete"
 }

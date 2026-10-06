@@ -35,13 +35,14 @@
     {
       "id": "order-is-meaning",
       "dont": "Order the options by how they arrived in the API.",
-      "do": "Order them by what they mean \u2014 severity, frequency, or least to most.",
+      "do": "Order them by what they mean — severity, frequency, or least to most.",
       "why": "People read a radio group as a scale whether or not you intended one. An arbitrary order invites them to infer a ranking that is not there."
     }
   ],
   "a11y": [
     "Radix renders a real radiogroup: arrow keys move between options and wrap, and the group is a single tab stop.",
-    "The group needs a name \u2014 wrap it in a Field with a FieldLabel, or give the RadioGroup an aria-label.",
+    "The group needs a name — wrap it in a Field with a FieldLabel, or give the RadioGroup an aria-label.",
     "aria-invalid goes on the item, and colours the border and focus ring together."
-  ]
+  ],
+  "examples": "complete"
 }

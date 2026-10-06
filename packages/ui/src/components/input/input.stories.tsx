@@ -3,6 +3,8 @@ import { Input } from "./input";
 
 import guidance from "./guidance.json";
 import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Select } from "../select/select";
+import { Field, FieldControl, FieldLabel } from "../field/field";
 
 const meta: Meta<typeof Input> = {
   title: "Components/Input",
@@ -139,6 +141,42 @@ export const DoAndDont: Story = {
             <Label>Probe</Label>
             <Input readOnly defaultValue="SYD-03" aria-label="Probe" />
           </>
+        }
+      />
+
+      <Guidance
+        pair={pair("placeholder-shows-format")}
+        width="wide"
+        dont={<Input placeholder="Enter the probe name" />}
+        do={<Input placeholder="SYD-03" />}
+      />
+
+      <Guidance
+        pair={pair("known-set-is-a-select")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Field>
+            <FieldLabel>Region</FieldLabel>
+            <FieldControl>
+              <Input placeholder="Sydney" />
+            </FieldControl>
+          </Field>
+        }
+        do={
+          <Field>
+            <FieldLabel>Region</FieldLabel>
+            <FieldControl>
+              <Select
+                label="Region"
+                options={[
+                  { value: "syd", label: "Sydney" },
+                  { value: "sin", label: "Singapore" },
+                  { value: "lon", label: "London" },
+                ]}
+              />
+            </FieldControl>
+          </Field>
         }
       />
     </GuidanceStory>

@@ -12,13 +12,15 @@
       "id": "use-the-grid",
       "dont": "Write grid grid-cols-tiles gap-gutter, or grid-cols-1 @3xl:grid-cols-2 @7xl:grid-cols-3, by hand on a page.",
       "do": "Use KpiRow and ChartGrid.",
-      "why": "The rule used to live only in a sentence, so every product re-derived it and could drift without anyone noticing. A rule in a component is a rule that runs."
+      "why": "The rule used to live only in a sentence, so every product re-derived it and could drift without anyone noticing. A rule in a component is a rule that runs.",
+      "example": false
     },
     {
       "id": "container-not-viewport",
       "dont": "Reach for xl: or 2xl: inside the content column.",
       "do": "Let the grid answer to its container.",
-      "why": "The viewport knows nothing about the rail, the page padding, a width cap or an open drawer. The same grid gets 976 at a 1280 viewport with the rail open and 1184 with it collapsed, so a viewport breakpoint is wrong at the width the grid was actually given."
+      "why": "The viewport knows nothing about the rail, the page padding, a width cap or an open drawer. The same grid gets 976 at a 1280 viewport with the rail open and 1184 with it collapsed, so a viewport breakpoint is wrong at the width the grid was actually given.",
+      "example": false
     },
     {
       "id": "full-row-things-are-siblings",
@@ -30,11 +32,13 @@
       "id": "height-is-the-chart-s",
       "dont": "Give the grid an aspect ratio so the charts scale with it.",
       "do": "Give the chart a fixed height range, 240–320.",
-      "why": "An aspect ratio makes a chart grow tall on a wide screen, which nobody asked for. The grid sets columns and gap; height is the chart's own business."
+      "why": "An aspect ratio makes a chart grow tall on a wide screen, which nobody asked for. The grid sets columns and gap; height is the chart's own business.",
+      "example": false
     }
   ],
   "a11y": [
     "Both are presentational containers — they add no role and no landmark, so the tiles and cards inside keep whatever semantics they came with.",
     "Column count changes with the container, not with a media query, so a zoomed page reflows the same way a narrow one does. Reflow at 400% is a container question here, which is the point."
-  ]
+  ],
+  "examples": "complete"
 }

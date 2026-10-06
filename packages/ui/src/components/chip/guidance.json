@@ -24,13 +24,15 @@
       "id": "removable-is-not-clickable",
       "dont": "Make a removable token clickable as a whole as well.",
       "do": "Let the ✕ be the only control on it.",
-      "why": "A button inside a button is invalid HTML, and a token with two overlapping hit areas is a coin toss for anyone using a pointer imprecisely."
+      "why": "A button inside a button is invalid HTML, and a token with two overlapping hit areas is a coin toss for anyone using a pointer imprecisely.",
+      "example": false
     },
     {
       "id": "name-the-remove",
       "dont": "Ship a row of tokens whose controls are all called \"Remove\".",
       "do": "Name the subject — \"Remove probe-04\".",
-      "why": "A screen reader lists controls out of context. Twelve identical \"Remove\" buttons is twelve coin tosses."
+      "why": "A screen reader lists controls out of context. Twelve identical \"Remove\" buttons is twelve coin tosses.",
+      "example": false
     },
     {
       "id": "chips-are-not-buttons",
@@ -49,5 +51,6 @@
     "A selectable chip sets aria-pressed — it is a toggle button, not a checkbox, so it announces \"pressed\" rather than \"checked\".",
     "The remove button is a separate control with removeLabel as its aria-label: reachable by keyboard without activating the chip itself.",
     "Disabled sets pointer-events-none on the chip and on its remove button, so neither is clickable while both stay readable."
-  ]
+  ],
+  "examples": "complete"
 }

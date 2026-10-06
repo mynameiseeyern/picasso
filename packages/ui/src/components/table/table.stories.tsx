@@ -460,6 +460,74 @@ export const DoAndDont: Story = {
           </>
         }
       />
+
+      <Guidance
+        pair={pair("one-thing-per-row")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>probe-04</TableCell>
+                <TableCell>Sydney</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>10.4.12.80</TableCell>
+                <TableCell>Online</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        }
+        do={
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <div className="flex flex-col">
+                    <span>probe-04</span>
+                    <span className="text-body-sm text-content-neutral-muted">
+                      10.4.12.80
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell>Sydney</TableCell>
+                <TableCell>Online</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        }
+      />
+
+      <Guidance
+        pair={pair("selection-belongs-to-the-row")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Table>
+            <TableBody>
+              <TableRow>
+                <TableCell>
+                  <Checkbox defaultChecked />
+                </TableCell>
+                <TableCell>probe-04</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        }
+        do={
+          <Table>
+            <TableBody>
+              <TableRow selected>
+                <TableCell>
+                  <Checkbox defaultChecked />
+                </TableCell>
+                <TableCell>probe-04</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        }
+      />
     </GuidanceStory>
   ),
 };

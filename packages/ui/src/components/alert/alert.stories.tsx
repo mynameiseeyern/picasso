@@ -224,6 +224,61 @@ export const DoAndDont: Story = {
           </>
         }
       />
+
+      <Guidance
+        pair={pair("one-at-a-time")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full space-y-2">
+            <Alert variant="warning">
+              <AlertTitle>Collector 4 is behind</AlertTitle>
+            </Alert>
+            <Alert variant="warning">
+              <AlertTitle>Collector 7 is behind</AlertTitle>
+            </Alert>
+            <Alert variant="warning">
+              <AlertTitle>Collector 9 is behind</AlertTitle>
+            </Alert>
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Alert variant="warning">
+              <AlertTitle>Three collectors are behind</AlertTitle>
+              <AlertDescription>
+                Collectors 4, 7 and 9 have not reported for over an hour.
+              </AlertDescription>
+            </Alert>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("title-is-one-line")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <Alert variant="warning">
+              <AlertTitle>
+                Three collectors have not reported for over an hour and may be
+                offline
+              </AlertTitle>
+            </Alert>
+          </div>
+        }
+        do={
+          <div className="w-full">
+            <Alert variant="warning">
+              <AlertTitle>Three collectors are behind</AlertTitle>
+              <AlertDescription>
+                They have not reported for over an hour and may be offline.
+              </AlertDescription>
+            </Alert>
+          </div>
+        }
+      />
     </GuidanceStory>
   ),
 };

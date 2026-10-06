@@ -11,6 +11,7 @@ import {
 
 import guidance from "./guidance.json";
 import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Radio, RadioGroup } from "../radio-group/radio-group";
 
 const meta: Meta<typeof Checkbox> = {
   title: "Components/Checkbox",
@@ -177,6 +178,30 @@ export const DoAndDont: Story = {
           <>
             <Row label="Locked by policy" defaultChecked disabled />
           </>
+        }
+      />
+
+      <Guidance
+        pair={pair("checkbox-vs-radio")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full space-y-2">
+            {["Low", "Medium", "High"].map((l) => (
+              <FieldOption key={l} control={<Checkbox />}>
+                {l}
+              </FieldOption>
+            ))}
+          </div>
+        }
+        do={
+          <RadioGroup aria-label="Severity" defaultValue="medium">
+            {["Low", "Medium", "High"].map((l) => (
+              <FieldOption key={l} control={<Radio value={l.toLowerCase()} />}>
+                {l}
+              </FieldOption>
+            ))}
+          </RadioGroup>
         }
       />
     </GuidanceStory>

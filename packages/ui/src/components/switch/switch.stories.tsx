@@ -5,6 +5,8 @@ import { FieldOption } from "../field/field";
 
 import guidance from "./guidance.json";
 import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Checkbox } from "../checkbox/checkbox";
+import { Button } from "../button/button";
 
 const meta: Meta<typeof Switch> = {
   title: "Components/Switch",
@@ -151,6 +153,28 @@ export const DoAndDont: Story = {
           <>
             <Setting label="Notifications" defaultChecked />
           </>
+        }
+      />
+
+      <Guidance
+        pair={pair("switch-vs-checkbox")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full space-y-3">
+            <FieldOption control={<Switch />}>
+              Send a weekly summary
+            </FieldOption>
+            <Button size="sm">Save changes</Button>
+          </div>
+        }
+        do={
+          <div className="w-full space-y-3">
+            <FieldOption control={<Checkbox />}>
+              Send a weekly summary
+            </FieldOption>
+            <Button size="sm">Save changes</Button>
+          </div>
         }
       />
     </GuidanceStory>

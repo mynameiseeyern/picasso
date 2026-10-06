@@ -36,18 +36,21 @@
       "id": "immediate-means-immediate",
       "dont": "Flip the switch optimistically and let it snap back when the request fails.",
       "do": "Hold the new position, show that it is saving, and explain it if it fails.",
-      "why": "A control that moves by itself reads as a bug, and people stop trusting what the position tells them."
+      "why": "A control that moves by itself reads as a bug, and people stop trusting what the position tells them.",
+      "example": false
     },
     {
       "id": "disabled-reads-as-disabled",
       "dont": "Leave a disabled ON switch at full colour.",
       "do": "Mute it, so it reads as a setting nobody can currently change.",
-      "why": "A live-looking switch invites a flip that does nothing, and no feedback follows to explain why."
+      "why": "A live-looking switch invites a flip that does nothing, and no feedback follows to explain why.",
+      "example": false
     }
   ],
   "a11y": [
     "Radix supplies role=\"switch\" and aria-checked. A switch is on or off now, not a value to be submitted — use Checkbox when it is the latter.",
     "Invalid is a ring, not a border: aria-invalid:shadow-ring-focus-danger. A mark has no border to recolour, which is the rule for every control of this shape.",
     "The track border goes transparent when the switch is on, and the focus ring is a separate layer that is unaffected. Border is decoration, ring is the indicator — keep them independent."
-  ]
+  ],
+  "examples": "complete"
 }

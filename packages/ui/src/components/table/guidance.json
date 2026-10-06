@@ -13,7 +13,8 @@
       "id": "table-is-for-comparison",
       "dont": "Use a table to lay out a form or a set of cards.",
       "do": "Use a table when the reader needs to compare the same field across rows.",
-      "why": "A table earns its density by making columns scannable. Used as a layout grid it inherits all the cost — the semantics, the scrolling, the alignment — and returns none of it."
+      "why": "A table earns its density by making columns scannable. Used as a layout grid it inherits all the cost — the semantics, the scrolling, the alignment — and returns none of it.",
+      "example": false
     },
     {
       "id": "one-thing-per-row",
@@ -49,11 +50,13 @@
       "id": "sm-is-for-density",
       "dont": "Reach for sm to squeeze in another column.",
       "do": "Use sm when a table is a supporting panel, and md when it is the page.",
-      "why": "Shrinking the row height does not create horizontal room. If columns do not fit, the answer is fewer columns or a scroll, not tighter rows."
+      "why": "Shrinking the row height does not create horizontal room. If columns do not fit, the answer is fewer columns or a scroll, not tighter rows.",
+      "example": false
     }
   ],
   "a11y": [
     "aria-selected belongs on the row, not on the checkbox inside it. The checkbox says what it does; the row says what it is.",
     "Selection is a fill plus aria-selected, never the fill alone."
-  ]
+  ],
+  "examples": "complete"
 }

@@ -5,6 +5,7 @@ import { ThresholdSlider } from "./threshold-slider";
 
 import guidance from "./guidance.json";
 import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Meter } from "../meter/meter";
 
 const meta: Meta<typeof ThresholdSlider> = {
   title: "Components/Threshold slider",
@@ -201,6 +202,23 @@ export const DoAndDont: Story = {
               />
             </div>
           </>
+        }
+      />
+
+      <Guidance
+        pair={pair("not-a-value-slider")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <Live {...PRESETS[0]} />
+          </div>
+        }
+        do={
+          <div className="flex w-full items-center gap-3">
+            <Meter value={4.1} max={5} />
+            <span className="ltr-island text-body-sm tabular-nums">4.1</span>
+          </div>
         }
       />
     </GuidanceStory>

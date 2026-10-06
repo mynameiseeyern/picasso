@@ -48,17 +48,20 @@
       "id": "clickable-card-needs-a-target",
       "dont": "Make the whole card a link and put buttons inside it.",
       "do": "Either the card is the target, or it holds targets — not both.",
-      "why": "A click inside a clickable card is ambiguous to the person and genuinely ambiguous in the markup; nested interactive elements are also invalid for assistive technology."
+      "why": "A click inside a clickable card is ambiguous to the person and genuinely ambiguous in the markup; nested interactive elements are also invalid for assistive technology.",
+      "example": false
     },
     {
       "id": "sm-is-for-density",
       "dont": "Use sm to fit more words into the same space.",
       "do": "Use sm where cards repeat — a list, a grid, a sidebar — and default where one card carries a page.",
-      "why": "The size changes padding, not type. Shrinking the padding to win room makes the content feel crowded rather than compact."
+      "why": "The size changes padding, not type. Shrinking the padding to win room makes the content feel crowded rather than compact.",
+      "example": false
     }
   ],
   "a11y": [
     "Every part of Card is a <div>, CardTitle included. A card that is a section of the page needs a real heading inside CardTitle, or the page outline skips straight past it.",
     "Card has no role. If it is meant to be a landmark, the consumer adds role=\"region\" and aria-labelledby pointing at its title."
-  ]
+  ],
+  "examples": "complete"
 }

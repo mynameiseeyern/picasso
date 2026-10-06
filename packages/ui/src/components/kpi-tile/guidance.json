@@ -24,7 +24,8 @@
       "id": "status-means-act",
       "dont": "Set a status on a tile nobody would act on.",
       "do": "Use status where there is a threshold and a response.",
-      "why": "A status badge is a claim that something needs attention. On a number that is merely interesting it trains people to ignore the badge everywhere."
+      "why": "A status badge is a claim that something needs attention. On a number that is merely interesting it trains people to ignore the badge everywhere.",
+      "example": false
     },
     {
       "id": "unit-not-in-the-number",
@@ -48,5 +49,6 @@
   "a11y": [
     "The meter is aria-hidden decoration. The number and the status badge are the accessible content — which is why the badge's word is not optional, and why status never relies on the meter's colour alone.",
     "The label is a <div>, not a heading. A grid of tiles that should appear in the page outline needs headings supplied around them."
-  ]
+  ],
+  "examples": "complete"
 }

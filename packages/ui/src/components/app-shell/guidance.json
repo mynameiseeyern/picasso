@@ -18,13 +18,15 @@
       "id": "collapsed-is-a-choice-not-a-default",
       "dont": "Ship the rail collapsed to win back 208px.",
       "do": "Default to expanded from lg (1024) up, and to collapsed only at md (768) where the content would drop under 720.",
-      "why": "An icon-only rail is a memory test for anyone who does not already know the product. The width is worth more to the person than to the layout."
+      "why": "An icon-only rail is a memory test for anyone who does not already know the product. The width is worth more to the person than to the layout.",
+      "example": false
     },
     {
       "id": "padding-steps-at-1280",
       "dont": "Re-derive the breakpoint from a screen width quoted in a spec.",
       "do": "Trust the named step — `xl:` is 1280 in the tokens, in Tailwind and in the class.",
-      "why": "IR's ladder used to be Tailwind's shifted up one, so `lg:` meant 1280 to a designer and 1024 to the browser. They are one ladder now, and the name is the thing to trust."
+      "why": "IR's ladder used to be Tailwind's shifted up one, so `lg:` meant 1280 to a designer and 1024 to the browser. They are one ladder now, and the name is the thing to trust.",
+      "example": false
     },
     {
       "id": "dashboards-add-columns",
@@ -60,11 +62,13 @@
       "id": "one-scroller",
       "dont": "Let the shell scroll as well as the page.",
       "do": "Keep the scroll in the content area so the rail and the top bar stay put.",
-      "why": "Two scrollbars is the most common app-shell bug and the hardest to notice in a screenshot: the top bar slides away and the breadcrumb goes with it."
+      "why": "Two scrollbars is the most common app-shell bug and the hardest to notice in a screenshot: the top bar slides away and the breadcrumb goes with it.",
+      "example": false
     }
   ],
   "a11y": [
     "AppShellMain is a plain <div>, never <main>. It contains the top bar, and chrome inside the main landmark both pollutes it and strips the <header> of its banner role — a <header> carries that role only when it is not inside main, aside, nav or section.",
     "AppShellHeader is the <header> and therefore the page's banner; AppShellContent is the document's <main>. One of each per page."
-  ]
+  ],
+  "examples": "complete"
 }

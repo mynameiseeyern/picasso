@@ -242,6 +242,23 @@ export const DoAndDont: Story = {
           </>
         }
       />
+
+      <Guidance
+        pair={pair("toggle-or-action")}
+        width="wide"
+        dont={
+          <Chip selected>
+            <Sparkles aria-hidden />
+            Summarise with Iris
+          </Chip>
+        }
+        do={
+          <Chip>
+            <Sparkles aria-hidden />
+            Summarise with Iris
+          </Chip>
+        }
+      />
     </GuidanceStory>
   ),
 };

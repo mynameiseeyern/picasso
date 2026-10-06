@@ -323,6 +323,65 @@ export const DoAndDont: Story = {
           </Card>
         }
       />
+
+      <Guidance
+        pair={pair("not-every-surface")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Card>
+            <CardContent>
+              <Line>Endpoints</Line>
+              <Card size="sm">
+                <CardContent>
+                  <Line>probe-04</Line>
+                </CardContent>
+              </Card>
+            </CardContent>
+          </Card>
+        }
+        do={
+          <div className="w-full space-y-2">
+            <Line>Endpoints</Line>
+            <Card size="sm">
+              <CardContent>
+                <Line>probe-04</Line>
+              </CardContent>
+            </Card>
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("title-earns-its-place")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full space-y-2">
+            <Line>Collector health</Line>
+            <Card size="sm">
+              <CardHeader>
+                <CardHeaderText>
+                  <CardTitle>Collector health</CardTitle>
+                </CardHeaderText>
+              </CardHeader>
+              <CardContent>
+                <Line>3 behind</Line>
+              </CardContent>
+            </Card>
+          </div>
+        }
+        do={
+          <div className="w-full space-y-2">
+            <Line>Collector health</Line>
+            <Card size="sm">
+              <CardContent>
+                <Line>3 behind</Line>
+              </CardContent>
+            </Card>
+          </div>
+        }
+      />
     </GuidanceStory>
   ),
 };

@@ -12,13 +12,15 @@
       "id": "alert-vs-toast",
       "dont": "Use an Alert for something that just happened and does not need to persist.",
       "do": "Use Toast for a passing confirmation; keep Alert for a condition that is still true.",
-      "why": "An Alert stays on the page. If the thing it describes is over, it becomes a piece of furniture people learn to read past."
+      "why": "An Alert stays on the page. If the thing it describes is over, it becomes a piece of furniture people learn to read past.",
+      "example": false
     },
     {
       "id": "alert-vs-dialog",
       "dont": "Use an Alert to ask a question that must be answered before continuing.",
       "do": "Use a Dialog when the work genuinely cannot proceed.",
-      "why": "An Alert can be ignored by design. A question that cannot be ignored needs a control that takes the focus."
+      "why": "An Alert can be ignored by design. A question that cannot be ignored needs a control that takes the focus.",
+      "example": false
     },
     {
       "id": "tone-means-something",
@@ -55,5 +57,6 @@
     "No role by default, deliberately. role=\"alert\" interrupts a screen reader mid-sentence — use it only for something that has just gone wrong, and role=\"status\" for something that merely changed.",
     "The leading icon is aria-hidden. Severity has to be in the words; colour and icon alone reach nobody using a screen reader.",
     "The dismiss button's accessible name comes from dismissLabel. An X with no label announces nothing."
-  ]
+  ],
+  "examples": "complete"
 }

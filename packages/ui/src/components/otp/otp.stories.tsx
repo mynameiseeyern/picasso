@@ -167,6 +167,22 @@ export const DoAndDont: Story = {
           </>
         }
       />
+
+      <Guidance
+        pair={pair("size-step-on-phones")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-82 overflow-hidden">
+            <Six value="" onChange={() => {}} />
+          </div>
+        }
+        do={
+          <div className="w-82">
+            <Six size="sm" value="" onChange={() => {}} />
+          </div>
+        }
+      />
     </GuidanceStory>
   ),
 };

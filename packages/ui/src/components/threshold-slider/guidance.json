@@ -12,19 +12,22 @@
       "id": "direction-is-the-numbers",
       "dont": "Add a `direction` prop, or flip the bands by hand.",
       "do": "Put the thresholds in the order the metric means and let the bands follow.",
-      "why": "`critical < warning` is what \"low is bad\" means. A separate flag is a second source of truth that can disagree with the numbers, and the disagreement is invisible until someone is paged."
+      "why": "`critical < warning` is what \"low is bad\" means. A separate flag is a second source of truth that can disagree with the numbers, and the disagreement is invisible until someone is paged.",
+      "example": false
     },
     {
       "id": "colour-is-not-the-only-signal",
       "dont": "Rely on the red, amber and green bands to say which is which.",
       "do": "Keep the Critical and Warning labels above the thumbs.",
-      "why": "The bands are three hues along one bar, which is the hardest case for anyone with a red-green deficiency. The label over each thumb is what survives; the colour reinforces it."
+      "why": "The bands are three hues along one bar, which is the hardest case for anyone with a red-green deficiency. The label over each thumb is what survives; the colour reinforces it.",
+      "example": false
     },
     {
       "id": "thresholds-meet-not-cross",
       "dont": "Let one threshold pass the other, or clamp silently to the track ends.",
       "do": "Bound each thumb by its twin, and say so with aria-valuemin and aria-valuemax.",
-      "why": "Crossed thresholds invert the bands and mean nothing. A screen reader that is told the range is 0–100 when the real bound is 85 gives an answer the control will not honour."
+      "why": "Crossed thresholds invert the bands and mean nothing. A screen reader that is told the range is 0–100 when the real bound is 85 gives an answer the control will not honour.",
+      "example": false
     },
     {
       "id": "units-belong-on-the-value",
@@ -44,5 +47,6 @@
     "Each thumb's aria-valuemin and aria-valuemax are bounded by its twin as well as by the track, so the announced range always matches what the thumb can actually do.",
     "Disabled sets aria-disabled and tabIndex -1 but leaves the thumbs in the accessibility tree. A disabled control is still something you may need to read.",
     "Arrow keys move by step, Page by ten steps, Home and End to the bounds."
-  ]
+  ],
+  "examples": "complete"
 }

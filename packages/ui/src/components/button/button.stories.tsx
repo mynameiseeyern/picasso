@@ -182,6 +182,12 @@ export const DoAndDont: Story = {
           </Button>
         }
       />
+
+      <Guidance
+        pair={pair("link-in-a-box")}
+        dont={<Button variant="outline">View the audit log</Button>}
+        do={<Button variant="link">View the audit log</Button>}
+      />
     </GuidanceStory>
   ),
 };

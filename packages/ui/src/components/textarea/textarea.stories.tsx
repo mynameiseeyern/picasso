@@ -171,6 +171,27 @@ export const DoAndDont: Story = {
           </>
         }
       />
+
+      <Guidance
+        pair={pair("let-it-grow")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Textarea
+            rows={2}
+            defaultValue={
+              "Collector 4 has not reported since 02:14. Restarted the service, no change. Escalating to the network team."
+            }
+          />
+        }
+        do={
+          <Textarea
+            defaultValue={
+              "Collector 4 has not reported since 02:14. Restarted the service, no change. Escalating to the network team."
+            }
+          />
+        }
+      />
     </GuidanceStory>
   ),
 };

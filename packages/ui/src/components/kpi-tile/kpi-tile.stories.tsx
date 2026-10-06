@@ -187,6 +187,45 @@ export const DoAndDont: Story = {
           </>
         }
       />
+
+      <Guidance
+        pair={pair("one-number")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full">
+            <KpiTile label="Endpoints" value="3,412 online / 61 down" />
+          </div>
+        }
+        do={
+          <div className="grid w-full grid-cols-2 gap-3">
+            <KpiTile label="Endpoints online" value="3,412" />
+            <KpiTile label="Endpoints down" value="61" />
+          </div>
+        }
+      />
+
+      <Guidance
+        pair={pair("tiles-are-a-row")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="flex w-full items-start gap-3">
+            <div className="w-40">
+              <KpiTile label="Mean MOS" value="4.1" unit="/ 5" />
+            </div>
+            <div className="w-24">
+              <KpiTile label="Open alerts" value="7" />
+            </div>
+          </div>
+        }
+        do={
+          <div className="grid w-full grid-cols-2 gap-3">
+            <KpiTile label="Mean MOS" value="4.1" unit="/ 5" />
+            <KpiTile label="Open alerts" value="7" />
+          </div>
+        }
+      />
     </GuidanceStory>
   ),
 };

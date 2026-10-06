@@ -218,6 +218,123 @@ export const DoAndDont: Story = {
           </>
         }
       />
+
+      <Guidance
+        pair={pair("use-the-wrapper")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="w-full space-y-1">
+            <p className="text-label-sm">Probe name</p>
+            <Input defaultValue="SYD-03" />
+            <p className="text-body-sm text-content-neutral-muted">
+              Shown in the fleet list.
+            </p>
+          </div>
+        }
+        do={
+          <Field>
+            <FieldLabel>Probe name</FieldLabel>
+            <FieldControl>
+              <Input defaultValue="SYD-03" />
+            </FieldControl>
+            <FieldDescription>Shown in the fleet list.</FieldDescription>
+          </Field>
+        }
+      />
+
+      <Guidance
+        pair={pair("error-replaces-hint")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Field invalid>
+            <FieldLabel>Probe name</FieldLabel>
+            <FieldControl>
+              <Input defaultValue="syd 03" />
+            </FieldControl>
+            <FieldDescription>Letters, digits and dashes.</FieldDescription>
+            <FieldError>Spaces are not allowed.</FieldError>
+          </Field>
+        }
+        do={
+          <Field invalid>
+            <FieldLabel>Probe name</FieldLabel>
+            <FieldControl>
+              <Input defaultValue="syd 03" />
+            </FieldControl>
+            <FieldError>
+              Spaces are not allowed — letters, digits and dashes.
+            </FieldError>
+          </Field>
+        }
+      />
+
+      <Guidance
+        pair={pair("required-is-not-an-asterisk")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Field>
+            <FieldLabel>Probe name *</FieldLabel>
+            <FieldControl>
+              <Input />
+            </FieldControl>
+          </Field>
+        }
+        do={
+          <Field>
+            <FieldLabel required>Probe name</FieldLabel>
+            <FieldControl required>
+              <Input />
+            </FieldControl>
+          </Field>
+        }
+      />
+
+      <Guidance
+        pair={pair("disable-at-the-field")}
+        width="wide"
+        stage="tall"
+        dont={
+          <Field>
+            <FieldLabel>Probe name</FieldLabel>
+            <FieldControl>
+              <Input disabled defaultValue="SYD-03" />
+            </FieldControl>
+          </Field>
+        }
+        do={
+          <Field disabled>
+            <FieldLabel>Probe name</FieldLabel>
+            <FieldControl>
+              <Input disabled defaultValue="SYD-03" />
+            </FieldControl>
+          </Field>
+        }
+      />
+
+      <Guidance
+        pair={pair("option-row-is-the-target")}
+        width="wide"
+        stage="tall"
+        dont={
+          <div className="flex w-full items-center gap-2">
+            <Checkbox />
+            <span className="text-body-sm">
+              Email me when a collector falls behind
+            </span>
+          </div>
+        }
+        do={
+          <FieldOption
+            control={<Checkbox />}
+            description="At most one message an hour."
+          >
+            Email me when a collector falls behind
+          </FieldOption>
+        }
+      />
     </GuidanceStory>
   ),
 };

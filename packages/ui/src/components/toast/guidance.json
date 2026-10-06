@@ -50,5 +50,6 @@
     "The close button takes label as its aria-label; the X and the status icon are both aria-hidden.",
     "A toast carries an action or a close, never both — two ways out of the same message is one more decision than it is worth.",
     "It slides in from the edge its viewport sits on and leaves the same way, and does neither under prefers-reduced-motion. It still follows a swipe there: following a finger is not animation."
-  ]
+  ],
+  "examples": "complete"
 }

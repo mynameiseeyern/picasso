@@ -11,6 +11,8 @@ import {
 
 import guidance from "./guidance.json";
 import { Guidance, GuidanceStory, pairOf } from "@/stories/guidance";
+import { Switch } from "../switch/switch";
+import { Select } from "../select/select";
 
 const meta: Meta<typeof Radio> = {
   title: "Components/Radio",
@@ -256,6 +258,50 @@ export const DoAndDont: Story = {
               ))}
             </RadioGroup>
           </>
+        }
+      />
+
+      <Guidance
+        pair={pair("two-options-is-a-switch")}
+        width="wide"
+        stage="tall"
+        dont={
+          <RadioGroup aria-label="Email alerts" defaultValue="on">
+            <FieldOption control={<Radio value="on" />}>On</FieldOption>
+            <FieldOption control={<Radio value="off" />}>Off</FieldOption>
+          </RadioGroup>
+        }
+        do={
+          <FieldOption control={<Switch defaultChecked />}>
+            Email alerts
+          </FieldOption>
+        }
+      />
+
+      <Guidance
+        pair={pair("many-options-is-a-select")}
+        width="wide"
+        stage="tall"
+        dont={
+          <RadioGroup aria-label="Region" defaultValue="syd">
+            {["Sydney", "Singapore", "London", "Tokyo", "Dallas"].map((l) => (
+              <FieldOption key={l} control={<Radio value={l.toLowerCase()} />}>
+                {l}
+              </FieldOption>
+            ))}
+          </RadioGroup>
+        }
+        do={
+          <Select
+            label="Region"
+            options={[
+              { value: "syd", label: "Sydney" },
+              { value: "sin", label: "Singapore" },
+              { value: "lon", label: "London" },
+              { value: "tyo", label: "Tokyo" },
+              { value: "dfw", label: "Dallas" },
+            ]}
+          />
         }
       />
     </GuidanceStory>

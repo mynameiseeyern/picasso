@@ -27,7 +27,8 @@
       "dont": "Underline Link at rest.",
       "do": "Underline on hover only.",
       "why": "textDecoration propagates across every node sharing a text style, so underlining Link in Figma underlines all 168 buttons. Colour distinguishes it; the underline is a hover affordance.",
-      "source": "audit §17.2"
+      "source": "audit §17.2",
+      "example": false
     },
     {
       "id": "icon-only-needs-label",
@@ -40,14 +41,16 @@
       "dont": "Reach for a larger Size to get bigger text.",
       "do": "Pick Size for height and touch target.",
       "why": "Size changes height and padding; the label stays label/md. Resizing an instance to force a height is how 36 instances ended up off-scale.",
-      "source": "audit §17.1"
+      "source": "audit §17.1",
+      "example": false
     },
     {
       "id": "never-vertical-hug",
       "dont": "Set a Button to vertical HUG in Figma.",
       "do": "Leave it at its variant height.",
       "why": "Its vertical padding is inert, so a HUG instance collapses to 16–18px. This broke 22 instances once already.",
-      "source": "audit §17.1"
+      "source": "audit §17.1",
+      "example": false
     },
     {
       "id": "one-primary-per-row",
@@ -66,12 +69,14 @@
       "id": "destructive-confirm",
       "dont": "Use Destructive without a confirmation that restates what is lost.",
       "do": "Name the thing in both the button and the confirm.",
-      "why": "Destructive is a warning, not a safeguard. \"Delete probe\" then \"Delete probe SYD-03? Its history is removed.\""
+      "why": "Destructive is a warning, not a safeguard. \"Delete probe\" then \"Delete probe SYD-03? Its history is removed.\"",
+      "example": false
     }
   ],
   "a11y": [
     "Focus ring is border/focused at 2px with a 2px offset; never remove it.",
     "loading sets aria-busy and disables the button — a busy button must not be activatable.",
     "Disabled contrast is 2.24:1 by design. SC 1.4.3 exempts disabled controls; the low contrast is the signal."
-  ]
+  ],
+  "examples": "complete"
 }
