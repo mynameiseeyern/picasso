@@ -13,6 +13,9 @@ Picasso animates five things: surfaces that open and close; a press; colour;
 the Loader; and illustrations. Everything else changes at once — and for most
 of the interface, that is the right answer.
 
+Each rule on this page can be watched, wrong way beside right, in
+[Motion, before and after](motion-before-and-after.md).
+
 ## Should it move at all?
 
 Decide this first. It is allowed to end the conversation.

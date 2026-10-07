@@ -7,6 +7,20 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ### Added
 
+- **Motion, before and after — a docs page you can play.**
+  `docs/foundations/motion-before-and-after.md` shows eight motion rules as
+  pairs: the wrong way beside what Picasso does, one button that plays both,
+  and a switch that slows both five times. Three of the wrong sides are
+  Picasso's own history — the ease-in close, the Sidebar's width transition
+  and reduced motion as "off". The examples are stories under
+  **Foundations / Motion before and after**, embedded in the page through a
+  new `Story` component on the site that sizes its frame to the story. The
+  right-hand side of every pair is the real named animation; the wrong ones
+  live in `packages/ui/.storybook/motion-specimens.css` as `data-specimen`
+  rules, in Storybook only, because the linter refuses them in a class. A
+  test holds the pairs, the stories, the specimens and the page to each
+  other. **Figma impact** — none.
+
 - **The charts are drawn in Figma**, on a new Charts page beside the other
   data-display pages: `Chart / Time series`, `Chart / Bar`, and
   `Chart / Sparkline` as a Tone variant set. Every colour is a variable, so the
@@ -21,29 +35,6 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   crosshair, hiding a series without repainting the others, and the data table
   that is how a screen reader gets numbers rather than a shape. They are anatomy
   to compose a dashboard from, not a specification of the data.
-
-### ⚠️ Breaking
-
-- **The chart series palette is `chart/1–6`, not `1–8`, and the order has
-  changed.** Eight series colours were declared and only three could actually be
-  told apart — validated, not judged by eye: `chart/1` (brand blue) and `chart/4`
-  (IR corporate blue) were ΔE 4.3 apart in normal vision, which is one line drawn
-  twice. Teal sat ΔE 9.6 from brand, indigo 10.8 from IR purple, and IR lime was
-  outside the usable lightness band at every step bar one, where it collided with
-  `vis-lime`. The floor is 15.
-
-  The order is now brand blue, IR red, indigo, IR purple, amber, pink. **Code
-  impact** — `chart-7` and `chart-8` no longer exist, and `chart-2`, `3` and `4`
-  are different colours than before. **Figma impact** — a sync removes two
-  variables and changes five.
-
-  Three colours are deliberately no longer series slots and remain colours:
-  IR corporate blue (7° from brand blue on the hue wheel — no step fixes that),
-  IR lime (20° from lime and far too light), and teal (cannot clear blue in both
-  modes at once). A series palette and a brand palette are different jobs: one is
-  chosen so colours belong together, the other so they can be told apart.
-
-### Added
 
 - **A press.** `Button` and an interactive `Chip` scale to 97% while held
   down, taking the label and icon with them, on `motion/duration/fast`
@@ -81,6 +72,27 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   `docs/` for an agent working here or in a product that uses Picasso.
   `AGENTS.md` gains a Motion section and a table of the skills.
   **Figma impact** — none.
+
+### ⚠️ Breaking
+
+- **The chart series palette is `chart/1–6`, not `1–8`, and the order has
+  changed.** Eight series colours were declared and only three could actually be
+  told apart — validated, not judged by eye: `chart/1` (brand blue) and `chart/4`
+  (IR corporate blue) were ΔE 4.3 apart in normal vision, which is one line drawn
+  twice. Teal sat ΔE 9.6 from brand, indigo 10.8 from IR purple, and IR lime was
+  outside the usable lightness band at every step bar one, where it collided with
+  `vis-lime`. The floor is 15.
+
+  The order is now brand blue, IR red, indigo, IR purple, amber, pink. **Code
+  impact** — `chart-7` and `chart-8` no longer exist, and `chart-2`, `3` and `4`
+  are different colours than before. **Figma impact** — a sync removes two
+  variables and changes five.
+
+  Three colours are deliberately no longer series slots and remain colours:
+  IR corporate blue (7° from brand blue on the hue wheel — no step fixes that),
+  IR lime (20° from lime and far too light), and teal (cannot clear blue in both
+  modes at once). A series palette and a brand palette are different jobs: one is
+  chosen so colours belong together, the other so they can be told apart.
 
 ### ⚠️ Changed (visual)
 

@@ -58,6 +58,8 @@ function pair(id: string): MotionPair {
 function usePrefersReducedMotion() {
   const [reduced, setReduced] = React.useState(false);
   React.useEffect(() => {
+    // jsdom has no matchMedia; a test is not a reader with a preference.
+    if (typeof window.matchMedia !== "function") return;
     const query = window.matchMedia("(prefers-reduced-motion: reduce)");
     const sync = () => setReduced(query.matches);
     sync();
@@ -215,7 +217,6 @@ function Pair({
         ) : null}
         <Guidance
           pair={p}
-          width="wide"
           dont={<Stage value={p.dontValue}>{sides.dont}</Stage>}
           do={<Stage value={p.doValue}>{sides.do}</Stage>}
         />
@@ -248,7 +249,7 @@ function DialogDrawing() {
         Delete endpoint
       </p>
       <p className="mt-1 text-body-sm text-content-neutral-muted">
-        SBC-APAC-SYD-07 stops reporting at once.
+        SBC-SYD-07 stops reporting at once.
       </p>
     </>
   );
@@ -288,7 +289,7 @@ function DrawerDrawing() {
   return (
     <>
       <p className="text-heading-xs text-content-neutral-emphasis">
-        SBC-APAC-SYD-07
+        SBC-SYD-07
       </p>
       <div aria-hidden className="mt-3 flex flex-col gap-3">
         <div className={cn(line, "w-full")} />
