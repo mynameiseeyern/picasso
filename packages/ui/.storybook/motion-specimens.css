@@ -1,0 +1,155 @@
+/* ═══ Motion specimens — the "before" side of Foundations / Motion before
+   and after ═══════════════════════════════════════════════════════════
+
+   Every rule in this file is wrong on purpose. Each one is a thing Picasso
+   does not do — an ease-in, a scale from zero, an animated width — kept here
+   so the docs can show it next to what the system does instead.
+
+   Three things keep them from leaking:
+
+   - They are attribute selectors (`data-specimen`), not classes. The linter
+     refuses an arbitrary duration or curve in a class, correctly, and a
+     specimen should not be something a component can reach for.
+   - They live in .storybook, which the package does not ship. @ir/ui ships
+     no CSS, and it certainly does not ship this.
+   - Nothing here is in theme.css, so `src/__tests__/motion.test.ts` — which
+     holds the real system to the rules — never sees it.
+
+   The "now" side of each pair is not here. It is the real named animation
+   from @ir/tokens/theme.css, so it cannot drift from what ships.         */
+
+/* Slow motion: five times longer, both sides. The real animations read
+   their durations from the tokens, so re-pointing the tokens slows them;
+   the specimens multiply by --specimen-speed. */
+[data-motion-speed="slow"] {
+  --motion-duration-fast: 750ms;
+  --motion-duration-base: 1000ms;
+  --motion-duration-slow: 1500ms;
+  --specimen-speed: 5;
+}
+
+@keyframes specimen-in-soft {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+@keyframes specimen-out-soft {
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}
+@keyframes specimen-in-zero {
+  from {
+    transform: scale(0);
+  }
+}
+@keyframes specimen-out-zero {
+  to {
+    transform: scale(0);
+  }
+}
+@keyframes specimen-in-edge {
+  from {
+    transform: translateX(calc(100% * var(--direction-sign, 1)));
+  }
+}
+@keyframes specimen-out-edge {
+  to {
+    transform: translateX(calc(100% * var(--direction-sign, 1)));
+  }
+}
+@keyframes specimen-bar {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+/* Nothing starts slowly — what Picasso's Dialog did until 7 October 2026:
+   a weak decelerate in, and an ease-in out. */
+[data-specimen="ease-in-close"][data-state="open"] {
+  animation: specimen-in-soft calc(200ms * var(--specimen-speed, 1))
+    cubic-bezier(0, 0, 0.2, 1);
+}
+[data-specimen="ease-in-close"][data-state="closed"] {
+  animation: specimen-out-soft calc(150ms * var(--specimen-speed, 1))
+    cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+/* Nothing appears from nothing — the system's duration and curve, so the
+   only thing that differs from the real one is where it starts. */
+[data-specimen="from-zero"][data-state="open"] {
+  animation: specimen-in-zero calc(150ms * var(--specimen-speed, 1))
+    var(--motion-easing-out);
+}
+[data-specimen="from-zero"][data-state="closed"] {
+  animation: specimen-out-zero calc(150ms * var(--specimen-speed, 1))
+    var(--motion-easing-out) both;
+}
+
+/* An anchored panel grows from its trigger — this one carries the real
+   popover animation and only the origin is wrong. */
+[data-specimen="centre-origin"] {
+  transform-origin: center;
+}
+
+/* 300 is the ceiling. */
+[data-specimen="half-second"][data-state="open"] {
+  animation: specimen-in-edge calc(500ms * var(--specimen-speed, 1))
+    ease-in-out;
+}
+[data-specimen="half-second"][data-state="closed"] {
+  animation: specimen-out-edge calc(500ms * var(--specimen-speed, 1))
+    ease-in-out both;
+}
+
+/* Only transform and opacity move — the Sidebar's rail as it was from
+   2 to 7 October 2026. */
+[data-specimen="width-transition"] {
+  transition: width calc(200ms * var(--specimen-speed, 1))
+    cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* A press, not a hover. Unlayered, so it beats the Button's own press. */
+[data-specimen="hover-grow"] {
+  transition: scale calc(200ms * var(--specimen-speed, 1)) ease;
+}
+[data-specimen="hover-grow"]:active {
+  scale: 1;
+}
+@media (hover: hover) {
+  [data-specimen="hover-grow"]:hover {
+    scale: 1.05;
+  }
+}
+
+/* Data does not move for style. */
+[data-specimen="bars-grow"] > * {
+  transform-origin: bottom;
+  animation: specimen-bar calc(800ms * var(--specimen-speed, 1))
+    var(--motion-easing-out) both;
+}
+
+/* Reduced motion is a fade — the one "now" that has to be written here,
+   because the real branch only runs when the reader's own system asks for
+   reduced motion. It repeats the reduced branch of animate-drawer-in-end and
+   -out-end exactly, and motion-before-and-after.test.tsx fails if the two
+   part company. ("reduced-none", the before side, has no rule at all: that
+   is the point of it.) */
+[data-specimen="reduced-fade"][data-state="open"] {
+  animation: fade-in var(--motion-duration-fast) ease;
+}
+[data-specimen="reduced-fade"][data-state="closed"] {
+  animation: fade-out var(--motion-duration-fast) ease both;
+}
+
+/* A page about motion still honours the setting it is about. With reduced
+   motion on, every specimen is still; the story says so. */
+@media (prefers-reduced-motion: reduce) {
+  [data-specimen],
+  [data-specimen] > * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

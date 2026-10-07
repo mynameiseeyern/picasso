@@ -12,6 +12,10 @@
 @import "../../tokens/themes.css";
 @import "../../tokens/theme.css";
 
+/* The deliberately wrong animations shown beside the real ones in
+ * Foundations / Motion before and after. Storybook only — see the file. */
+@import "./motion-specimens.css";
+
 /* The fonts the theme builder can preview, self-hosted.
  *
  * They used to arrive from fonts.googleapis.com, injected into this iframe at

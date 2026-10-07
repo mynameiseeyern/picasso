@@ -1,0 +1,70 @@
+{
+  "component": "Motion",
+  "summary": "The motion rules, each shown as what not to do and what Picasso does. The reasoning in full is in docs/foundations/motion-before-and-after.md.",
+  "pairs": [
+    {
+      "id": "data-does-not-move",
+      "dont": "Count a number up, or draw a chart in.",
+      "do": "Show the value at once.",
+      "why": "Someone is trying to read it. A number that is still climbing cannot be read, and on a console a value that moves looks like a value that is changing.",
+      "dontValue": "Count-up over 1.2s, bars grow over 800ms",
+      "doValue": "No animation"
+    },
+    {
+      "id": "nothing-starts-slowly",
+      "dont": "Close on a curve that starts slowly.",
+      "do": "Decelerate both ways, and leave on the shorter step.",
+      "why": "The first frames after a click are the ones people watch. An ease-in holds them back, so the dialog seems to hesitate before it goes.",
+      "dontValue": "In 200ms cubic-bezier(0, 0, 0.2, 1), out 150ms cubic-bezier(0.4, 0, 1, 1)",
+      "doValue": "animate-dialog-in, animate-dialog-out"
+    },
+    {
+      "id": "nothing-from-nothing",
+      "dont": "Scale a surface up from zero.",
+      "do": "Start at 96%, with a fade.",
+      "why": "Nothing real appears from a point. From zero, the eye follows a panel flying outwards; from 96%, it sees a panel arrive.",
+      "dontValue": "scale(0) to scale(1)",
+      "doValue": "animate-popover-in: scale(0.96) and a fade"
+    },
+    {
+      "id": "grows-from-its-trigger",
+      "dont": "Grow a menu from its own centre.",
+      "do": "Grow it from the control that opened it.",
+      "why": "A menu belongs to its button. From its centre it appears beside the button; from the trigger's corner it comes out of it, and that is what says where it came from.",
+      "dontValue": "transform-origin: center",
+      "doValue": "transform-origin at the trigger"
+    },
+    {
+      "id": "three-hundred-is-the-ceiling",
+      "dont": "Give a drawer half a second each way.",
+      "do": "Slide in over 300ms and out over 200.",
+      "why": "A drawer is opened dozens of times in a shift. Half a second each way is a second of waiting for every look; the sheet curve covers most of the distance in the first third, so 300 feels immediate.",
+      "dontValue": "500ms ease-in-out, both ways",
+      "doValue": "animate-drawer-in-end, animate-drawer-out-end"
+    },
+    {
+      "id": "only-transform-and-opacity",
+      "dont": "Animate a width, a height or a position.",
+      "do": "Change layout at once. Animate transform and opacity only.",
+      "why": "A width that animates re-lays out everything beside it on every frame, and beside the rail is a page of charts. The count under each example is how many times the page changed size.",
+      "dontValue": "transition: width 200ms",
+      "doValue": "No transition"
+    },
+    {
+      "id": "a-press-not-a-hover",
+      "dont": "Grow a control when the pointer is over it.",
+      "do": "Leave hover to colour, and give 3% under a press.",
+      "why": "Hover is not a decision: the pointer crosses a dozen controls on its way somewhere. A press is, and a control that gives a little under it is the interface saying it heard.",
+      "dontValue": "hover: scale(1.05), nothing on press",
+      "doValue": "transition-press, active:scale-97"
+    },
+    {
+      "id": "reduced-motion-is-a-fade",
+      "dont": "Switch animation off under reduced motion.",
+      "do": "Replace the travel with a short fade.",
+      "why": "Reduced motion asks for less movement, not less information. A drawer that is simply there, with nothing connecting it to what opened it, is harder to follow than one that fades in where it will sit.",
+      "dontValue": "No animation",
+      "doValue": "A 150ms fade, in place"
+    }
+  ]
+}
