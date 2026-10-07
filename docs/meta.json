@@ -1,4 +1,12 @@
 {
   "title": "Picasso",
-  "pages": ["index", "get-started", "foundations", "content", "contributing", "releases"]
+  "pages": [
+    "index",
+    "get-started",
+    "foundations",
+    "components",
+    "content",
+    "contributing",
+    "releases"
+  ]
 }

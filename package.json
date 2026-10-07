@@ -22,7 +22,8 @@
     "lint": "eslint",
     "format": "prettier --write packages/ui/src",
     "format:check": "prettier --check packages/ui/src",
-    "build:llms": "node scripts/build-llms.mjs",
+    "build:component-docs": "node scripts/build-component-docs.mjs",
+    "build:llms": "npm run build:component-docs && node scripts/build-llms.mjs",
     "dev:site": "npm run copy:assets && npm run dev --workspace @ir/site",
     "build:site": "npm run build:tokens && npm run build:llms && npm run copy:assets && npm run build-storybook --workspace @ir/ui && node scripts/nest-storybook.mjs && npm run build --workspace @ir/site",
     "copy:assets": "node scripts/copy-doc-assets.mjs"

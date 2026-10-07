@@ -16,14 +16,22 @@ files and the Figma foundations pages are all renderings of what is here.
 | [Get started](get-started/) | everyone | Install, first component, how designers and engineers each enter the system |
 | [Foundations](foundations/) | designers, engineers | Grid, spacing, radius, typography, colour |
 | [Content](content/) | writers, designers, PMs, engineers | Voice, casing, errors, states, numbers, terminology |
-| Components | engineers, designers | Lives beside the code: `packages/ui/src/<component>/` |
+| [Components](components/) | engineers, designers | One page per component, **generated** from the component folder |
 | [Contributing](contributing/) | contributors | How to add a component, and what "done" means |
 | [Releases](releases/) | everyone | How Picasso versions and what each category means |
 
-Component documentation deliberately does **not** live here. It sits next to the
-component — `button.tsx`, `button.stories.tsx`, `guidance.json` — so a change to
-the code and a change to its guidance land in the same diff. A doc in a separate
-folder drifts; a doc in the same folder gets reviewed.
+Component documentation is still **authored** next to the component —
+`button.tsx`, `button.stories.tsx`, `guidance.json` — so a change to the code and
+a change to its guidance land in the same diff. A doc in a separate folder
+drifts; a doc in the same folder gets reviewed.
+
+`docs/components/` is **generated** from those folders by
+`scripts/build-component-docs.mjs` and is not committed. It exists because the
+rule above had a cost: the site had no Components section at all, so searching
+it for a component name found passing mentions and never the component. Nothing
+in those pages is written — every line is lifted from `guidance.json`, the
+component's doc block, its props and its cva variants. Editing one is pointless;
+the next build overwrites it.
 
 ## Where a rule lives
 
