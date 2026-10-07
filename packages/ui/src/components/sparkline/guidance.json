@@ -3,8 +3,8 @@
   "summary": "A chart stripped to its shape — one series, no axes, no labels, sized to sit beside the number it summarises.",
   "figma": {
     "fileKey": "v61McMI1fYNAN8DonhNjHQ",
-    "nodeId": null,
-    "note": "Not drawn in Figma. Built in code first. Mark specs come from the dataviz rules rather than from the file: 2px round-capped line, 8px end dot with a 2px surface ring."
+    "nodeId": "40000736:18",
+    "note": "Drawn on the Charts page as `Chart / Sparkline`, a Tone variant set. The line, the end dot and the tones are there; pinning the scale across a column is behaviour and is not."
   },
   "structureFrom": "code",
   "measurementsFrom": "code",

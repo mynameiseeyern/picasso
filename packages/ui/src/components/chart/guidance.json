@@ -3,8 +3,8 @@
   "summary": "Something measured repeatedly, drawn against time — the workhorse chart: MOS per trunk, latency per site, calls per minute.",
   "figma": {
     "fileKey": "v61McMI1fYNAN8DonhNjHQ",
-    "nodeId": null,
-    "note": "Not drawn in Figma. Built in code first, from the dataviz rules. The shared furniture — frame, scales, axes, grid, legend, threshold, hover layer, data table — lives in chart.tsx and is what every other chart type will be built from."
+    "nodeId": "40000733:16",
+    "note": "Drawn on the Charts page as `Chart / Time series`. The frame, the furniture and the colours are there; the scale, the gap handling and the crosshair are behaviour and are not — see the page's notes frame."
   },
   "structureFrom": "code",
   "measurementsFrom": "code",

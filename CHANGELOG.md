@@ -5,6 +5,23 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ## Unreleased
 
+### Added
+
+- **The charts are drawn in Figma**, on a new Charts page beside the other
+  data-display pages: `Chart / Time series`, `Chart / Bar`, and
+  `Chart / Sparkline` as a Tone variant set. Every colour is a variable, so the
+  brand and light/dark follow the file, and each carries a description pointing
+  at its code component.
+
+  A notes frame beside them says what the drawings are and are not. **Held:** the
+  frame and its fixed height, the furniture — horizontal-only gridlines, both
+  axes, the legend, the dashed threshold — and the series colours. **Not held,
+  because it is behaviour:** the scale that ends on round numbers worked out from
+  the data, the gap that breaks a line rather than diving to the floor, the hover
+  crosshair, hiding a series without repainting the others, and the data table
+  that is how a screen reader gets numbers rather than a shape. They are anatomy
+  to compose a dashboard from, not a specification of the data.
+
 ### ⚠️ Breaking
 
 - **The chart series palette is `chart/1–6`, not `1–8`, and the order has

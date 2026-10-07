@@ -3,8 +3,8 @@
   "summary": "A measure compared across categories — calls per site, failures per cause, minutes per region. Grouped, or stacked when the parts make a whole.",
   "figma": {
     "fileKey": "v61McMI1fYNAN8DonhNjHQ",
-    "nodeId": null,
-    "note": "Not drawn in Figma. Built in code first, on the shared chart furniture in chart/chart.tsx."
+    "nodeId": "40000734:16",
+    "note": "Drawn on the Charts page as `Chart / Bar`. The bars, their 24 cap and the zero baseline are there; the scale is behaviour and is not."
   },
   "structureFrom": "code",
   "measurementsFrom": "code",
