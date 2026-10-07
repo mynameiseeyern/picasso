@@ -144,7 +144,37 @@ holds the rest.
 
 ---
 
-## 7. Component architecture
+## 7. Motion
+
+Most things do not move. Decide that first — `docs/foundations/motion.md`
+has the test — and when something does, ask for a named animation:
+
+```tsx
+// ✗ never
+className="transition-all duration-300 ease-in"
+className="transition-[width]"                  // a layout property, and arbitrary
+className="hover:scale-105"                     // hover is colour
+
+// ✓ always
+className="data-[state=open]:animate-dialog-in data-[state=closed]:animate-dialog-out"
+className="transition-press motion-safe:active:scale-97"
+className="transition-transform ease-out motion-reduce:transition-none"
+```
+
+- **No duration and no curve in a component.** They are tokens (`motion/*`),
+  composed into named animations in `packages/tokens/theme.css`.
+- **Only `transform` and `opacity` move.** Accordion height is the one exception.
+- **Nothing starts slowly** — there is no ease-in — and nothing scales from zero.
+- **Data does not move for style.** Charts, KPIs and table rows change at once.
+- **Reduced motion is a fade, not nothing.** The named animations carry it
+  themselves, so they take no `motion-safe:`; a transition you write takes
+  `motion-reduce:transition-none`.
+
+`src/__tests__/motion.test.ts` holds the system to this.
+
+---
+
+## 8. Component architecture
 
 shadcn conventions throughout: **Radix primitive + `cva` variants + `cn()`**.
 Icons are **Lucide** — no other icon library.
@@ -156,7 +186,7 @@ Icons are **Lucide** — no other icon library.
 
 ---
 
-## 8. Don'ts — real defects found in the Figma library, do not reproduce
+## 9. Don'ts — real defects found in the Figma library, do not reproduce
 
 - A ghost button with a resting fill — it reads as an outline button and the
   hierarchy between primary and tertiary collapses
@@ -169,7 +199,7 @@ Icons are **Lucide** — no other icon library.
 
 ---
 
-## 9. Component order
+## 10. Component order
 
 Build in dependency order. Button is nested in Alert, Toast, Dialog, Drawer,
 Table toolbar and Sidebar — doing it late means rebuilding everything twice.
@@ -184,7 +214,7 @@ tokens/theme → Button · Input · Label · Separator · Badge · Skeleton
 
 ---
 
-## 10. Commands
+## 11. Commands
 
 ```bash
 npm run build:tokens   # regenerate dist/tokens.css — run after ANY token change
@@ -264,6 +294,23 @@ write code here*; `docs/` is *what the system is*.
   `docs/foundations/`.
 - Adding a component: `docs/contributing/adding-a-component.md`, and copy
   `docs/contributing/component-checklist.md` into the PR.
+
+## Skills
+
+`.agents/skills` holds IR's own skills for work in this repo and in the
+products that use it. `.claude/skills` links to the same files.
+
+| Skill | For |
+|---|---|
+| `ir-motion` | Building anything that moves |
+| `ir-motion-review` | Reviewing motion in a diff, a component or the repo |
+| `ir-motion-opportunities` | Finding where motion belongs, and where it does not |
+| `ir-mobile-web` | Making an app behave on a real phone |
+| `ir-stress-test-ui` | Finding what a component does with real data |
+| `ir-pick-ui-library` | Deciding what to build with, and whether to add a dependency |
+
+They follow `docs/`. Where a skill and a doc disagree, the doc is right and
+the skill needs fixing.
 
 **If you produced off-system code, the docs failed, not you.** Say which rule
 you broke and where it was written down — or that it was not. See

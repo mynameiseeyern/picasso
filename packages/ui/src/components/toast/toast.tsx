@@ -52,15 +52,15 @@ const toastVariants = cva(
     // Motion. It arrives from the edge its viewport sits on (inline end: the
     // right, or the left under dir="rtl") over motion/duration/slow and
     // leaves the same way over base, whether it timed out, was closed or
-    // was swiped; reduced motion switches both off.
-    "motion-safe:data-[state=open]:animate-toast-in motion-safe:data-[state=closed]:animate-toast-out " +
+    // was swiped. Under reduced motion it fades in and out instead.
+    "data-[state=open]:animate-toast-in data-[state=closed]:animate-toast-out " +
     // The swipe. The card follows the finger, carries on from where it was
     // let go, and settles back if the swipe is abandoned. Following a
     // finger is not animation, so it stays on under reduced motion; only
     // the settle is switched off.
     "data-[swipe=move]:translate-x-(--radix-toast-swipe-move-x) " +
     "data-[swipe=end]:translate-x-(--radix-toast-swipe-end-x) " +
-    "data-[swipe=cancel]:translate-x-0 motion-safe:data-[swipe=cancel]:transition-transform",
+    "data-[swipe=cancel]:translate-x-0 motion-safe:data-[swipe=cancel]:transition-transform data-[swipe=cancel]:ease-out",
   {
     variants: {
       variant: { info: "", destructive: "", warning: "", success: "" },

@@ -192,7 +192,7 @@ export const Select = React.forwardRef<HTMLButtonElement, SelectProps>(
             className={
               "z-floating w-(--radix-popover-trigger-width) min-w-60 overflow-hidden rounded-xl border border-line-neutral-muted bg-surface-overlay shadow-md outline-none " +
               "origin-(--radix-popover-content-transform-origin) " +
-              "motion-safe:data-[state=open]:animate-popover-in motion-safe:data-[state=closed]:animate-popover-out"
+              "data-[state=open]:animate-popover-in data-[state=closed]:animate-popover-out"
             }
           >
             <div className="p-2">

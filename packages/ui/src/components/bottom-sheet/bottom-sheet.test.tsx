@@ -199,18 +199,18 @@ describe("BottomSheet", () => {
     ).toContain("*:flex-1");
   });
 
-  it("rises from the bottom edge on the motion tokens, and not at all under reduced motion", async () => {
+  it("rises from the bottom edge on the motion tokens, and as a fade under reduced motion", async () => {
     render(<Fixture />);
     await userEvent.click(screen.getByText("Open"));
     expect(screen.getByRole("dialog")).toHaveClass(
-      "motion-safe:data-[state=open]:animate-sheet-in",
-      "motion-safe:data-[state=closed]:animate-sheet-out",
+      "data-[state=open]:animate-sheet-in",
+      "data-[state=closed]:animate-sheet-out",
     );
     expect(
       document.querySelector("[data-slot=bottom-sheet-overlay]"),
     ).toHaveClass(
-      "motion-safe:data-[state=open]:animate-fade-in",
-      "motion-safe:data-[state=closed]:animate-fade-out",
+      "data-[state=open]:animate-fade-in",
+      "data-[state=closed]:animate-fade-out",
     );
   });
 });

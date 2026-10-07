@@ -61,6 +61,12 @@ fits. Where a component offers size steps, the phone takes the step that fits
 — adding a scroller to a field people type into hides the digits they are
 checking.
 
+**Inputs stay 14, and iOS zooms on focus.** Safari on iOS zooms the page when
+a field under 16px takes focus, and Picasso's inputs are 14 (`sm` is 13).
+This is accepted. A larger text step for coarse pointers would change every
+form's height on a phone, and that was judged the worse trade. Do not raise
+the size in a product to stop it, and never disable zoom to hide it.
+
 **The rail is not on a phone.** Below `md` the sidebar is not a 48px strip —
 a strip of icons spends the one dimension there is least of. The trigger opens
 the same tree as a drawer over the page, from the inline start, with a strip

@@ -158,7 +158,9 @@ describe("Drawer", () => {
       const all = classes(drawerPanelVariants({ side }));
       expect(all).toContain(`${side}-0`);
       for (const cls of all) {
-        expect(cls).not.toMatch(/(^|:)(left|right)-|border-[lr]$|-(left|right)$/);
+        expect(cls).not.toMatch(
+          /(^|:)(left|right)-|border-[lr]$|-(left|right)$/,
+        );
       }
     }
   });
@@ -301,17 +303,15 @@ describe("Drawer", () => {
     );
   });
 
-  it("slides in from its own edge, and not at all under reduced motion", async () => {
+  it("slides in from its own edge, and as a fade under reduced motion", async () => {
     const user = userEvent.setup();
     render(<RecordFixture side="start" />);
     const dialog = await open(user);
     expect(dialog).toHaveAttribute("data-side", "start");
     expect(dialog).toHaveClass(
-      "motion-safe:data-[state=open]:animate-drawer-in-start",
-      "motion-safe:data-[state=closed]:animate-drawer-out-start",
+      "data-[state=open]:animate-drawer-in-start",
+      "data-[state=closed]:animate-drawer-out-start",
     );
-    expect(dialog).not.toHaveClass(
-      "motion-safe:data-[state=open]:animate-drawer-in-end",
-    );
+    expect(dialog).not.toHaveClass("data-[state=open]:animate-drawer-in-end");
   });
 });

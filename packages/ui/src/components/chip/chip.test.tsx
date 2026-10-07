@@ -108,4 +108,17 @@ describe("Chip", () => {
     await user.click(screen.getByRole("button"));
     expect(onClick).not.toHaveBeenCalled();
   });
+
+  it("gives under the pointer when it is a control, and not when it is a token", () => {
+    const { rerender } = render(<Chip>Sydney</Chip>);
+    expect(screen.getByRole("button", { name: "Sydney" })).toHaveClass(
+      "transition-press",
+      "motion-safe:active:scale-97",
+    );
+    // A removable chip is a span: there is nothing to press but the ✕.
+    rerender(<Chip onRemove={() => {}}>Sydney</Chip>);
+    const token = document.querySelector("[data-slot=chip]")!;
+    expect(token).toHaveClass("transition-colors");
+    expect(token.className).not.toContain("scale-97");
+  });
 });

@@ -37,7 +37,7 @@ const dialogContentVariants = cva(
   "fixed top-1/2 left-1/2 z-modal flex w-full max-w-full -translate-x-1/2 -translate-y-1/2 " +
     "flex-col rounded-xl border border-line-neutral-muted bg-surface-card outline-none " +
     // Arrives over motion/duration/base, leaves over fast — see theme.css.
-    "motion-safe:data-[state=open]:animate-dialog-in motion-safe:data-[state=closed]:animate-dialog-out",
+    "data-[state=open]:animate-dialog-in data-[state=closed]:animate-dialog-out",
   {
     variants: {
       size: { sm: "sm:w-100", md: "sm:w-140", lg: "sm:w-180" },

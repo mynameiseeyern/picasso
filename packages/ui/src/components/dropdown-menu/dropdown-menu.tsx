@@ -87,7 +87,7 @@ export function DropdownMenuContent({
           overlaySurfaceVariants({ density: "compact" }),
           "min-w-40 max-h-(--radix-dropdown-menu-content-available-height) overflow-y-auto",
           "origin-(--radix-dropdown-menu-content-transform-origin)",
-          "motion-safe:data-[state=open]:animate-popover-in motion-safe:data-[state=closed]:animate-popover-out",
+          "data-[state=open]:animate-popover-in data-[state=closed]:animate-popover-out",
           className,
         )}
         {...props}
@@ -208,7 +208,10 @@ export function DropdownMenuSubTrigger({
       {...props}
     >
       {children}
-      <ChevronRight aria-hidden className="rtl-mirror ms-auto size-4 shrink-0" />
+      <ChevronRight
+        aria-hidden
+        className="rtl-mirror ms-auto size-4 shrink-0"
+      />
     </DropdownMenuPrimitive.SubTrigger>
   );
 }
@@ -225,7 +228,7 @@ export function DropdownMenuSubContent({
           overlaySurfaceVariants({ density: "compact" }),
           "min-w-40",
           "origin-(--radix-dropdown-menu-content-transform-origin)",
-          "motion-safe:data-[state=open]:animate-popover-in motion-safe:data-[state=closed]:animate-popover-out",
+          "data-[state=open]:animate-popover-in data-[state=closed]:animate-popover-out",
           className,
         )}
         {...props}

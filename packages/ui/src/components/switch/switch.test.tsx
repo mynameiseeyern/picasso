@@ -99,4 +99,17 @@ describe("Switch", () => {
     );
     expect(onChange).not.toHaveBeenCalled();
   });
+
+  it("slides the knob on the motion tokens, and not at all under reduced motion", () => {
+    render(<Switch aria-label="Alerts" />);
+    const thumb = document.querySelector("[data-slot=switch-thumb]")!;
+    // The default duration is motion/duration/fast and `ease-out` is
+    // motion/easing/out — both bound in theme.css — so no number is stated.
+    expect(thumb).toHaveClass(
+      "transition-transform",
+      "ease-out",
+      "motion-reduce:transition-none",
+    );
+    expect(thumb.className).not.toMatch(/\bduration-\d/);
+  });
 });

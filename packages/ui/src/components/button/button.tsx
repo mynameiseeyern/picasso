@@ -25,7 +25,14 @@ import { cn } from "@/lib/utils";
  */
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md " +
-    "border border-transparent font-medium transition-colors cursor-pointer " +
+    "border border-transparent font-medium cursor-pointer " +
+    // The press. The button gives 3% under the pointer and takes its label
+    // and icon with it; `transition-press` is the colours it always
+    // animated, plus `scale`, on motion/duration/fast. Not inside a
+    // ButtonGroup, where one member shrinking away from its neighbours
+    // reads as the group coming apart — and not under reduced motion,
+    // where the pressed colour answers alone.
+    "transition-press motion-safe:not-in-data-[slot=button-group]:active:scale-97 " +
     "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-line-focused " +
     "focus-visible:ring-offset-2 focus-visible:ring-offset-surface-app " +
     "disabled:pointer-events-none " +
@@ -75,6 +82,8 @@ const buttonVariants = cva(
           "bg-transparent border-0 rounded-none text-content-link-default " +
           "underline-offset-2 hover:text-content-link-hovered hover:underline " +
           "active:text-content-link-pressed " +
+          // Text does not press: a link that shrinks reads as a glitch.
+          "motion-safe:not-in-data-[slot=button-group]:active:scale-100 " +
           "[&:disabled:not([data-loading])]:bg-transparent",
       },
       size: {

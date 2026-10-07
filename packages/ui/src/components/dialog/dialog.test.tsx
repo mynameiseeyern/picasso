@@ -116,19 +116,19 @@ describe("Dialog", () => {
     ).toContain("justify-end");
   });
 
-  it("arrives and leaves on the motion tokens, and not at all under reduced motion", async () => {
+  it("arrives and leaves on the motion tokens, and as a fade under reduced motion", async () => {
     const user = userEvent.setup();
     render(<Fixture />);
     await user.click(screen.getByText("Open"));
     const dialog = await screen.findByRole("dialog");
     expect(dialog).toHaveClass(
-      "motion-safe:data-[state=open]:animate-dialog-in",
-      "motion-safe:data-[state=closed]:animate-dialog-out",
+      "data-[state=open]:animate-dialog-in",
+      "data-[state=closed]:animate-dialog-out",
     );
     // The scrim fades with it.
     expect(document.querySelector("[data-slot=dialog-overlay]")).toHaveClass(
-      "motion-safe:data-[state=open]:animate-fade-in",
-      "motion-safe:data-[state=closed]:animate-fade-out",
+      "data-[state=open]:animate-fade-in",
+      "data-[state=closed]:animate-fade-out",
     );
   });
 });

@@ -131,11 +131,11 @@ describe("Toast", () => {
     );
   });
 
-  it("arrives and leaves on the motion tokens, and not at all under reduced motion", () => {
+  it("arrives and leaves on the motion tokens, and as a fade under reduced motion", () => {
     render(<Fixture />);
     expect(document.querySelector("[data-slot=toast]")).toHaveClass(
-      "motion-safe:data-[state=open]:animate-toast-in",
-      "motion-safe:data-[state=closed]:animate-toast-out",
+      "data-[state=open]:animate-toast-in",
+      "data-[state=closed]:animate-toast-out",
     );
   });
 

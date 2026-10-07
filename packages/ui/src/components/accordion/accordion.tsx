@@ -39,7 +39,9 @@ import { cn } from "@/lib/utils";
  *
  * Motion (2 Oct): a row opens over motion/duration/base and closes over
  * fast, animating to the height Radix measures and publishes as
- * `--radix-accordion-content-height`. Reduced motion switches it off.
+ * `--radix-accordion-content-height`, with a fade riding on the height.
+ * Height is the one layout property Picasso animates: nothing else opens a
+ * row. Under reduced motion the row fades in at full height instead.
  */
 type AccordionVariant = "faq" | "default";
 type IconPosition = "left" | "right";
@@ -180,7 +182,7 @@ export function AccordionContent({
       data-slot="accordion-content"
       className={cn(
         "overflow-hidden text-body-lg text-content-neutral-muted",
-        "motion-safe:data-[state=open]:animate-accordion-down motion-safe:data-[state=closed]:animate-accordion-up",
+        "data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up",
         className,
       )}
       {...props}

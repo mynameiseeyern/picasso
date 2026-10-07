@@ -74,7 +74,7 @@ describe("Tooltip", () => {
     expect(container.contains(tip)).toBe(false);
   });
 
-  it("animates the delayed open only, and not at all under reduced motion", async () => {
+  it("animates the delayed open only, and as a fade under reduced motion", async () => {
     const user = userEvent.setup();
     render(<Fixture />);
     await user.tab();
@@ -82,8 +82,8 @@ describe("Tooltip", () => {
     const tip = document.querySelector("[data-slot=tooltip-content]")!;
     expect(tip).toHaveClass(
       "origin-(--radix-tooltip-content-transform-origin)",
-      "motion-safe:data-[state=delayed-open]:animate-popover-in",
-      "motion-safe:data-[state=closed]:animate-popover-out",
+      "data-[state=delayed-open]:animate-popover-in",
+      "data-[state=closed]:animate-popover-out",
     );
     // Moving along a row of triggers opens the next one instantly; a fade on
     // each would make the row feel slower.

@@ -94,14 +94,14 @@ describe("Popover", () => {
     ).toContain("gap-1");
   });
 
-  it("grows from its trigger on the motion tokens, and not at all under reduced motion", async () => {
+  it("grows from its trigger on the motion tokens, and as a fade under reduced motion", async () => {
     const user = userEvent.setup();
     render(<Fixture />);
     await user.click(screen.getByText("Dimensions", { selector: "button" }));
     expect(document.querySelector("[data-slot=popover-content]")).toHaveClass(
       "origin-(--radix-popover-content-transform-origin)",
-      "motion-safe:data-[state=open]:animate-popover-in",
-      "motion-safe:data-[state=closed]:animate-popover-out",
+      "data-[state=open]:animate-popover-in",
+      "data-[state=closed]:animate-popover-out",
     );
   });
 });

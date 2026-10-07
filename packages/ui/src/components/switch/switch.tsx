@@ -106,7 +106,10 @@ export function Switch({ className, size, ...props }: SwitchProps) {
           // on, where the knob is the mark and takes fg/disabled.
           "bg-white",
           "group-disabled:group-data-[state=checked]:bg-content-disabled",
-          "translate-x-0 transition-transform duration-150 ease-out",
+          // The knob slides on motion/duration/fast (the default) and
+          // easing/out, so it has left before the click has finished.
+          // Under reduced motion it changes sides without travelling.
+          "translate-x-0 transition-transform ease-out motion-reduce:transition-none",
         )}
       />
     </SwitchPrimitive.Root>

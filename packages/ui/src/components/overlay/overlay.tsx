@@ -83,7 +83,7 @@ const overlayScrimVariants = cva(
   "fixed inset-0 z-overlay bg-surface-scrim " +
     // Fades with the surface it sits behind. Radix sets data-state on the
     // overlay; a scrim rendered on its own has none and does not animate.
-    "motion-safe:data-[state=open]:animate-fade-in motion-safe:data-[state=closed]:animate-fade-out",
+    "data-[state=open]:animate-fade-in data-[state=closed]:animate-fade-out",
 );
 
 export function OverlayScrim({

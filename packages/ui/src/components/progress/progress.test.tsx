@@ -79,4 +79,15 @@ describe("Progress", () => {
     expect(screen.getByText("420 of 1,000")).toBeInTheDocument();
     expect(screen.queryByText("42%")).toBeNull();
   });
+
+  it("moves linearly, because progress does not ease", () => {
+    render(<Progress value={40} aria-label="Importing" />);
+    expect(
+      document.querySelector("[data-slot=progress-indicator]"),
+    ).toHaveClass(
+      "transition-transform",
+      "ease-linear",
+      "motion-reduce:transition-none",
+    );
+  });
 });

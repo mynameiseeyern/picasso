@@ -26,6 +26,45 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   modes at once). A series palette and a brand palette are different jobs: one is
   chosen so colours belong together, the other so they can be told apart.
 
+### Added
+
+- **A press.** `Button` and an interactive `Chip` scale to 97% while held
+  down, taking the label and icon with them, on `motion/duration/fast`
+  (`transition-press` with `motion-safe:active:scale-97`). Not a text link,
+  not a Button inside a `ButtonGroup`, and not under reduced motion, where
+  the pressed colour answers alone. `transition-press` names the properties it
+  animates — the colours a control already animated, plus `scale`.
+  **Figma impact** — none; nothing moves on canvas.
+
+- **Three curves: `motion/easing/out`, `in-out` and `drawer`.**
+  `cubic-bezier(0.23, 1, 0.32, 1)` for anything arriving, leaving or pressed;
+  `cubic-bezier(0.77, 0, 0.175, 1)` for something already on screen that
+  moves; `cubic-bezier(0.32, 0.72, 0, 1)` for a sheet sliding from an edge.
+  Tailwind's own `ease-out` and `ease-in-out` classes now resolve to the
+  first two, and `ease-drawer` to the third. `transition-illustration` reads
+  `easing/drawer` rather than restating the same curve.
+  **Figma impact** — three hidden STRING variables on the next sync.
+
+- **Motion as a build gate.** `src/__tests__/motion.test.ts` reads
+  `theme.css` and `core.json` and fails on a curve that starts slowly, a
+  duration over 300ms, a keyframe or transition on a layout property, a named
+  animation built from a number rather than a token, and a named animation
+  with no reduced-motion branch. `docs/foundations/motion.md` opens with the
+  question that comes before all of it — should this move at all — and lists
+  what was turned down. **Figma impact** — none.
+
+- **A written decision: inputs stay 14px on a phone.** iOS zooms the page
+  when a field under 16px takes focus. Accepted rather than fixed, because a
+  larger step for coarse pointers changes every form's height on a phone.
+  In `docs/foundations/responsive.md`. **Figma impact** — none.
+
+- **IR's skills, in `.agents/skills`** (linked from `.claude/skills`):
+  `ir-motion`, `ir-motion-review`, `ir-motion-opportunities`, `ir-mobile-web`,
+  `ir-stress-test-ui` and `ir-pick-ui-library`. They carry the rules in
+  `docs/` for an agent working here or in a product that uses Picasso.
+  `AGENTS.md` gains a Motion section and a table of the skills.
+  **Figma impact** — none.
+
 ### ⚠️ Changed (visual)
 
 - **`palette/vis/*` re-stepped for IR red, indigo, IR purple, amber and pink.**
@@ -49,6 +88,54 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   purple, red reading — only the blue changes, and only from one blue to
   another. The Loader is not a chart and arguably should not ride the series
   palette at all; that is left for when something else needs the same treatment.
+
+- **Everything that opens or closes decelerates, both ways.** Closing used an
+  ease-in (`cubic-bezier(0.4, 0, 1, 1)`), which starts slowly — so a dialog
+  hesitated for the first frames after Escape. Arriving and leaving are now
+  both on `easing/out`, and leaving is quicker because it takes the shorter
+  step. The new curve is also stronger than the one it replaces
+  (`cubic-bezier(0, 0, 0.2, 1)`): a popover is most of the way open in the
+  first 50ms. Durations are unchanged. **Drawer**, **Bottom sheet** and the
+  Sidebar's phone nav slide on `easing/drawer`. **Figma impact** — none.
+
+- **Reduced motion is a fade, not nothing.** Under `prefers-reduced-motion`
+  every surface used to appear and vanish at once. Each named animation now
+  carries its own reduced branch: travel and scale are replaced by a 150ms
+  fade, so a drawer still arrives, it just does not slide. Because the branch
+  is inside the utility, components no longer write `motion-safe:` on a named
+  animation — `data-[state=open]:animate-dialog-in` is the whole of it.
+  **Code impact** — a consumer that copied the old
+  `motion-safe:data-[state=open]:animate-…` pattern still works, and gets no
+  animation at all under reduced motion; drop the prefix to get the fade.
+  **Figma impact** — none.
+
+- **The Sidebar's rail changes width at once again.** It had a 200ms width
+  transition. Width is a layout property, so the page beside the rail — charts
+  and tables — re-laid out on every frame. The `transition-rail` utility is
+  removed with it; nothing else used it. **Figma impact** — none.
+
+- **An Accordion row fades as it opens.** The fade rides on the height, so the
+  text no longer appears at full strength in a row that is still two pixels
+  tall. Under reduced motion the row fades in at full height.
+  **Figma impact** — none.
+
+- **Colour transitions run on `ease`.** `theme.css` sets Tailwind's default
+  transition to `motion/duration/fast` and `ease`, so every bare
+  `transition-colors` is on the tokens. The duration is the same 150ms; the
+  curve was Tailwind's `cubic-bezier(0.4, 0, 0.2, 1)`. **Figma impact** — none.
+
+- **A Switch's knob, a Progress bar and the Input button's chevron state a
+  curve and no number.** The knob and chevron are on `ease-out`; Progress and
+  File upload's bar are linear, because a bar reporting progress does not
+  ease. All four stop travelling under reduced motion. The Switch's
+  `duration-150` is gone — the default is the token. **Figma impact** — none.
+
+### Deprecated
+
+- **`motion/easing/enter` and `motion/easing/exit`**, with the `ease-enter`
+  and `ease-exit` classes that read them. Both now equal `easing/out`; use
+  that. Removed in the next major release. **Figma impact** — the two
+  variables stay until then, with the new value.
 
 ## 0.1.0 — 7 October 2026
 

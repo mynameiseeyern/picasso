@@ -151,8 +151,8 @@ describe("DropdownMenu", () => {
     for (const slot of ["dropdown-menu-content", "dropdown-menu-sub-content"])
       expect(document.querySelector(`[data-slot=${slot}]`)).toHaveClass(
         "origin-(--radix-dropdown-menu-content-transform-origin)",
-        "motion-safe:data-[state=open]:animate-popover-in",
-        "motion-safe:data-[state=closed]:animate-popover-out",
+        "data-[state=open]:animate-popover-in",
+        "data-[state=closed]:animate-popover-out",
       );
   });
 });

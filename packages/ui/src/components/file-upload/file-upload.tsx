@@ -176,7 +176,7 @@ export function FileUploadItem({
             className="h-1.5 w-full overflow-hidden rounded-sm bg-surface-layer-emphasis"
           >
             <div
-              className="h-full w-full rounded-sm bg-surface-primary-emphasis transition-transform translate-x-(--upload-offset) rtl:-translate-x-(--upload-offset)"
+              className="h-full w-full rounded-sm bg-surface-primary-emphasis transition-transform ease-linear motion-reduce:transition-none translate-x-(--upload-offset) rtl:-translate-x-(--upload-offset)"
               // Same pattern as Progress: the offset travels as a custom
               // property. An inline width is refused by no-inline-styles and
               // transition-[width] by no-arbitrary-values — both correctly.

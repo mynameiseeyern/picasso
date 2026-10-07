@@ -29,16 +29,17 @@ import { overlayScrimVariants } from "../overlay/overlay";
  * focus is trapped while it is open and returns to the trigger after.
  *
  * Motion: the sheet rises from the bottom edge over motion/duration/slow and
- * drops back over base, the same timing as Drawer; the scrim fades. Reduced
- * motion switches both off. Figma draws none of this.
+ * drops back over base, on the sheet curve (motion/easing/drawer), the same
+ * as Drawer; the scrim fades. Under reduced motion the sheet fades instead
+ * of travelling. Figma draws none of this.
  *
  * Drag: the handle and the header follow the finger downward. Released past a
  * quarter of the panel, or thrown, the sheet goes; short of that it settles
  * back on motion/easing/settle, which overshoots a couple of percent so the
  * return reads as weight. Dragging up is resisted rather than refused — the
  * panel gives about 24px and stops. Under reduced motion the panel still
- * follows the finger, because direct manipulation is not animation; only the
- * release is instant.
+ * follows the finger, because direct manipulation is not animation; the
+ * settle is instant and a dismissal fades.
  *
  * ⚠️ The drag is an addition, never the exit. A sheet whose only way out is a
  * gesture is a sheet a keyboard or switch user cannot leave, so the close
@@ -175,7 +176,7 @@ export function BottomSheetContent({
           "fixed inset-x-0 bottom-0 z-modal flex max-h-5/6 flex-col " +
             "rounded-t-2xl border-t border-line-neutral-muted bg-surface-overlay " +
             "shadow-lg outline-none",
-          "motion-safe:data-[state=open]:animate-sheet-in motion-safe:data-[state=closed]:animate-sheet-out",
+          "data-[state=open]:animate-sheet-in data-[state=closed]:animate-sheet-out",
           /* Only while it matters: a standing transform makes the sheet a
              containing block for anything fixed inside it. `translate-y` sets
              the `translate` property, which is also what lets the offset

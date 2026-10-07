@@ -466,14 +466,14 @@ describe('Sidebar mobile="drawer" (phones)', () => {
 });
 
 describe("Sidebar motion", () => {
-  it("changes width on the motion tokens, and instantly under reduced motion", async () => {
+  it("changes width at once: a layout property is never animated", async () => {
     const user = userEvent.setup();
     render(<Fixture />);
     const rail = document.querySelector("[data-slot=sidebar]")!;
-    expect(rail).toHaveClass("w-64", "motion-safe:transition-rail");
+    expect(rail).toHaveClass("w-64");
     await user.click(screen.getByRole("button", { name: "Collapse sidebar" }));
-    // The same element, so the width has something to travel from.
-    expect(document.querySelector("[data-slot=sidebar]")).toBe(rail);
-    expect(rail).toHaveClass("w-12", "motion-safe:transition-rail");
+    expect(rail).toHaveClass("w-12");
+    // Animating width re-lays out the page beside the rail on every frame.
+    expect(rail.className).not.toMatch(/transition/);
   });
 });

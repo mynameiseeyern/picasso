@@ -130,15 +130,15 @@ describe("Select", () => {
     );
   });
 
-  it("opens its menu on the motion tokens, and not at all under reduced motion", async () => {
+  it("opens its menu on the motion tokens, and as a fade under reduced motion", async () => {
     setup();
     await userEvent.click(
       screen.getByRole("button", { name: /Filter actions/ }),
     );
     expect(document.querySelector("[data-slot=select-menu]")).toHaveClass(
       "origin-(--radix-popover-content-transform-origin)",
-      "motion-safe:data-[state=open]:animate-popover-in",
-      "motion-safe:data-[state=closed]:animate-popover-out",
+      "data-[state=open]:animate-popover-in",
+      "data-[state=closed]:animate-popover-out",
     );
   });
 });

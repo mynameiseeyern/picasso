@@ -246,8 +246,8 @@ export function Sidebar({
                  same gesture, so it reads as one thing in the system. The
                  scrim behind it already fades. --direction-sign signs the
                  travel, so in RTL it comes from the other edge. */
-              "motion-safe:data-[state=open]:animate-drawer-in-start",
-              "motion-safe:data-[state=closed]:animate-drawer-out-start",
+              "data-[state=open]:animate-drawer-in-start",
+              "data-[state=closed]:animate-drawer-out-start",
             )}
           >
             <DialogPrimitive.Title className="sr-only">
@@ -280,10 +280,11 @@ export function Sidebar({
       data-slot="sidebar"
       data-collapsed={collapsed || undefined}
       className={cn(
-        // The width change runs on motion/duration/base (`transition-rail`,
-        // in theme.css) and is instant under reduced motion. Only the width
-        // moves: the labels leave and arrive at once, and the ones still
-        // there truncate while the rail is between sizes.
+        // No width transition, on purpose. Width is a layout property: the
+        // page beside the rail would re-lay out on every frame, and that
+        // page is charts and tables someone is reading. Picasso animates
+        // `transform` and `opacity` only (docs/foundations/motion.md), and
+        // there is no transform that makes a rail narrower.
         // The right edge is drawn in Figma as border/neutral/subtle, which
         // was invisible in both themes — it was neutral-100 in light, the
         // same as bg/sidebar, and neutral-900 in dark, the same as both
@@ -291,7 +292,7 @@ export function Sidebar({
         // (there is no room on the ramp for a border below muted that is
         // not also a surface), so the edge reads in both themes now.
         "flex shrink-0 flex-col border-e border-line-neutral-muted " +
-          "bg-surface-sidebar motion-safe:transition-rail",
+          "bg-surface-sidebar",
         collapsed ? SIDEBAR_WIDTH_COLLAPSED : SIDEBAR_WIDTH,
         className,
       )}

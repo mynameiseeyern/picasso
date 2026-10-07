@@ -102,7 +102,7 @@ export const InputButton = React.forwardRef<
         {hideChevron ? null : (
           <ChevronDown
             aria-hidden
-            className="text-content-neutral-subtle transition-transform group-aria-expanded/input-button:rotate-180"
+            className="text-content-neutral-subtle transition-transform ease-out group-aria-expanded/input-button:rotate-180 motion-reduce:transition-none"
           />
         )}
       </button>

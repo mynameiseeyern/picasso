@@ -61,7 +61,7 @@
     "Built on Radix Dialog: modal, focus trapped, Escape and a scrim tap close it, focus returns to the trigger.",
     "Give it a visible BottomSheetTitle, or `label` when there is none — never both.",
     "The handle is aria-hidden: it hints at the drag, it is not a control. Everything the drag does is also reachable by keyboard.",
-    "The panel follows the finger under prefers-reduced-motion too — direct manipulation is not animation. Only the release, settle or dismiss, is instant.",
+    "The panel follows the finger under prefers-reduced-motion too — direct manipulation is not animation. On release the settle is instant and a dismissal is a short fade.",
     "BottomSheetItem is a <label>, so the whole 48 row toggles the Checkbox or Radio inside it."
   ],
   "examples": "complete"

@@ -45,7 +45,8 @@ import { overlayScrimVariants } from "../overlay/overlay";
  * Motion (2 Oct): a side drawer slides in from its edge over
  * motion/duration/slow and back out over base; the expanded drawer, which
  * has no edge to come from, scales in like a Dialog. The scrim fades with
- * it. Reduced motion switches all of it off. Figma draws none of this — a
+ * it. Under reduced motion each of these becomes a short fade — the named
+ * animations carry that themselves. Figma draws none of this — a
  * static frame cannot — so the tokens in core.json are the spec.
  */
 const drawerPanelVariants = cva(
@@ -62,14 +63,14 @@ const drawerPanelVariants = cva(
       side: {
         end:
           "inset-y-0 end-0 border-s border-line-neutral-muted " +
-          "motion-safe:data-[state=open]:animate-drawer-in-end motion-safe:data-[state=closed]:animate-drawer-out-end",
+          "data-[state=open]:animate-drawer-in-end data-[state=closed]:animate-drawer-out-end",
         start:
           "inset-y-0 start-0 border-e border-line-neutral-muted " +
-          "motion-safe:data-[state=open]:animate-drawer-in-start motion-safe:data-[state=closed]:animate-drawer-out-start",
+          "data-[state=open]:animate-drawer-in-start data-[state=closed]:animate-drawer-out-start",
         // Inset on all four sides; size does not apply.
         expanded:
           "inset-x-20 inset-y-10 rounded-2xl border border-line-neutral-muted " +
-          "motion-safe:data-[state=open]:animate-dialog-in motion-safe:data-[state=closed]:animate-dialog-out",
+          "data-[state=open]:animate-dialog-in data-[state=closed]:animate-dialog-out",
       },
       size: { default: "", wide: "" },
     },

@@ -808,7 +808,7 @@
     }
   },
   "motion": {
-    "$description": "How long things take and how they accelerate. Small on purpose: three durations and four curves. Everything that arrives or leaves decelerates (easing/out) — nothing in the interface starts slowly — and leaving takes the shorter step, so dismissing always feels quicker than opening. The curves are the strong ones from Emil Kowalski's motion standards rather than the CSS keywords, which are too weak to read as intent. Under reduced motion travel is replaced by a short fade; nothing is simply switched off.",
+    "$description": "How long things take and how they accelerate. Small on purpose: three durations and four curves. Everything that arrives or leaves decelerates (easing/out) — nothing in the interface starts slowly — and leaving takes the shorter step, so dismissing always feels quicker than opening. The curves are stronger than the CSS keywords of the same names, which are too weak to read as intent. Under reduced motion travel is replaced by a short fade; nothing is simply switched off.",
     "duration": {
       "fast": {
         "$type": "duration",
@@ -850,12 +850,12 @@
       "enter": {
         "$type": "cubicBezier",
         "$value": "cubic-bezier(0.23, 1, 0.32, 1)",
-        "$description": "Deprecated since 0.2.0, removed in 1.0.0 — use easing/out, which it now equals. Was cubic-bezier(0, 0, 0.2, 1)."
+        "$description": "Deprecated, and removed in the next major release — use easing/out, which it now equals. Was cubic-bezier(0, 0, 0.2, 1)."
       },
       "exit": {
         "$type": "cubicBezier",
         "$value": "cubic-bezier(0.23, 1, 0.32, 1)",
-        "$description": "Deprecated since 0.2.0, removed in 1.0.0 — use easing/out, which it now equals. Was cubic-bezier(0.4, 0, 1, 1), an ease-in: it started slowly, which made closing feel late. Leaving is quicker because it is shorter, not because it accelerates."
+        "$description": "Deprecated, and removed in the next major release — use easing/out, which it now equals. Was cubic-bezier(0.4, 0, 1, 1), an ease-in: it started slowly, which made closing feel late. Leaving is quicker because it is shorter, not because it accelerates."
       }
     }
   }

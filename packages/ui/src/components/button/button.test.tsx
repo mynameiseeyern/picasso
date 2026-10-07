@@ -104,4 +104,26 @@ describe("Button", () => {
       "size-9",
     );
   });
+
+  it("gives under the pointer, on the motion tokens", () => {
+    render(<Button>Save changes</Button>);
+    const el = screen.getByRole("button", { name: "Save changes" });
+    // The colours it always animated, plus scale — never Tailwind's bare
+    // `transition`, which animates eighteen properties.
+    expect(el).toHaveClass("transition-press");
+    expect(el.className.split(/\s+/)).not.toContain("transition");
+    // 3%, not inside a ButtonGroup, and not under reduced motion.
+    expect(el).toHaveClass(
+      "motion-safe:not-in-data-[slot=button-group]:active:scale-97",
+    );
+  });
+
+  it("does not shrink a text link when it is pressed", () => {
+    render(<Button variant="link">Read the docs</Button>);
+    const el = screen.getByRole("button", { name: "Read the docs" });
+    expect(el).toHaveClass(
+      "motion-safe:not-in-data-[slot=button-group]:active:scale-100",
+    );
+    expect(el.className).not.toContain("active:scale-97");
+  });
 });

@@ -34,7 +34,8 @@ import { cn } from "@/lib/utils";
  * only ever a way to draw five pictures of one continuous thing.
  */
 const indicatorVariants = cva(
-  "h-full w-full flex-1 rounded-full transition-transform",
+  // Linear: the bar is reporting progress, and progress does not ease.
+  "h-full w-full flex-1 rounded-full transition-transform ease-linear motion-reduce:transition-none",
   {
     variants: {
       variant: {

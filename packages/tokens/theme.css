@@ -680,7 +680,7 @@
 @utility transition-illustration {
   transition-property: translate, fill, stroke, color, filter;
   transition-duration: 600ms;
-  transition-timing-function: cubic-bezier(0.32, 0.72, 0, 1);
+  transition-timing-function: var(--motion-easing-drawer);
   transition-delay: var(--illustration-delay, 0s);
 }
 
@@ -701,8 +701,8 @@
    --motion-*). They are composed into named animations here, so a component
    asks for `animate-dialog-in` and never states a duration or a curve.
 
-   The standards behind the values are Emil Kowalski's (the skills in
-   .agents/skills: animate, review-animations). The ones that shape this
+   The rules are in docs/foundations/motion.md, and the ir-motion skills in
+   .agents/skills build and review against them. The ones that shape this
    file:
 
    Nothing starts slowly. Arriving and leaving both decelerate on easing/out;
@@ -737,7 +737,7 @@
   --ease-in-out: var(--motion-easing-in-out);
   --ease-drawer: var(--motion-easing-drawer);
   --ease-settle: var(--motion-easing-settle);
-  /* Deprecated with the tokens they read; removed in 1.0.0. */
+  /* Deprecated with the tokens they read; gone in the next major release. */
   --ease-enter: var(--motion-easing-enter);
   --ease-exit: var(--motion-easing-exit);
 

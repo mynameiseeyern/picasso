@@ -39,20 +39,23 @@ import { cn } from "@/lib/utils";
  */
 const chipVariants = cva(
   "inline-flex h-8 max-w-full items-center gap-1.5 rounded-full border border-line-neutral-muted " +
-    "px-3 text-label-md text-content-neutral-emphasis outline-none transition-colors " +
+    "px-3 text-label-md text-content-neutral-emphasis outline-none " +
     "[&_svg]:size-3.5 [&_svg]:shrink-0",
   {
     variants: {
       selected: { true: "bg-surface-card", false: "" },
       interactive: {
         true:
+          // A chip you can press gives 3% under the pointer, like Button;
+          // a removable token is not itself a control, so it does not.
+          "transition-press motion-safe:active:scale-97 " +
           "cursor-pointer hover:bg-surface-neutral-subtle-hovered " +
           "active:bg-surface-neutral-subtle-pressed " +
           "focus-visible:bg-surface-card focus-visible:ring-2 " +
           "focus-visible:ring-line-focused focus-visible:ring-offset-2 " +
           "focus-visible:ring-offset-surface-app " +
           "disabled:pointer-events-none disabled:bg-surface-disabled disabled:text-content-disabled",
-        false: "",
+        false: "transition-colors",
       },
     },
     defaultVariants: { selected: false, interactive: true },
