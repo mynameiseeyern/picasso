@@ -1,0 +1,77 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write          # npm provenance
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+
+      # The tag is the version. A tag that disagrees with the packages is the
+      # one mistake that cannot be undone after publishing, so it stops here.
+      - name: The tag must match the packages
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          for p in packages/tokens packages/ui; do
+            V=$(node -p "require('./$p/package.json').version")
+            if [ "$V" != "$TAG" ]; then
+              echo "::error::$p is $V but the tag is $TAG."
+              echo "Picasso publishes its three surfaces under one version — see docs/releases."
+              exit 1
+            fi
+          done
+          echo "version=$TAG" >> "$GITHUB_OUTPUT"
+        id: version
+
+      - run: npm run build:tokens
+      - run: npm run check --workspace @ir/tokens
+      - run: npm run lint
+      - run: npm run type-check
+      - run: npm test
+      - run: npm run build-storybook
+
+      # The changelog section for this version becomes the release body, so
+      # the notes are the ones that were reviewed rather than ones written on
+      # release day.
+      - name: Cut the notes from CHANGELOG.md
+        run: |
+          awk -v v="## ${{ steps.version.outputs.version }}" '
+            $0 ~ "^" v { on = 1; next }
+            on && /^## / { exit }
+            on { print }
+          ' CHANGELOG.md > RELEASE_NOTES.md
+          test -s RELEASE_NOTES.md || {
+            echo "::error::CHANGELOG.md has no section for ${{ steps.version.outputs.version }}."
+            exit 1
+          }
+
+      - name: GitHub release
+        run: gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file RELEASE_NOTES.md
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      # Publishing is opt-in: it only runs once NPM_TOKEN exists, so adding the
+      # secret is the decision to publish rather than something that happens by
+      # surprise on the first tag. @ir/ui ships TypeScript source, so a
+      # consumer needs a bundler that compiles it — see docs/releases.
+      - name: Publish
+        if: ${{ env.NODE_AUTH_TOKEN != '' }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          npm publish --workspace @ir/tokens --provenance --access restricted
+          npm publish --workspace @ir/ui --provenance --access restricted

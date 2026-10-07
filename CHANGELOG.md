@@ -5,6 +5,24 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ## Unreleased
 
+_Nothing yet._
+
+## 0.1.0 — 7 October 2026
+
+The first published version. Everything below shipped before there was anything
+to ship against, so the ⚠️ Breaking entries describe changes made against
+unreleased `main` rather than against a version anyone is running — they are
+kept because they are the history of why the API reads the way it does.
+
+**Figma impact** — the library and the packages share this version. The Figma
+library's publish description should carry `0.1.0`, and a sync is outstanding
+for the display font, `motion/easing/settle` and the renamed phone canvases.
+
+`@ir/ui` ships TypeScript source rather than a build, so a consumer needs a
+bundler that compiles TS and JSX and scans `node_modules/@ir/ui/src` for
+Tailwind classes.
+
+
 ### ⚠️ Breaking
 
 - **`screen/mobile/*` is `min` / `small` / `base` / `max`, not `sm` / `md` /

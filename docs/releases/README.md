@@ -51,12 +51,31 @@ when I accept the update". Only one of those is answered by a normal changelog.
 **A visual change is minor, never patch.** Patch implies "safe to take without
 looking", and a visual change never is.
 
-## Changesets
+## How a release actually happens
 
-Every PR that touches the system adds a changeset naming its category and
-impact, and the changelog is assembled at publish. A changelog written from
-memory on release day omits exactly the visual changes nobody flagged at the
-time.
+As of 0.1.0:
 
-The template carries one non-standard field, **`figma-impact`**, which feeds the
-line above.
+1. Land the work, with its `CHANGELOG.md` entry under `## Unreleased` — including
+   its **Figma impact** line.
+2. Move `## Unreleased` to `## <version> — <date>` and set the same version in
+   `packages/tokens` and `packages/ui`.
+3. Tag `v<version>` and push the tag.
+
+`.github/workflows/release.yml` then refuses the tag if it disagrees with either
+package, runs the full check, cuts the GitHub release notes from that
+changelog section, and publishes — but only once an `NPM_TOKEN` secret exists,
+so adding the secret is the decision to publish rather than something that
+happens by surprise on the first tag.
+
+`.github/workflows/ci.yml` runs the same checks on every push and pull request,
+including the Storybook and docs-site builds, because the guidance ratchet and
+the generated component pages only fail at build time.
+
+### Changesets — not installed
+
+Earlier drafts of this page described a changeset per PR with a non-standard
+`figma-impact` field. That was never built, and the changelog has been written
+by hand since. It is worth reconsidering when more than one person is landing
+changes: the reason for changesets is that a changelog written from memory on
+release day omits exactly the visual changes nobody flagged at the time, and
+that failure mode arrives with the second contributor, not the first.

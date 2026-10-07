@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# A second push to a PR makes the first run pointless.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      # Tokens first: everything downstream reads dist/tokens.css, and the
+      # parity check is what stops a brand drifting from the others.
+      - name: Build tokens
+        run: npm run build:tokens
+      - name: Token parity across brands
+        run: npm run check --workspace @ir/tokens
+
+      - name: Lint
+        run: npm run lint
+      - name: Types
+        run: npm run type-check
+      - name: Tests
+        run: npm test
+
+      # build:site builds Storybook on the way through, so this one step
+      # covers both: the guidance ratchet and the stories only fail at build
+      # time, and an MDX break in a generated component page would otherwise
+      # not show up until a deploy.
+      - name: Build Storybook and the docs site
+        run: npm run build:site
