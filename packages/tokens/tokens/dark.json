@@ -572,33 +572,25 @@
   "chart": {
     "1": {
       "$type": "color",
-      "$value": "{palette.brand.400}"
+      "$value": "{palette.brand.500}"
     },
     "2": {
       "$type": "color",
-      "$value": "{palette.vis.ir-purple.400}"
+      "$value": "{palette.vis.ir-red.400}"
     },
     "3": {
       "$type": "color",
-      "$value": "{palette.vis.ir-red.400}"
+      "$value": "{palette.vis.indigo.400}"
     },
     "4": {
       "$type": "color",
-      "$value": "{palette.vis.ir-corporateblue.400}"
+      "$value": "{palette.vis.ir-purple.400}"
     },
     "5": {
       "$type": "color",
-      "$value": "{palette.vis.teal.400}"
+      "$value": "{palette.vis.amber.400}"
     },
     "6": {
-      "$type": "color",
-      "$value": "{palette.vis.indigo.400}"
-    },
-    "7": {
-      "$type": "color",
-      "$value": "{palette.vis.ir-lime.400}"
-    },
-    "8": {
       "$type": "color",
       "$value": "{palette.vis.pink.400}"
     }

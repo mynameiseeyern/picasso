@@ -5,7 +5,50 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ## Unreleased
 
-_Nothing yet._
+### ⚠️ Breaking
+
+- **The chart series palette is `chart/1–6`, not `1–8`, and the order has
+  changed.** Eight series colours were declared and only three could actually be
+  told apart — validated, not judged by eye: `chart/1` (brand blue) and `chart/4`
+  (IR corporate blue) were ΔE 4.3 apart in normal vision, which is one line drawn
+  twice. Teal sat ΔE 9.6 from brand, indigo 10.8 from IR purple, and IR lime was
+  outside the usable lightness band at every step bar one, where it collided with
+  `vis-lime`. The floor is 15.
+
+  The order is now brand blue, IR red, indigo, IR purple, amber, pink. **Code
+  impact** — `chart-7` and `chart-8` no longer exist, and `chart-2`, `3` and `4`
+  are different colours than before. **Figma impact** — a sync removes two
+  variables and changes five.
+
+  Three colours are deliberately no longer series slots and remain colours:
+  IR corporate blue (7° from brand blue on the hue wheel — no step fixes that),
+  IR lime (20° from lime and far too light), and teal (cannot clear blue in both
+  modes at once). A series palette and a brand palette are different jobs: one is
+  chosen so colours belong together, the other so they can be told apart.
+
+### ⚠️ Changed (visual)
+
+- **`palette/vis/*` re-stepped for IR red, indigo, IR purple, amber and pink.**
+  Those ramps are referenced by `chart/*` and nothing else, so they are now tuned
+  to pass the categorical checks rather than to match a brand swatch exactly.
+  Brand blue is untouched — `chart/1` is `palette/brand/500` in both modes, the
+  same value it has always been — because half the system reads that ramp. Each
+  changed ramp's 600 was regenerated so it stays darker than its 500.
+
+  The whole set is validated in **both modes against every pair**, which is a much
+  harder constraint than either mode alone and is what caps it at six. Two
+  warnings remain and are covered by what the chart components already do: amber
+  and IR red separate by only ΔE ~7 under protanopia and deuteranopia, and IR
+  purple and pink fall below 3:1 on the dark card. The legend is always drawn from
+  two series up, every series is named in the tooltip, and a data table always
+  ships — see `docs/foundations/colour.md`.
+
+- **The Loader's lead stroke is brand blue rather than IR corporate blue.** It
+  was bound to `chart-4`, which used to be corporate blue and is now IR purple.
+  Rebound to `chart-1`, `chart-4` and `chart-2` so it keeps its blue-leads,
+  purple, red reading — only the blue changes, and only from one blue to
+  another. The Loader is not a chart and arguably should not ride the series
+  palette at all; that is left for when something else needs the same treatment.
 
 ## 0.1.0 — 7 October 2026
 

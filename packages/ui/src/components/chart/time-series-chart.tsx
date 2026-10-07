@@ -64,8 +64,8 @@ export interface TimeSeriesChartProps
 }
 
 const AREA_FILL = [
-  "fill-chart-1/15", "fill-chart-2/15", "fill-chart-3/15", "fill-chart-4/15",
-  "fill-chart-5/15", "fill-chart-6/15", "fill-chart-7/15", "fill-chart-8/15",
+  "fill-chart-1/15", "fill-chart-2/15", "fill-chart-3/15",
+  "fill-chart-4/15", "fill-chart-5/15", "fill-chart-6/15",
 ];
 
 type Pt = { x: number; y: number };

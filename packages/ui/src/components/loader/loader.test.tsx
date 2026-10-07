@@ -49,7 +49,7 @@ describe("Loader", () => {
       <Loader variant="pulse" delay={0} />,
     );
     const lead = () => container.querySelector("[data-slot=loader-pulse] i")!;
-    expect(lead().className).toContain("bg-chart-4");
+    expect(lead().className).toContain("bg-chart-1");
     rerender(<Loader variant="pulse" delay={0} onTint />);
     expect(lead().className).toContain("bg-content-info-muted");
   });

@@ -15,8 +15,8 @@ import { cn } from "@/lib/utils";
  * - **pulse** — Iris is thinking, inside the assistant thread.
  *
  * Motion lives in `@ir/tokens/theme.css` (`animate-loader-*`), because @ir/ui
- * ships no CSS. Colours are chart tokens — blue leads (chart-4), purple follows
- * (chart-2), red last and smallest (chart-3) — so light/dark is automatic.
+ * ships no CSS. Colours are chart tokens — blue leads (chart-1), purple follows
+ * (chart-4), red last and smallest (chart-2) — so light/dark is automatic.
  *
  * Accessibility: the wrapper is a polite status region with a visually hidden
  * label naming the work ("Bringing your fleet online", "Iris is thinking"),
@@ -100,7 +100,7 @@ const drops = [
   {
     size: "size-9/25",
     turn: "rotate-0",
-    tone: "bg-chart-4",
+    tone: "bg-chart-1",
     reach: "-85%",
     merge: "-24%",
     delay: "0s",
@@ -108,7 +108,7 @@ const drops = [
   {
     size: "size-31/100",
     turn: "rotate-120",
-    tone: "bg-chart-2",
+    tone: "bg-chart-4",
     reach: "-100%",
     merge: "-23%",
     delay: "-0.075s",
@@ -116,7 +116,7 @@ const drops = [
   {
     size: "size-13/50",
     turn: "rotate-240",
-    tone: "bg-chart-3",
+    tone: "bg-chart-2",
     reach: "-120%",
     merge: "-36%",
     delay: "-0.15s",
@@ -227,7 +227,7 @@ function Pulse({ onTint }: { onTint?: boolean }) {
       <i
         className={cn(
           dot,
-          onTint ? "bg-content-info-muted" : "bg-chart-4",
+          onTint ? "bg-content-info-muted" : "bg-chart-1",
           // Reduced motion: hold at the open position.
           "motion-reduce:-translate-x-4 animate-loader-pulse-l motion-reduce:animate-loader-pulse-fade",
         )}
@@ -235,13 +235,13 @@ function Pulse({ onTint }: { onTint?: boolean }) {
       <i
         className={cn(
           dot,
-          "bg-chart-2 animate-loader-pulse-m motion-reduce:animate-loader-pulse-fade",
+          "bg-chart-4 animate-loader-pulse-m motion-reduce:animate-loader-pulse-fade",
         )}
       />
       <i
         className={cn(
           dot,
-          "bg-chart-3 motion-reduce:translate-x-4 animate-loader-pulse-r motion-reduce:animate-loader-pulse-fade",
+          "bg-chart-2 motion-reduce:translate-x-4 animate-loader-pulse-r motion-reduce:animate-loader-pulse-fade",
         )}
       />
     </span>

@@ -196,43 +196,43 @@
       "ir-red": {
         "400": {
           "$type": "color",
-          "$value": "#EB5B6F"
+          "$value": "#F94F60"
         },
         "500": {
           "$type": "color",
-          "$value": "#E73750"
+          "$value": "#E3394F"
         },
         "600": {
           "$type": "color",
-          "$value": "#BD2D41"
+          "$value": "#C20835"
         }
       },
       "ir-purple": {
         "400": {
           "$type": "color",
-          "$value": "#9A51B9"
+          "$value": "#972AC2"
         },
         "500": {
           "$type": "color",
-          "$value": "#852CAA"
+          "$value": "#8409AE"
         },
         "600": {
           "$type": "color",
-          "$value": "#6D248B"
+          "$value": "#620083"
         }
       },
       "amber": {
         "400": {
           "$type": "color",
-          "$value": "#DF9439"
+          "$value": "#B76F25"
         },
         "500": {
           "$type": "color",
-          "$value": "#D97D0E"
+          "$value": "#A45D07"
         },
         "600": {
           "$type": "color",
-          "$value": "#B1660B"
+          "$value": "#814701"
         }
       },
       "teal": {
@@ -252,15 +252,15 @@
       "indigo": {
         "400": {
           "$type": "color",
-          "$value": "#6E67E9"
+          "$value": "#696DFF"
         },
         "500": {
           "$type": "color",
-          "$value": "#4F46E5"
+          "$value": "#4F45E8"
         },
         "600": {
           "$type": "color",
-          "$value": "#4039BB"
+          "$value": "#3C20C8"
         }
       },
       "lime": {
@@ -280,15 +280,15 @@
       "pink": {
         "400": {
           "$type": "color",
-          "$value": "#EF68AB"
+          "$value": "#AC4C77"
         },
         "500": {
           "$type": "color",
-          "$value": "#EC4899"
+          "$value": "#8B2E5B"
         },
         "600": {
           "$type": "color",
-          "$value": "#C13B7D"
+          "$value": "#6E1042"
         }
       },
       "ir-corporateblue": {
@@ -318,7 +318,8 @@
           "$type": "color",
           "$value": "#6CA712"
         }
-      }
+      },
+      "$description": "Visualisation hues. Referenced by chart/* and nothing else, which is why these steps are chosen to pass the categorical checks rather than to match the brand swatches exactly — see docs/foundations/colour.md. ir-corporateblue, ir-lime, lime and teal are kept as colours but are NOT series slots: corporate blue sits 7° from brand blue, ir-lime 20° from lime and far too light, and teal cannot clear blue in both modes."
     }
   },
   "type": {
@@ -807,39 +808,54 @@
     }
   },
   "motion": {
-    "$description": "How long things take and how they accelerate. Small on purpose: three durations and three curves cover an overlay arriving, an overlay leaving, a row opening, and a dragged surface settling back. Entering uses the longer step and decelerates; leaving uses the shorter step and accelerates, so dismissing always feels quicker than opening. Reduced motion switches every one of these off.",
+    "$description": "How long things take and how they accelerate. Small on purpose: three durations and four curves. Everything that arrives or leaves decelerates (easing/out) — nothing in the interface starts slowly — and leaving takes the shorter step, so dismissing always feels quicker than opening. The curves are the strong ones from Emil Kowalski's motion standards rather than the CSS keywords, which are too weak to read as intent. Under reduced motion travel is replaced by a short fade; nothing is simply switched off.",
     "duration": {
       "fast": {
         "$type": "duration",
         "$value": "150ms",
-        "$description": "Leaving, and small things: a scrim fading out, a dialog closing, an accordion row collapsing."
+        "$description": "Small things and leaving: a press, a popover or tooltip both ways, a scrim fading out, a dialog closing, an accordion row collapsing. Also every fade that stands in for travel under reduced motion."
       },
       "base": {
         "$type": "duration",
         "$value": "200ms",
-        "$description": "Arriving: a scrim, a dialog, an accordion row opening. Also a drawer leaving."
+        "$description": "Arriving: a scrim, a dialog, an accordion row opening. Also a drawer, toast or bottom sheet leaving."
       },
       "slow": {
         "$type": "duration",
         "$value": "300ms",
-        "$description": "A large surface travelling a long way: a drawer sliding in."
+        "$description": "A surface travelling its own length: a drawer, toast or bottom sheet sliding in. The ceiling — nothing in the interface takes longer."
       }
     },
     "easing": {
-      "enter": {
+      "out": {
         "$type": "cubicBezier",
-        "$value": "cubic-bezier(0, 0, 0.2, 1)",
-        "$description": "Decelerate. Starts at speed and settles — for anything arriving."
+        "$value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "$description": "The default. Starts at full speed and settles — for anything arriving or leaving, and for a press. Leaving uses it too: a curve that starts slowly delays the exact moment someone is watching."
       },
-      "exit": {
+      "in-out": {
         "$type": "cubicBezier",
-        "$value": "cubic-bezier(0.4, 0, 1, 1)",
-        "$description": "Accelerate. Starts slowly and leaves at speed — for anything going away."
+        "$value": "cubic-bezier(0.77, 0, 0.175, 1)",
+        "$description": "For something already on screen that moves or changes shape — it has to start from rest as well as stop. Not for arriving or leaving."
+      },
+      "drawer": {
+        "$type": "cubicBezier",
+        "$value": "cubic-bezier(0.32, 0.72, 0, 1)",
+        "$description": "The iOS sheet curve. For a surface that slides in from an edge and travels its own length: Drawer, Bottom sheet, the phone nav. Illustrations' lift uses the same curve."
       },
       "settle": {
         "$type": "cubicBezier",
         "$value": "cubic-bezier(0.3, 1.35, 0.5, 1)",
-        "$description": "Overshoot and come back — for something returning to where it already was, after a drag or a cancelled gesture, rather than arriving or leaving. Peaks about 4% past the target at 58% of the duration — 3.5px on a sheet dragged the 86px that dismisses a short one. Enough to read as weight; well short of a bounce. Anything gentler is sub-pixel at the distances a thumb actually drags, which would leave this curve indistinguishable from easing/enter and not worth having. This is the spring, and it is deliberately a curve and not stiffness/damping: a physics spring is velocity-aware and only JS can run one, while every other motion token here is something CSS can take straight. Use it with duration/base; there is no settle duration."
+        "$description": "Overshoot and come back — for something returning to where it already was, after a drag or a cancelled gesture, rather than arriving or leaving. Peaks about 4% past the target at 58% of the duration — 3.5px on a sheet dragged the 86px that dismisses a short one. Enough to read as weight; well short of a bounce. Anything gentler is sub-pixel at the distances a thumb actually drags, which would leave this curve indistinguishable from easing/out and not worth having. This is the spring, and it is deliberately a curve and not stiffness/damping: a physics spring is velocity-aware and only JS can run one, while every other motion token here is something CSS can take straight. Use it with duration/base; there is no settle duration."
+      },
+      "enter": {
+        "$type": "cubicBezier",
+        "$value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "$description": "Deprecated since 0.2.0, removed in 1.0.0 — use easing/out, which it now equals. Was cubic-bezier(0, 0, 0.2, 1)."
+      },
+      "exit": {
+        "$type": "cubicBezier",
+        "$value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "$description": "Deprecated since 0.2.0, removed in 1.0.0 — use easing/out, which it now equals. Was cubic-bezier(0.4, 0, 1, 1), an ease-in: it started slowly, which made closing feel late. Leaving is quicker because it is shorter, not because it accelerates."
       }
     }
   }

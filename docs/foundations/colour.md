@@ -32,10 +32,44 @@ word that reads correctly with its own prefix:
 | `fg/*` (31) | **content** | `text-content-on-primary-emphasis` |
 | `border/*` (21) | **line** | `border-line-input-invalid` |
 | `status/*` (5) | status | `text-status-critical` |
-| `chart/1–8` | chart | `fill-chart-3` |
+| `chart/1–6` | chart | `fill-chart-3` |
 
 Every semantic has a utility. **If you reach for `bg-[var(...)]`, the bridge is
 missing an entry** — add it to `packages/tokens/theme.css` rather than escaping.
+
+## The chart series palette
+
+`chart/1–6` is a **series** palette, not a brand palette. They are different
+jobs: a brand palette is chosen so the colours belong together, a series palette
+so they can be told apart. IR's brand colours do not automatically do the second.
+
+Six slots, in fixed order — brand blue, IR red, indigo, IR purple, amber, pink.
+**The order is fixed and never cycled.** A seventh series is not a generated
+hue: fold the tail into one "Other", or use small multiples.
+
+Three colours are deliberately *not* series slots, and all three are still
+colours you can use elsewhere:
+
+| Colour | Why not a series |
+|---|---|
+| IR corporate blue | 7° from brand blue on the hue wheel — the same colour to anyone reading a chart |
+| IR lime | 20° from lime, and at L 0.85 it is outside the usable band in both modes; it has no in-range step |
+| teal | cannot clear blue in both light and dark at once |
+
+The steps come from `palette/vis/*`, which is referenced by `chart/*` and
+nothing else — so those ramps are tuned to pass the categorical checks rather
+than to match a brand swatch exactly. The whole set is validated in both modes
+against every pair, not just adjacent ones.
+
+Two residual warnings, both deliberate and both covered by the chart components:
+
+- **Amber and IR red separate by only ΔE ~7 under protanopia and deuteranopia.**
+  That is inside the floor band, which is legal only with a second channel. The
+  chart components always draw a legend from two series up, always carry a data
+  table, and name every series in the tooltip. If you build a chart that does
+  none of those and uses both slots, direct-label the lines.
+- **IR purple and pink fall below 3:1 against the dark card** (2.38 and 2.82).
+  Same cover: a visible legend and a table. They clear 3:1 on the app surface.
 
 ## How a token is named
 

@@ -574,29 +574,21 @@
     },
     "2": {
       "$type": "color",
-      "$value": "{palette.vis.ir-purple.500}"
+      "$value": "{palette.vis.ir-red.500}"
     },
     "3": {
       "$type": "color",
-      "$value": "{palette.vis.ir-red.500}"
+      "$value": "{palette.vis.indigo.500}"
     },
     "4": {
       "$type": "color",
-      "$value": "{palette.vis.ir-corporateblue.500}"
+      "$value": "{palette.vis.ir-purple.500}"
     },
     "5": {
       "$type": "color",
-      "$value": "{palette.vis.teal.500}"
+      "$value": "{palette.vis.amber.500}"
     },
     "6": {
-      "$type": "color",
-      "$value": "{palette.vis.indigo.500}"
-    },
-    "7": {
-      "$type": "color",
-      "$value": "{palette.vis.ir-lime.500}"
-    },
-    "8": {
       "$type": "color",
       "$value": "{palette.vis.pink.500}"
     }

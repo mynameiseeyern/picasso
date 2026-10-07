@@ -35,14 +35,18 @@ import { cn } from "@/lib/utils";
    Written out rather than templated because Tailwind reads class names as
    literals. The order is fixed: slot 1 is always the first series, and a
    filter that removes series 2 must not promote series 3 into its colour. */
-export const CHART_SLOTS = 8;
+/* Six, not eight. Eight were declared and three of them could not be told
+   apart from the others — corporate blue sits 7° from brand blue on the hue
+   wheel, ir-lime 20° from lime and far too light, and teal cannot clear blue
+   in both modes at once. The colours all still exist; they are not series. */
+export const CHART_SLOTS = 6;
 const STROKE = [
-  "stroke-chart-1", "stroke-chart-2", "stroke-chart-3", "stroke-chart-4",
-  "stroke-chart-5", "stroke-chart-6", "stroke-chart-7", "stroke-chart-8",
+  "stroke-chart-1", "stroke-chart-2", "stroke-chart-3",
+  "stroke-chart-4", "stroke-chart-5", "stroke-chart-6",
 ];
 const TEXT = [
-  "text-chart-1", "text-chart-2", "text-chart-3", "text-chart-4",
-  "text-chart-5", "text-chart-6", "text-chart-7", "text-chart-8",
+  "text-chart-1", "text-chart-2", "text-chart-3",
+  "text-chart-4", "text-chart-5", "text-chart-6",
 ];
 export const seriesStroke = (slot: number) => STROKE[slot % CHART_SLOTS];
 export const seriesText = (slot: number) => TEXT[slot % CHART_SLOTS];

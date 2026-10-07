@@ -36,9 +36,9 @@
     },
     {
       "id": "fold-the-tail",
-      "dont": "Generate a ninth colour when there are more series than slots.",
+      "dont": "Generate a seventh colour when there are more series than slots.",
       "do": "Fold the tail into one \"Other\" series, or facet into small multiples.",
-      "why": "A generated hue lands wherever there is room, which is usually next to a colour already in use. Both alternatives are decisions about the data, so the chart warns rather than deciding silently.",
+      "why": "The palette has six slots, and it has six because three of the declared eight could not be told apart from the others — corporate blue sits 7° from brand blue, IR lime is outside the usable lightness band, and teal cannot clear blue in both modes. A generated hue lands wherever there is room, which is usually next to a colour already in use. Both alternatives are decisions about the data, so the chart warns rather than deciding silently.",
       "example": false
     },
     {
@@ -55,7 +55,8 @@
     "A gap reads as \"No data\" in the table rather than as an empty cell, which would be indistinguishable from a cell that failed to render.",
     "The legend is always present from two series up and never for one, where the title names the series. Swatches carry identity; the text stays in ink, because a light series colour is illegible as text.",
     "Legend toggles are real buttons with `aria-pressed`, and the last visible series cannot be hidden.",
-    "⚠️ The crosshair is pointer-only. There is no keyboard equivalent yet — see the Do and Don't."
+    "⚠️ The crosshair is pointer-only. There is no keyboard equivalent yet — see the Do and Don't.",
+    "Amber (slot 5) and IR red (slot 2) separate by only ΔE ~7 for protanopia and deuteranopia — inside the floor band, which is legal only with a second channel. The legend, the tooltip's series names and the data table are that channel; a chart stripped of all three should direct-label its lines."
   ],
   "examples": "complete"
 }
