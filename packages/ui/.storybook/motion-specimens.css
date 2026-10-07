@@ -119,7 +119,8 @@
   scale: 1;
 }
 @media (hover: hover) {
-  [data-specimen="hover-grow"]:hover {
+  [data-specimen="hover-grow"]:hover,
+  [data-specimen="hover-grow"]:hover:active {
     scale: 1.05;
   }
 }
@@ -147,8 +148,8 @@
 /* A page about motion still honours the setting it is about. With reduced
    motion on, every specimen is still; the story says so. */
 @media (prefers-reduced-motion: reduce) {
-  [data-specimen],
-  [data-specimen] > * {
+  [data-specimen]:not([data-specimen="reduced-fade"]),
+  [data-specimen]:not([data-specimen="reduced-fade"]) > * {
     animation: none !important;
     transition: none !important;
   }

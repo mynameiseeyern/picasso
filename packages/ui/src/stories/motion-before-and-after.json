@@ -46,7 +46,7 @@
       "id": "only-transform-and-opacity",
       "dont": "Animate a width, a height or a position.",
       "do": "Change layout at once. Animate transform and opacity only.",
-      "why": "A width that animates re-lays out everything beside it on every frame, and beside the rail is a page of charts. The count under each example is how many times the page changed size.",
+      "why": "A width that animates re-lays out everything beside it on every frame, and beside the rail is a page of charts. The count in each example is how many times the page changed size.",
       "dontValue": "transition: width 200ms",
       "doValue": "No transition"
     },
