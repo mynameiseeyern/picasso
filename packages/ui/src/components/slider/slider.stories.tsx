@@ -82,6 +82,18 @@ export const Disabled: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — this file's decorator pins 320, narrower than the 328 a 360 phone
+ * leaves after its gutters. Two thumbs close together is the case to look at:
+ * they must stay grabbable rather than overlapping into one target.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <Slider defaultValue={[42, 58]} thumbLabels={["Minimum", "Maximum"]} />
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

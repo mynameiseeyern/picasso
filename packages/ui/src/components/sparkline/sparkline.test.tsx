@@ -69,7 +69,12 @@ describe("Sparkline", () => {
   it("positions the end dot through custom properties, so it stays a circle", () => {
     render(<Sparkline values={[0, 10]} min={0} max={10} label="x" />);
     const dot = one("[data-slot='sparkline-end']") as HTMLElement;
-    expect(dot.style.getPropertyValue("--spark-x")).toBe("100%");
+    // x is clamped so the dot and its 2px ring cannot hang outside the box.
+    // A sparkline's last reading is always at 100%, and the 6px of overhang
+    // that produced scrolled the whole page sideways on a 360px phone.
+    expect(dot.style.getPropertyValue("--spark-x")).toBe(
+      "clamp(0.375rem, 100%, calc(100% - 0.375rem))",
+    );
     expect(dot.style.getPropertyValue("--spark-y")).toBe("0%");
     expect(dot.className).toContain("rounded-full");
     expect(dot.className).toContain("ring-surface-card");

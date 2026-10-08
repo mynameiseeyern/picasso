@@ -386,7 +386,11 @@ export function ChartTable({
   format?: (v: number) => string;
 }) {
   return (
-    <table data-slot="chart-table" className="sr-only">
+    // The wrapper carries `sr-only`, not the table: a table sizes to its
+    // content and ignores the 1px width, so putting it on the table left a
+    // 428px element pushing the page sideways on a phone.
+    <div className="sr-only">
+      <table data-slot="chart-table">
       <caption>{caption}</caption>
       <thead>
         <tr>
@@ -410,6 +414,7 @@ export function ChartTable({
           </tr>
         ))}
       </tbody>
-    </table>
+      </table>
+    </div>
   );
 }

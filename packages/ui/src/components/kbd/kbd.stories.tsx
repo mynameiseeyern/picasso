@@ -75,6 +75,37 @@ export const InButton: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. A shortcut hint sits at the end
+ * of a row of text, which is where it gets squeezed; it must not wrap mid-combo.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-3 border border-line-neutral-muted p-3">
+      <div className="flex items-center justify-between gap-2 text-body-md text-content-neutral-emphasis">
+        <span className="truncate">Search endpoints</span>
+        <KbdGroup>
+          <Kbd>Ctrl</Kbd>
+          <Kbd>Shift</Kbd>
+          <Kbd>K</Kbd>
+        </KbdGroup>
+      </div>
+      <div className="grid gap-2">
+        <Button>
+          Open command palette
+          <KbdGroup>
+            <Kbd background="on-emphasis">
+              <Command />
+            </Kbd>
+            <Kbd background="on-emphasis">K</Kbd>
+          </KbdGroup>
+        </Button>
+      </div>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

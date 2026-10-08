@@ -111,6 +111,30 @@ const Pair = ({ children }: { children: React.ReactNode }) => (
   <div className="flex flex-wrap gap-4">{children}</div>
 );
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. The box keeps its width and the
+ * text wraps inside it; nothing scrolls sideways.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-82 border border-line-neutral-muted p-3">
+      <Field>
+        <FieldLabel>Notes</FieldLabel>
+        <FieldControl>
+          <Textarea
+            defaultValue="Jitter above threshold on the Sydney trunk from 02:14. Carrier confirmed a reroute; watching for recurrence."
+            aria-label="Notes"
+          />
+        </FieldControl>
+        <FieldDescription>
+          Visible to everyone on the on-call rotation.
+        </FieldDescription>
+      </Field>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   parameters: { controls: { disable: true } },
   render: () => (

@@ -68,6 +68,28 @@ export const Invalid: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. The reveal button sits inside
+ * the field, so the text has to end before it rather than run underneath.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-82 border border-line-neutral-muted p-3">
+      <Field>
+        <FieldLabel>Service account password</FieldLabel>
+        <FieldControl>
+          <PasswordInput
+            defaultValue="correct-horse-battery-staple"
+            aria-label="Service account password"
+          />
+        </FieldControl>
+        <FieldDescription>Stored encrypted at rest.</FieldDescription>
+      </Field>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

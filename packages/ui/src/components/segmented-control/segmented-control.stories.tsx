@@ -131,6 +131,30 @@ export const Disabled: Story = {
   ),
 };
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Four segments is where the
+ * labels stop fitting; this is the width that decides whether the set holds or
+ * needs fewer options.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-3 border border-line-neutral-muted p-3">
+      <SegmentedControl aria-label="Range" defaultValue="week">
+        <SegmentedControlItem value="day">Day</SegmentedControlItem>
+        <SegmentedControlItem value="week">Week</SegmentedControlItem>
+        <SegmentedControlItem value="month">Month</SegmentedControlItem>
+      </SegmentedControl>
+      <SegmentedControl aria-label="Scope" defaultValue="site">
+        <SegmentedControlItem value="fleet">Fleet</SegmentedControlItem>
+        <SegmentedControlItem value="site">Site</SegmentedControlItem>
+        <SegmentedControlItem value="endpoint">Endpoint</SegmentedControlItem>
+        <SegmentedControlItem value="trunk">Trunk</SegmentedControlItem>
+      </SegmentedControl>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

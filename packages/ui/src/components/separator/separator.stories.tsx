@@ -108,6 +108,29 @@ const Line = ({ children }: { children: React.ReactNode }) => (
   <div className="text-body-md text-content-neutral-emphasis">{children}</div>
 );
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. The horizontal rule should run
+ * the full width and the vertical one should not force the row to overflow.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-3 border border-line-neutral-muted p-3">
+      <p className="text-body-md text-content-neutral-emphasis">Overview</p>
+      <Separator />
+      <p className="text-body-sm text-content-neutral-muted">
+        Packet loss, jitter and MOS for the last 24 hours.
+      </p>
+      <Separator />
+      <div className="flex h-5 items-center gap-3 text-body-sm text-content-neutral-muted">
+        <span className="truncate">ap-southeast-2</span>
+        <Separator orientation="vertical" />
+        <span className="shrink-0">v13.3</span>
+      </div>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

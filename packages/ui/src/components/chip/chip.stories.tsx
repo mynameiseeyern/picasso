@@ -167,6 +167,28 @@ function HandRolled({
   );
 }
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. A filter row is the case that
+ * matters: more chips than fit, so they wrap instead of scrolling the page
+ * sideways.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-82 border border-line-neutral-muted p-3">
+      <div className="flex flex-wrap gap-2">
+        <Chip selected>Critical</Chip>
+        <Chip>Warning</Chip>
+        <Chip>Sydney</Chip>
+        <Chip>Melbourne</Chip>
+        <Chip>Auckland</Chip>
+        <Chip>ap-southeast-2</Chip>
+        <Chip>Last 24 hours</Chip>
+      </div>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

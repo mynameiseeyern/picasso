@@ -114,6 +114,31 @@ export const Small: Story = {
   ),
 };
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. A full trail does not fit, so
+ * this is the width where the collapsed form earns its place.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-4 border border-line-neutral-muted p-3">
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="#fleet">Fleet</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbEllipsis />
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage>syd-edge-gateway-01</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

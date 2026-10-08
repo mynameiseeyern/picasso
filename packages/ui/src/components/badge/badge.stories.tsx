@@ -130,6 +130,35 @@ const Row = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Badges sit beside names that
+ * do not shorten on a phone, so the row has to wrap rather than push the name
+ * out of the box.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-3 border border-line-neutral-muted p-3">
+      <div className="flex flex-wrap items-center gap-2 text-body-md text-content-neutral-emphasis">
+        <span className="truncate">syd-edge-gateway-01.ap-southeast</span>
+        <Badge color="danger" dot>
+          Critical
+        </Badge>
+      </div>
+      <div className="flex flex-wrap items-center gap-2">
+        {COLORS.map((color) => (
+          <Badge key={color} color={color}>
+            {color}
+          </Badge>
+        ))}
+      </div>
+      <Badge color="info" size="lg">
+        ap-southeast-2
+      </Badge>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

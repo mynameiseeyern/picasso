@@ -15,13 +15,10 @@ import { join } from "node:path";
  * can never quietly describe a state that is no longer true.
  */
 const OWED = new Set([
-  "alert", "app-shell", "avatar", "badge", "bottom-sheet", "breadcrumb",
-  "button", "button-group", "calendar", "checkbox", "chip", "date-picker",
-  "dialog", "direction", "drawer", "dropdown-menu", "field", "file-upload",
-  "input", "input-button", "input-group", "kbd", "kpi-tile", "number-input",
-  "overlay", "page-grid", "password-input", "popover", "radio-group",
-  "segmented-control", "select", "separator", "sidebar", "slider", "switch",
-  "table", "tabs", "tags-input", "textarea", "toast", "tooltip",
+  "alert", "app-shell", "bottom-sheet", "button-group", "calendar",
+  "date-picker", "dialog", "direction", "drawer", "dropdown-menu",
+  "file-upload", "input-button", "kpi-tile", "overlay", "page-grid",
+  "popover", "select", "sidebar", "table", "tabs", "toast", "tooltip",
 ]);
 
 const COMPONENTS = join(__dirname, "..", "components");

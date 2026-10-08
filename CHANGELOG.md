@@ -73,12 +73,19 @@ Tailwind classes.
   deliberately not a Figma variable — text styles carry `letterSpacingPercent`
   directly.
 
-- **A `Narrow` story ratchet.** Every component owes one — 328px, a 360 phone
-  minus its gutters — and it was enforced nowhere, so 41 of 55 had drifted
-  without one. `narrow.test.ts` writes that debt down and holds it in both
-  directions: a component that loses its story fails, and one that gains a
-  story fails until it is struck off the list, so the count can only shrink and
-  can never describe a state that is no longer true. **Figma impact** — none.
+- **A `Narrow` story ratchet, and 19 of the 41 owed stories.** Every component
+  owes one — 328px, a 360 phone minus its gutters — and it was enforced
+  nowhere, so 41 of 55 had drifted without one. `narrow.test.ts` writes that
+  debt down and holds it in both directions: a component that loses its story
+  fails, and one that gains a story fails until it is struck off the list, so
+  the count can only shrink and can never describe a state that is no longer
+  true. 22 remain. **Figma impact** — none.
+
+  All 33 Narrow stories are measured in a real browser at 360px — none scrolls
+  the page sideways. That sweep is what found the two fixes below; the test
+  suite was green the whole time, because jsdom cannot see layout. `input-group`
+  and `slider` pin 320 through a file-level decorator, which is stricter than
+  the 328 floor, and their stories say so.
 
 - **A Typography foundations story.** The three families, the five roles and
   the weight tiers, rendered rather than described — with a **Follows the
@@ -237,6 +244,23 @@ Tailwind classes.
   File upload's bar are linear, because a bar reporting progress does not
   ease. All four stop travelling under reduced motion. The Switch's
   `duration-150` is gone — the default is the token. **Figma impact** — none.
+
+### Fixed
+
+- **A chart's screen-reader table scrolled the page sideways on a phone.** The
+  table carried `sr-only` itself, and a `<table>` sizes to its content and
+  ignores that rule's `width: 1px` — so the "hidden" table was a real 428px
+  element, 68px wider than a 360 viewport. The wrapper carries `sr-only` now
+  and clips it. Caught by measuring in a browser at 360; every test passed
+  throughout, because jsdom has no layout. **Figma impact** — none.
+
+- **A Sparkline's end dot hung outside its own box.** The dot is centred on the
+  last reading, which in a sparkline is always at `x: 100%`, so half the 8px
+  dot plus its 2px ring — 6px — sat outside the component and scrolled the page.
+  `--spark-x` is clamped to keep the dot and its ring inside. The cost is up to
+  6px of position at the extremes; the dot marks the latest value rather than
+  measuring it, so being fully visible is worth more than sitting exactly on the
+  endpoint. **Figma impact** — none.
 
 ### Deprecated
 

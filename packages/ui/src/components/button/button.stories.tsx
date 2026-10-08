@@ -107,6 +107,37 @@ export const States: Story = {
 /* Guidance — rendered, so it breaks when the component does           */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Two buttons side by side stop
+ * fitting here, so the pair stacks and each one fills the width rather than
+ * shrinking its label to nothing.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-4 border border-line-neutral-muted p-3">
+      <div className="grid gap-2">
+        <Button>Acknowledge and silence for 24 hours</Button>
+        <Button variant="outline">Cancel</Button>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        <Button size="sm">
+          <Plus />
+          Add
+        </Button>
+        <Button size="sm" variant="outline">
+          <Download />
+          Export
+        </Button>
+        <Button size="sm" variant="ghost">
+          <Trash2 />
+          Delete
+        </Button>
+      </div>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   parameters: { controls: { disable: true } },
   render: () => (

@@ -143,6 +143,30 @@ const Row = ({
   <FieldOption control={<Checkbox {...rest} />}>{label}</FieldOption>
 );
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. A wrapping label must stay
+ * aligned to the top of the box rather than centring against two lines.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-4 border border-line-neutral-muted p-3">
+      <label className="flex items-start gap-3">
+        <Checkbox aria-label="Include endpoints that have never reported" />
+        <span className="text-body-md text-content-neutral-emphasis">
+          Include endpoints that have never reported
+        </span>
+      </label>
+      <label className="flex items-start gap-3">
+        <Checkbox defaultChecked aria-label="Sydney" />
+        <span className="text-body-md text-content-neutral-emphasis">
+          Sydney
+        </span>
+      </label>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   parameters: { controls: { disable: true } },
   render: () => (

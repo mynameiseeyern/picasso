@@ -77,6 +77,34 @@ export const Chip: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. More tags than fit on one line
+ * is the ordinary case here: they wrap and the field grows downward rather
+ * than scrolling sideways.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-82 border border-line-neutral-muted p-3">
+      <Field>
+        <FieldLabel>Hosts</FieldLabel>
+        <FieldControl>
+          <TagsInput
+            defaultValue={[
+              "syd-03",
+              "mel-01",
+              "akl-02",
+              "ap-southeast-2",
+              "edge-gateway-01",
+            ]}
+            aria-label="Hosts"
+          />
+        </FieldControl>
+      </Field>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

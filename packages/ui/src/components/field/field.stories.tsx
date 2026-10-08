@@ -115,6 +115,29 @@ const Pair = ({ children }: { children: React.ReactNode }) => (
   <div className="flex flex-wrap gap-4">{children}</div>
 );
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Label, description and error
+ * all wrap at this width, and the error has to stay attached to its control
+ * rather than drifting under the next field.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-82 border border-line-neutral-muted p-3">
+      <Field invalid>
+        <FieldLabel>Mean opinion score threshold</FieldLabel>
+        <FieldControl>
+          <Input placeholder="3.6" />
+        </FieldControl>
+        <FieldDescription>
+          MOS is measured to one decimal, between 1.0 and 5.0.
+        </FieldDescription>
+        <FieldError>Use 3.6, not 3.60000.</FieldError>
+      </Field>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   parameters: { controls: { disable: true } },
   render: () => (

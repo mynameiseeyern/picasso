@@ -193,6 +193,39 @@ function Solo({
   );
 }
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Option labels wrap to two
+ * lines, and the control stays aligned to the first line rather than centring
+ * against the block.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-82 border border-line-neutral-muted p-3">
+      <RadioGroup aria-label="Severity" defaultValue="medium">
+        <label className="flex items-start gap-3 py-1">
+          <Radio value="high" />
+          <span className="text-body-md text-content-neutral-emphasis">
+            High — page the on-call engineer immediately
+          </span>
+        </label>
+        <label className="flex items-start gap-3 py-1">
+          <Radio value="medium" />
+          <span className="text-body-md text-content-neutral-emphasis">
+            Medium — raise a ticket
+          </span>
+        </label>
+        <label className="flex items-start gap-3 py-1">
+          <Radio value="low" />
+          <span className="text-body-md text-content-neutral-emphasis">
+            Low — record only
+          </span>
+        </label>
+      </RadioGroup>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

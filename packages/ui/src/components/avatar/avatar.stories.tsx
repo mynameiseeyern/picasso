@@ -201,6 +201,40 @@ const pair = pairOf(guidance);
 
 const TEAM = ["AB", "CD", "EF", "GH", "IJ", "KL", "MN", "OP"];
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. The avatar keeps its size and
+ * the name beside it takes what is left, rather than the pair pushing wider
+ * than the row.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-3 border border-line-neutral-muted p-3">
+      <div className="flex items-center gap-3">
+        <Avatar>
+          <AvatarFallback>EN</AvatarFallback>
+        </Avatar>
+        <div className="min-w-0">
+          <p className="truncate text-body-md text-content-neutral-emphasis">
+            Ee Yern Ng
+          </p>
+          <p className="truncate text-body-sm text-content-neutral-muted">
+            ee.ng@integratedresearch.example
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-3">
+        <Avatar size="sm">
+          <AvatarFallback>SV</AvatarFallback>
+        </Avatar>
+        <p className="min-w-0 truncate text-body-md text-content-neutral-emphasis">
+          Assigned to the Sydney on-call rotation
+        </p>
+      </div>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

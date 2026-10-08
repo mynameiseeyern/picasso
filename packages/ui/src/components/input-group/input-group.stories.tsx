@@ -165,6 +165,29 @@ export const Sizes: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — this file's decorator pins 320, which is narrower than the 328 a
+ * 360 phone leaves after its gutters, so this is stricter than the contract.
+ * An addon, a field and a trailing button is the combination that overflows.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <InputGroup>
+      <InputGroupAddon>
+        <Search />
+      </InputGroupAddon>
+      <InputGroupInput
+        aria-label="Search endpoints"
+        placeholder="syd-edge-gateway-01"
+      />
+      <InputGroupAddon>
+        <InputGroupText>AU</InputGroupText>
+      </InputGroupAddon>
+    </InputGroup>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

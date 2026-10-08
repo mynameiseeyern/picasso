@@ -242,7 +242,14 @@ export function Sparkline({
           )}
           style={
             {
-              "--spark-x": `${last.x}%`,
+              /* Clamped so the dot and its ring stay inside the box. Centred
+                 on the point, half the 8px dot plus the 2px ring hangs out at
+                 x=100% — which is where a sparkline's last reading always is —
+                 and that 6px scrolled the whole page sideways on a phone. The
+                 cost is up to 6px of position at the extremes; the dot marks
+                 the latest value rather than measuring it, so being fully
+                 visible is worth more than being exactly on the endpoint. */
+              "--spark-x": `clamp(0.375rem, ${last.x}%, calc(100% - 0.375rem))`,
               "--spark-y": `${last.y}%`,
             } as React.CSSProperties
           }

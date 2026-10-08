@@ -89,6 +89,30 @@ const Setting = ({
   <FieldOption control={<Switch {...rest} />}>{label}</FieldOption>
 );
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. The label is what breaks here:
+ * it has to wrap beside a control that keeps its size and its tap target.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-4 border border-line-neutral-muted p-3">
+      <label className="flex items-start justify-between gap-3">
+        <span className="text-body-md text-content-neutral-emphasis">
+          Send a notification when an endpoint stops reporting
+        </span>
+        <Switch aria-label="Send a notification when an endpoint stops reporting" />
+      </label>
+      <label className="flex items-start justify-between gap-3">
+        <span className="text-body-md text-content-neutral-emphasis">
+          Quiet hours
+        </span>
+        <Switch defaultChecked aria-label="Quiet hours" />
+      </label>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

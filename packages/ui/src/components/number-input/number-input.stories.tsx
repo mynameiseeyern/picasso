@@ -78,6 +78,24 @@ export const InAField: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. The steppers keep their tap
+ * targets while the label above them wraps.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-82 border border-line-neutral-muted p-3">
+      <Field>
+        <FieldLabel>Retries before an endpoint is marked unreachable</FieldLabel>
+        <FieldControl>
+          <NumberInput defaultValue={3} min={0} max={10} aria-label="Retries" />
+        </FieldControl>
+      </Field>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

@@ -82,6 +82,25 @@ const Label = ({ children }: { children: React.ReactNode }) => (
   </span>
 );
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. A label, a control and a
+ * description all have to wrap here without the control shrinking below a
+ * usable tap target.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-82 border border-line-neutral-muted p-3">
+      <Field>
+        <FieldLabel>Probe name</FieldLabel>
+        <FieldControl>
+          <Input placeholder="syd-edge-gateway-01.ap-southeast-2" />
+        </FieldControl>
+      </Field>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   parameters: { controls: { disable: true } },
   render: () => (
