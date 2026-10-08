@@ -1,6 +1,11 @@
 {
   "component": "Heatmap",
-  "summary": "One measure across two dimensions — endpoint by time. The fleet view: which hosts were bad, and when, in one picture.",
+  "summary": "One measure across two dimensions \u2014 endpoint by time. The fleet view: which hosts were bad, and when, in one picture.",
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "40000765:16",
+    "note": "Drawn on the Charts page as `Chart / Heatmap`. The five bands, the legend, the outlined no-data cell and the scale's direction in each mode are there; the banding, the hover readout and the data table are behaviour and are not."
+  },
   "structureFrom": "code",
   "measurementsFrom": "code",
   "pairs": [
@@ -18,8 +23,8 @@
     },
     {
       "id": "scale-is-not-identity",
-      "dont": "Reach for chart/1–6 because they are the chart colours.",
-      "do": "Use chart/scale/1–5 — this is the one place colour means magnitude.",
+      "dont": "Reach for chart/1\u20136 because they are the chart colours.",
+      "do": "Use chart/scale/1\u20135 \u2014 this is the one place colour means magnitude.",
       "why": "The categorical slots are chosen to be maximally unlike each other, which is the opposite of what an ordered scale needs. A heatmap cell has no length and no height to encode with, so colour is its only channel, and it has to carry order."
     },
     {
@@ -32,7 +37,7 @@
   ],
   "a11y": [
     "The grid is `aria-hidden`; every value is carried by a visually-hidden table with row and column headers, and a missing value reads as the words \"No data\".",
-    "Each cell carries its own `title` — row, column and value — so a pointer can read one without a tooltip layer.",
+    "Each cell carries its own `title` \u2014 row, column and value \u2014 so a pointer can read one without a tooltip layer.",
     "The legend's bands each carry their numeric range as visually-hidden text, so the mapping from colour to number is available without reading colour.",
     "Row labels truncate with the full name on `title` rather than setting the chart's width."
   ],

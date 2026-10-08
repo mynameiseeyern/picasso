@@ -67,9 +67,12 @@ Tailwind classes.
   becomes a full 11-step ramp in the process, which also fixes its 500 and 600
   having been the same hex.
 
-  **Code impact** — both are new; nothing changes. **Figma impact** — a sync
-  adds five `chart/scale/*` variables and eight `ir-corporateblue` steps, and
-  changes `ir-corporateblue/600`. Neither chart is drawn on canvas yet.
+  **Code impact** — both are new; nothing changes. **Figma impact** — done: the
+  sync added five `chart/scale/*` variables and eight `ir-corporateblue` steps
+  and corrected `400` and `600`, and both charts are drawn on the Charts page as
+  `Chart / Distribution` and `Chart / Heatmap`, with the notes frame updated —
+  it still said IR corporate blue was “not a series slot”, which is true but no
+  longer the whole story now that it is the scale's hue.
 
 - **The sync plugin checks node bindings, not just variable definitions.** It
   could report "no changes" on a file whose swatches pointed at variables it
