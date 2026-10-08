@@ -1,6 +1,6 @@
 {
   "name": "@ir/tokens",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "description": "IR design tokens \u2014 Token Studio source + Style Dictionary build. Cool UntitledUI-modern neutral, brand, status, chart, typography. Light + dark.",
   "license": "UNLICENSED",
   "type": "module",

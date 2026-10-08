@@ -5,13 +5,33 @@ description: Five roles, 21 steps, and three unambiguous weight tiers.
 
 # Typography
 
-**Inter** for everything except **JetBrains Mono** for `code` and `metric`.
-Both carry full fallback stacks — never ship `font-family: Inter` alone.
+**Inter** for everything, **JetBrains Mono** for `code` and `metric`, and
+**Oswald** for the wordmark. All three carry full fallback stacks — including
+Noto Sans Arabic and Hebrew — so never ship `font-family: Inter` alone.
+
+Three families, three tokens: `type/family/sans`, `/mono` and `/display`. The
+display family is the wordmark's alone. It is **not** `heading/display`, which
+is the 36px step of the Inter ramp and has nothing to do with Oswald — the two
+share a word and nothing else.
 
 **Tailwind's own size scale is cleared.** There is one vocabulary, and `text-md`
 is **14px**, not Tailwind's 16px `text-base`. Size and line height both come
 from the composite token, so `text-body-md` sets family, size, weight, leading
 and tracking together.
+
+## The wordmark
+
+The one place the display family appears. `text-wordmark` is a composite step
+like any other — display family, `2xl`, Semi Bold, `snug` leading, `wide`
+tracking, uppercase — and the App shell's sidebar is its only consumer.
+
+```tsx
+<span className="text-wordmark">Clarion</span>
+```
+
+It is deliberately not a size on the Inter ramp: a wordmark is a piece of
+identity, not a heading, and giving it its own step stops it drifting when the
+heading scale changes.
 
 ## Three weight tiers
 

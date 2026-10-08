@@ -1,6 +1,6 @@
 {
   "name": "picasso",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "private": true,
   "description": "Picasso — Integrated Research's design system. Repo is the source of truth; Figma is a consumer.",
   "license": "UNLICENSED",

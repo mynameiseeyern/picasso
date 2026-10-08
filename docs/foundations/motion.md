@@ -187,6 +187,20 @@ fast step:
 
 Progress is linear because it is reporting something; progress does not ease.
 
+A dragged surface returning to rest is the third:
+
+```tsx
+"motion-safe:transition-settle"   // a sheet let go short of the threshold
+```
+
+`transition-settle` transitions `translate` — not `transform` — on the base
+step and `easing/settle`. The two compose rather than conflict, which is what
+lets a dragged panel keep its offset while an exit animation drives
+`transform`; transitioning `transform` here animates nothing at all. It sits
+under `motion-safe:` rather than carrying `motion-reduce:transition-none`,
+because the drag itself still tracks the finger under reduced motion and only
+the release is switched off.
+
 ## Reduced motion
 
 Reduced motion means gentler, not absent. A surface that simply appears, with

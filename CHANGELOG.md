@@ -5,7 +5,66 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ## Unreleased
 
+_Nothing yet._
+
+## 2.0.0 — 8 October 2026
+
+The first published version. The number is **2** because the Figma library
+already calls itself v2, and Picasso versions Figma, `@ir/tokens` and `@ir/ui`
+together — so the packages move to meet the library rather than the library
+being renumbered to meet them. There is no 1.x: nothing was ever published
+under one.
+
+It is a **major** rather than a 2.1 because the chart series palette is a
+breaking change. Shipping that as a minor would let a consumer pinning
+`^2.0.0` pick it up expecting nothing to break, and their chart colours would
+move underneath them.
+
+Everything below shipped before there was anything to ship against, so the
+⚠️ Breaking entries describe changes made against unreleased `main` rather than
+against a version anyone is running — they are kept because they are the
+history of why the API reads the way it does.
+
+**Figma impact** — the library and the packages share this version, and the
+Figma library's publish description should carry `2.0.0`. The display font,
+`motion/easing/settle` and the renamed phone canvases are synced; the chart
+palette's two removals and five changes are applied, and the Colours page's
+documentation of them corrected.
+
+`@ir/ui` ships TypeScript source rather than a build, so a consumer needs a
+bundler that compiles TS and JSX and scans `node_modules/@ir/ui/src` for
+Tailwind classes.
+
 ### Added
+
+- **The sync plugin checks node bindings, not just variable definitions.** It
+  could report "no changes" on a file whose swatches pointed at variables it
+  had itself deleted, because both sides of the diff agreed and nobody asked
+  the nodes. Figma keeps a deleted variable **resolvable by id** after dropping
+  it from the local set, so an orphaned binding still answers with its old name
+  and looks alive. Check now walks every page it can reach, reports each
+  dangling binding with a place it is used, and `inSync` is false while any
+  exist. Prune refuses to remove a variable that nodes still bind to, naming
+  one, rather than silently orphaning them. A page that cannot be read is
+  listed as unscanned and downgrades a clean verdict to `"partial"` — a page
+  nobody could look at must not pass for a page with nothing wrong.
+  **Figma impact** — none; the plugin only reads more than it did.
+
+  Found on its first run: eight pre-existing orphans the old check could never
+  have seen, on Assets from brand, Sidebar menu and Error pages.
+
+- **A `Narrow` story ratchet.** Every component owes one — 328px, a 360 phone
+  minus its gutters — and it was enforced nowhere, so 41 of 55 had drifted
+  without one. `narrow.test.ts` writes that debt down and holds it in both
+  directions: a component that loses its story fails, and one that gains a
+  story fails until it is struck off the list, so the count can only shrink and
+  can never describe a state that is no longer true. **Figma impact** — none.
+
+- **A Typography foundations story.** The three families, the five roles and
+  the weight tiers, rendered rather than described — with a **Follows the
+  brand** story that prints each step's computed family, because the bug it
+  guards against (every `text-*` step frozen to Inter) showed nothing on screen
+  at all. **Figma impact** — none.
 
 - **Motion, before and after — a docs page you can play.**
   `docs/foundations/motion-before-and-after.md` shows eight motion rules as
@@ -166,20 +225,12 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
   that. Removed in the next major release. **Figma impact** — the two
   variables stay until then, with the new value.
 
-## 0.1.0 — 7 October 2026
+---
 
-The first published version. Everything below shipped before there was anything
-to ship against, so the ⚠️ Breaking entries describe changes made against
-unreleased `main` rather than against a version anyone is running — they are
-kept because they are the history of why the API reads the way it does.
-
-**Figma impact** — the library and the packages share this version. The Figma
-library's publish description should carry `0.1.0`, and a sync is outstanding
-for the display font, `motion/easing/settle` and the renamed phone canvases.
-
-`@ir/ui` ships TypeScript source rather than a build, so a consumer needs a
-bundler that compiles TS and JSX and scans `node_modules/@ir/ui/src` for
-Tailwind classes.
+**Everything below was written for an 0.1.0 that was tagged but never pushed or
+published.** It is the same release, so it is kept here under 2.0.0 rather than
+split across a version no consumer ever saw. The repeated category headings
+from here down are that fold, not two releases.
 
 
 ### ⚠️ Breaking

@@ -28,6 +28,51 @@ const PICASSO_RENAMES = {
   "screen/mobile/xl": "screen/mobile/max",
 };
 
+/**
+ * Which variables are actually bound to nodes, and where.
+ *
+ * A definition-level diff cannot see this. Figma keeps a deleted variable
+ * RESOLVABLE BY ID after dropping it from the local set, so a node bound to
+ * one still answers with its old name while `getLocalVariablesAsync` has
+ * forgotten it. That is how a file full of orphaned bindings reports "no
+ * changes": the two sides of the diff agree, and nobody asked the nodes.
+ */
+async function picassoBindings() {
+  const usage = new Map();
+  const scanned = [];
+  const unscanned = [];
+  for (const page of figma.root.children) {
+    let nodes;
+    try {
+      nodes = page.findAll(() => true);
+    } catch (e) {
+      // An unloaded page in a dynamic-page document. Recorded as NOT scanned,
+      // never skipped silently: a page we could not read must not be able to
+      // pass for a page with nothing wrong. That inversion — a failure wearing
+      // the costume of a clean result — is the bug this whole function exists
+      // to prevent, so it must not be reintroduced here.
+      unscanned.push(page.name + " (" + String(e && e.message ? e.message : e) + ")");
+      continue;
+    }
+    scanned.push(page.name);
+    for (const n of nodes) {
+      const bv = n.boundVariables;
+      if (!bv) continue;
+      for (const prop of Object.keys(bv)) {
+        const val = bv[prop];
+        for (const a of (Array.isArray(val) ? val : [val])) {
+          if (!a || !a.id) continue;
+          let rec = usage.get(a.id);
+          if (!rec) { rec = { count: 0, sample: null }; usage.set(a.id, rec); }
+          rec.count++;
+          if (!rec.sample) rec.sample = page.name + " \u203a " + n.name + " (" + prop + ")";
+        }
+      }
+    }
+  }
+  return { usage, scanned, unscanned };
+}
+
 async function picassoSync(payload, opts) {
   const apply = !!(opts && opts.apply);
   const prune = !!(opts && opts.prune);
@@ -44,6 +89,11 @@ async function picassoSync(payload, opts) {
     return { r: n(0), g: n(2), b: n(4), a: m.length === 8 ? n(6) : 1 };
   };
   const near = (a, b) => Math.abs(a - b) < 0.001;
+
+  // Taken BEFORE any mutation, so prune can ask what a variable is holding up.
+  const bindings = await picassoBindings();
+  r.pagesScanned = bindings.scanned.length;
+  r.pagesUnscanned = bindings.unscanned;
 
   let collections = await figma.variables.getLocalVariableCollectionsAsync();
   let vars = await figma.variables.getLocalVariablesAsync();
@@ -107,7 +157,18 @@ async function picassoSync(payload, opts) {
     for (const fv of vars.filter((x) => x.variableCollectionId === col.id)) {
       if (want.has(fv.name) || renamedFrom.has(fv.name)) continue;
       r.extra.push(`${spec.name}: ${fv.name}`);
-      if (apply && prune) { fv.remove(); r.removed.push(`${spec.name}: ${fv.name}`); }
+      if (apply && prune) {
+        // Removing a variable that nodes still bind to leaves them pointing at
+        // a ghost: the swatch keeps rendering its last colour and nothing says
+        // otherwise. Refuse, and name a place it is used so it can be rebound.
+        const use = bindings.usage.get(fv.id);
+        if (use) {
+          r.problems.push(`${spec.name}: ${fv.name} is still bound in ${use.count} place(s), e.g. ${use.sample} — not removed. Rebind those first.`);
+        } else {
+          fv.remove();
+          r.removed.push(`${spec.name}: ${fv.name}`);
+        }
+      }
     }
   }
   if (apply && prune) vars = await figma.variables.getLocalVariablesAsync();
@@ -214,7 +275,21 @@ async function picassoSync(payload, opts) {
     }
   }
 
-  r.inSync = !r.created.length && !r.changed.length && !r.renamed.length && !r.problems.length && !(prune && r.extra.length);
+  // Bindings pointing at a variable that no longer exists — including any this
+  // run just removed. Computed against the live set, not the pre-run snapshot.
+  const liveIds = new Set((await figma.variables.getLocalVariablesAsync()).map((v) => v.id));
+  r.dangling = [];
+  for (const [id, rec] of bindings.usage) {
+    if (liveIds.has(id)) continue;
+    const ghost = await figma.variables.getVariableByIdAsync(id);
+    r.dangling.push(`${ghost ? ghost.name : id} — ${rec.count} binding(s), e.g. ${rec.sample}`);
+  }
+
+  r.inSync =
+    !r.created.length && !r.changed.length && !r.renamed.length &&
+    !r.problems.length && !r.dangling.length && !(prune && r.extra.length);
+  // A clean verdict is only as wide as the scan behind it.
+  if (r.inSync && r.pagesUnscanned.length) r.inSync = "partial";
   return r;
 }
 /**
@@ -315,6 +390,9 @@ if (typeof __html__ !== "undefined") {
     }
     if (msg.type !== "run") return;
     try {
+      // The binding sweep can only see pages that are loaded. In the plugin we
+      // can load them all; headless (MCP) runs report what they could not read.
+      if (figma.loadAllPagesAsync) await figma.loadAllPagesAsync();
       const report = await picassoSync(msg.payload, { apply: msg.apply, prune: msg.prune });
       figma.ui.postMessage({ type: "report", report });
     } catch (e) {

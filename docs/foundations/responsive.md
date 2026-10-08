@@ -18,6 +18,25 @@ it is simply not promised.
 360 is the floor because it is the narrowest viewport in common use. Below it,
 nothing is guaranteed.
 
+### The phone canvases
+
+Four widths to draw at, as `screen/mobile/*`. They are **canvases, not
+breakpoints** — below `md` (768) there is one layout, so a phone has no
+breakpoints to name. They are deliberately off Tailwind's t-shirt ladder,
+because `lg` has to mean 1024 wherever it appears; these say where they sit in
+the range instead.
+
+| Token | Width | What it is |
+|---|---|---|
+| `screen/mobile/min` | 360 | The floor, and the width every `Narrow` story is cut from — 328 after gutters. Nothing may break here; it is not a size to design at |
+| `screen/mobile/small` | 375 | iPhone SE and the iOS baseline — the iOS case to check, not a second floor |
+| `screen/mobile/base` | 390 | **The canvas to design at.** iPhone 14/15, modern Android mid-range |
+| `screen/mobile/max` | 428 | The ceiling — Pro Max, large Android. Past this a phone layout stops growing rather than stretching |
+
+The breakpoints are `screen/desktop/*`, which do carry Tailwind's names and
+values, so `lg:` means the same thing in a token file, a Figma page name and a
+class name.
+
 ## The shell answers to the viewport; everything else answers to its container
 
 This is the rule that makes the rest work. The rail, the page padding and the

@@ -53,7 +53,7 @@ looking", and a visual change never is.
 
 ## How a release actually happens
 
-As of 0.1.0:
+As of 2.0.0:
 
 1. Land the work, with its `CHANGELOG.md` entry under `## Unreleased` — including
    its **Figma impact** line.

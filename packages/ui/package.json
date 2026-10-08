@@ -1,6 +1,6 @@
 {
   "name": "@ir/ui",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "description": "IR component library — shadcn-based primitives bound to @ir/tokens. forwardRef + cva, semantic tokens only, automatic dark mode.",
   "license": "UNLICENSED",
   "type": "module",
