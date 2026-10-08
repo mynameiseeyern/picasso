@@ -593,6 +593,32 @@
     "6": {
       "$type": "color",
       "$value": "{palette.vis.pink.400}"
+    },
+    "scale": {
+      "1": {
+        "$type": "color",
+        "$value": "{palette.vis.ir-corporateblue.950}",
+        "$description": "Lowest bin. Must stay separable from the card it sits on, not from the next bin."
+      },
+      "2": {
+        "$type": "color",
+        "$value": "{palette.vis.ir-corporateblue.700}"
+      },
+      "3": {
+        "$type": "color",
+        "$value": "{palette.vis.ir-corporateblue.500}",
+        "$description": "Midpoint."
+      },
+      "4": {
+        "$type": "color",
+        "$value": "{palette.vis.ir-corporateblue.300}"
+      },
+      "5": {
+        "$type": "color",
+        "$value": "{palette.vis.ir-corporateblue.50}",
+        "$description": "Highest bin."
+      },
+      "$description": "The sequential scale — magnitude, not identity. One hue, five bins, ordered. Light runs light to dark and dark runs dark to light: in dark mode nothing can sit below the surface, so the quiet end is the dark end. Never use these for series identity; that is chart/1–6."
     }
   },
   "_ring": {

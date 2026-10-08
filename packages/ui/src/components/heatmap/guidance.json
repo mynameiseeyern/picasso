@@ -1,0 +1,40 @@
+{
+  "component": "Heatmap",
+  "summary": "One measure across two dimensions — endpoint by time. The fleet view: which hosts were bad, and when, in one picture.",
+  "structureFrom": "code",
+  "measurementsFrom": "code",
+  "pairs": [
+    {
+      "id": "no-data-is-not-zero",
+      "dont": "Draw a host that reported nothing as the lowest band.",
+      "do": "Draw it as an outlined empty cell.",
+      "why": "\"Fine\" and \"we don't know\" are different answers and only one of them is safe to ignore. A silent agent painted the same colour as a healthy one is the failure mode a fleet view exists to prevent."
+    },
+    {
+      "id": "bands-not-a-gradient",
+      "dont": "Interpolate a smooth gradient across the cells.",
+      "do": "Cut the range into five bands and show them in the legend.",
+      "why": "Nobody reads a colour back to a number off a continuous ramp; they read it to a band and then look for that band in the legend. Banding it makes the legend honest, and makes two cells of the same severity actually the same colour."
+    },
+    {
+      "id": "scale-is-not-identity",
+      "dont": "Reach for chart/1–6 because they are the chart colours.",
+      "do": "Use chart/scale/1–5 — this is the one place colour means magnitude.",
+      "why": "The categorical slots are chosen to be maximally unlike each other, which is the opposite of what an ordered scale needs. A heatmap cell has no length and no height to encode with, so colour is its only channel, and it has to carry order."
+    },
+    {
+      "id": "dark-is-selected-not-flipped",
+      "dont": "Invert the light scale to get a dark one.",
+      "do": "Let the dark mode scale run dark to light, from its own steps.",
+      "why": "Nothing can sit below the surface it is drawn on. In dark mode the quiet end has to be the dark end, so an inverted light scale puts the loudest cells nearest the background and the calmest ones shouting.",
+      "example": false
+    }
+  ],
+  "a11y": [
+    "The grid is `aria-hidden`; every value is carried by a visually-hidden table with row and column headers, and a missing value reads as the words \"No data\".",
+    "Each cell carries its own `title` — row, column and value — so a pointer can read one without a tooltip layer.",
+    "The legend's bands each carry their numeric range as visually-hidden text, so the mapping from colour to number is available without reading colour.",
+    "Row labels truncate with the full name on `title` rather than setting the chart's width."
+  ],
+  "examples": "complete"
+}

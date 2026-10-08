@@ -223,6 +223,17 @@ export {
   type BarChartProps,
 } from "./components/bar-chart/bar-chart";
 export {
+  DistributionChart,
+  type DistributionMarker,
+  type DistributionChartProps,
+} from "./components/distribution-chart/distribution-chart";
+export {
+  Heatmap,
+  SCALE_BINS,
+  type HeatmapRow,
+  type HeatmapProps,
+} from "./components/heatmap/heatmap";
+export {
   Avatar,
   AvatarAddButton,
   AvatarGroup,

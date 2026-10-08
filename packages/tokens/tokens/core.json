@@ -292,18 +292,54 @@
         }
       },
       "ir-corporateblue": {
+        "50": {
+          "$type": "color",
+          "$value": "#EEF8FF",
+          "$description": "Lightest step. The dark mode scale's top bin."
+        },
+        "100": {
+          "$type": "color",
+          "$value": "#D6EEFF"
+        },
+        "200": {
+          "$type": "color",
+          "$value": "#B3E0FF"
+        },
+        "300": {
+          "$type": "color",
+          "$value": "#82CDFE"
+        },
         "400": {
           "$type": "color",
-          "$value": "#3CC9F3"
+          "$value": "#4CB4F2"
         },
         "500": {
           "$type": "color",
-          "$value": "#0099DD"
+          "$value": "#0099DD",
+          "$description": "IR corporate blue, exact. The scale's midpoint in dark mode."
         },
         "600": {
           "$type": "color",
-          "$value": "#0099DD"
-        }
+          "$value": "#007BB3"
+        },
+        "700": {
+          "$type": "color",
+          "$value": "#00618E"
+        },
+        "800": {
+          "$type": "color",
+          "$value": "#004C70"
+        },
+        "900": {
+          "$type": "color",
+          "$value": "#003A57"
+        },
+        "950": {
+          "$type": "color",
+          "$value": "#00273C",
+          "$description": "Darkest step. The light mode scale's top bin, and the dark mode scale's quietest."
+        },
+        "$description": "IR corporate blue as a full ramp. It carries no categorical series slot — the re-step to chart/1–6 freed it — so it is the sequential scale's hue: brand-independent, and not a status colour."
       },
       "ir-lime": {
         "400": {

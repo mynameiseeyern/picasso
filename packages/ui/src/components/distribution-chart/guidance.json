@@ -1,0 +1,39 @@
+{
+  "component": "DistributionChart",
+  "summary": "The shape of a spread rather than its average — latency, jitter, call duration. A mean of 80ms hides whether that is every call at 80 or half at 20 and half at 140.",
+  "structureFrom": "code",
+  "measurementsFrom": "code",
+  "pairs": [
+    {
+      "id": "shape-not-average",
+      "dont": "Report a single average for a latency or jitter figure and move on.",
+      "do": "Show the distribution, and mark the percentile the SLA is written against.",
+      "why": "An average is one number standing in for a shape, and the shapes that matter most are the ones it flattens. A bimodal spread — most calls fine, a tail that is not — has the same mean as a tight one centred on the same value, and only one of them is an outage."
+    },
+    {
+      "id": "bins-touch",
+      "dont": "Put the bar chart's gap between the bins.",
+      "do": "Let them touch; only the plot edges breathe.",
+      "why": "A histogram's x axis is continuous and cut into pieces. A gap says there is something between 20–40ms and 40–60ms, and there is not. The gap on a bar chart means the opposite — those categories really are separate things."
+    },
+    {
+      "id": "markers-run-down",
+      "dont": "Draw the threshold across the chart, as a count.",
+      "do": "Mark it down the measured axis, where the number anyone quotes actually lives.",
+      "why": "On a bar chart a threshold is a count — \"no more than 20 failures\". On a histogram the counts are incidental; the number in the SLA is on the other axis. A horizontal line here marks a bucket height nobody has an opinion about."
+    },
+    {
+      "id": "one-hue-per-distribution",
+      "dont": "Colour the bins by their value so the chart runs through the series palette.",
+      "do": "One series, one colour.",
+      "why": "Position already carries the order and height already carries the count. Spending the identity channel on a third copy of the same information leaves nothing to tell two distributions apart when they are shown side by side.",
+      "example": false
+    }
+  ],
+  "a11y": [
+    "The plot is `aria-hidden`; the bucket counts are carried by a visually-hidden table, one row per bucket with its range as the label.",
+    "Each bucket carries its own `title` — the range and the count — so a pointer can read one without a crosshair.",
+    "An empty bucket keeps its slot and draws nothing, so a gap in the middle of a spread is visible as a gap rather than closing up."
+  ],
+  "examples": "complete"
+}

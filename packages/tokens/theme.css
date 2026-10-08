@@ -244,6 +244,14 @@
   --color-chart-5: var(--chart-5);
   --color-chart-6: var(--chart-6);
 
+  /* The sequential scale — magnitude, not identity. Five ordered bins of one
+     hue; chart/1–6 above are the categorical slots and the two never mix. */
+  --color-chart-scale-1: var(--chart-scale-1);
+  --color-chart-scale-2: var(--chart-scale-2);
+  --color-chart-scale-3: var(--chart-scale-3);
+  --color-chart-scale-4: var(--chart-scale-4);
+  --color-chart-scale-5: var(--chart-scale-5);
+
   /* ---- role utilities used directly in app code ---- */
   --color-primary-subtle: var(--bg-primary-subtle);
   --color-success-subtle: var(--bg-success-subtle);
