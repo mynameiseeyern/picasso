@@ -44,6 +44,24 @@ export const AsAFilter: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. The icon keeps its size and the
+ * placeholder takes what is left, truncating rather than pushing the control
+ * past its box.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-3 border border-line-neutral-muted p-3">
+      <InputButton icon={<Calendar />} placeholder="Pick a date" />
+      <InputButton
+        icon={<Filter />}
+        placeholder="Filter by endpoint, site or trunk"
+      />
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

@@ -110,6 +110,20 @@ export const Multiple: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Seven columns of day cells is
+ * the fixed geometry: it either fits or it does not, and at 328 it fits with
+ * the cells at their tap-target floor.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-82 border border-line-neutral-muted p-3">
+      <Calendar mode="single" defaultMonth={JAN} />
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

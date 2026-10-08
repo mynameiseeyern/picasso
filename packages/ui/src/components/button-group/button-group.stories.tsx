@@ -139,6 +139,36 @@ export const IconsOnly: Story = {
 
 /* ------------------------------------------------------------------ */
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. A group does not wrap: the
+ * members are joined, so wrapping would break the join. Past the width it
+ * fits, drop to icons or split the group.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-4 border border-line-neutral-muted p-3">
+      <ButtonGroup>
+        <Button variant="outline">Day</Button>
+        <Button variant="outline">Week</Button>
+        <Button variant="outline">Month</Button>
+      </ButtonGroup>
+      {/* Icon-only is the phone form of a group that no longer fits. */}
+      <ButtonGroup>
+        <Button variant="outline" aria-label="Zoom out">
+          <Minus />
+        </Button>
+        <Button variant="outline" aria-label="Reset">
+          <RotateCcw />
+        </Button>
+        <Button variant="outline" aria-label="Zoom in">
+          <Plus />
+        </Button>
+      </ButtonGroup>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

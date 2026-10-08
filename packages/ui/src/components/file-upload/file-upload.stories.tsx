@@ -94,6 +94,24 @@ export const Item: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. A file name is as long as it
+ * likes and does not shorten on a phone, so the item has to truncate rather
+ * than push the dropzone wider than its box.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-3 border border-line-neutral-muted p-3">
+      <FileUpload aria-label="Import endpoints" accept=".csv" />
+      <FileUploadItem
+        name="endpoints-ap-southeast-2-2026-10-08-full-export.csv"
+        size={248_000}
+      />
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

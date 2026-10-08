@@ -218,6 +218,49 @@ export const ArabicHebrewPersian: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. RTL and a narrow column at the
+ * same time: the two cases that break a layout independently, together. Every
+ * inline edge has to mirror and every line still has to wrap inside the box.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => {
+    // Not the Sampler: that card is a fixed w-100, wider than the 328 this
+    // story is about, so framing it at 328 would measure the card and not the
+    // mirroring.
+    const Row = ({ text }: { text: Copy }) => (
+      <div className="flex flex-col gap-2">
+        <p className="text-body-md text-content-neutral-emphasis">
+          {text.crumbs.join(" / ")}
+        </p>
+        <p className="text-body-sm text-content-neutral-muted">{text.alerts}</p>
+        <div className="flex items-center justify-between gap-2">
+          <span className="flex min-w-0 items-center gap-2">
+            <span className="h-2 w-2 shrink-0 rounded-full bg-chart-1" />
+            <span className="min-w-0 truncate text-body-sm text-content-neutral-muted">
+              {text.endpoint}
+            </span>
+          </span>
+          <span className="shrink-0 text-body-sm tabular-nums text-content-neutral-muted">
+            {text.loss}
+          </span>
+        </div>
+      </div>
+    );
+    return (
+      <div className="flex flex-col gap-4">
+        <div className="w-82 border border-line-neutral-muted p-3" dir="ltr">
+          <Row text={copy.en} />
+        </div>
+        <div className="w-82 border border-line-neutral-muted p-3" dir="rtl">
+          <Row text={copy.ar} />
+        </div>
+      </div>
+    );
+  },
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

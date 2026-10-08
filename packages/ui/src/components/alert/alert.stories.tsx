@@ -132,6 +132,29 @@ export const TitleOnly: Story = {
 
 /* ------------------------------------------------------------------ */
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. The title, the body and the
+ * action all have to stack here; the action cannot sit beside a wrapped
+ * paragraph and still be reachable.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-3 border border-line-neutral-muted p-3">
+      <Alert variant="destructive">
+        <AlertTitle>Endpoint unreachable</AlertTitle>
+        <AlertDescription>
+          syd-edge-gateway-01 has not reported since 09:14. Calls are routing
+          through Melbourne.
+        </AlertDescription>
+      </Alert>
+      <Alert variant="info">
+        <AlertTitle>Scheduled maintenance</AlertTitle>
+      </Alert>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

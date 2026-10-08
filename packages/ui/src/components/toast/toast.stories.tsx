@@ -275,6 +275,24 @@ export const Interactive: Story = {
 
 /* ------------------------------------------------------------------ */
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. A toast spans the viewport on a
+ * phone rather than sitting in a corner, and its title and description wrap.
+ * The swipe to dismiss is what makes that reachable.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <Screen className="h-60">
+      <Sample
+        title="Endpoint added"
+        description="probe-07 is reporting to the Sydney collector."
+        action="Undo"
+      />
+    </Screen>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

@@ -109,6 +109,24 @@ export const Invalid: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. The trigger truncates its
+ * summary rather than growing, and an option label longer than the menu wraps
+ * instead of pushing the menu past the viewport.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: (args) => (
+    <div className="w-82 border border-line-neutral-muted p-3">
+      <Select
+        {...args}
+        label="Filter actions…"
+        defaultValue={["probe.created", "alert.fired"]}
+      />
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

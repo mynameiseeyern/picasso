@@ -84,9 +84,9 @@ const NAV = [
   { icon: Bell, label: "Alerts" },
 ];
 
-function Nav({ active }: { active: string }) {
+function Nav({ active, mobile }: { active: string; mobile?: "drawer" }) {
   return (
-    <Sidebar>
+    <Sidebar mobile={mobile}>
       {/* The brand, not a hand-rolled mark and label: this is the block the
           product actually carries above the menu, and it is what the phone
           drawer opens with. It stays 80 when the rail collapses to 48 and
@@ -202,18 +202,20 @@ function Shell({
   width,
   active,
   page,
+  mobile,
   children,
 }: {
   width?: Width;
   active: string;
   page: string;
+  mobile?: "drawer";
   children: React.ReactNode;
 }) {
   return (
     <div className="h-svh">
       <SidebarProvider>
         <AppShell>
-          <Nav active={active} />
+          <Nav active={active} mobile={mobile} />
           <AppShellMain>
             <AppShellHeader>
               <SidebarTrigger />
@@ -505,6 +507,25 @@ function TopBar({ children }: { children: React.ReactNode }) {
     </div>
   );
 }
+
+/**
+ * Narrow — a 360 viewport, not a 328 box. The shell is the one thing that
+ * answers to the viewport, so this is where that rule is visible: the rail
+ * comes off the page entirely and `SidebarTrigger` opens it over the content.
+ *
+ * ⚠️ That depends on `mobile="drawer"`, which is **opt-in**. Without it the
+ * 256 rail is still drawn inline at 360 and the content column is left with
+ * 104px — about one word per line, with the breadcrumb clipped. Measured, not
+ * guessed: that is what this story looked like before the prop was passed.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <Shell active="Endpoints" page="Endpoints" mobile="drawer">
+      <Page title="Endpoints" />
+    </Shell>
+  ),
+};
 
 export const DoAndDont: Story = {
   name: "Do and Don't",

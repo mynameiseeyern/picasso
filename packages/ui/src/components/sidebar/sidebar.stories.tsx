@@ -71,13 +71,19 @@ const NAV = [
   { icon: Bell, label: "Alerts", badge: "4" },
 ];
 
-function Shell({ defaultCollapsed }: { defaultCollapsed?: boolean }) {
+function Shell({
+  defaultCollapsed,
+  mobile,
+}: {
+  defaultCollapsed?: boolean;
+  mobile?: "drawer";
+}) {
   const [active, setActive] = React.useState("Endpoints");
   const [open, setOpen] = React.useState(true);
   return (
     <div className="h-120">
       <SidebarProvider defaultCollapsed={defaultCollapsed}>
-        <Sidebar>
+        <Sidebar mobile={mobile}>
           <SidebarHeader>
             <SidebarTrigger />
           </SidebarHeader>
@@ -388,6 +394,20 @@ const FLAT = [
   "Reports",
   "Collectors",
 ];
+
+/**
+ * Narrow — a 360 viewport, not a 328 box: the sidebar is part of the shell and
+ * reads the viewport rather than a container. Below `md` the rail comes off the
+ * page and the trigger opens the same tree over it.
+ *
+ * ⚠️ `mobile="drawer"` is **opt-in**, and this is the story that shows why it
+ * should not stay that way: without it the 256 rail is drawn inline at 360,
+ * taking 71% of the viewport.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => <Shell mobile="drawer" />,
+};
 
 export const DoAndDont: Story = {
   name: "Do and Don't",

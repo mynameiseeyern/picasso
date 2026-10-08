@@ -230,6 +230,29 @@ function Panel({ children }: { children: React.ReactNode }) {
 }
 const rows = ["Critical", "Warning", "Healthy"];
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters, and the width this component
+ * exists for. Everything an anchored panel cannot do on a phone, a sheet can:
+ * it rises from the bottom edge, so its choices land where a thumb already is.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <BottomSheet defaultOpen>
+      <BottomSheetContent>
+        <BottomSheetHeader>
+          <BottomSheetTitle>Sort by</BottomSheetTitle>
+        </BottomSheetHeader>
+        <BottomSheetBody>
+          <BottomSheetItem>Packet loss, worst first</BottomSheetItem>
+          <BottomSheetItem>Endpoint name</BottomSheetItem>
+          <BottomSheetItem>Last reported</BottomSheetItem>
+        </BottomSheetBody>
+      </BottomSheetContent>
+    </BottomSheet>
+  ),
+};
+
 export const DoAndDont: Story = {
   render: () => (
     <GuidanceStory>

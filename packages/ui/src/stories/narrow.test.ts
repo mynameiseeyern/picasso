@@ -9,17 +9,12 @@ import { join } from "node:path";
  * measure.
  *
  * This was enforced nowhere, which is how it drifted to 41 of 55 missing. The
- * list below is that debt, written down. It is a ratchet in both directions:
- * a component that loses its Narrow story fails, and a component that gains
- * one fails until it is struck off here — so the list can only shrink, and it
- * can never quietly describe a state that is no longer true.
+ * list below was that debt, written down so it could only shrink; it is now
+ * empty, and every component has one. Leaving the mechanism in place is the
+ * point — the next component to arrive without a Narrow story fails here
+ * rather than starting the drift again.
  */
-const OWED = new Set([
-  "alert", "app-shell", "bottom-sheet", "button-group", "calendar",
-  "date-picker", "dialog", "direction", "drawer", "dropdown-menu",
-  "file-upload", "input-button", "kpi-tile", "overlay", "page-grid",
-  "popover", "select", "sidebar", "table", "tabs", "toast", "tooltip",
-]);
+const OWED = new Set<string>([]);
 
 const COMPONENTS = join(__dirname, "..", "components");
 

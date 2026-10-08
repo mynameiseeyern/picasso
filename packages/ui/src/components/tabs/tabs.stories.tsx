@@ -190,6 +190,33 @@ const LONG = [
   "Audit log",
 ];
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Four tabs is where the labels
+ * stop fitting. `fullWidth` divides the room evenly rather than letting the
+ * longest label take it all.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-4 border border-line-neutral-muted p-3">
+      <Tabs defaultValue="overview" fullWidth>
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="alerts">Alerts</TabsTrigger>
+          <TabsTrigger value="settings">Settings</TabsTrigger>
+        </TabsList>
+        <TabsContent value="overview">
+          <p className="pt-3 text-body-sm text-content-neutral-muted">
+            Packet loss, jitter and MOS for the last 24 hours.
+          </p>
+        </TabsContent>
+        <TabsContent value="alerts" />
+        <TabsContent value="settings" />
+      </Tabs>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

@@ -111,6 +111,20 @@ export const Disabled: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. The trigger truncates its
+ * formatted date rather than growing; the calendar that opens is anchored, so
+ * on a real phone it has the same edge problem every anchored panel has.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-82 border border-line-neutral-muted p-3">
+      <DatePicker mode="single" />
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

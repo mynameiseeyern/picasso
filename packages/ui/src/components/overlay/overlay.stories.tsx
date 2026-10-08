@@ -74,6 +74,24 @@ export const Densities: Story = {
   ),
 };
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. The surface is a primitive with
+ * no width of its own: it takes what its container gives it, which is the
+ * whole point — the menu, popover and select that sit on it each set their own.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-82 border border-line-neutral-muted p-3">
+      <OverlaySurface>
+        <Row>Copy endpoint id</Row>
+        <Row>Rename</Row>
+        <Row>Remove from fleet</Row>
+      </OverlaySurface>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

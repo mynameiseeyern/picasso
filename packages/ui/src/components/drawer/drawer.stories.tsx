@@ -249,6 +249,42 @@ export const Expanded: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. A side drawer sized 480 is
+ * wider than the phone it opens on, so it takes the viewport instead and the
+ * footer buttons stack. The sidebar's own phone nav is a drawer for this
+ * reason; a filter panel on a phone is usually better as a `BottomSheet`.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <Drawer defaultOpen>
+      <DrawerContent side="end">
+        <DrawerHeader type="title">
+          <DrawerHeading>
+            <DrawerTitleGroup>
+              <DrawerTitle>Endpoint detail</DrawerTitle>
+              <DrawerDescription>syd-edge-gateway-01</DrawerDescription>
+            </DrawerTitleGroup>
+            <DrawerActions>
+              <DrawerCloseButton />
+            </DrawerActions>
+          </DrawerHeading>
+        </DrawerHeader>
+        <DrawerBody>
+          <p className="text-body-sm text-content-neutral-muted">
+            480 does not fit a 360 phone, so the panel takes the viewport.
+          </p>
+        </DrawerBody>
+        <DrawerFooter>
+          <Button variant="secondary">Cancel</Button>
+          <Button>Save</Button>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

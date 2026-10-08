@@ -102,6 +102,27 @@ export const SharedProvider: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. A tooltip has no phone form at
+ * all: there is no hover on a touch screen, so anything only a tooltip says is
+ * unsaid on a phone. Put it in the description instead.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 justify-end border border-line-neutral-muted p-3">
+      <Tooltip defaultOpen>
+        <TooltipTrigger asChild>
+          <Button variant="outline">Threshold</Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          Alerts fire when the value goes above this.
+        </TooltipContent>
+      </Tooltip>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

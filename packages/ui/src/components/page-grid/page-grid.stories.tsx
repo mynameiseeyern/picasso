@@ -136,3 +136,31 @@ export const WhatNotToDo: Story = {
     </GuidanceStory>
   ),
 };
+
+/**
+ * Narrow — a 360 viewport. Unlike every other Narrow story here, this one is
+ * NOT a 328px box: the grid answers to its container, and the point is to see
+ * it collapse to one column. The KPI row goes from six across to a stack, and
+ * the chart grid to one chart per row.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <Column>
+      <KpiRow>
+        {[
+          ["Calls in progress", "1,284"],
+          ["MOS", "4.1"],
+          ["Jitter", "12 ms"],
+          ["Packet loss", "0.2%"],
+        ].map(([label, value]) => (
+          <KpiTile key={label} label={label} value={value} />
+        ))}
+      </KpiRow>
+      <ChartGrid>
+        <Chart label="MOS by region" />
+        <Chart label="Jitter over time" />
+      </ChartGrid>
+    </Column>
+  ),
+};

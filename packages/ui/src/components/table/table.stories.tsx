@@ -334,6 +334,43 @@ export const InACard: Story = {
 
 /* ------------------------------------------------------------------ */
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. A table does not reflow: the
+ * scroller belongs on the table's own container so the page stays still and
+ * the header row stays where the reader left it.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-82 border border-line-neutral-muted p-3">
+      <div className="overflow-x-auto">
+        <Table size="sm">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Endpoint</TableHead>
+              <TableHead>Site</TableHead>
+              <TableHead>Loss</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {[
+              ["syd-edge-gateway-01", "Sydney", "0.2%"],
+              ["mel-edge-gateway-02", "Melbourne", "1.8%"],
+              ["akl-edge-gateway-01", "Auckland", "0.0%"],
+            ].map(([name, site, loss]) => (
+              <TableRow key={name}>
+                <TableCell>{name}</TableCell>
+                <TableCell>{site}</TableCell>
+                <TableCell>{loss}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

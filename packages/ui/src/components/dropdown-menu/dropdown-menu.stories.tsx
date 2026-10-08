@@ -132,6 +132,39 @@ function Row({
   );
 }
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. Anchored to a trigger near the
+ * end of the row, which is where a menu runs out of room on a phone. Radix
+ * flips it to stay on screen; below `md` the better answer is a `BottomSheet`.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 justify-end border border-line-neutral-muted p-3">
+      <DropdownMenu defaultOpen>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline">Actions</Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuLabel>Endpoint</DropdownMenuLabel>
+          <DropdownMenuItem>
+            <Copy aria-hidden />
+            Copy id
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Pencil aria-hidden />
+            Rename
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Trash2 aria-hidden />
+            Remove from fleet
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

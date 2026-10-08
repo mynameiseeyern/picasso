@@ -170,6 +170,33 @@ export const MustAnswer: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. A dialog is centred rather than
+ * anchored, so it is the one overlay that survives a phone unchanged: it takes
+ * the width it is given and its footer buttons stack.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <Dialog defaultOpen>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Silence this alert?</DialogTitle>
+          <DialogDescription>
+            syd-edge-gateway-01 will stop paging until 09:00 tomorrow.
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+          <Button>Silence</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

@@ -134,6 +134,36 @@ export const WithAClose: Story = {
 
 const pair = pairOf(guidance);
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. A popover is anchored, and on a
+ * phone the edge it anchors against is the viewport, so there is nowhere for it
+ * to go. Below `md` the phone form of this is `BottomSheet` — this story is
+ * here to show the squeeze, not to endorse it.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 justify-end border border-line-neutral-muted p-3">
+      <Popover defaultOpen>
+        <PopoverTrigger asChild>
+          <Button variant="outline">Dimensions</Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <PopoverHeader>
+            <PopoverTitle>Dimensions</PopoverTitle>
+          </PopoverHeader>
+          <Field>
+            <FieldLabel>Width</FieldLabel>
+            <FieldControl>
+              <Input defaultValue="328" aria-label="Width" />
+            </FieldControl>
+          </Field>
+        </PopoverContent>
+      </Popover>
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },

@@ -123,6 +123,25 @@ export const WithAnAction: Story = {
 
 /* ------------------------------------------------------------------ */
 
+/**
+ * Narrow — 328, a 360 phone minus its gutters. One tile per row: two side by
+ * side put a metric/xl number in 160px, which is where the number stops being
+ * the loud part.
+ */
+export const Narrow: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-82 flex-col gap-2 border border-line-neutral-muted p-3">
+      <KpiTile label="Mean opinion score" value="4.1" unit="/ 5" status="healthy" />
+      <KpiTile
+        label="Endpoints not reporting in the last hour"
+        value="12"
+        status="warning"
+      />
+    </div>
+  ),
+};
+
 export const DoAndDont: Story = {
   name: "Do and Don't",
   parameters: { controls: { disable: true } },
