@@ -37,6 +37,40 @@ Tailwind classes.
 
 ### Added
 
+- **`DistributionChart` and `Heatmap`, and a sequential colour scale.** The two
+  charts the backlog was still missing.
+
+  **`DistributionChart`** shows the shape of a spread rather than its average —
+  the case being a mean of 90ms that is actually two clumps at 25 and 140, which
+  is an outage wearing an average's clothes. It bins raw samples itself, on the
+  same nice-number scale the axes use, so a bucket runs 20–40 and not
+  17.3–39.1. The bars touch, because a histogram's axis is continuous and the
+  BarChart gap would claim there is something between two adjacent buckets.
+  Markers run **down** the measured axis: on a bar chart a threshold is a count,
+  but the number anyone quotes about latency is on the other axis. A marker off
+  the scale is not drawn at all — clamping an SLA of 150 onto a 100ms axis draws
+  a line saying the limit is 100, which is a wrong answer rather than a missing
+  one — and it warns in development saying to pin `max`.
+
+  **`Heatmap`** is endpoint × time, the fleet view. A host that reported nothing
+  is an outlined empty cell, never the lowest band: "fine" and "we don't know"
+  are different answers and only one is safe to ignore. Five bands rather than a
+  gradient, because a colour is read back to a band and then looked up.
+
+  **`chart/scale/1–5`** is the sequential scale, from IR corporate blue — a hue
+  the palette re-step freed when it turned out to sit 7° from brand blue. It is
+  brand-independent and not a status colour. Light runs light→dark, dark runs
+  dark→light, because nothing can sit below the surface it is drawn on. The
+  bands were chosen by scoring every combination for the most even lightness
+  spread subject to the quietest band staying separable from its card: light
+  lands on min adjacent ΔE 14.0, dark on 17.7. `palette/vis/ir-corporateblue`
+  becomes a full 11-step ramp in the process, which also fixes its 500 and 600
+  having been the same hex.
+
+  **Code impact** — both are new; nothing changes. **Figma impact** — a sync
+  adds five `chart/scale/*` variables and eight `ir-corporateblue` steps, and
+  changes `ir-corporateblue/600`. Neither chart is drawn on canvas yet.
+
 - **The sync plugin checks node bindings, not just variable definitions.** It
   could report "no changes" on a file whose swatches pointed at variables it
   had itself deleted, because both sides of the diff agreed and nobody asked

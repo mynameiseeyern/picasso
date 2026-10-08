@@ -71,6 +71,45 @@ Two residual warnings, both deliberate and both covered by the chart components:
 - **IR purple and pink fall below 3:1 against the dark card** (2.38 and 2.82).
   Same cover: a visible legend and a table. They clear 3:1 on the app surface.
 
+## The chart scale
+
+`chart/1–6` carry **identity**. `chart/scale/1–5` carry **magnitude**, and the
+two never mix: the categorical slots are chosen to be maximally unlike each
+other, which is the opposite of what an ordered scale needs.
+
+One hue, five bands, from IR corporate blue. That hue was free: it had been a
+series slot until the re-step found it 7° from brand blue — the same colour to
+anyone reading a chart — so it carries no categorical job, it is the same in
+every brand, and it is not a status colour.
+
+| | Light | Dark |
+|---|---|---|
+| `chart/scale/1` | `ir-corporateblue/200` | `ir-corporateblue/950` |
+| `chart/scale/2` | `/400` | `/700` |
+| `chart/scale/3` | `/600` | `/500` |
+| `chart/scale/4` | `/800` | `/300` |
+| `chart/scale/5` | `/950` | `/50` |
+
+**Light runs light to dark; dark runs dark to light.** Nothing can sit below
+the surface it is drawn on, so in dark mode the quiet end has to be the dark
+end. A scale flipped from the light one would put the loudest cells nearest the
+background and the calmest ones shouting.
+
+The bands were picked by measuring, not by eye: the most even lightness spread
+the ramp allows, subject to the quietest band staying separable from the card
+behind it. Light lands on min adjacent ΔE 14.0 with the lowest band ΔE 13.1
+from white; dark on min adjacent ΔE 17.7 with the lowest band ΔE 10.5 from the
+card.
+
+**Five bands, not a gradient.** Nobody reads a colour back to a number off a
+smooth ramp; they read it to a band and look that band up. Banding makes the
+legend honest and makes two cells of the same severity the same colour.
+
+Only `Heatmap` uses this today, and it is the one chart that colours by value —
+a cell has no length or height to encode with, so colour is the only channel it
+has. Anywhere a mark has a length, the length carries the magnitude and colour
+goes back to carrying identity.
+
 ## How a token is named
 
 ```
