@@ -42,18 +42,16 @@ async function picassoBindings() {
   const scanned = [];
   const unscanned = [];
   for (const page of figma.root.children) {
-    let nodes;
-    try {
-      nodes = page.findAll(() => true);
-    } catch (e) {
-      // An unloaded page in a dynamic-page document. Recorded as NOT scanned,
-      // never skipped silently: a page we could not read must not be able to
-      // pass for a page with nothing wrong. That inversion — a failure wearing
-      // the costume of a clean result — is the bug this whole function exists
-      // to prevent, so it must not be reintroduced here.
-      unscanned.push(page.name + " (" + String(e && e.message ? e.message : e) + ")");
-      continue;
-    }
+    // MUST load before reading. In a dynamic-page document `findAll` on a
+    // partially-loaded page returns a PARTIAL list and does NOT throw — measured
+    // on this file, Colours gave 2492 nodes unloaded and 3598 loaded. An earlier
+    // version of this function guarded with try/catch and treated "no throw" as
+    // "fully read", which made three consecutive runs report 8, 73 and 0
+    // dangling bindings on an unchanged file. A partial read that calls itself
+    // clean is the precise failure this whole function exists to catch, so the
+    // load is not optional and there is no catch to swallow it.
+    await page.loadAsync();
+    const nodes = page.findAll(() => true);
     scanned.push(page.name);
     for (const n of nodes) {
       const bv = n.boundVariables;
@@ -279,17 +277,33 @@ async function picassoSync(payload, opts) {
   // run just removed. Computed against the live set, not the pre-run snapshot.
   const liveIds = new Set((await figma.variables.getLocalVariablesAsync()).map((v) => v.id));
   r.dangling = [];
+  r.remoteBindings = [];
   for (const [id, rec] of bindings.usage) {
     if (liveIds.has(id)) continue;
     const ghost = await figma.variables.getVariableByIdAsync(id);
-    r.dangling.push(`${ghost ? ghost.name : id} — ${rec.count} binding(s), e.g. ${rec.sample}`);
+    const where = `${ghost ? ghost.name : id} — ${rec.count} binding(s), e.g. ${rec.sample}`;
+    // A library-key prefix ahead of the node id means the binding is SUBSCRIBED
+    // to another file rather than pointing at something deleted. The symptom is
+    // identical — absent from the local set — and the fix is not: one is rebind
+    // to the replacement, the other is rebind to this file's own variable.
+    if (id.includes("/")) r.remoteBindings.push(where);
+    else r.dangling.push(where);
   }
 
   r.inSync =
     !r.created.length && !r.changed.length && !r.renamed.length &&
-    !r.problems.length && !r.dangling.length && !(prune && r.extra.length);
+    !r.problems.length && !r.dangling.length && !r.remoteBindings.length &&
+    !(prune && r.extra.length);
   // A clean verdict is only as wide as the scan behind it.
   if (r.inSync && r.pagesUnscanned.length) r.inSync = "partial";
+  // Every page is loaded before it is read, so a count below the file's page
+  // count means the sweep stopped early and the verdict is not trustworthy.
+  if (r.pagesScanned !== figma.root.children.length) {
+    r.problems.push(
+      `Binding sweep read ${r.pagesScanned} of ${figma.root.children.length} pages — verdict is incomplete.`,
+    );
+    r.inSync = false;
+  }
   return r;
 }
 /**
@@ -390,9 +404,6 @@ if (typeof __html__ !== "undefined") {
     }
     if (msg.type !== "run") return;
     try {
-      // The binding sweep can only see pages that are loaded. In the plugin we
-      // can load them all; headless (MCP) runs report what they could not read.
-      if (figma.loadAllPagesAsync) await figma.loadAllPagesAsync();
       const report = await picassoSync(msg.payload, { apply: msg.apply, prune: msg.prune });
       figma.ui.postMessage({ type: "report", report });
     } catch (e) {

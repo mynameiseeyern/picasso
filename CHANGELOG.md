@@ -45,13 +45,33 @@ Tailwind classes.
   and looks alive. Check now walks every page it can reach, reports each
   dangling binding with a place it is used, and `inSync` is false while any
   exist. Prune refuses to remove a variable that nodes still bind to, naming
-  one, rather than silently orphaning them. A page that cannot be read is
-  listed as unscanned and downgrades a clean verdict to `"partial"` — a page
-  nobody could look at must not pass for a page with nothing wrong.
+  one, rather than silently orphaning them. A binding carrying a library-key
+  prefix is reported separately as a remote subscription: identical symptom,
+  different fault, and a different fix.
   **Figma impact** — none; the plugin only reads more than it did.
 
-  Found on its first run: eight pre-existing orphans the old check could never
-  have seen, on Assets from brand, Sidebar menu and Error pages.
+  **Every page is `loadAsync`-ed before it is read.** This is not a nicety. In
+  a dynamic-page document `findAll` on a partially-loaded page returns a
+  PARTIAL list and does **not** throw — measured on Picasso, the Colours page
+  gave 2,492 nodes unloaded and 3,598 loaded. A first version of this sweep
+  guarded with `try`/`catch` and treated "did not throw" as "fully read", and
+  three consecutive runs over an unchanged file reported 8, 73 and 0 dangling
+  bindings. A partial read that calls itself clean is the exact failure the
+  sweep exists to catch, so it had been reimplemented inside its own fix.
+
+  Names are resolved from the collected map **after** the traversal, never
+  inside it: an `await` per node lets Figma unload the page mid-sweep, and the
+  remainder reads as empty.
+
+  Found once it could actually see: **73 bindings across 9 dead variables** —
+  `fontFamilies/*`, `fontWeights/*`, `fontSize/1` and `letterSpacing/1` from
+  the pre-rename type system, `light/fg/on/primary-emphasis` from before the
+  mode-prefix was dropped, and dead duplicates of `space/2`, `space/4` and
+  `palette/vis/lime/600` that still exist under the same names. 64 were the Log
+  viewer's badges. All rebound to their live equivalents with no visual change;
+  `letterSpacing` was unbound rather than rebound, because tracking is
+  deliberately not a Figma variable — text styles carry `letterSpacingPercent`
+  directly.
 
 - **A `Narrow` story ratchet.** Every component owes one — 328px, a 360 phone
   minus its gutters — and it was enforced nowhere, so 41 of 55 had drifted
