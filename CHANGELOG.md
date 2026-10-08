@@ -293,6 +293,16 @@ Tailwind classes.
 
 ### Fixed
 
+- **A fresh clone shipped no tokens.** `packages/tokens/dist/` is gitignored and
+  nothing rebuilt it on install, so `@ir/tokens/tokens.css` — the package's main
+  consumable — did not resolve. The release workflow runs `build:tokens` before
+  publishing, so a tagged release was always fine; **installing from a git URL
+  was not**, which is the first thing a team does before a registry exists.
+  `@ir/tokens` now has a `prepare` script, which npm runs on install-from-git and
+  before publish. Verified by cloning the repo fresh: `dist/` absent before,
+  present after. **Figma impact** — none.
+
+
 - **The App shell left a 360 phone 104px of content.** `mobile="drawer"` is
   opt-in, and nothing in the shell's own stories opted in — so at 360 the 256
   rail was still drawn inline, taking 71% of the viewport, wrapping body text to
