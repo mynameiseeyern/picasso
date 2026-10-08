@@ -107,19 +107,28 @@ Tailwind classes.
   deliberately not a Figma variable — text styles carry `letterSpacingPercent`
   directly.
 
-- **A `Narrow` story ratchet, and 19 of the 41 owed stories.** Every component
-  owes one — 328px, a 360 phone minus its gutters — and it was enforced
-  nowhere, so 41 of 55 had drifted without one. `narrow.test.ts` writes that
-  debt down and holds it in both directions: a component that loses its story
-  fails, and one that gains a story fails until it is struck off the list, so
-  the count can only shrink and can never describe a state that is no longer
-  true. 22 remain. **Figma impact** — none.
+- **A `Narrow` story for every component, and the ratchet that keeps it that
+  way.** Every component owes one — 328px, a 360 phone minus its gutters — and
+  it was enforced nowhere, so 41 of 55 had drifted without one. All 41 are
+  written; `narrow.test.ts` held the debt while it shrank and now holds the
+  floor, so the next component to arrive without one fails there rather than
+  starting the drift again. **Figma impact** — none.
 
-  All 33 Narrow stories are measured in a real browser at 360px — none scrolls
-  the page sideways. That sweep is what found the two fixes below; the test
-  suite was green the whole time, because jsdom cannot see layout. `input-group`
-  and `slider` pin 320 through a file-level decorator, which is stricter than
-  the 328 floor, and their stories say so.
+  All 58 Narrow stories are measured in a real browser at 360px — none scrolls
+  the page sideways. That sweep found every layout fix in this release; the
+  test suite was green throughout, because jsdom has no layout engine.
+
+  Three stories are deliberately not 328px boxes. `AppShell`, `Sidebar` and
+  `PageGrid` answer to the **viewport**, not a container, so framing them in a
+  box would measure the box. `input-group` and `slider` pin 320 through a
+  file-level decorator, which is stricter than the floor, and say so.
+
+- **A Colour foundations story.** The two chart palettes side by side, each
+  swatch printing the colour it actually resolved to in this mode and brand.
+  Both of this system's worst colour faults were invisible on screen — deleted
+  variables that kept rendering their last value, and two series slots ΔE 4.3
+  apart — and a page that prints the resolved value is the cheapest guard
+  against either. **Figma impact** — none.
 
 - **A Typography foundations story.** The three families, the five roles and
   the weight tiers, rendered rather than described — with a **Follows the
@@ -280,6 +289,19 @@ Tailwind classes.
   `duration-150` is gone — the default is the token. **Figma impact** — none.
 
 ### Fixed
+
+- **The App shell left a 360 phone 104px of content.** `mobile="drawer"` is
+  opt-in, and nothing in the shell's own stories opted in — so at 360 the 256
+  rail was still drawn inline, taking 71% of the viewport, wrapping body text to
+  about a word a line and clipping the breadcrumb. The shell and sidebar stories
+  now pass it, and say in the story why. Found by screenshotting the `Narrow`
+  story; the overflow sweep passed it, because an ancestor's `overflow-hidden`
+  meant nothing technically overflowed — the content was simply unusable.
+  **Figma impact** — none.
+
+  Worth a decision separately: **opt-in is the wrong default.** A shell that
+  needs a prop to be usable on a phone will be shipped without it.
+
 
 - **A chart's screen-reader table scrolled the page sideways on a phone.** The
   table carried `sr-only` itself, and a `<table>` sizes to its content and
