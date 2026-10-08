@@ -32,6 +32,7 @@
     }
   },
   "scripts": {
+    "prepare": "node build/style-dictionary.config.mjs",
     "build": "node build/style-dictionary.config.mjs",
     "check": "node build/style-dictionary.config.mjs && node build/check.mjs",
     "brand:new": "node build/brand-new.mjs",
