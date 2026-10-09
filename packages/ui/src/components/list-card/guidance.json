@@ -1,0 +1,68 @@
+{
+  "component": "ListCard",
+  "summary": "A row in a list of things a person can open — a badge, a title and a meta line, with an illustration cropped into the trailing corner.",
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": "40000781:117",
+    "note": "State=Default | Hover. The hover variant is the border colour and nothing else; the picture's rise has no Figma counterpart — docs/foundations/motion.md is the spec."
+  },
+  "structureFrom": "figma",
+  "measurementsFrom": "code",
+  "pairs": [
+    {
+      "id": "the-card-owns-the-hover",
+      "dont": "Let the illustration answer the pointer itself inside a card.",
+      "do": "Leave `interactive` alone and let the card pass `active`.",
+      "why": "Two things listening to one pointer means the picture can play while the card is not highlighted, and a picture that responds reads as a control. The card is what opens; the picture answers the card.",
+      "example": false
+    },
+    {
+      "id": "wait-for-the-pointer-to-settle",
+      "dont": "Start the drawing the instant the pointer touches the row.",
+      "do": "Let the 120ms dwell do its job — a pointer crossing a list on its way somewhere else moves nothing.",
+      "why": "A list is mostly crossed, not read. Firing on entry turns a scroll past six rows into six animations, which is the flicker that makes people turn motion off.",
+      "example": false
+    },
+    {
+      "id": "it-does-not-lift",
+      "dont": "Add a shadow or a raise on hover.",
+      "do": "Change the border and leave the card where it is.",
+      "why": "Rows sit a 2-gap apart, so a hover shadow lands on the card below — a visual artefact signalling something the border already says. Measured on Claude's own cards: border and background only, no movement at all. Not drawn: the wrong side needs a class the component refuses (a shadow, a wrapping title), and a mock-up would be a picture of something the library will not let you build.",
+      "example": false
+    },
+    {
+      "id": "the-title-truncates",
+      "dont": "Let a long title wrap and push the row taller than its neighbours.",
+      "do": "One line, truncated, with the full name available where the card opens.",
+      "why": "A list is read by scanning down one edge. A row that grows breaks the rhythm the scan depends on, and the names that overflow are usually the ones that differ only at the end. Not drawn: the wrong side needs a class the component refuses (a shadow, a wrapping title), and a mock-up would be a picture of something the library will not let you build.",
+      "example": false
+    },
+    {
+      "id": "badge-is-a-kind-not-a-sentence",
+      "dont": "Put status prose in the badge — \"3 sites need attention\".",
+      "do": "Name the kind of thing this is — \"Alert rule\", \"Fleet\", \"Report\" — and put the count in the meta line.",
+      "why": "The badge is how someone tells one row's type from another at a glance. A sentence there competes with the title and stops the column reading as a column."
+    },
+    {
+      "id": "pick-the-drawing-for-what-it-shows",
+      "dont": "Choose an illustration because you like how it moves.",
+      "do": "Choose it for what it depicts — a fleet of endpoints is `fleet-health`, a dependency run is `call-readiness`.",
+      "why": "The mechanic follows the subject, not the other way round. A list where the picture does not match the thing teaches people the pictures are decoration, and then they stop looking at them."
+    },
+    {
+      "id": "one-name-per-row",
+      "dont": "Give the illustration its own label as well as the title.",
+      "do": "Leave the art `aria-hidden` — the card already has one accessible name.",
+      "why": "A screen reader reading a row twice, once as a picture and once as a title, doubles the length of every list. The picture says nothing the title does not.",
+      "example": false
+    }
+  ],
+  "a11y": [
+    "One target and one accessible name: the anchor, named by its title and meta line.",
+    "The art is aria-hidden and the drawing takes `label={null}`. Nothing is said only by the picture.",
+    "Focus turns the picture on immediately — there is nothing to settle, because arriving by keyboard is already deliberate.",
+    "The focus ring is the system's: 2px `ring/focused` with a 2px offset on the app surface, so it reads against both the card and the page.",
+    "Under `prefers-reduced-motion` the rise and the colour transition are both off; the drawing holds at rest and still says what it means."
+  ],
+  "examples": "complete"
+}

@@ -16,6 +16,15 @@ between the two states has no Figma counterpart; the tokens and
 
 ### Added
 
+- **ListCard.** A row in a list of things a person can open — a badge, a title
+  and a meta line, with an Illustration cropped into the trailing corner on a
+  brand circle. The card owns the hover and passes `active`, so the picture
+  never answers a pointer the card is not answering: it waits 120ms for the
+  pointer to settle, turns on at once for keyboard focus, and the card itself
+  only changes colour. **It does not lift** — rows sit a 2-gap apart, so a
+  hover shadow would land on the card below. Below a 448 card the art column
+  drops 160 → 112, answering the card's own width rather than the viewport.
+  `asChild` hands the row to a router link.
 - **Seven Illustration drawings.** `search-results`, `dashboards` (lift),
   `topology`, `team-access` (magnify), `activity-log`, `integrations` and
   `assistant` (sequence) join `issue-alerts`, `fleet-health` and
