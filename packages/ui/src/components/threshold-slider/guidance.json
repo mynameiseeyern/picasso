@@ -26,7 +26,7 @@
       "id": "thresholds-meet-not-cross",
       "dont": "Let one threshold pass the other, or clamp silently to the track ends.",
       "do": "Bound each thumb by its twin, and say so with aria-valuemin and aria-valuemax.",
-      "why": "Crossed thresholds invert the bands and mean nothing. A screen reader that is told the range is 0–100 when the real bound is 85 gives an answer the control will not honour.",
+      "why": "Crossed thresholds invert the bands and mean nothing. A screen reader that is told the range is 0–100 when the real bound is 85 gives an answer the control will not honour. And when they do meet, the label that survives is the critical one: there is no warning band at the boundary, so crossing it skips warning entirely and the number is the critical limit.",
       "example": false
     },
     {

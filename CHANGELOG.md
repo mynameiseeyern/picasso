@@ -52,6 +52,14 @@ between the two states has no Figma counterpart; the tokens and
 
 ### Fixed
 
+- **ThresholdSlider named the wrong limit when the thumbs met.** Setting
+  warning and critical to the same number leaves no warning band: either side
+  of the boundary a metric is healthy or critical, never warning. The control
+  dropped the critical label and kept the warning one, so it named a state it
+  could not be in. The critical label survives now, and the critical thumb is
+  raised over its twin so the ring you see is the colour of the boundary you
+  are reading. Measured in Chromium: warning band 0px, `elementFromPoint` at
+  the boundary returns the critical thumb.
 - **The docs said `data-brand` works on any element.** It works on `<html>`.
   Semantics are declared on `:root`, so a `data-brand` on an inner element
   re-points the brand's primitives inside it but not the semantics components
