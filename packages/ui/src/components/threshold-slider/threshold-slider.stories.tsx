@@ -149,6 +149,28 @@ export const Presets: Story = {
 };
 
 /** Disabled is 50% on the whole control, which is what the file draws. */
+/**
+ * Set the two thresholds to the same number and the warning band disappears:
+ * either side of the boundary a metric is healthy or critical, never warning.
+ * The surviving label is the critical one, because that is the limit crossing
+ * the boundary actually trips.
+ */
+export const ThresholdsMet: Story = {
+  name: "Thresholds met",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="w-150">
+      <ThresholdSlider
+        min={0}
+        max={100}
+        warning={70}
+        critical={70}
+        format={(v) => `${v}%`}
+      />
+    </div>
+  ),
+};
+
 export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => (

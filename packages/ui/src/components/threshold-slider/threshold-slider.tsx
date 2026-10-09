@@ -31,10 +31,15 @@ import { useDirection } from "../direction/direction";
  * ⭐ The labels move, the thumbs do not. Two 60px labels over thumbs 20px
  * apart are unreadable, so once they would overlap they separate symmetrically
  * about their midpoint — the lower one toward the start, the higher one toward the end — and the
- * pair slides back inside the track if that pushed an end off it. When the
- * thumbs meet exactly there is no warning band at all and both labels would
- * carry the same number, so the critical one is dropped and the warning one
- * stays on the boundary.
+ * pair slides back inside the track if that pushed an end off it.
+ *
+ * ⭐ When the thumbs meet exactly, the label that survives is the CRITICAL
+ * one. There is no warning band at the boundary — the only states either side
+ * of it are healthy and critical — so crossing that number skips warning
+ * entirely and the number is the critical limit. Labelling it "Warning" would
+ * name a state the control cannot be in. The critical thumb is raised over its
+ * twin for the same reason: the ring you see should be the colour of the
+ * boundary you are reading.
  *
  * ⚠️ The two Figma sets disagree on the thumb colour. The preset gallery
  * binds `status/warning` and `status/critical`; the state set binds
@@ -127,7 +132,8 @@ export function ThresholdSlider({
   const wPct = pct(warning, min, max);
 
   // The thumbs have met, so the warning band has no width and both labels
-  // would read the same number. Only the warning one is drawn.
+  // would read the same number. Only the critical one is drawn: the boundary
+  // separates healthy from critical, with no warning state in between.
   const coincident = warning === critical;
 
   // The track is measured because the labels are a fixed pixel width and the
@@ -275,7 +281,7 @@ export function ThresholdSlider({
           absolutely-positioned child, which would collapse it to nothing. */}
       <div className="relative h-8.5">
         {thumbs
-          .filter(({ which }) => !(coincident && which === "critical"))
+          .filter(({ which }) => !(coincident && which === "warning"))
           .map(({ which, value, label, at }) => (
             <span
               key={which}
@@ -377,6 +383,11 @@ export function ThresholdSlider({
                 which === "critical"
                   ? "border-status-critical"
                   : "border-status-warning",
+                // Stacked thumbs: the critical one takes the top, so the ring
+                // matches the label on the boundary. Dragging it still
+                // separates the pair — lowering critical opens a warning band
+                // behind it — and the warning thumb stays keyboard-reachable.
+                coincident && which === "critical" && "z-raised",
                 // Not aria-hidden and not unreachable: a disabled control is
                 // still something you may need to read.
                 disabled && "cursor-default",

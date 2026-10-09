@@ -21,6 +21,14 @@ function at(container: HTMLElement, which: string) {
   return el.style.getPropertyValue("--at");
 }
 
+/** What the label says — the role word and the formatted number. */
+function labelText(container: HTMLElement, which: string) {
+  const el = container.querySelector<HTMLElement>(
+    `[data-slot="threshold-slider-label-${which}"]`,
+  );
+  return el ? el.textContent : null;
+}
+
 function labelAt(container: HTMLElement, which: string) {
   const el = container.querySelector<HTMLElement>(
     `[data-slot="threshold-slider-label-${which}"]`,
@@ -252,16 +260,19 @@ describe("ThresholdSlider", () => {
     }
   });
 
-  it("drops the critical label when the thumbs meet", () => {
+  it("keeps the critical label when the thumbs meet — not the warning one", () => {
     const restore = withTrackWidth(400);
     try {
-      // Equal thresholds mean no warning band, and two labels reading the
-      // same number. The warning one survives, on the boundary.
+      // Equal thresholds mean no warning band, so the states either side of
+      // the boundary are healthy and critical. Crossing that number skips
+      // warning entirely, which makes it the critical limit — labelling it
+      // "Warning" would name a state the control cannot be in.
       const { container } = render(
         <ThresholdSlider min={0} max={100} warning={70} critical={70} />,
       );
-      expect(labelAt(container, "critical")).toBeNull();
-      expect(labelAt(container, "warning")).toBe("70%");
+      expect(labelText(container, "warning")).toBeNull();
+      expect(labelText(container, "critical")).toBe("Critical70");
+      expect(labelAt(container, "critical")).toBe("70%");
       // Both thumbs stay: each is still separately settable.
       expect(
         screen.getByRole("slider", { name: "Critical threshold" }),
@@ -271,6 +282,28 @@ describe("ThresholdSlider", () => {
         { tone: "warning", span: "0%" },
         { tone: "healthy", span: "30%" },
       ]);
+      // and the ring on top is the colour of the boundary being read
+      expect(
+        container.querySelector("[data-slot='threshold-slider-thumb-critical']")
+          ?.className,
+      ).toContain("z-raised");
+    } finally {
+      restore();
+    }
+  });
+
+  it("raises nothing while the thumbs are apart", () => {
+    const restore = withTrackWidth(400);
+    try {
+      const { container } = render(
+        <ThresholdSlider min={0} max={100} warning={70} critical={85} />,
+      );
+      expect(labelText(container, "warning")).toBe("Warning70");
+      expect(labelText(container, "critical")).toBe("Critical85");
+      expect(
+        container.querySelector("[data-slot='threshold-slider-thumb-critical']")
+          ?.className,
+      ).not.toContain("z-raised");
     } finally {
       restore();
     }
