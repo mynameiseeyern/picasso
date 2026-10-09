@@ -1,250 +1,333 @@
-import Link from 'next/link';
-import { ArrowRight, Blocks, BookOpenText, Bot, GitBranch, GitCommitHorizontal, Palette, PenLine, Ruler } from 'lucide-react';
-import { componentsRoute, docsRoute } from '@/lib/shared';
+import Link from "next/link";
+import { componentsRoute, docsRoute } from "@/lib/shared";
 
-/* The landing page is an IR brand piece (design.md §9.3 web pattern), not a
- * Picasso product screen — so it uses the brand palette and fonts, alternates
- * light and dark bands, and puts the primary lockup where the brand first
- * appears. Spelling: Australian. */
+/* The home page is an index, not a pitch.
+ *
+ * It was a marketing landing page — a display-type hero, a stats band, two
+ * "doors" and four calls to action — and that is the wrong shape for the
+ * audience. Nobody arrives here to be persuaded that IR has a design system;
+ * they arrive to find a rule, a token or a component, usually having been
+ * sent by a link. So the first screen is the table of contents, with the real
+ * page names under each section rather than a sentence about them, which is
+ * what design.atlassian.com and lightningdesignsystem.com both do.
+ *
+ * It stays an IR surface — the palette, the hairline rule and Oswald for
+ * section headings — but the brand's marketing web pattern (alternating dark
+ * bands, display hero, stats) is deliberately not used here. Spelling:
+ * Australian.
+ */
 
-const sections = [
+const start = [
   {
-    icon: Ruler,
-    title: 'Foundations',
-    body: 'Grid, spacing, radius, typography and colour. The decisions every component inherits.',
-    href: `${docsRoute}/foundations`,
+    title: "For designers",
+    body: "The Figma library, what it is authoritative for, and what it mirrors from the repo.",
+    href: `${docsRoute}/get-started/designers`,
   },
   {
-    icon: PenLine,
-    title: 'Content',
-    body: 'Voice, casing, errors, empty states, numbers and terminology. The words are part of the system.',
-    href: `${docsRoute}/content`,
+    title: "For engineers",
+    body: "Installing @ir/tokens and @ir/ui, the semantic utilities, and the linter that holds the line.",
+    href: `${docsRoute}/get-started/engineers`,
   },
   {
-    icon: Blocks,
-    title: 'Components',
-    body: 'Live, themeable React components with every variant and state, and the Do/Don’t guidance beside them.',
-    href: componentsRoute,
-  },
-  {
-    icon: Palette,
-    title: 'Theming',
-    body: 'Five independent axes and dark mode compose by cascade. Clarion and Prognosis are the same components, differently dialled.',
-    href: `${docsRoute}/foundations/colour`,
-  },
-  {
-    icon: GitBranch,
-    title: 'Contributing',
-    body: 'How to add a component, and what “done” means before it ships to Figma, npm and the docs together.',
-    href: `${docsRoute}/contributing`,
-  },
-  {
-    icon: BookOpenText,
-    title: 'Releases',
-    body: 'One version number across Figma, @ir/tokens and @ir/ui, with a Figma impact line on every change.',
-    href: `${docsRoute}/releases`,
+    title: "Create a brand",
+    body: "Making a brand and switching a product onto it, end to end.",
+    href: `${docsRoute}/get-started/new-brand`,
   },
 ];
 
-const stats = [
-  { figure: '132', label: 'semantic tokens, each resolved for light and dark' },
-  { figure: '5 × 2', label: 'theme axes and modes, composed by cascade' },
-  { figure: '57', label: 'components in code, each with its own guidance' },
-  { figure: '1', label: 'source of truth — the repo. Figma is a consumer.' },
+const sections = [
+  {
+    title: "Foundations",
+    body: "The decisions every component inherits.",
+    href: `${docsRoute}/foundations`,
+    pages: [
+      ["Tokens and brands", "tokens-and-brands"],
+      ["Grid, spacing and radius", "grid-spacing-and-radius"],
+      ["Responsive", "responsive"],
+      ["Typography", "typography"],
+      ["Colour", "colour"],
+      ["Elevation", "elevation"],
+      ["Motion", "motion"],
+      ["Icons", "icons"],
+      ["RTL", "rtl"],
+      ["Accessibility", "accessibility"],
+    ].map(([label, slug]) => ({
+      label,
+      href: `${docsRoute}/foundations/${slug}`,
+    })),
+  },
+  {
+    title: "Content",
+    body: "The words are part of the system.",
+    href: `${docsRoute}/content`,
+    pages: [
+      ["Principles and register", "principles-and-register"],
+      ["Casing", "casing"],
+      ["Buttons and labels", "buttons-and-labels"],
+      ["Errors", "errors"],
+      ["Empty and loading states", "empty-and-loading-states"],
+      ["Numbers, units and time", "numbers-units-and-time"],
+      ["Terminology", "terminology"],
+    ].map(([label, slug]) => ({ label, href: `${docsRoute}/content/${slug}` })),
+  },
+  {
+    title: "Contributing",
+    body: "What “done” means before a change ships.",
+    href: `${docsRoute}/contributing`,
+    pages: [
+      ["Adding a component", "adding-a-component"],
+      ["Figma to code mapping", "figma-to-code-mapping"],
+      ["Component checklist", "component-checklist"],
+      ["Reporting off-system output", "reporting-off-system-output"],
+    ].map(([label, slug]) => ({
+      label,
+      href: `${docsRoute}/contributing/${slug}`,
+    })),
+  },
+];
+
+const agentFiles = [
+  ["llms.txt", "An index — one line per page, and a link to its Markdown."],
+  ["llms-full.txt", "Everything, concatenated."],
+  ["llms-foundations.txt", "The foundations only."],
+  ["llms-components.txt", "The component guidance only."],
+  ["llms-tokens.txt", "Every semantic token, resolved for light and dark."],
 ];
 
 export default function HomePage() {
   return (
-    <main className="flex flex-col">
-      {/* Hero — dark band, primary lockup top-left (brand §8), Oswald caps with
-          one Corporate Blue accent keyword (allowed on dark, §6.4). */}
-      <section className="ir-dark bg-ir-rich-grey text-white">
-        <div className="mx-auto w-full max-w-6xl px-6 pt-14 pb-20 md:pt-20 md:pb-28">
-          <img src="/brand/ir-lockup-dark.svg" alt="Integrated Research" className="h-9 w-auto mb-14 md:mb-20" />
-          <span className="ir-pill border border-white/20 text-ir-corporate-blue">Design system</span>
-          <h1 className="ir-display mt-6 text-display-hero leading-none sm:text-6xl md:text-7xl lg:text-8xl max-w-5xl">
-            One system.
-            <br />
-            <span className="text-ir-corporate-blue">Every IR product.</span>
-          </h1>
-          <p className="mt-8 max-w-2xl text-lg md:text-xl font-light text-white/80 leading-relaxed">
-            Picasso is the design system behind Integrated Research’s products. Tokens, components, foundations and
-            content guidance, written once and rendered everywhere — in Figma, in code and in the docs you are
-            reading now.
+    <main className="bg-white text-ir-rich-grey">
+      {/* Masthead — what this is, in two sentences. */}
+      <header className="border-b border-ir-line-grey">
+        <div className="mx-auto w-full max-w-6xl px-6 py-10 md:py-14">
+          <img
+            src="/brand/ir-icon-light.svg"
+            alt="Integrated Research"
+            className="h-8 w-8"
+          />
+          <h1 className="ir-display mt-6 text-3xl md:text-4xl">Picasso</h1>
+          <p className="mt-4 max-w-2xl text-ir-text-grey leading-relaxed">
+            The design system for Integrated Research’s products. Foundations,
+            components and content guidance, written once and rendered in Figma,
+            in code and on this site.
           </p>
-          <div className="mt-10 flex flex-wrap gap-3">
-            <Link
-              href={`${docsRoute}/get-started`}
-              className="inline-flex items-center gap-2 rounded-full bg-ir-corporate-blue px-6 py-3 text-sm font-semibold text-ir-rich-grey hover:bg-white transition-colors"
-            >
-              Get started <ArrowRight className="size-4" aria-hidden />
-            </Link>
-            <Link
-              href={componentsRoute}
-              className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3 text-sm font-semibold text-white hover:border-white hover:bg-white/5 transition-colors"
-            >
-              Browse components
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats — Ink band, big Corporate Blue figures (brand §9.1 Stats). */}
-      <section className="ir-dark bg-ir-ink text-white">
-        <div className="mx-auto w-full max-w-6xl px-6 py-14 md:py-16 grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.figure}>
-              <div className="text-4xl md:text-5xl font-semibold text-ir-corporate-blue tabular-nums tracking-tight">
-                {s.figure}
-              </div>
-              <p className="mt-3 text-sm text-white/75 leading-snug max-w-64">{s.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Two doors — light split (Panel Grey | White), brand §8. */}
-      <section className="grid md:grid-cols-2">
-        <div className="min-w-0 bg-ir-panel-grey text-ir-rich-grey">
-          <div className="mx-auto max-w-xl px-6 py-16 md:py-20 md:ms-auto md:me-0 md:pe-12">
-            <span className="ir-pill bg-white text-ir-purple">For designers</span>
-            <h2 className="ir-display mt-5 text-4xl md:text-5xl">Start in Figma</h2>
-            <p className="mt-5 text-ir-text-grey leading-relaxed">
-              The Picasso library carries the foundations, the components and the tokens as variables. It is authoritative for which variants and states exist, and a mirror of the repo for
-              everything else — the page says so.
-            </p>
-            <Link
-              href={`${docsRoute}/get-started/designers`}
-              className="mt-8 inline-flex items-center gap-2 font-semibold text-ir-purple hover:underline"
-            >
-              The designer’s path <ArrowRight className="size-4" aria-hidden />
-            </Link>
-          </div>
-        </div>
-        <div className="min-w-0 bg-white text-ir-rich-grey">
-          <div className="mx-auto max-w-xl px-6 py-16 md:py-20 md:me-auto md:ms-0 md:ps-12">
-            <span className="ir-pill bg-ir-panel-grey text-ir-purple">For engineers</span>
-            <h2 className="ir-display mt-5 text-4xl md:text-5xl">Install and theme</h2>
-            <p className="mt-5 text-ir-text-grey leading-relaxed">
-              <code className="font-mono text-inline-code">@ir/tokens</code> and{' '}
-              <code className="font-mono text-inline-code">@ir/ui</code> on Tailwind v4 and Radix. Semantic utilities
-              only, never a raw value — and a linter that holds the line.
-            </p>
-            <pre className="mt-6 rounded-lg bg-ir-rich-grey text-white text-sm p-4 overflow-x-auto">
-              <code>{`<html
-  data-brand="clarion"
-  data-radius="sharp"
-  class="dark"
->`}</code>
-            </pre>
-            <Link
-              href={`${docsRoute}/get-started/engineers`}
-              className="mt-8 inline-flex items-center gap-2 font-semibold text-ir-purple hover:underline"
-            >
-              The engineer’s path <ArrowRight className="size-4" aria-hidden />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* What's in the system — white content page, icon top-right (brand §8). */}
-      <section className="bg-white text-ir-rich-grey">
-        <div className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
-          <div className="flex items-start justify-between gap-6">
+          <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-4 text-sm">
             <div>
-              <span className="ir-pill bg-ir-panel-grey text-ir-purple">What’s in the system</span>
-              <h2 className="ir-display mt-5 text-4xl md:text-5xl max-w-3xl">
-                Organised around the work, not the package
-              </h2>
-              <p className="mt-5 max-w-2xl text-ir-text-grey leading-relaxed">
-                A PM can read the content guide and a designer can read foundations without touching a component
-                API. Engineers get the same rules as code.
-              </p>
+              <dt className="text-ir-text-grey">Packages</dt>
+              <dd className="mt-1 font-mono text-inline-code">
+                @ir/tokens · @ir/ui
+              </dd>
             </div>
-            <img src="/brand/ir-icon-light.svg" alt="" className="hidden md:block h-10 w-10 shrink-0 mt-1" />
-          </div>
-          <ul className="mt-12 grid gap-px bg-ir-line-grey sm:grid-cols-2 lg:grid-cols-3 border border-ir-line-grey">
-            {sections.map(({ icon: Icon, title, body, href }) => (
-              <li key={title} className="bg-white">
-                <Link href={href} className="group flex h-full flex-col p-7 hover:bg-ir-panel-grey/60 transition-colors">
-                  <Icon className="size-6 text-ir-secondary-blue" aria-hidden strokeWidth={1.75} />
-                  <h3 className="mt-5 text-lg font-semibold">{title}</h3>
-                  <p className="mt-2 text-sm text-ir-text-grey leading-relaxed flex-1">{body}</p>
-                  <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-ir-purple">
-                    Open <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden />
-                  </span>
+            <div>
+              <dt className="text-ir-text-grey">Built on</dt>
+              <dd className="mt-1">Tailwind v4, Radix, React 19</dd>
+            </div>
+            <div>
+              <dt className="text-ir-text-grey">Brands</dt>
+              <dd className="mt-1">Clarion, Vantage</dd>
+            </div>
+          </dl>
+        </div>
+      </header>
+
+      {/* Start here — three paths, as links rather than doors. */}
+      <section className="border-b border-ir-line-grey">
+        <div className="mx-auto w-full max-w-6xl px-6 py-10 md:py-12">
+          <h2 className="ir-display text-xl">Start here</h2>
+          <ul className="mt-6 grid gap-x-10 gap-y-6 sm:grid-cols-3">
+            {start.map(({ title, body, href }) => (
+              <li key={title}>
+                <Link
+                  href={href}
+                  className="font-semibold text-ir-purple hover:underline"
+                >
+                  {title}
                 </Link>
+                <p className="mt-1.5 text-sm text-ir-text-grey leading-relaxed">
+                  {body}
+                </p>
               </li>
             ))}
           </ul>
         </div>
       </section>
 
-      {/* Agents — dark statement band (brand §9.1 Statement). */}
-      <section className="ir-dark bg-ir-rich-grey text-white">
-        <div className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24 grid gap-12 lg:grid-cols-split-emphasis lg:items-center">
-          <div>
-            <span className="ir-pill border border-white/20 text-ir-corporate-blue">
-              <Bot className="size-3.5" aria-hidden /> UI for agents
-            </span>
-            <h2 className="ir-display mt-5 text-4xl md:text-5xl">
-              An agent with the <span className="text-ir-corporate-blue">token table</span> cannot invent a hex code
+      {/* Components — the thing most people came for, so it is first and it
+          says how many there are rather than describing itself. */}
+      <section className="border-b border-ir-line-grey">
+        <div className="mx-auto w-full max-w-6xl px-6 py-10 md:py-12">
+          <div className="flex flex-wrap items-baseline justify-between gap-4">
+            <h2 className="ir-display text-xl">
+              <Link href={componentsRoute} className="hover:text-ir-purple">
+                Components
+              </Link>
             </h2>
-            <p className="mt-5 text-white/80 leading-relaxed max-w-xl">
-              Every page here is also served as Markdown, and the whole system is published as a set of{' '}
-              <code className="font-mono text-inline-code">llms*.txt</code> files — including every semantic token
-              resolved to its light and dark value. Point your assistant at it and it writes on-system code.
-            </p>
+            <span className="text-sm text-ir-text-grey">
+              58 in code, each with its variants, states and Do / Don’t guidance
+            </span>
           </div>
-          <div className="rounded-xl border border-white/15 bg-ir-ink p-5 text-sm font-mono leading-relaxed overflow-x-auto">
-            <div className="text-white/50"># Claude Code, Cursor, Windsurf — any assistant that takes a URL</div>
-            <div className="mt-2 text-ir-corporate-blue">Use Picasso design system documentation from</div>
-            <div className="text-white">https://ir-picasso.vercel.app/llms.txt</div>
-            <div className="mt-4 text-white/50"># The file set</div>
-            {['llms.txt', 'llms-full.txt', 'llms-foundations.txt', 'llms-components.txt', 'llms-tokens.txt'].map((f) => (
-              <div key={f}>
-                <a href={`/${f}`} className="text-white hover:text-ir-corporate-blue">
-                  /{f}
-                </a>
+          <p className="mt-4 max-w-2xl text-sm text-ir-text-grey leading-relaxed">
+            Every component is live in Storybook with its real tokens,
+            switchable by brand, mode, density and direction. The guidance sits
+            beside it, not in a separate document.
+          </p>
+          <p className="mt-4 text-sm">
+            <Link
+              href={componentsRoute}
+              className="font-semibold text-ir-purple hover:underline"
+            >
+              Browse the library
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      {/* The index — real page names, not blurbs about them. */}
+      <section className="border-b border-ir-line-grey">
+        <div className="mx-auto w-full max-w-6xl px-6 py-10 md:py-12">
+          <div className="grid gap-10 md:grid-cols-3">
+            {sections.map(({ title, body, href, pages }) => (
+              <div key={title}>
+                <h2 className="ir-display text-xl">
+                  <Link href={href} className="hover:text-ir-purple">
+                    {title}
+                  </Link>
+                </h2>
+                <p className="mt-2 text-sm text-ir-text-grey">{body}</p>
+                <ul className="mt-4 flex flex-col gap-2 text-sm">
+                  {pages.map(({ label, href: pageHref }) => (
+                    <li key={label}>
+                      <Link
+                        href={pageHref}
+                        className="hover:text-ir-purple hover:underline"
+                      >
+                        {label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Direction of truth — white closing statement. */}
-      <section className="bg-white text-ir-rich-grey">
-        <div className="mx-auto w-full max-w-6xl px-6 py-16 md:py-24">
-          <div className="grid gap-10 md:grid-cols-icon-text md:items-start">
-            <GitCommitHorizontal className="size-8 text-ir-red" aria-hidden strokeWidth={1.5} />
+      {/* Reference — the facts an engineer or an agent came for. */}
+      <section className="border-b border-ir-line-grey">
+        <div className="mx-auto w-full max-w-6xl px-6 py-10 md:py-12">
+          <div className="grid gap-10 md:grid-cols-2">
             <div>
-              <h2 className="ir-display text-4xl md:text-5xl max-w-3xl">The repo is the source of truth</h2>
-              <p className="mt-5 max-w-2xl text-ir-text-grey leading-relaxed">
-                Figma is a consumer: it receives tokens and is reconciled to match the code. Every rule lives in
-                exactly one place — this folder of docs, or the guidance beside each component — and the site,
-                Storybook, the agent files and the Figma foundations pages are all renderings of it. If you find a
-                rule stated twice, one of them is wrong.
+              <h2 className="ir-display text-xl">Theming</h2>
+              <p className="mt-2 max-w-xl text-sm text-ir-text-grey leading-relaxed">
+                Five axes — brand, neutral ramp, radius, typography and spacing
+                — plus light and dark. They compose by cascade rather than being
+                authored as separate themes: a theme axis overrides a primitive,
+                and every semantic token aliases one.
               </p>
-              <Link
-                href={`${docsRoute}`}
-                className="mt-8 inline-flex items-center gap-2 rounded-full bg-ir-rich-grey px-6 py-3 text-sm font-semibold text-white hover:bg-ir-purple transition-colors"
-              >
-                Read the documentation <ArrowRight className="size-4" aria-hidden />
-              </Link>
+              <pre className="mt-5 overflow-x-auto rounded-lg bg-ir-rich-grey p-4 text-sm text-white">
+                <code>{`<html
+  data-brand="clarion"
+  data-radius="sharp"
+  class="dark"
+>`}</code>
+              </pre>
+              <p className="mt-4 text-sm">
+                <Link
+                  href={`${docsRoute}/foundations/tokens-and-brands`}
+                  className="font-semibold text-ir-purple hover:underline"
+                >
+                  Tokens and brands
+                </Link>
+              </p>
+            </div>
+            <div>
+              <h2 className="ir-display text-xl">For agents</h2>
+              <p className="mt-2 max-w-xl text-sm text-ir-text-grey leading-relaxed">
+                Every page is served as Markdown, and the system is published as
+                a set of text files. The token file is the useful one: an
+                assistant without the resolved table invents hex codes, and one
+                with it cannot.
+              </p>
+              <ul className="mt-5 flex flex-col gap-2 text-sm">
+                {agentFiles.map(([file, note]) => (
+                  <li
+                    key={file}
+                    className="flex flex-wrap items-baseline gap-x-3"
+                  >
+                    <a
+                      href={`/${file}`}
+                      className="font-mono text-inline-code text-ir-purple hover:underline"
+                    >
+                      /{file}
+                    </a>
+                    <span className="text-ir-text-grey">{note}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer — hairline rule, label left, links right (brand §8). */}
-      <footer className="bg-white text-ir-text-grey">
+      {/* How it is kept true — one paragraph, no headline claim. */}
+      <section>
+        <div className="mx-auto w-full max-w-6xl px-6 py-10 md:py-12">
+          <h2 className="ir-display text-xl">How it is kept true</h2>
+          <div className="mt-4 grid gap-6 md:grid-cols-2">
+            <p className="max-w-xl text-sm text-ir-text-grey leading-relaxed">
+              The repo is the source of truth for tokens; Figma is authoritative
+              for what a component does, and is reconciled to the code for
+              everything else. Each rule lives in exactly one place — a page in
+              these docs, or the guidance file beside a component — and the
+              site, Storybook, the agent files and the Figma foundations pages
+              are all renderings of it. A rule stated twice is a rule that will
+              drift.
+            </p>
+            <p className="max-w-xl text-sm text-ir-text-grey leading-relaxed">
+              Figma,{" "}
+              <code className="font-mono text-inline-code">@ir/tokens</code> and{" "}
+              <code className="font-mono text-inline-code">@ir/ui</code> share
+              one version number and are published together, so a release note
+              describes all three. Every entry carries a Figma impact line,
+              because the question a designer asks of a release — what happens
+              to my file when I accept the update — is not the one a changelog
+              usually answers.
+            </p>
+          </div>
+          <p className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm">
+            <Link
+              href={docsRoute}
+              className="font-semibold text-ir-purple hover:underline"
+            >
+              All documentation
+            </Link>
+            <Link
+              href={`${docsRoute}/releases`}
+              className="font-semibold text-ir-purple hover:underline"
+            >
+              Releases
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      <footer className="text-ir-text-grey">
         <div className="mx-auto w-full max-w-6xl px-6">
           <div className="ir-hairline flex flex-wrap items-center justify-between gap-4 py-6 text-xs">
             <span>IR | Picasso design system</span>
             <span className="flex gap-5">
-              <Link href={docsRoute} className="hover:text-ir-rich-grey">Docs</Link>
-              <Link href={componentsRoute} className="hover:text-ir-rich-grey">Components</Link>
-              <a href="https://github.com/ee-ng-ir/picasso" className="hover:text-ir-rich-grey">GitHub</a>
+              <Link href={docsRoute} className="hover:text-ir-rich-grey">
+                Docs
+              </Link>
+              <Link href={componentsRoute} className="hover:text-ir-rich-grey">
+                Components
+              </Link>
+              <a
+                href="https://github.com/ee-ng-ir/picasso"
+                className="hover:text-ir-rich-grey"
+              >
+                GitHub
+              </a>
             </span>
           </div>
         </div>
