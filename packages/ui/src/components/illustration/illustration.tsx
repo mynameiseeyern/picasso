@@ -28,7 +28,8 @@ import { cn } from "@/lib/utils";
 /**
  * Illustration — product spot illustrations that answer the pointer.
  *
- * Figma: none yet. This is code first. The first three drawings follow the
+ * Figma: the Illustration page, drawn from this file (Name × State). Code
+ * first, and code is the source of truth. The first three drawings follow the
  * Spotkit spots in `IR Brand/illustrations/product-illustrations` (Issue
  * alerts, Fleet health, Call readiness): a 160 × 160 box, one 0.5 stroke, a
  * panel with a ghost behind it, bars for text, one accent. The rest are

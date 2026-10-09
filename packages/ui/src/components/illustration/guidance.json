@@ -1,7 +1,7 @@
 {
   "component": "Illustration",
   "summary": "Product spot illustrations that answer the pointer: lift for a list or a set, magnify for a field of things, sequence for steps that run in order. Ten drawings, recoloured by whichever brand they sit in.",
-  "figma": "None yet — built in code first, from the Spotkit spots in IR Brand/illustrations/product-illustrations",
+  "figma": "Illustration page — component set `Illustration` (node 40000783:32960): Name (ten drawings) × State (Rest, Active). Drawn from code; code is the source of truth",
   "structureFrom": "code",
   "measurementsFrom": "code",
   "pairs": [

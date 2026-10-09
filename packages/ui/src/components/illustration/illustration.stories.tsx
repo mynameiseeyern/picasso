@@ -18,7 +18,7 @@ const meta: Meta<typeof Illustration> = {
           "**magnify** (each shape swells by its distance from the pointer, " +
           "on a spring) and **sequence** (steps light in turn while the " +
           "pointer is over it). Turn on *Reduce motion* in your OS to see " +
-          "the fallbacks: nothing travels. Figma: none yet — code first.",
+          "the fallbacks: nothing travels. Figma: the Illustration page (Name × State), drawn from code.",
       },
     },
   },

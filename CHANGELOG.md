@@ -5,9 +5,14 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ## Unreleased
 
-**Figma impact** — none yet; Illustration is code first and has no Figma
-component. Nothing moves on canvas, so the list-card motion has no Figma
-counterpart either: the tokens and `docs/foundations/motion.md` are the spec.
+**Figma impact** — a new **Illustration** page under Foundations, with an
+`Illustration` component set: `Name` (the ten drawings) × `State` (`Rest`,
+`Active` — what a list card shows while it passes `active`). Every colour is a
+Semantic variable, so the drawings follow the Primitives brand mode and
+Light/Dark. Not yet published. Known gap: the raised-card shadow is a raw
+effect at its light value, as there is no shadow token for it. The motion
+between the two states has no Figma counterpart; the tokens and
+`docs/foundations/motion.md` are the spec.
 
 ### Added
 
