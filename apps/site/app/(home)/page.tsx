@@ -49,7 +49,7 @@ const sections = [
 const stats = [
   { figure: '132', label: 'semantic tokens, each resolved for light and dark' },
   { figure: '5 × 2', label: 'theme axes and modes, composed by cascade' },
-  { figure: '44', label: 'components documented, landing in code one PR at a time' },
+  { figure: '57', label: 'components in code, each with its own guidance' },
   { figure: '1', label: 'source of truth — the repo. Figma is a consumer.' },
 ];
 
@@ -110,8 +110,7 @@ export default function HomePage() {
             <span className="ir-pill bg-white text-ir-purple">For designers</span>
             <h2 className="ir-display mt-5 text-4xl md:text-5xl">Start in Figma</h2>
             <p className="mt-5 text-ir-text-grey leading-relaxed">
-              The Picasso library carries the foundations, the 44 documented components and the tokens as
-              variables. It is authoritative for which variants and states exist, and a mirror of the repo for
+              The Picasso library carries the foundations, the components and the tokens as variables. It is authoritative for which variants and states exist, and a mirror of the repo for
               everything else — the page says so.
             </p>
             <Link
@@ -132,7 +131,11 @@ export default function HomePage() {
               only, never a raw value — and a linter that holds the line.
             </p>
             <pre className="mt-6 rounded-lg bg-ir-rich-grey text-white text-sm p-4 overflow-x-auto">
-              <code>{`<html data-brand="clarion" data-radius="sharp" class="dark">`}</code>
+              <code>{`<html
+  data-brand="clarion"
+  data-radius="sharp"
+  class="dark"
+>`}</code>
             </pre>
             <Link
               href={`${docsRoute}/get-started/engineers`}

@@ -1,8 +1,30 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Bell, Download, MoreHorizontal, Plus } from "lucide-react";
+import { Bell, Download, MapPin, MoreHorizontal, Plus, Search } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../components/accordion/accordion";
 import { Alert, AlertDescription, AlertTitle } from "../components/alert/alert";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarGroup,
+  AvatarStatus,
+} from "../components/avatar/avatar";
 import { Badge } from "../components/badge/badge";
+import { BarChart, type BarSeries } from "../components/bar-chart/bar-chart";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+} from "../components/breadcrumb/breadcrumb";
 import { Button } from "../components/button/button";
+import { Checkbox } from "../components/checkbox/checkbox";
+import { Chip } from "../components/chip/chip";
 import {
   Card,
   CardAction,
@@ -19,9 +41,33 @@ import {
   FieldDescription,
   FieldError,
   FieldLabel,
+  FieldOption,
 } from "../components/field/field";
 import { KpiTile } from "../components/kpi-tile/kpi-tile";
 import { Input } from "../components/input/input";
+import { Kbd, KbdGroup } from "../components/kbd/kbd";
+import { Meter } from "../components/meter/meter";
+import { Progress } from "../components/progress/progress";
+import { Radio, RadioGroup } from "../components/radio-group/radio-group";
+import { Select, type SelectOption } from "../components/select/select";
+import {
+  SegmentedControl,
+  SegmentedControlItem,
+} from "../components/segmented-control/segmented-control";
+import { Separator } from "../components/separator/separator";
+import { Skeleton, SkeletonText } from "../components/skeleton/skeleton";
+import { Slider } from "../components/slider/slider";
+import { Sparkline } from "../components/sparkline/sparkline";
+import { Switch } from "../components/switch/switch";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/table/table";
+import { Tabs, TabsList, TabsTrigger } from "../components/tabs/tabs";
 import { Textarea } from "../components/textarea/textarea";
 
 /**
@@ -42,10 +88,63 @@ const meta: Meta = {
 export default meta;
 
 const rows = [
-  { name: "Sydney trunk 01", status: "healthy", mos: "4.2", calls: "1,284" },
-  { name: "Melbourne trunk 02", status: "warning", mos: "3.6", calls: "912" },
-  { name: "Auckland trunk 01", status: "critical", mos: "2.9", calls: "146" },
-  { name: "Perth trunk 03", status: "unknown", mos: "—", calls: "0" },
+  {
+    name: "Sydney trunk 01",
+    status: "healthy",
+    mos: 4.2,
+    calls: "1,284",
+    trend: [4.3, 4.2, 4.4, 4.3, 4.1, 4.2, 4.2, 4.3, 4.2],
+  },
+  {
+    name: "Melbourne trunk 02",
+    status: "warning",
+    mos: 3.6,
+    calls: "912",
+    trend: [4.1, 4.0, 3.9, 3.8, 3.8, 3.7, 3.6, 3.7, 3.6],
+  },
+  {
+    name: "Auckland trunk 01",
+    status: "critical",
+    mos: 2.9,
+    calls: "146",
+    trend: [3.9, 3.7, 3.4, 3.2, 3.0, 2.8, 2.9, 2.8, 2.9],
+  },
+  {
+    name: "Perth trunk 03",
+    status: "unknown",
+    mos: null,
+    calls: "0",
+    trend: [4.0, 4.1, null, null, null, null, null, null, null],
+  },
+] as const;
+
+const sparklineTone = {
+  healthy: "healthy",
+  warning: "warning",
+  critical: "critical",
+  unknown: "neutral",
+} as const;
+
+const regions = ["Sydney", "Melbourne", "Auckland", "Perth"] as const;
+
+const eventTypes: SelectOption[] = [
+  { value: "alert.fired", label: "Fired", group: "Alert" },
+  { value: "alert.acknowledged", label: "Acknowledged", group: "Alert" },
+  { value: "alert.resolved", label: "Resolved", group: "Alert" },
+  { value: "probe.paused", label: "Paused", group: "Probe" },
+];
+
+const failureSites = ["Sydney", "Melbourne", "Perth", "Brisbane", "Auckland"];
+const failuresByCause: BarSeries[] = [
+  { id: "codec", label: "Codec mismatch", points: [42, 31, 18, 24, 11] },
+  { id: "jitter", label: "Jitter", points: [28, 44, 12, 19, 22] },
+  { id: "auth", label: "Auth failure", points: [12, 8, 26, 7, 5] },
+];
+
+const team = [
+  { initials: "OR", status: "online" },
+  { initials: "JL", status: "online" },
+  { initials: "SK", status: "offline" },
 ] as const;
 
 const statusClass = {
@@ -94,6 +193,14 @@ function Preview() {
           ))}
         </nav>
         <div className="ms-auto flex items-center gap-2">
+          <Button variant="outline" size="sm">
+            <Search />
+            Search
+            <KbdGroup>
+              <Kbd>Ctrl</Kbd>
+              <Kbd>K</Kbd>
+            </KbdGroup>
+          </Button>
           <Button variant="outline" size="icon-md" aria-label="Notifications">
             <Bell />
           </Button>
@@ -101,10 +208,47 @@ function Preview() {
             <Plus />
             Add endpoint
           </Button>
+          <Avatar>
+            <AvatarFallback>EN</AvatarFallback>
+            <AvatarStatus type="online" />
+          </Avatar>
         </div>
       </header>
 
       <main className="mx-auto grid max-w-5xl gap-6 p-6 lg:grid-cols-3">
+        {/* Page header — where you are, the views of it, and the time range */}
+        <div className="flex flex-col gap-4 lg:col-span-3">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#">Fleet</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#">APAC</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbItem>
+                <BreadcrumbPage>Voice trunks</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <Tabs defaultValue="overview">
+              <TabsList>
+                <TabsTrigger value="overview">Overview</TabsTrigger>
+                <TabsTrigger value="quality">Call quality</TabsTrigger>
+                <TabsTrigger value="capacity">Capacity</TabsTrigger>
+                <TabsTrigger value="history">History</TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <SegmentedControl aria-label="Range" defaultValue="day">
+              <SegmentedControlItem value="hour">1h</SegmentedControlItem>
+              <SegmentedControlItem value="day">24h</SegmentedControlItem>
+              <SegmentedControlItem value="week">7d</SegmentedControlItem>
+              <SegmentedControlItem value="month">30d</SegmentedControlItem>
+            </SegmentedControl>
+          </div>
+        </div>
+
         {/* A standing condition, in place — the tone lives in the surface */}
         <div className="lg:col-span-3">
           <Alert variant="warning" role="status">
@@ -128,12 +272,13 @@ function Preview() {
           />
         ))}
 
-        {/* Table — header from the card, the table itself edge to edge */}
+        {/* Table — the Table component, with the data-viz primitives in cells */}
         <div className="lg:col-span-2 [&>*]:h-full">
           <Card>
             <CardHeader>
               <CardHeaderText>
                 <CardTitle>Trunks</CardTitle>
+                <CardDescription>4 of 38 in APAC</CardDescription>
               </CardHeaderText>
               <CardAction>
                 <Input
@@ -147,23 +292,40 @@ function Preview() {
                 </Button>
               </CardAction>
             </CardHeader>
-            <table className="mt-4 w-full text-body-sm">
-              <thead>
-                <tr className="text-start text-label-xs text-content-neutral-muted">
-                  <th className="px-4 py-2">Trunk</th>
-                  <th className="px-4 py-2">Status</th>
-                  <th className="px-4 py-2 text-end">MOS</th>
-                  <th className="px-4 py-2 text-end">Calls</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((r) => (
-                  <tr
-                    key={r.name}
-                    className="border-t border-line-neutral-muted hover:bg-surface-neutral-subtle-hovered"
-                  >
-                    <td className="px-4 py-2.5 font-medium">{r.name}</td>
-                    <td className="px-4 py-2.5">
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {regions.map((r, i) => (
+                  <Chip key={r} selected={i < 2}>
+                    <MapPin aria-hidden />
+                    {r}
+                  </Chip>
+                ))}
+              </div>
+            </CardContent>
+            <Table aria-label="Trunks" className="mt-2">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-10">
+                    <Checkbox aria-label="Select all trunks" />
+                  </TableHead>
+                  <TableHead>Trunk</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>24h</TableHead>
+                  <TableHead numeric>MOS</TableHead>
+                  <TableHead numeric>Calls</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {rows.map((r, i) => (
+                  <TableRow key={r.name} selected={i === 2}>
+                    <TableCell>
+                      <Checkbox
+                        defaultChecked={i === 2}
+                        aria-label={`Select ${r.name}`}
+                      />
+                    </TableCell>
+                    <TableCell className="font-medium">{r.name}</TableCell>
+                    <TableCell>
                       <span className="inline-flex items-center gap-2">
                         <span
                           className={`size-2 rounded-full ${statusClass[r.status]}`}
@@ -171,21 +333,42 @@ function Preview() {
                         />
                         <span className="capitalize">{r.status}</span>
                       </span>
-                    </td>
-                    <td className="px-4 py-2.5 text-end font-mono">
-                      {r.mos}
-                    </td>
-                    <td className="px-4 py-2.5 text-end font-mono">
+                    </TableCell>
+                    <TableCell>
+                      <Sparkline
+                        values={r.trend}
+                        tone={sparklineTone[r.status]}
+                        min={2.5}
+                        max={5}
+                        label={null}
+                      />
+                    </TableCell>
+                    <TableCell numeric>
+                      {r.mos === null ? (
+                        <span className="font-mono">—</span>
+                      ) : (
+                        <span className="inline-flex items-center justify-end gap-2">
+                          <Meter
+                            value={r.mos}
+                            max={5}
+                            status={r.status}
+                            className="w-12"
+                          />
+                          <span className="font-mono">{r.mos.toFixed(1)}</span>
+                        </span>
+                      )}
+                    </TableCell>
+                    <TableCell numeric className="font-mono">
                       {r.calls}
-                    </td>
-                  </tr>
+                    </TableCell>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
+              </TableBody>
+            </Table>
           </Card>
         </div>
 
-        {/* Form — the card's three sections doing exactly their job */}
+        {/* Form — every input type, so a radius or ramp change reaches them all */}
         <Card>
           <CardHeader>
             <CardHeaderText>
@@ -205,6 +388,33 @@ function Preview() {
                 MOS is measured to one decimal.
               </FieldDescription>
             </Field>
+            <Field>
+              <FieldLabel>Sensitivity</FieldLabel>
+              <Slider defaultValue={[60]} thumbLabels={["Sensitivity"]} />
+            </Field>
+            <Field>
+              <FieldLabel>Severity</FieldLabel>
+              <RadioGroup
+                aria-label="Severity"
+                defaultValue="medium"
+                className="flex gap-4"
+              >
+                {["Low", "Medium", "High"].map((l) => (
+                  <FieldOption
+                    key={l}
+                    control={<Radio value={l.toLowerCase()} />}
+                  >
+                    {l}
+                  </FieldOption>
+                ))}
+              </RadioGroup>
+            </Field>
+            <Field>
+              <FieldLabel>Event types</FieldLabel>
+              <FieldControl>
+                <Select label="Choose events…" options={eventTypes} />
+              </FieldControl>
+            </Field>
             <Field invalid>
               <FieldLabel>Notify</FieldLabel>
               <FieldControl>
@@ -218,6 +428,9 @@ function Preview() {
                 <Textarea placeholder="Why this threshold?" rows={2} />
               </FieldControl>
             </Field>
+            <FieldOption control={<Switch defaultChecked />}>
+              Quiet hours, 10 pm to 6 am
+            </FieldOption>
           </CardContent>
           <CardFooter>
             <div className="ms-auto flex gap-2">
@@ -225,6 +438,53 @@ function Preview() {
               <Button>Save changes</Button>
             </div>
           </CardFooter>
+        </Card>
+
+        {/* Chart — the categorical palette against the theme's neutrals */}
+        <div className="lg:col-span-2 [&>*]:h-full">
+          <Card>
+            <CardContent>
+              <BarChart
+                x={failureSites}
+                series={failuresByCause}
+                title="Call failures by site"
+                subtitle="Last 7 days"
+                yLabel="Failures"
+                xLabel="Site"
+                label="Call failures by site and cause over the last seven days"
+              />
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Work in progress — progress, loading and who's on it */}
+        <Card>
+          <CardHeader>
+            <CardHeaderText>
+              <CardTitle>Incident 4127</CardTitle>
+              <CardDescription>Auckland trunk 01</CardDescription>
+            </CardHeaderText>
+            <CardAction>
+              <Badge color="danger">Critical</Badge>
+            </CardAction>
+          </CardHeader>
+          <CardContent>
+            <AvatarGroup>
+              {team.map((m) => (
+                <Avatar key={m.initials}>
+                  <AvatarFallback>{m.initials}</AvatarFallback>
+                  <AvatarStatus type={m.status} />
+                </Avatar>
+              ))}
+            </AvatarGroup>
+            <Progress value={64} label="Re-probing endpoints" />
+            <Progress value={30} variant="neutral" label="Collecting traces" />
+            <Separator />
+            <div className="flex items-center gap-3">
+              <Skeleton shape="circle" className="size-8" />
+              <SkeletonText lines={2} className="flex-1" />
+            </div>
+          </CardContent>
         </Card>
 
         {/* Every button variant, so a ramp change is seen across the hierarchy */}
@@ -253,6 +513,19 @@ function Preview() {
                 <Button loading>Loading</Button>
               </div>
 
+              {/* Badges and selection controls, side by side */}
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge color="success">Healthy</Badge>
+                <Badge color="warning">Degraded</Badge>
+                <Badge color="danger">Down</Badge>
+                <Badge>Neutral</Badge>
+                <Separator orientation="vertical" className="h-5" />
+                <Checkbox defaultChecked aria-label="Checked" />
+                <Checkbox aria-label="Unchecked" />
+                <Switch defaultChecked aria-label="On" />
+                <Switch aria-label="Off" />
+              </div>
+
               {/* The four tones as the component that owns them */}
               <div className="grid gap-2 sm:grid-cols-2">
                 <Alert variant="info">
@@ -268,6 +541,23 @@ function Preview() {
                   <AlertTitle>Collection stopped</AlertTitle>
                 </Alert>
               </div>
+
+              <Accordion type="single" collapsible defaultValue="q0">
+                <AccordionItem value="q0">
+                  <AccordionTrigger>Why is MOS measured out of 5?</AccordionTrigger>
+                  <AccordionContent>
+                    Mean opinion score is the ITU scale for perceived call
+                    quality: 1 is unusable, 5 is perfect.
+                  </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="q1" divider>
+                  <AccordionTrigger>What counts as a failed call?</AccordionTrigger>
+                  <AccordionContent>
+                    Any call that does not reach 200 OK within the trunk's
+                    timeout.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
 
               <pre className="overflow-x-auto rounded-md bg-surface-neutral-subtle p-3 font-mono text-body-xs text-content-neutral-emphasis">
                 {`INVITE sip:+61280000000@sbc.ir.local SIP/2.0  →  200 OK  (MOS 4.2, jitter 3 ms)`}
