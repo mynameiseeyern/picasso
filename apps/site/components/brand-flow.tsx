@@ -77,6 +77,13 @@ export function BrandFlow() {
         A brand is five choices in one file. Everything else — the ramps, the on-colours, the CSS, the
         Figma variables — is generated from it, so these steps are the whole job.
       </p>
+      <p className="-mt-4 mb-6 max-w-2xl text-sm leading-relaxed text-fd-muted-foreground">
+        The same process with every command, the product setup and what to check when it looks wrong:{' '}
+        <a href="/docs/get-started/new-brand" className="font-medium text-fd-primary underline underline-offset-4">
+          Create a brand and apply Picasso
+        </a>
+        .
+      </p>
 
       <ol className="max-w-2xl">
         <Step n={1} lane="design" title="Pick the five choices">
@@ -185,11 +192,26 @@ export function BrandFlow() {
           <p>Publish Picasso as usual — Sync does not publish.</p>
         </Step>
 
-        <Step n={7} lane="eng" title="Ship it" last>
+        <Step n={7} lane="eng" title="Record it, and give it a version">
+          <p>
+            Add the brand under <strong className="font-semibold text-fd-foreground">Added</strong> in{' '}
+            <M>CHANGELOG.md</M> with its Figma impact (&quot;new Primitives mode, synced&quot;). A brand is
+            additive, so it is a minor version — but a product cannot install it until there is one.
+          </p>
+        </Step>
+
+        <Step n={8} lane="eng" title="Switch a product onto it" last>
           <Cmd>{'<html data-brand="<id>" class="dark">'}</Cmd>
           <p>
-            <M>data-brand</M> works on any element and nested elements inherit it, so one attribute
-            re-points every semantic token beneath it. Dark mode is a separate switch.
+            <strong className="font-semibold text-fd-foreground">On <M>&lt;html&gt;</M>, not on a wrapper.</strong>{' '}
+            Semantics are declared on <M>:root</M>, so a <M>data-brand</M> further down changes the raw brand
+            colours inside it but not the semantics components actually use. One product, one brand, set at
+            the top. Dark mode is a separate switch.
+          </p>
+          <p>
+            Then: the four CSS imports in order, plus <M>@source</M> for <M>@ir/ui</M>; the brand&apos;s fonts
+            loaded in the product; and any product that keeps its own copy of <M>tokens.css</M> re-copied.
+            Every component, chart and illustration follows — nothing in the product names the brand.
           </p>
         </Step>
       </ol>

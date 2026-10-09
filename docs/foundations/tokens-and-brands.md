@@ -76,6 +76,9 @@ npm run brand:new -- vantage --name Vantage --base "#7C3AED" \
 npm run check
 ```
 
+The whole process, including switching a product onto the brand, is in
+[Create a brand and apply Picasso](../get-started/new-brand.md).
+
 Then run **Picasso Sync** in Picasso with `dist/figma.json`. The brand appears as
 a new mode of the Primitives collection. No components are copied or changed.
 
@@ -90,7 +93,11 @@ button → set **Primitives** to the brand and **Semantic** to Light or Dark.
 Nested frames inherit it. The *Brand modes (demo)* page shows all four
 combinations side by side.
 
-**In code:** `data-brand` on any element, with `class="dark"` independent of it.
+**In code:** `data-brand` on `<html>`, with `class="dark"` independent of it.
+On `<html>` and not on a wrapper — semantics are declared on `:root`, so a
+nested `data-brand` re-points the brand's primitives inside it but not the
+semantics already resolved above it. Figma has no such limit: any frame can be
+any brand.
 
 ```html
 <html data-brand="vantage" class="dark">

@@ -5,7 +5,50 @@ Picasso versions Figma, `@ir/tokens` and `@ir/ui` together. See
 
 ## Unreleased
 
-_Nothing yet._
+**Figma impact** — none yet; Illustration is code first and has no Figma
+component. Nothing moves on canvas, so the list-card motion has no Figma
+counterpart either: the tokens and `docs/foundations/motion.md` are the spec.
+
+### Added
+
+- **Seven Illustration drawings.** `search-results`, `dashboards` (lift),
+  `topology`, `team-access` (magnify), `activity-log`, `integrations` and
+  `assistant` (sequence) join `issue-alerts`, `fleet-health` and
+  `call-readiness`. They are drawn to the same Spotkit rules — one 0.5
+  hairline, a panel and its ghost, bars for text, one accent — and cover the
+  empty states and lists a console keeps needing: no results, no dashboards,
+  nothing mapped, only you on the team, no activity, no integrations, ask Iris.
+  `illustrationMechanic` exports which mechanic each one carries.
+- **`active` on Illustration.** A parent can drive the response instead of the
+  pointer: lift opens the next item, magnify swells around the flagged shape
+  and sequence runs. When it is set the picture stops listening to the
+  pointer. Built for list cards, which own the hover for the whole card.
+- **List cards in the motion foundations.** `docs/foundations/motion.md` now
+  documents the one place a picture moves inside the console: a list card
+  passes `active` once the pointer has settled for 120ms, or at once on
+  keyboard focus, and the card itself only changes colour.
+- **"Create a brand and apply Picasso"** in Get started. One page for both
+  halves of the job: making a brand (the Theming page or `brand:new`, `check`,
+  the contrast gate, Picasso Sync, a version) and switching a product onto it
+  (the imports, `@source`, `data-brand`, fonts, vendored `tokens.css`), with a
+  checklist and what to look at when it looks wrong. The Theming page's README
+  tab links to it and gains the last two steps.
+- **A Brand axis on the Storybook toolbar**, beside Radius, Neutral, Type and
+  Spacing, so any story can be checked under Vantage.
+
+### Fixed
+
+- **The docs said `data-brand` works on any element.** It works on `<html>`.
+  Semantics are declared on `:root`, so a `data-brand` on an inner element
+  re-points the brand's primitives inside it but not the semantics components
+  use — part of a page would keep the old brand. Corrected in For engineers,
+  Tokens, brands and Figma sync, the Theming page and the `themes.css` header.
+  Behaviour is unchanged; making brands nestable would mean emitting the
+  semantics under each `[data-brand]` too. **Figma impact** — none; in Figma
+  any frame can be any brand.
+
+The three existing drawings render as before. Their lift and magnify code now
+runs through shared hooks, and the original tests pass unchanged.
 
 ## 2.0.0 — 8 October 2026
 

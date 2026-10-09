@@ -4,10 +4,11 @@ import { withThemeByClassName } from "@storybook/addon-themes";
 import { DirectionProvider } from "../src/components/direction/direction";
 import "./preview.css";
 
-/* The five theme axes are data-* attributes on the root element, so they can be
+/* The theme axes are data-* attributes on the root element, so they can be
  * driven straight from the toolbar. This doubles as the first, crude version of
  * the theme builder: every story is a live preview of every axis. */
 const axes = {
+  brand: { name: "Brand", options: ["default", "clarion", "vantage"] },
   radius: { name: "Radius", options: ["default", "sharp", "subtle", "rounded"] },
   neutral: { name: "Neutral", options: ["default", "cool", "warm"] },
   type: { name: "Type", options: ["default", "system", "compact"] },

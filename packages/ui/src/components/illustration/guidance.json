@@ -1,6 +1,6 @@
 {
   "component": "Illustration",
-  "summary": "Product spot illustrations that answer the pointer: lift for a list, magnify for a field of things, sequence for steps that run in order.",
+  "summary": "Product spot illustrations that answer the pointer: lift for a list or a set, magnify for a field of things, sequence for steps that run in order. Ten drawings, recoloured by whichever brand they sit in.",
   "figma": "None yet — built in code first, from the Spotkit spots in IR Brand/illustrations/product-illustrations",
   "structureFrom": "code",
   "measurementsFrom": "code",
@@ -37,10 +37,26 @@
     },
     {
       "id": "still-inside-the-product",
-      "dont": "Leave the hover response on for a picture inside the console — an empty state, a card, a dialog.",
-      "do": "Pass interactive={false} there. Keep the response for marketing pages and docs.",
-      "why": "Inside the product a thing that moves under the pointer reads as a control. Picasso's rule is that the console changes colour and nothing else.",
+      "dont": "Leave the hover response on for a picture inside the console — an empty state, a dialog — or let a picture in a card listen to the pointer itself.",
+      "do": "Pass interactive={false} in an empty state. In a list card, pass active from the card's own hover so the card drives the picture.",
+      "why": "Inside the product a thing that moves under the pointer reads as a control. In a list card the card is the control, so the picture answers the card, never the pointer.",
       "source": "docs/foundations/motion.md",
+      "example": false
+    },
+    {
+      "id": "active-from-a-settled-hover",
+      "dont": "Set active the moment the pointer enters, or on mouseover of the picture alone.",
+      "do": "Set active after the pointer has rested on the whole card for 120ms, and straight away on :focus-visible. Clear it on leave and blur.",
+      "why": "A pointer crossing a list on its way somewhere else should move nothing. The settle is what separates looking at a card from passing over it.",
+      "source": "docs/foundations/motion.md — List cards",
+      "example": false
+    },
+    {
+      "id": "brand-by-token",
+      "dont": "Copy a drawing to recolour it for another brand, or pass it a colour.",
+      "do": "Set data-brand on the root. The drawing's accent, tint and hairlines are semantics, so they follow the brand's ramp and the neutral's greys.",
+      "why": "A brand is a ramp, not a fork. A drawing that needs a colour prop for a new brand is a drawing that has escaped the token system.",
+      "source": "AGENTS.md — Adding a brand",
       "example": false
     },
     {
@@ -53,7 +69,7 @@
   ],
   "a11y": [
     "The picture is role=\"img\" with an aria-label naming the feature. With label={null} it is aria-hidden, for when the heading beside it already says the same thing.",
-    "The hover response is decoration. Nothing inside the picture is focusable and nothing is conveyed only by it, so a keyboard or screen-reader user misses nothing.",
+    "The response is decoration. Nothing inside the picture is focusable and nothing is conveyed only by it, so a keyboard or screen-reader user misses nothing. In a list card the card takes focus, and focus sets active.",
     "Under prefers-reduced-motion nothing travels: lift changes state without the slide, magnify moves the accent and leaves the radii alone, and sequence does not run. The drawing at rest already says what it means.",
     "The glyphs inside are aria-hidden — the label speaks for the whole picture."
   ],

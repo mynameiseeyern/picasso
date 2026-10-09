@@ -41,7 +41,7 @@ import { Button } from "@ir/ui";
 
 ## Theme
 
-A brand, plus independent axes, plus dark mode — all attributes on any element:
+A brand, plus independent axes, plus dark mode — all attributes on `<html>`:
 
 ```html
 <html data-brand="clarion" data-radius="rounded" data-spacing="relaxed" class="dark">
@@ -55,6 +55,11 @@ A brand, plus independent axes, plus dark mode — all attributes on any element
 | `data-type` | `default` · `system` · `compact` |
 | `data-spacing` | `compact` · `default` · `relaxed` |
 | `class="dark"` | dark mode |
+
+Set them on `<html>`, not on a wrapper: semantic colours are resolved at the
+root, so a `data-brand` further down changes the raw brand colours there but
+not the semantics components use. Creating a brand and switching a product
+onto it, step by step: [Create a brand and apply Picasso](new-brand.md).
 
 A brand sets the defaults for the axes; an explicit axis beats it. Storybook's
 toolbar drives the axes, so every story is a live preview. How brands and

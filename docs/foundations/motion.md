@@ -262,9 +262,10 @@ Skeleton pulses through Tailwind's own `animate-pulse`.
 ## Illustrations
 
 Product illustrations answer the pointer. It is the one place Picasso moves
-something because a person pointed at it, and it stays outside the console:
-marketing pages and docs, not empty states or cards. Inside the product an
-`Illustration` takes `interactive={false}` and stays still.
+something because a person pointed at it. On marketing pages and in docs the
+picture listens to the pointer itself. Inside the console it stays still —
+an empty state takes `interactive={false}` — with one exception, the list
+card, below.
 
 There are three mechanics, one per kind of response. A drawing carries one.
 
@@ -273,6 +274,12 @@ There are three mechanics, one per kind of response. A drawing carries one.
 | **Lift** | A discrete change. The gap follows the pointer and shapes slide to make room. | `transition-illustration`: 600ms on `motion/easing/drawer`, 50ms stagger |
 | **Magnify** | A continuous one. Each shape swells by its distance from the pointer. | A spring per shape: stiffness 170, damping 22, mass 1 |
 | **Sequence** | A stepped loop while the pointer is over the picture. One shape is lit at a time. | `animate-illustration-check`: 2.4s `step-end`, a quarter each · `animate-illustration-flow`: 0.9s linear |
+
+| Mechanic | Drawings | Reach for it when the picture shows |
+|---|---|---|
+| **Lift** | `issue-alerts` · `search-results` · `dashboards` | A list or a set where one item is the point: alerts, results, widgets |
+| **Magnify** | `fleet-health` · `topology` · `team-access` | A field of many: endpoints, systems and their links, who can do what |
+| **Sequence** | `call-readiness` · `activity-log` · `integrations` · `assistant` | Steps in order feeding one answer: checks, a history, a connection, a question |
 
 Lift and sequence are CSS, declared in `packages/tokens/theme.css` beside the
 Loader's. Magnify is a spring, which cannot be written as a transition, so it
@@ -291,6 +298,34 @@ Three rules hold all of them together:
 Under reduced motion nothing travels. Lift changes state without the slide,
 magnify moves the accent and leaves the sizes alone, and sequence does not
 run — the drawing at rest already says what it means.
+
+### List cards
+
+A list card is a row in a list of things a person can open — an alert rule,
+a fleet, a saved search — with an illustration cropped into its trailing
+corner. It is the one place a picture moves inside the console, and it is
+allowed because the card, not the picture, is the control: the card is
+what opens, and the picture answers the card.
+
+- **The card owns the hover.** The picture listens to nothing; the card
+  passes `active` and the drawing plays its own response — lift opens the
+  next item, magnify swells around the flagged shape, sequence runs.
+- **It waits for the pointer to settle.** `active` turns on after the pointer
+  has rested on the card for 120ms, so a pointer crossing a list on its way
+  somewhere else moves nothing. Leaving turns it off at once.
+- **Keyboard focus turns it on straight away.** `:focus-visible` on the card
+  sets `active`; blur clears it.
+- **The card itself only changes colour.** Its border takes
+  `border/primary/muted` on hover. The picture rises 4 inward and 8 up inside
+  its crop, on `transition-illustration`; the card does not move.
+- **The rise mirrors with the crop.** In RTL the picture sits in the card's
+  start corner, so the inward rise takes an `rtl:` twin with the sign turned.
+  The drawing itself never mirrors.
+- **Nothing is said only by the picture.** The card's title, badge and meta
+  carry the meaning, so the picture is `label={null}`.
+
+Under reduced motion the card still recolours, the picture does not rise, and
+the drawing changes state without travelling — the same fallbacks as above.
 
 ## Outside the scale
 

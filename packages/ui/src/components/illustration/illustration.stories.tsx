@@ -1,5 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Illustration, type IllustrationName } from "./illustration";
+import * as React from "react";
+import {
+  Illustration,
+  illustrationMechanic,
+  type IllustrationName,
+} from "./illustration";
 
 const meta: Meta<typeof Illustration> = {
   title: "Components/Illustration",
@@ -20,10 +25,11 @@ const meta: Meta<typeof Illustration> = {
   argTypes: {
     name: {
       control: "inline-radio",
-      options: ["issue-alerts", "fleet-health", "call-readiness"],
+      options: Object.keys(illustrationMechanic),
     },
     label: { control: "text" },
     interactive: { control: "boolean" },
+    active: { control: "boolean" },
   },
 };
 export default meta;
@@ -168,6 +174,143 @@ export const Narrow: Story = {
           name={figure.name}
           interactive={false}
         />
+      ))}
+    </div>
+  ),
+};
+
+const NAMES = Object.keys(illustrationMechanic) as IllustrationName[];
+
+/** Every drawing, grouped by the mechanic it carries. Point at each. */
+export const Library: Story = {
+  name: "All drawings",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-240 flex-col gap-10">
+      {(["lift", "magnify", "sequence"] as const).map((mechanic) => (
+        <section key={mechanic} className="flex flex-col gap-4">
+          <h3 className="text-md font-medium text-content-neutral-emphasis capitalize">
+            {mechanic}
+          </h3>
+          <div className="grid grid-cols-4 gap-6">
+            {NAMES.filter((n) => illustrationMechanic[n] === mechanic).map(
+              (name) => (
+                <figure key={name} className="m-0 flex flex-col gap-2">
+                  <Illustration name={name} label={null} />
+                  <figcaption className="text-sm text-content-neutral-muted">
+                    {name}
+                  </figcaption>
+                </figure>
+              ),
+            )}
+          </div>
+        </section>
+      ))}
+    </div>
+  ),
+};
+
+/**
+ * A list card owns the hover, so the picture listens to nothing and the card
+ * passes `active`. It turns on once the pointer has settled for 120ms, and
+ * at once on keyboard focus. See "List cards" in Foundations / Motion.
+ */
+function ListCardSketch({
+  name,
+  title,
+  meta,
+}: {
+  name: IllustrationName;
+  title: string;
+  meta: string;
+}) {
+  const [active, setActive] = React.useState(false);
+  const timer = React.useRef<number>(0);
+  const settle = () => {
+    window.clearTimeout(timer.current);
+    if (!active) timer.current = window.setTimeout(() => setActive(true), 120);
+  };
+  return (
+    <a
+      href="#"
+      onClick={(event) => event.preventDefault()}
+      onPointerEnter={settle}
+      onPointerMove={settle}
+      onPointerLeave={() => {
+        window.clearTimeout(timer.current);
+        setActive(false);
+      }}
+      onFocus={(event) => {
+        if (event.currentTarget.matches(":focus-visible")) setActive(true);
+      }}
+      onBlur={() => setActive(false)}
+      className="relative grid h-28 grid-cols-[minmax(0,1fr)_9rem] overflow-hidden rounded-lg border border-line-neutral-muted bg-surface-card ps-5 transition-colors hover:border-line-primary-muted"
+    >
+      <span className="flex min-w-0 flex-col justify-center gap-1 pe-2">
+        <span className="truncate text-lg font-semibold text-content-neutral-emphasis">
+          {title}
+        </span>
+        <span className="truncate text-sm text-content-neutral-subtle">
+          {meta}
+        </span>
+      </span>
+      <span aria-hidden className="relative">
+        <span className="absolute -end-20 -bottom-30 size-52 rounded-full bg-surface-primary-subtle" />
+        <span
+          className={
+            "absolute -end-2 top-3 w-36 transition-illustration motion-reduce:transition-none " +
+            (active ? "-translate-x-1 -translate-y-2 rtl:translate-x-1" : "")
+          }
+        >
+          <Illustration name={name} label={null} active={active} />
+        </span>
+      </span>
+    </a>
+  );
+}
+
+export const ListCard: Story = {
+  name: "In a list card (active)",
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="flex w-160 flex-col gap-3">
+      <ListCardSketch
+        name="issue-alerts"
+        title="Packet loss above 2%"
+        meta="Alert rule · 3 sites"
+      />
+      <ListCardSketch
+        name="topology"
+        title="Settlement services"
+        meta="Topology · 8 systems"
+      />
+      <ListCardSketch
+        name="integrations"
+        title="Webex Calling"
+        meta="Integration · Connected"
+      />
+    </div>
+  ),
+};
+
+/**
+ * The same drawings under Vantage. Nothing is copied and nothing is passed:
+ * the accent, tint and hairlines are semantics, so `data-brand` on the root
+ * re-points them at the brand's ramp. Switch Brand and Neutral in the
+ * toolbar to see the rest.
+ *
+ * ⚠️ On the root, not on a wrapper. Semantics are declared on `:root`, so a
+ * `data-brand` on a nested element changes the primitives there but not the
+ * semantics already resolved above it.
+ */
+export const Brands: Story = {
+  name: "Follows the brand",
+  globals: { brand: "vantage" },
+  parameters: { controls: { disable: true } },
+  render: () => (
+    <div className="grid w-240 grid-cols-5 gap-6">
+      {NAMES.map((name) => (
+        <Illustration key={name} name={name} label={null} />
       ))}
     </div>
   ),

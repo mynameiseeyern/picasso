@@ -13,14 +13,19 @@
  *
  * That asymmetry is the whole design. Semantics alias primitives
  * (`--bg-primary-emphasis: var(--palette-brand-600)`), so redefining a
- * primitive on an ancestor re-points every semantic below it for free —
- * no semantic token is ever authored twice. Dark mode has to work the other
+ * primitive on the root re-points every semantic for free — no semantic
+ * token is ever authored twice.
+ *
+ * ⚠️ On the root, not on any ancestor. Semantics are declared on :root, and
+ * a custom property resolves its var() where it is declared, so a
+ * data-brand on an inner element changes the primitives inside it but not
+ * the semantics already resolved at :root. Set the axes on <html>. Dark mode has to work the other
  * way because the MAPPING changes, not the value: `--bg-card` is white in
  * light and neutral-800 in dark.
  *
  * Result: five axes × 2 modes compose by cascade, not by authoring 10 sets.
  *
- * Applied on <html>:
+ * Applied on <html> — and only there:
  *   <html data-brand="clarion" data-neutral="cool"
  *         data-radius="default" data-type="default" data-spacing="default">
  *   class="dark" toggles mode independently of all five.
