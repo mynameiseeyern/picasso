@@ -120,6 +120,10 @@ export {
   type ChartGridProps,
 } from "./components/page-grid/page-grid";
 export {
+  PageHeader,
+  type PageHeaderProps,
+} from "./components/page-header/page-header";
+export {
   Progress,
   progressIndicatorVariants,
   type ProgressProps,
@@ -190,10 +194,7 @@ export {
   emptyStateVariants,
   type EmptyStateProps,
 } from "./components/empty-state/empty-state";
-export {
-  ListCard,
-  type ListCardProps,
-} from "./components/list-card/list-card";
+export { ListCard, type ListCardProps } from "./components/list-card/list-card";
 export {
   Sparkline,
   type SparklineProps,

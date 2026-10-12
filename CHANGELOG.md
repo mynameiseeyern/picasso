@@ -16,6 +16,23 @@ between the two states has no Figma counterpart; the tokens and
 
 ### Added
 
+- **PageHeader.** The first thing on a page, inside the content area: the
+  page's name as the `h1` at `heading/xl`, an optional line on what the page is
+  for, and the rule under both. The App shell Rules have put the page title in
+  the page header since 1 October without there being one to put it in, so
+  every page hand-rolled
+  `<h1 className="text-heading-xl text-content-neutral-emphasis">` — three
+  decisions re-made per page and free to drift. The description caps at the
+  reading width (768) whatever the page's own width mode is, so a fluid
+  dashboard does not have to choose between a wide grid and a readable
+  sentence. The rule is on by default and comes off with `divider={false}`
+  where the next thing already has a top edge. No actions, meta or tabs slot
+  yet: each is its own wrapping decision on a narrow column, and adding one
+  later is additive. The App shell's three page stories use it instead of their
+  own headings. Measured in Chromium at 360, 1280 and 2560 — Inter 30/600 on a
+  36 line, description 768 on a 2448 column and the full 264 on a narrow one,
+  8 between title and description, 16 and a 1px rule under. **Figma impact** —
+  not drawn yet; the App shell page's `Page heading` text node stands in for it.
 - **ListCard.** A row in a list of things a person can open — a badge, a title
   and a meta line, with an Illustration cropped into the trailing corner on a
   brand circle. The card owns the hover and passes `active`, so the picture
@@ -52,6 +69,19 @@ between the two states has no Figma counterpart; the tokens and
 
 ### Fixed
 
+- **The App shell's top bar drew its breadcrumb as text.** All ten Figma
+  variants held a text node named `Breadcrumb` whose content read "Page title"
+  — a label for the wrong thing, standing in for a component the file already
+  has. Each variant now carries a real `Breadcrumb` instance at `Size=sm`, and
+  the component description says the bar holds the sidebar toggle and that
+  instance and nothing else. The code was already right. **Figma impact** —
+  `Layout / App shell` changed in all ten variants; not yet published.
+- **The Illustration story built its own list card.** "In a list card" was a
+  sketch written before `ListCard` existed, and its
+  `grid-cols-[minmax(0,1fr)_9rem]` was the one `no-arbitrary-values` error on
+  `main` — enough to fail the release workflow's lint gate. The story renders
+  the real component now, so there is one list card to drift from rather than
+  two.
 - **ThresholdSlider named the wrong limit when the thumbs met.** Setting
   warning and critical to the same number leaves no warning band: either side
   of the boundary a metric is healthy or critical, never warning. The control

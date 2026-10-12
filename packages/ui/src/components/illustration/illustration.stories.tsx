@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import * as React from "react";
 import {
   Illustration,
   illustrationMechanic,
   type IllustrationName,
 } from "./illustration";
+import { ListCard } from "../list-card/list-card";
 
 const meta: Meta<typeof Illustration> = {
   title: "Components/Illustration",
@@ -211,81 +211,30 @@ export const Library: Story = {
 };
 
 /**
- * A list card owns the hover, so the picture listens to nothing and the card
- * passes `active`. It turns on once the pointer has settled for 120ms, and
- * at once on keyboard focus. See "List cards" in Foundations / Motion.
+ * The real ListCard, not a sketch of one. It owns the hover — the picture
+ * listens to nothing and is handed `active` — which is the arrangement this
+ * story exists to show. See "List cards" in Foundations / Motion.
  */
-function ListCardSketch({
-  name,
-  title,
-  meta,
-}: {
-  name: IllustrationName;
-  title: string;
-  meta: string;
-}) {
-  const [active, setActive] = React.useState(false);
-  const timer = React.useRef<number>(0);
-  const settle = () => {
-    window.clearTimeout(timer.current);
-    if (!active) timer.current = window.setTimeout(() => setActive(true), 120);
-  };
-  return (
-    <a
-      href="#"
-      onClick={(event) => event.preventDefault()}
-      onPointerEnter={settle}
-      onPointerMove={settle}
-      onPointerLeave={() => {
-        window.clearTimeout(timer.current);
-        setActive(false);
-      }}
-      onFocus={(event) => {
-        if (event.currentTarget.matches(":focus-visible")) setActive(true);
-      }}
-      onBlur={() => setActive(false)}
-      className="relative grid h-28 grid-cols-[minmax(0,1fr)_9rem] overflow-hidden rounded-lg border border-line-neutral-muted bg-surface-card ps-5 transition-colors hover:border-line-primary-muted"
-    >
-      <span className="flex min-w-0 flex-col justify-center gap-1 pe-2">
-        <span className="truncate text-lg font-semibold text-content-neutral-emphasis">
-          {title}
-        </span>
-        <span className="truncate text-sm text-content-neutral-subtle">
-          {meta}
-        </span>
-      </span>
-      <span aria-hidden className="relative">
-        <span className="absolute -end-20 -bottom-30 size-52 rounded-full bg-surface-primary-subtle" />
-        <span
-          className={
-            "absolute -end-2 top-3 w-36 transition-illustration motion-reduce:transition-none " +
-            (active ? "-translate-x-1 -translate-y-2 rtl:translate-x-1" : "")
-          }
-        >
-          <Illustration name={name} label={null} active={active} />
-        </span>
-      </span>
-    </a>
-  );
-}
-
-export const ListCard: Story = {
+export const InAListCard: Story = {
   name: "In a list card (active)",
   parameters: { controls: { disable: true } },
   render: () => (
     <div className="flex w-160 flex-col gap-3">
-      <ListCardSketch
-        name="issue-alerts"
+      <ListCard
+        href="#"
+        illustration="issue-alerts"
         title="Packet loss above 2%"
         meta="Alert rule · 3 sites"
       />
-      <ListCardSketch
-        name="topology"
+      <ListCard
+        href="#"
+        illustration="topology"
         title="Settlement services"
         meta="Topology · 8 systems"
       />
-      <ListCardSketch
-        name="integrations"
+      <ListCard
+        href="#"
+        illustration="integrations"
         title="Webex Calling"
         meta="Integration · Connected"
       />

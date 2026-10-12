@@ -1,0 +1,51 @@
+{
+  "component": "PageHeader",
+  "summary": "The top of the content area — the page's name, what it is for, and the rule under both.",
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": null,
+    "note": "Not drawn in Figma yet. Built in code from the App shell Rules (40000390:30181), which place the page title and page actions in the page header inside the content area. The App shell page's own 'Page heading' is a text node standing in for this component."
+  },
+  "structureFrom": "code",
+  "measurementsFrom": "docs/foundations/typography.md (heading/xl is the page-title step) and the App shell Rules",
+  "pairs": [
+    {
+      "id": "one-per-page",
+      "dont": "Give every panel on the page its own PageHeader.",
+      "do": "One PageHeader at the top; sections below are headings, not page headers.",
+      "why": "The component renders the page's h1, and a page has one. A second one tells a screen reader the page started again, and visually it sets two things at 30px competing to be the name of the screen. Section titles are heading/lg on an h2."
+    },
+    {
+      "id": "not-in-the-top-bar",
+      "dont": "Put the page title in the 48 top bar next to the breadcrumb.",
+      "do": "Leave the bar to the sidebar toggle and the breadcrumb, and name the page here.",
+      "why": "The bar is the same 48 on every screen in the product. Everything added to it competes with the breadcrumb, which is the one thing that says where you are — and the title repeats what the last breadcrumb item already said.",
+      "example": false
+    },
+    {
+      "id": "description-earns-its-line",
+      "dont": "Write \"This page shows information about your notification settings.\"",
+      "do": "Say what is in scope and what changing it does — or leave the description out.",
+      "why": "A description that restates the title costs a line and a reading pause and returns nothing. The ones worth having answer a question the title raises: what does this cover, when does it take effect, who does it reach."
+    },
+    {
+      "id": "cap-the-description",
+      "dont": "Let the description run the width of a fluid dashboard.",
+      "do": "Nothing — it caps itself at the reading width, 768.",
+      "why": "A fluid page hands the column 2256 at a 2560 monitor. A line of prose that long is hard to track back to its start, which is why width=\"reading\" exists for forms; the cap is on the description so a dashboard does not have to choose between a wide grid and a readable sentence.",
+      "example": false
+    },
+    {
+      "id": "divider-off-against-an-edge",
+      "dont": "Keep the rule when a full-bleed table or a single card starts 24 below it.",
+      "do": "divider={false} where the next thing already has a top edge.",
+      "why": "Two horizontal lines 24 apart with nothing between them read as a mistake rather than as structure. The rule is there to separate the page's name from the page; when the page starts with its own border, that separation is already drawn."
+    }
+  ],
+  "a11y": [
+    "The title is the page's <h1>, and the only one. Section titles below are <h2> at heading/lg.",
+    "PageHeader renders a <header>, but it sits inside AppShellContent's <main>, where <header> is a generic element rather than a second banner. The banner is AppShellHeader. Put PageHeader outside the content area and you get two banners.",
+    "The rule is a border on the header, not an <hr>, so nothing is announced for a line that carries no meaning of its own."
+  ],
+  "examples": "complete"
+}

@@ -41,6 +41,7 @@ import {
 } from "../field/field";
 import { Input } from "../input/input";
 import { KpiTile } from "../kpi-tile/kpi-tile";
+import { PageHeader } from "../page-header/page-header";
 import {
   Table,
   TableBody,
@@ -298,9 +299,7 @@ function ChartCard({ title, series }: { title: string; series: 1 | 2 | 3 }) {
 function Dashboard() {
   return (
     <div className="space-y-6">
-      <h1 className="text-heading-xl text-content-neutral-emphasis">
-        Overview
-      </h1>
+      <PageHeader title="Overview" />
 
       {/* KPI row: auto-fill with a 224 minimum. More tiles per row as the
           column widens; never four stretched tiles. */}
@@ -370,9 +369,7 @@ function Dashboard() {
 function DetailPage() {
   return (
     <div className="space-y-6">
-      <h1 className="text-heading-xl text-content-neutral-emphasis">
-        sbc-syd-01
-      </h1>
+      <PageHeader title="sbc-syd-01" />
       <div className="grid grid-cols-1 gap-gutter @3xl:grid-cols-2">
         <ChartCard title="Call volume" series={1} />
         <ChartCard title="MOS" series={2} />
@@ -385,14 +382,10 @@ function DetailPage() {
 function SettingsForm() {
   return (
     <div className="space-y-6">
-      <h1 className="text-heading-xl text-content-neutral-emphasis">
-        Notification settings
-      </h1>
-      <p className="text-body-md text-content-neutral-muted">
-        Alerts go to the people and channels below when an endpoint crosses a
-        threshold. Changes apply to new alerts only; open alerts keep the
-        routing they started with.
-      </p>
+      <PageHeader
+        title="Notification settings"
+        description="Alerts go to the people and channels below when an endpoint crosses a threshold. Changes apply to new alerts only; open alerts keep the routing they started with."
+      />
       <Field>
         <FieldLabel>Alert email</FieldLabel>
         <FieldControl>
