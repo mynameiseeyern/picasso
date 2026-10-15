@@ -16,6 +16,33 @@ between the two states has no Figma counterpart; the tokens and
 
 ### Added
 
+- **PageFooter, and the form-page layout it completes.** The actions that
+  finish a page, under a rule at the end of it — PageHeader's other end, so a
+  form page is: the page's name and a rule, the fields, a rule and the
+  actions. The buttons sit at the **inline end of the content column**, not of
+  the page: a form page is `width="reading"`, so the column caps at 768 and
+  the submit stays a bounded distance from the last field however wide the
+  monitor is. Right-aligning to the page would put it 1,448px away at 2560.
+  `gap-3` and the rule come from DrawerFooter, which is the same job in a
+  panel; the 24 above the actions is the page gutter, so it steps to 16 below
+  xl with everything else. It does not stick — a form whose actions are three
+  screens down wants splitting or a sticky bar, and neither is built.
+
+  Measured in Chromium at 360, 768, 1024, 1280, 1440 and 2560: the header rule
+  and the footer rule share both edges at every width, the primary is flush
+  with the rule's end, the column is 768 from 1280 up with all the spare width
+  on the end side (1,448 of it at 2560), and at a 360 phone with the rail
+  collapsed the two buttons still fit one row inside a 280 column.
+
+  **Figma impact** — new `Page footer` component (976 × 61: rule, 24, a 36
+  button row) beside Page header; that page is now `Page header & footer`.
+  Not yet published.
+
+  **The width question this settles:** Ops Console caps its form pages at 720.
+  Picasso already had `reading` at 768 for exactly that job, and Ee's call was
+  to use it rather than mint a fourth width — two caps 48px apart would mean
+  every page author choosing between them with no rule to tell them which.
+
 - **PageHeader.** The first thing on a page, inside the content area: the
   page's name as the `h1` at `heading/xl`, an optional line on what the page is
   for, and the rule under both. The App shell Rules have put the page title in

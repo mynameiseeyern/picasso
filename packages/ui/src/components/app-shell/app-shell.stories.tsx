@@ -42,6 +42,8 @@ import {
 import { Input } from "../input/input";
 import { KpiTile } from "../kpi-tile/kpi-tile";
 import { PageHeader } from "../page-header/page-header";
+import { PageFooter } from "../page-footer/page-footer";
+import { Button } from "../button/button";
 import {
   Table,
   TableBody,
@@ -399,6 +401,10 @@ function SettingsForm() {
           <Input defaultValue="https://hooks.example.com/clarion/alerts" />
         </FieldControl>
       </Field>
+      <PageFooter>
+        <Button variant="outline">Cancel</Button>
+        <Button>Save changes</Button>
+      </PageFooter>
     </div>
   );
 }

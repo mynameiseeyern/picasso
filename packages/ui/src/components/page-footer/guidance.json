@@ -1,0 +1,45 @@
+{
+  "component": "PageFooter",
+  "summary": "The actions that finish a page, under a rule at the end of it — PageHeader's other end.",
+  "figma": {
+    "fileKey": "v61McMI1fYNAN8DonhNjHQ",
+    "nodeId": null,
+    "note": "Not drawn in Figma yet. Measured off the Ops Console provisioning portal's Create tenant and Provision product pages: a rule across the form column, the buttons flush to its end edge ~24 under it, primary last. DrawerFooter is the nearest drawn equivalent."
+  },
+  "structureFrom": "code",
+  "measurementsFrom": "Ops Console (rule → buttons 21 and 25, so the page gutter) and DrawerFooter (gap-3, border-t on line/neutral/muted)",
+  "pairs": [
+    {
+      "id": "primary-last",
+      "dont": "Lead with the primary and put Cancel after it.",
+      "do": "Cancel first, the primary at the inline end.",
+      "why": "Dialog, Drawer and Card all put the primary at the end, so a person who has learned where Save is in one of them has learned it everywhere. Reversing it on page forms means the product disagrees with itself about which side finishes a job."
+    },
+    {
+      "id": "never-a-ghost",
+      "dont": "Pair the primary with a ghost button.",
+      "do": "Pair it with the secondary or the outline.",
+      "why": "A ghost reads as a tertiary action, so Cancel stops looking like the other half of a pair and starts looking optional. Same ruling as Dialog and Drawer footers, 29 Sept."
+    },
+    {
+      "id": "not-a-toolbar",
+      "dont": "Park a record count, a last-saved time or a filter in it because there is room.",
+      "do": "Keep it to the actions that finish the page.",
+      "why": "The rule above it says everything over this line is the page and everything under it ends the page. Anything else in the row makes the reader check whether it is a control before they can act, which is the whole cost the rule was drawn to avoid. It is also the one pair here that cannot be drawn: the linter refuses justify-between on PageFooter, which is the rule doing its job.",
+      "example": false
+    },
+    {
+      "id": "aligned-to-the-column",
+      "dont": "Right-align the buttons to the page on a fluid or standard page.",
+      "do": "Keep the footer inside the content column, so it ends where the form ends.",
+      "why": "A form page is width=\"reading\", so the column caps at 768 and the buttons land a bounded distance from the last field. Put the footer outside that column on a 2560 monitor and the submit sits 1500px from the thing it submits.",
+      "example": false
+    }
+  ],
+  "a11y": [
+    "A plain <div>, not a <footer>: a footer element inside <main> is a generic element anyway, and the page's real contentinfo — if a product has one — is the shell's.",
+    "The rule is a border, so nothing is announced for a line that carries no meaning of its own.",
+    "Order in the DOM is order in the tab ring, and it is the order drawn: Cancel reached before the primary. Nothing is reordered visually."
+  ],
+  "examples": "complete"
+}
