@@ -16,6 +16,13 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync, rmSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { warnings, props, variants, exportsOf } from "./lib/component-api.mjs";
+
+/* MDX, not markdown: a bare `<` or `{` in a prop type is a parse error. */
+const mdx = (s) => String(s).replace(/</g, "&lt;").replace(/\{/g, "&#123;");
+
+const titleCase = (slug) =>
+  slug.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "packages/ui/src/components");
@@ -29,86 +36,10 @@ const STAMP =
   "    The source is the component folder: guidance.json, the doc block and\n" +
   "    the props. Change those. */}\n";
 
-/**
- * Everything on these pages is lifted from source comments, and MDX reads `<`
- * as the start of a JSX element and `{` as the start of an expression. A doc
- * block mentioning `<input>` or `{type.family.sans}` therefore breaks the
- * build — so prose is escaped on the way out. Code fences are emitted
- * separately and are left alone.
- */
-const mdx = (s) => String(s).replace(/</g, "&lt;").replace(/\{/g, "&#123;");
 
-/* ── reading a component folder ───────────────────────────────────────── */
-
-const titleCase = (slug) =>
-  slug.replace(/-/g, " ").replace(/^./, (c) => c.toUpperCase());
-
-/** Every ⚠️ paragraph in the doc block: the things that bite. */
-function warnings(src) {
-  const block = src.match(/\/\*\*\n([\s\S]*?)\n \*\//);
-  if (!block) return [];
-  const text = block[1]
-    .split("\n")
-    .map((l) => l.replace(/^ \* ?/, "").replace(/^ \*$/, ""))
-    .join("\n");
-  return [...text.matchAll(/⚠️\s*([\s\S]*?)(?=\n\s*\n|\n⚠️|$)/g)]
-    .map((m) => m[1].replace(/\s*\n\s*/g, " ").trim())
-    .filter(Boolean);
-}
-
-/**
- * Props, from the exported `<Name>Props` interface. Each member in this
- * library carries its own doc comment, which is the description — so nothing
- * here is written, only lifted.
- */
-function props(src) {
-  // Every exported Props interface, not just the first: a compound component
-  // keeps its API in the sub-components (DialogContentProps, ToastProps …),
-  // and reading only the first left a dozen components looking propless.
-  const groups = [];
-  for (const iface of src.matchAll(/export interface (\w*Props)[\s\S]*?\{\n([\s\S]*?)\n\}/g)) {
-    const out = [];
-    const re = /\/\*\*([\s\S]*?)\*\/\s*\n\s*(\w+)(\??):\s*([\s\S]*?);\n/g;
-    let m;
-    while ((m = re.exec(iface[2] + "\n")) !== null) {
-      const doc = m[1]
-        .split("\n")
-        .map((l) => l.replace(/^\s*\*?\s?/, ""))
-        .join(" ")
-        .replace(/\s+/g, " ")
-        .trim();
-      // A union written across several lines reads fine on one.
-      out.push({ name: m[2], optional: m[3] === "?", type: m[4].replace(/\s+/g, " ").trim(), doc });
-    }
-    if (out.length) groups.push({ name: iface[1], members: out });
-  }
-  return groups;
-}
 
 const esc = (s) => mdx(s).replace(/\|/g, "\\|");
 
-/**
- * The cva variants. For a component whose own props interface is empty — it
- * takes the element's props and nothing else — the variant axes ARE the API,
- * and they were going undocumented.
- */
-function variants(src) {
-  const out = [];
-  for (const block of src.matchAll(/cva\(([\s\S]*?)\n\);/g)) {
-    const body = block[1];
-    const v = body.match(/variants:\s*\{([\s\S]*?)\n\s{4}\}/);
-    if (!v) continue;
-    const defaults = {};
-    const d = body.match(/defaultVariants:\s*\{([^}]*)\}/);
-    if (d) for (const m of d[1].matchAll(/(\w+):\s*"([^"]+)"/g)) defaults[m[1]] = m[2];
-    // Each axis is `name: { option: "classes", ... }` at one indent level.
-    for (const axis of v[1].matchAll(/^\s{6}(\w+):\s*\{([\s\S]*?)^\s{6}\}/gm)) {
-      const options = [...axis[2].matchAll(/^\s{8}"?([\w-]+)"?:/gm)].map((m) => m[1]);
-      if (options.length) out.push({ name: axis[1], options, default: defaults[axis[1]] });
-    }
-  }
-  return out;
-}
 
 /* ── the page ─────────────────────────────────────────────────────────── */
 
@@ -266,10 +197,7 @@ for (const slug of readdirSync(SRC).sort()) {
   // The component file is the one named after the folder.
   const file = join(dir, `${slug}.tsx`);
   const src = existsSync(file) ? readFileSync(file, "utf8") : "";
-  const exports = [
-    ...[...src.matchAll(/^export function (\w+)/gm)].map((m) => m[1]),
-    ...[...src.matchAll(/^export const (\w+) = React\.forwardRef/gm)].map((m) => m[1]),
-  ];
+  const exports = exportsOf(src);
 
   all.push({
     slug,

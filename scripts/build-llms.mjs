@@ -10,6 +10,7 @@
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from "node:fs";
 import { join, relative, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { warnings, props, variants, exportsOf } from "./lib/component-api.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "public");
@@ -90,13 +91,47 @@ const compDir = join(ROOT, "packages/ui/src/components");
 const components = existsSync(compDir)
   ? readdirSync(compDir, { withFileTypes: true }).filter((e) => e.isDirectory()).map((e) => {
       const g = join(compDir, e.name, "guidance.json");
-      return existsSync(g) ? JSON.parse(readFileSync(g, "utf8")) : null;
+      if (!existsSync(g)) return null;
+      // The component file is the one named after the folder — the same rule
+      // build-component-docs.mjs uses, so the two outputs read one source.
+      const file = join(compDir, e.name, `${e.name}.tsx`);
+      const src = existsSync(file) ? readFileSync(file, "utf8") : "";
+      return {
+        ...JSON.parse(readFileSync(g, "utf8")),
+        api: { exports: exportsOf(src), props: props(src), variants: variants(src), warnings: warnings(src) },
+      };
     }).filter(Boolean)
   : [];
 
+/* The API first, then the guidance. An agent picks the component, then needs
+ * to know what to pass it; it used to have to open the .tsx to find out. Every
+ * line below is lifted from the source by scripts/lib/component-api.mjs, so it
+ * cannot drift from the component it describes. */
 const componentText = (c) => {
   const lines = [`## ${c.component}`, "", c.summary, ""];
   if (c.structureFrom) lines.push(`Structure from ${c.structureFrom}; measurements from ${c.measurementsFrom}.`, "");
+
+  const api = c.api ?? {};
+  if (api.exports?.length) {
+    lines.push(`Import: import { ${api.exports.join(", ")} } from "@ir/ui";`);
+  }
+  for (const g of api.props ?? []) {
+    lines.push("", `Props (${g.name}):`);
+    for (const m of g.members) {
+      lines.push(`- ${m.name}${m.optional ? "?" : ""}: ${m.type}${m.doc ? ` — ${m.doc}` : ""}`);
+    }
+  }
+  if (api.variants?.length) {
+    lines.push("", "Variants:");
+    for (const v of api.variants) {
+      lines.push(`- ${v.name}: ${v.options.join(" | ")}${v.default ? ` (default ${v.default})` : ""}`);
+    }
+  }
+  if (api.warnings?.length) {
+    lines.push("", "Watch out:", ...api.warnings.map((w) => `- ${w}`));
+  }
+
+  if (c.pairs?.length) lines.push("");
   for (const p of c.pairs ?? []) {
     lines.push(`- DON'T ${p.dont}`, `  DO ${p.do}`, `  WHY ${p.why}`);
   }
