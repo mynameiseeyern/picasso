@@ -2,13 +2,14 @@
   "name": "picasso",
   "version": "2.0.0",
   "private": true,
-  "description": "Picasso — Integrated Research's design system. Repo is the source of truth; Figma is a consumer.",
+  "description": "Picasso \u2014 Integrated Research's design system. Repo is the source of truth; Figma is a consumer.",
   "license": "UNLICENSED",
   "type": "module",
   "engines": {
     "node": ">=20.19"
   },
   "workspaces": [
+    "packages/eslint-config",
     "packages/tokens",
     "packages/ui",
     "apps/site"

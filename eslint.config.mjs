@@ -1,125 +1,49 @@
-import { plugin as shadcn } from "@shadcn/lint";
-import noPhysicalProperties from "./tools/eslint-rules/no-physical-properties.mjs";
-import tsParser from "@typescript-eslint/parser";
-import { defineConfig, globalIgnores } from "eslint/config";
+import { defineConfig } from "eslint/config";
+import { library } from "./packages/eslint-config/index.mjs";
 
 /**
- * @shadcn/lint — design system rules, enforced.
+ * This repo's lint, from the same package a product gets.
  *
- * ESLint rather than oxlint: oxlint is faster, but its Rust allocator aborts
- * in sandboxed Linux VMs, which is where some of this work happens. One
- * config that runs everywhere beats a fast one that runs in some places.
+ * The rules used to live here and only here, which meant `@ir/ui` could be
+ * installed anywhere and arrive with none of them. They are in
+ * `packages/eslint-config` now; this file is the design system's own
+ * application of it, so the config a product extends is the config that runs
+ * against the library itself. One copy, two consumers — the repo's own rule
+ * about two copies of one fact.
+ *
+ * Everything below is the narrow set of things that are true here and would
+ * not be true in a product.
  */
 export default defineConfig([
-  globalIgnores([
-    "**/dist/**",
-    "**/storybook-static/**",
-    "**/node_modules/**",
-    "public/**",
-    // Generated or vendored into the site: the nested Storybook bundle, Next's
-    // output, and the Fumadocs collections. Linting a build artefact reports
-    // other people's rules as missing definitions.
-    "apps/site/public/**",
-    "apps/site/.next/**",
-    "apps/site/.source/**",
-  ]),
-  {
+  ...library({
     files: ["packages/ui/src/**/*.{ts,tsx}"],
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: { ecmaFeatures: { jsx: true } },
-    },
-    plugins: {
-      shadcn,
-      /* One local rule, because @shadcn/lint has no equivalent and the thing
-         it guards — a component that reads correctly in both directions — is
-         invisible in every LTR screenshot. */
-      picasso: { rules: { "no-physical-properties": noPhysicalProperties } },
-    },
-    settings: {
-      shadcn: {
-        ui: "packages/ui/src/components",
-        componentImports: ["^@ir/ui(/|$)"],
-        mergeFunctions: ["cn"],
-        variantFunctions: ["cva"],
-        note:
-          "Picasso rules are in AGENTS.md and docs/foundations/. Semantic utilities only: " +
-          "surface-* for backgrounds, content-* for text, line-* for borders. Never a raw hex, " +
-          "never a hard-coded corner — radius comes from rounded-*.",
-      },
-    },
-    rules: {
-      "picasso/no-physical-properties": "error",
-      "shadcn/no-raw-colors": "error",
-      "shadcn/no-arbitrary-values": "error",
-      /**
-       * no-restyle — a component owns its own look; the page owns where it
-       * sits. By default that means NO classes from outside, and the fix for
-       * "I need this 420 wide" or "this should span two columns" is a wrapper
-       * element, not a class on the component. That default is deliberate and
-       * should stay: it is what keeps a Button the same Button everywhere.
-       *
-       * A `contracts` entry is for the narrow case where a class is not
-       * restyling but the component's entire purpose. Add one only when the
-       * component has no other way to express the thing, and keep it to the
-       * category it needs — `allow: ["layout"]` still refuses colour,
-       * typography, spacing, shape, effects and motion.
-       */
-      "shadcn/no-restyle": ["warn", {
-        contracts: [
-          // <col> exists to carry a column width and accepts almost nothing
-          // else. There is no parent to move the width to — the colgroup is
-          // the parent — and no sensible closed set of widths to make into a
-          // variant. Colour and type on it are still refused.
-          { pattern: "^TableCol$", allow: ["layout"] },
-          // A Skeleton is a stand-in for content that has not arrived, so its
-          // size IS the component — and there is no closed set to make into
-          // variants, because it mirrors whatever is coming (a label, an
-          // avatar, a chart). A wrapper cannot express it without a second
-          // element per skeleton. Shape is a variant instead of an allowance,
-          // and colour, type and effects are still refused.
-          { pattern: "^Skeleton$", allow: ["layout"] },
-        ],
-      }],
-      "shadcn/no-inline-styles": "error",
-      "shadcn/no-unknown-classes": "error",
-      "shadcn/require-static-classes": "error",
-    },
-  },
+    contracts: [
+      // <col> exists to carry a column width and accepts almost nothing else.
+      // There is no parent to move the width to — the colgroup is the parent —
+      // and no sensible closed set of widths to make into a variant. Colour
+      // and type on it are still refused.
+      { pattern: "^TableCol$", allow: ["layout"] },
+      // A Skeleton is a stand-in for content that has not arrived, so its size
+      // IS the component, and there is no closed set to make into variants
+      // because it mirrors whatever is coming. Shape is a variant instead of
+      // an allowance; colour, type and effects are still refused.
+      { pattern: "^Skeleton$", allow: ["layout"] },
+    ],
+  }),
   {
     /* The site is not exempt. The theme builder renders the same components a
        product does, and the docs pages are the first thing an engineer copies
        from — a rule the library enforces and the site breaks teaches the
-       break. Same rules, same settings. */
-    files: ["apps/site/**/*.{ts,tsx}"],
-    languageOptions: {
-      parser: tsParser,
-      parserOptions: { ecmaFeatures: { jsx: true } },
-    },
-    plugins: {
-      shadcn,
-      picasso: { rules: { "no-physical-properties": noPhysicalProperties } },
-    },
-    settings: {
-      shadcn: {
-        ui: "packages/ui/src/components",
-        componentImports: ["^@ir/ui(/|$)"],
-        mergeFunctions: ["cn"],
-        variantFunctions: ["cva"],
-      },
-    },
+       break. One difference: fd-* is Fumadocs' own token namespace, declared
+       in its package stylesheet, and @shadcn/lint only credits tokens the
+       project itself declares. ir-* and fd-* are the site shell's whole
+       vocabulary, and Picasso components never use either. */
+    ...library({ files: ["apps/site/**/*.{ts,tsx}"] })[1],
     rules: {
-      "picasso/no-physical-properties": "error",
-      /* fd-* is Fumadocs' own token namespace, declared in its package
-         stylesheet. @shadcn/lint only credits tokens the project itself
-         declares, so the docs shell's classes need naming here. They are
-         still tokens, not raw palette colours — ir-* and fd-* are the site
-         shell's whole vocabulary, and Picasso components never use either. */
+      ...library({ files: ["apps/site/**/*.{ts,tsx}"] })[1].rules,
       "shadcn/no-raw-colors": ["error", { allow: ["*-fd-*"] }],
-      "shadcn/no-arbitrary-values": "error",
-      "shadcn/no-restyle": "warn",
-      "shadcn/no-inline-styles": "error",
-      "shadcn/require-static-classes": "error",
+      "shadcn/no-unknown-classes": "off",
+      "picasso/require-content-width": "off",
     },
   },
 ]);
