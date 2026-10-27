@@ -26,7 +26,7 @@ jobs:
       - name: The tag must match the packages
         run: |
           TAG="${GITHUB_REF_NAME#v}"
-          for p in packages/tokens packages/ui; do
+          for p in packages/tokens packages/ui packages/eslint-config; do
             V=$(node -p "require('./$p/package.json').version")
             if [ "$V" != "$TAG" ]; then
               echo "::error::$p is $V but the tag is $TAG."
@@ -75,3 +75,7 @@ jobs:
         run: |
           npm publish --workspace @ir/tokens --provenance --access restricted
           npm publish --workspace @ir/ui --provenance --access restricted
+          # The rules are the half of the system a product repo cannot
+          # reconstruct for itself. Shipping @ir/ui without them hands over the
+          # components and none of the guarantees.
+          npm publish --workspace @ir/eslint-config --provenance --access restricted
