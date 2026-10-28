@@ -98,6 +98,8 @@ const components = existsSync(compDir)
       const src = existsSync(file) ? readFileSync(file, "utf8") : "";
       return {
         ...JSON.parse(readFileSync(g, "utf8")),
+        // The folder name is the slug the docs page is served under.
+        slug: e.name,
         api: { exports: exportsOf(src), props: props(src), variants: variants(src), warnings: warnings(src) },
       };
     }).filter(Boolean)
@@ -173,6 +175,10 @@ const resolve = (block, value) => {
 };
 
 const tokenLines = [];
+/* The same rows the table above is made of, kept structured for the MCP
+ * server. One pass, two shapes — a second scrape of the CSS could disagree
+ * with the first. */
+const tokenRows = [];
 for (const family of ["bg", "fg", "border", "status", "chart"]) {
   const rows = varsIn(light, family);
   if (!rows.length) continue;
@@ -182,9 +188,15 @@ for (const family of ["bg", "fg", "border", "status", "chart"]) {
   for (const [name, value] of rows) {
     const short = name.replace(new RegExp(`^${family}-`), "");
     const darkRaw = new RegExp(`--${name}:\\s*([^;]+);`).exec(dark);
-    tokenLines.push(
-      `| ${family}/${short.replace(/-/g, "/")} | \`${word}-${short}\` | ${resolve(light, value)} | ${darkRaw ? resolve(dark, darkRaw[1].trim()) : "(same)"} |`,
-    );
+    const row = {
+      family,
+      token: `${family}/${short.replace(/-/g, "/")}`,
+      utility: `${word}-${short}`,
+      light: resolve(light, value),
+      dark: darkRaw ? resolve(dark, darkRaw[1].trim()) : "(same)",
+    };
+    tokenRows.push(row);
+    tokenLines.push(`| ${row.token} | \`${row.utility}\` | ${row.light} | ${row.dark} |`);
   }
   tokenLines.push("");
 }
@@ -236,8 +248,50 @@ for (const [name, body] of Object.entries(files)) {
   writeFileSync(join(OUT, name), body.trimEnd() + "\n");
 }
 
+/* ---- machine-readable catalogue ---------------------------------------
+ * The MCP server (apps/site/app/api/mcp) answers out of this file. The five
+ * text files above are for an agent that reads the library; this is for one
+ * that queries it. Both come out of this single run, so the server can never
+ * describe a different library than the docs do.
+ *
+ * It is written straight into the site's public folder rather than copied in
+ * by nest-storybook, because the MCP route needs it in `next dev` too, where
+ * Storybook is never built.
+ */
+const catalogue = {
+  version: JSON.parse(readFileSync(join(ROOT, "packages/ui/package.json"), "utf8")).version,
+  generated: new Date().toISOString(),
+  site: SITE,
+  components: components.map((c) => ({
+    name: c.component,
+    slug: c.slug,
+    url: `${SITE}/docs/components/${c.slug}`,
+    summary: c.summary,
+    figma: c.figma ?? null,
+    api: c.api,
+    pairs: c.pairs ?? [],
+    a11y: c.a11y ?? [],
+    /* The same prose llms-components.txt carries, so an agent that asks for
+     * one component reads exactly what an agent that loaded the file does. */
+    text: componentText(c),
+  })),
+  tokens: tokenRows,
+  pages: [...pages, ...repoPages].map((p) => ({
+    title: p.title,
+    description: p.description,
+    url: p.url ?? null,
+    path: p.rel,
+    section: p.section ?? "repo",
+    body: p.body,
+  })),
+};
+
+const CATALOGUE = join(ROOT, "apps/site/public/catalogue.json");
+mkdirSync(dirname(CATALOGUE), { recursive: true });
+writeFileSync(CATALOGUE, JSON.stringify(catalogue) + "\n");
+
 console.log(
-  `${Object.keys(files).length} files → public/\n` +
+  `${Object.keys(files).length} files → public/, catalogue.json → apps/site/public/\n` +
   `  ${pages.length} doc pages, ${repoPages.length} repo pages, ${components.length} components, ` +
   `${tokenLines.filter((l) => l.startsWith("| ")).length - 5} tokens`,
 );
