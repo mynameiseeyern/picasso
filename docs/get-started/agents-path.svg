@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 364" width="740" height="364" role="img" aria-labelledby="t">
+  <title id="t">How a Picasso rule reaches product code: authored beside the component, built into the catalogue, published on the docs deployment, asked for by an agent through the MCP server or the installed package source, enforced by lint, and corrected back into the guidance</title>
+  <style>
+    :root {
+      --ink: #121926; --mute: #4B5565; --num: #697586;
+      --line: #CDD5DF; --fill: #EEF2F6; --accent: #007FAB;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #F8FAFC; --mute: #9AA4B2; --num: #697586;
+        --line: #364152; --fill: #202939; --accent: #1A92C1;
+      }
+    }
+    text { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .n { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; fill: var(--num); }
+    .name { font-size: 14px; font-weight: 600; fill: var(--ink); }
+    .who { font-size: 12.5px; fill: var(--mute); }
+    .back { font-size: 11.5px; fill: var(--mute); }
+    .slab { fill: var(--fill); stroke: var(--line); }
+    .flow { fill: none; stroke: var(--num); stroke-width: 1.25; }
+    .loop { fill: none; stroke: var(--num); stroke-width: 1.25; stroke-dasharray: 4 4; }
+    .head { fill: var(--num); }
+  </style>
+
+  <!-- row 1 -->
+  <g>
+    <rect class="slab" x="16" y="40" width="216" height="92" rx="8"/>
+    <rect x="16" y="40" width="3" height="92" rx="1.5" fill="var(--accent)"/>
+    <text class="n" x="218" y="62" text-anchor="end">1</text>
+    <text class="name" x="34" y="78">Authored</text>
+    <text class="who" x="34" y="100">beside the component it</text>
+    <text class="who" x="34" y="118">describes</text>
+  </g>
+  <g>
+    <rect class="slab" x="262" y="40" width="216" height="92" rx="8"/>
+    <rect x="262" y="40" width="3" height="92" rx="1.5" fill="var(--accent)"/>
+    <text class="n" x="464" y="62" text-anchor="end">2</text>
+    <text class="name" x="280" y="78">Built</text>
+    <text class="who" x="280" y="100">one command, two shapes:</text>
+    <text class="who" x="280" y="118">text files and a catalogue</text>
+  </g>
+  <g>
+    <rect class="slab" x="508" y="40" width="216" height="92" rx="8"/>
+    <rect x="508" y="40" width="3" height="92" rx="1.5" fill="var(--accent)"/>
+    <text class="n" x="710" y="62" text-anchor="end">3</text>
+    <text class="name" x="526" y="78">Published</text>
+    <text class="who" x="526" y="100">docs, Storybook, the MCP</text>
+    <text class="who" x="526" y="118">endpoint, the llms files</text>
+  </g>
+
+  <!-- row 2, right to left -->
+  <g>
+    <rect class="slab" x="508" y="240" width="216" height="92" rx="8"/>
+    <rect x="508" y="240" width="3" height="92" rx="1.5" fill="var(--accent)"/>
+    <text class="n" x="710" y="262" text-anchor="end">4</text>
+    <text class="name" x="526" y="278">Consulted</text>
+    <text class="who" x="526" y="300">the MCP server, or the</text>
+    <text class="who" x="526" y="318">installed source on disk</text>
+  </g>
+  <g>
+    <rect class="slab" x="262" y="240" width="216" height="92" rx="8"/>
+    <rect x="262" y="240" width="3" height="92" rx="1.5" fill="var(--accent)"/>
+    <text class="n" x="464" y="262" text-anchor="end">5</text>
+    <text class="name" x="280" y="278">Gated</text>
+    <text class="who" x="280" y="300">lint fails the build on</text>
+    <text class="who" x="280" y="318">what it ignored</text>
+  </g>
+  <g>
+    <rect class="slab" x="16" y="240" width="216" height="92" rx="8"/>
+    <rect x="16" y="240" width="3" height="92" rx="1.5" fill="var(--accent)"/>
+    <text class="n" x="218" y="262" text-anchor="end">6</text>
+    <text class="name" x="34" y="278">Reviewed</text>
+    <text class="who" x="34" y="300">a human reads the diff,</text>
+    <text class="who" x="34" y="318">not the hex codes</text>
+  </g>
+
+  <!-- 1 → 2 → 3 -->
+  <g class="flow">
+    <path d="M236 86 L254 86"/>
+    <path d="M482 86 L500 86"/>
+  </g>
+  <g class="head">
+    <path d="M254 81.5 L262 86 L254 90.5 Z"/>
+    <path d="M500 81.5 L508 86 L500 90.5 Z"/>
+  </g>
+
+  <!-- 3 ↓ 4 -->
+  <path class="flow" d="M616 136 L616 232"/>
+  <path class="head" d="M611.5 232 L616 240 L620.5 232 Z"/>
+
+  <!-- 4 → 5 → 6 -->
+  <g class="flow">
+    <path d="M504 286 L486 286"/>
+    <path d="M258 286 L240 286"/>
+  </g>
+  <g class="head">
+    <path d="M486 281.5 L478 286 L486 290.5 Z"/>
+    <path d="M240 281.5 L232 286 L240 290.5 Z"/>
+  </g>
+
+  <!-- 6 ⤴ 1, the correction -->
+  <path class="loop" d="M60 236 L60 140"/>
+  <path class="head" d="M55.5 140 L60 132 L64.5 140 Z"/>
+  <text class="back" x="80" y="178">Off-system output is a</text>
+  <text class="back" x="80" y="195">guidance change here,</text>
+  <text class="back" x="80" y="212">never a local fix there.</text>
+</svg>
