@@ -53,16 +53,39 @@ const findPage = (path: string): PageEntry | undefined => {
 
 /* Ranked rather than filtered: an agent asking for "dropdown" wants the
  * dropdown menu first and the select somewhere below it, not an alphabetical
- * list of everything mentioning the word. */
-const score = (haystacks: [string, number][], q: string) => {
+ * list of everything mentioning the word.
+ *
+ * Names are compared with the punctuation stripped out, because the same
+ * component is "EmptyState" in code, "empty-state" in the URL and "empty
+ * state" in the question — and a plain substring match on the last of those
+ * finds the component nowhere and the prose everywhere. */
+const flatten = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "");
+
+const nameScore = (fields: [string, number][], q: string) => {
+  const qf = flatten(q);
+  if (!qf) return 0;
+  /* One word of a phrase naming the thing outright — "danger button", "animate
+   * a drawer" — is a stronger signal than the whole phrase appearing in some
+   * page's prose, so it outranks a body hit without outranking a real name. */
+  const words = q.toLowerCase().split(/\s+/).map(flatten).filter((w) => w.length > 2);
   let best = 0;
-  for (const [hay, weight] of haystacks) {
-    const h = hay.toLowerCase();
-    if (h === q) best = Math.max(best, weight * 4);
-    else if (h.startsWith(q)) best = Math.max(best, weight * 3);
-    else if (h.includes(q)) best = Math.max(best, weight);
+  for (const [hay, weight] of fields) {
+    const h = flatten(hay);
+    if (h === qf) best = Math.max(best, weight * 4);
+    else if (h.startsWith(qf)) best = Math.max(best, weight * 3);
+    else if (h.includes(qf)) best = Math.max(best, weight * 2);
+    else if (words.length > 1 && words.some((w) => h === w)) best = Math.max(best, weight * 1.5);
   }
   return best;
+};
+
+/* A body mention is the weakest signal there is, and worth one point whoever
+ * it belongs to. Every word has to be in there, or "empty state" matches any
+ * page that happens to say "empty" three paragraphs from "state". */
+const bodyScore = (body: string, q: string, weight = 1) => {
+  const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+  const h = body.toLowerCase();
+  return words.length && words.every((w) => h.includes(w)) ? weight : 0;
 };
 
 type Hit = { kind: string; label: string; detail: string; where: string; rank: number };
@@ -74,15 +97,19 @@ const search = (query: string, kind: string | undefined, limit: number): Hit[] =
 
   if (!kind || kind === "component") {
     for (const c of catalogue.components) {
-      const rank = score(
-        [
-          [c.name, 10],
-          [c.slug, 10],
-          [c.api.exports.join(" "), 6],
-          [c.summary, 4],
-          [c.text, 1],
-        ],
-        q,
+      const rank = Math.max(
+        nameScore(
+          [
+            [c.name, 10],
+            [c.slug, 10],
+            [c.api.exports.join(" "), 6],
+            [c.summary, 4],
+          ],
+          q,
+        ),
+        /* A component that merely mentions the words still beats a page that
+         * does: the question was about building something. */
+        bodyScore(c.text, q, 1.3),
       );
       if (rank) hits.push({ kind: "component", label: c.name, detail: c.summary, where: c.url, rank });
     }
@@ -90,14 +117,19 @@ const search = (query: string, kind: string | undefined, limit: number): Hit[] =
 
   if (!kind || kind === "doc") {
     for (const p of catalogue.pages) {
-      const rank = score(
-        [
-          [p.title, 9],
-          [p.path, 7],
-          [p.description, 4],
-          [p.body, 1],
-        ],
-        q,
+      const rank = Math.max(
+        nameScore(
+          [
+            [p.title, 9],
+            [p.path, 7],
+            [p.description, 4],
+          ],
+          q,
+        ),
+        /* AGENTS.md and CHANGELOG.md are long enough to contain any pair of
+         * words, so a body hit in one of them is worth less than in a page
+         * written about a single subject. */
+        bodyScore(p.body, q, p.section === "repo" ? 0.5 : 1),
       );
       if (rank) {
         hits.push({
@@ -113,15 +145,12 @@ const search = (query: string, kind: string | undefined, limit: number): Hit[] =
 
   if (!kind || kind === "token") {
     for (const t of catalogue.tokens) {
-      const rank = score(
-        [
-          [t.token, 10],
-          [t.utility, 10],
-          [t.light, 5],
-          [t.dark, 5],
-        ],
-        q,
-      );
+      const rank = nameScore([
+        [t.token, 10],
+        [t.utility, 10],
+        [t.light, 5],
+        [t.dark, 5],
+      ], q);
       if (rank) {
         hits.push({
           kind: "token",
@@ -283,7 +312,11 @@ const handler = createMcpHandler(
             return [`## ${s}`, ...pages.map((p) => `- ${p.path} — ${p.title}`)].join("\n");
           });
           return text(
-            [`${catalogue.pages.length} pages in Picasso ${catalogue.version}:`, "", ...bySection].join("\n\n"),
+            [
+              `${catalogue.pages.length} pages in Picasso ${catalogue.version}. ` +
+                "Component pages are not here — use get_component.",
+              ...bySection,
+            ].join("\n\n"),
           );
         }
         const p = findPage(path);
