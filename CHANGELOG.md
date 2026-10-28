@@ -16,6 +16,41 @@ between the two states has no Figma counterpart; the tokens and
 
 ### Added
 
+- **An MCP server, so an agent can ask Picasso questions instead of loading
+  it.** `https://ir-picasso.vercel.app/api/mcp` — read-only, unauthenticated,
+  the same endpoint for Claude Code, Cursor and Copilot. Four tools:
+  `search_picasso` (ranked matches across components, pages and tokens, each
+  with a URL), `get_component` (import, props with types, variants and
+  defaults, the pitfalls lifted from the component's own source, the do/don't
+  pairs, the a11y rules), `get_tokens` (the resolved table, filterable by
+  family or substring), `get_doc` (a page in full, `AGENTS.md` included).
+
+  **Why a server when the `llms*.txt` files already exist:** the files are a
+  fixed cost. `llms-full.txt` is 586KB, so an agent that loads it has spent
+  its context before writing a line, and an agent that loads nothing invents a
+  hex. The server is a variable cost — twenty lines about the one component in
+  hand.
+
+  It answers out of `apps/site/public/catalogue.json`, which
+  `scripts/build-llms.mjs` now writes in the same run as the five text files,
+  from the same component sources and the same compiled `tokens.css`. One run,
+  two shapes: the server cannot describe a different library than the docs do.
+  The route imports that file rather than reading
+  `packages/ui/src/components` at request time, because a route handler is
+  traced and bundled and a directory it only reads at runtime would not be
+  deployed with it. The catalogue leaves out the generated component pages —
+  they are the same guidance the component entries carry, and including both
+  made every search return each component twice.
+
+  `dev:site` now runs `build:tokens` and `build:llms` first, so the route has
+  its catalogue in local dev too, where Storybook is never built.
+
+  **Nothing here reaches a database or a private repo**, so there is nothing to
+  protect; the day that changes, `route.ts` is the one file that grows an auth
+  wrapper.
+
+  **No Figma impact.**
+
 - **PageFooter, and the form-page layout it completes.** The actions that
   finish a page, under a rule at the end of it — PageHeader's other end, so a
   form page is: the page's name and a rule, the fields, a rule and the

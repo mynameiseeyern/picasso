@@ -276,7 +276,10 @@ const catalogue = {
     text: componentText(c),
   })),
   tokens: tokenRows,
-  pages: [...pages, ...repoPages].map((p) => ({
+  /* The generated component pages are left out: they are the same guidance the
+   * `components` entries above carry, and including both made every component
+   * search return each component twice. get_component is the way in. */
+  pages: [...pages.filter((p) => p.section !== "components"), ...repoPages].map((p) => ({
     title: p.title,
     description: p.description,
     url: p.url ?? null,

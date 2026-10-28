@@ -96,8 +96,15 @@ Do/Don't stories — so guidance and code are reviewed in the same diff.
 
 ### For agents
 
-`npm run build:llms` generates five files into `public/`, served alongside
-Storybook:
+**The MCP server is the way in:** `https://ir-picasso.vercel.app/api/mcp`,
+read-only and unauthenticated. `apps/site/app/api/mcp/route.ts` serves four
+tools — `search_picasso`, `get_component`, `get_tokens`, `get_doc` — out of
+`apps/site/public/catalogue.json`, which `build:llms` writes in the same run as
+the text files below, from the same sources. Setup for Claude Code, Cursor and
+Copilot is on the [For agents](docs/get-started/agents.md) page.
+
+For a tool that cannot speak MCP, `npm run build:llms` also generates five
+files into `public/`, served alongside Storybook:
 
 | File | Contains |
 |---|---|
@@ -110,7 +117,7 @@ Storybook:
 `llms-tokens.txt` is the important one. An agent without the resolved token
 table invents hex codes; an agent with it cannot.
 
-Point an assistant at it:
+Point an assistant that has no MCP support at it:
 
 ```
 Use Picasso design system documentation from https://ir-picasso.vercel.app/llms.txt
