@@ -1,0 +1,63 @@
+# The GitHub Actions check, for IR's GitLab.
+#
+# .github/workflows/ci.yml is the original; this is its twin. GitLab ignores
+# the workflows folder completely, so without this file IR's copy of Picasso
+# has no lint, no types, no tests and no build gate — while those workflow
+# files sit in the repo looking like it does, which is worse than having no CI
+# at all. The two run the same steps in the same order. Change one, change the
+# other.
+#
+# Assumes a Docker executor. On a shell runner, drop `image:` and make sure the
+# runner has Node 20.19 or newer (package.json engines).
+
+default:
+  image: node:22
+  # Cancelled when a newer pipeline starts, matching the GitHub workflow's
+  # concurrency group. Needs "Auto-cancel redundant pipelines" on in
+  # Settings → CI/CD → General pipelines.
+  interruptible: true
+
+variables:
+  # Keep npm's cache inside the project so GitLab can cache it between runs.
+  npm_config_cache: "$CI_PROJECT_DIR/.npm"
+
+cache:
+  key:
+    files:
+      - package-lock.json
+  paths:
+    - .npm/
+
+stages:
+  - check
+
+check:
+  stage: check
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - npm ci --prefer-offline
+
+    # Tokens first: everything downstream reads dist/tokens.css, and the
+    # parity check is what stops a brand drifting from the others.
+    - npm run build:tokens
+    - npm run check --workspace @ir/tokens
+
+    - npm run lint
+    - npm run type-check
+    - npm test
+
+    # build:site builds Storybook on the way through, so this one step covers
+    # both: the guidance ratchet and the stories only fail at build time, and
+    # an MDX break in a generated component page would otherwise not show up
+    # until a deploy.
+    - npm run build:site
+
+# No release job. .github/workflows/release.yml publishes @ir/tokens, @ir/ui
+# and @ir/eslint-config to npmjs on a v* tag, gated on an NPM_TOKEN that has
+# never been added. Which registry IR actually wants — npmjs with restricted
+# access, or this GitLab instance's own package registry — is an open decision,
+# and the answer changes the --access flag as well as the credentials. Until it
+# is made, tagging a release here does nothing, deliberately rather than
+# silently.
