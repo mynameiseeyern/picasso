@@ -52,6 +52,9 @@ export const ignores = [
   // Static assets and anything nested into them — a site that serves a built
   // Storybook under public/ was reporting that bundle's own rules as missing.
   "**/public/**",
+  // Code Connect templates: they import Figma's virtual "figma" module and
+  // run in Figma's runtime, not ours, so our rules do not apply to them.
+  "**/*.figma.ts",
 ];
 
 const NOTE =

@@ -55,6 +55,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@figma/code-connect": "^2.1.0",
     "@fontsource/dm-sans": "^5.3.0",
     "@fontsource/figtree": "^5.3.0",
     "@fontsource/fira-code": "^5.3.0",
