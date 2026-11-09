@@ -44,5 +44,5 @@ description: Copy this into the pull request.
 - [ ] Pushed as variable bindings, not hand-typed values
 
 ## Release
-- [ ] Changeset added, with a `figma-impact` line
+- [ ] An entry under `## Unreleased` in `CHANGELOG.md`, with a **Figma impact** line
 ```

@@ -210,7 +210,7 @@ const header = (what) =>
 const index = [
   header("documentation index"),
   "Each line links to the page's own markdown.\n",
-  ...["get-started", "foundations", "content", "contributing", "releases"].flatMap((s) => {
+  ...["get-started", "foundations", "content", "patterns", "contributing", "releases"].flatMap((s) => {
     const inSection = pages.filter((p) => p.rel.startsWith(`docs/${s}/`));
     return inSection.length
       ? [`## ${s}`, "", ...inSection.map((p) => `- [${p.title}](${p.url}${p.isIndex ? "" : ".md"}): ${p.description}`), ""]

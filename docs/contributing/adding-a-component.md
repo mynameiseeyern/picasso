@@ -136,8 +136,9 @@ What counts as a correction to push:
 | A measurement taken from shadcn over Figma's | update the frames, and say so in the doc block |
 | A defect fixed (a fill that should not be there) | fix it in every variant, not just the one you noticed |
 
-Then note it in the changeset's `figma-impact` so the release says what a
-designer will see when they accept the library update.
+Then add a **Figma impact** line to the entry under `## Unreleased` in
+`CHANGELOG.md`, so the release says what a designer will see when they accept
+the library update. There are no changesets — see [Releases](../releases/).
 
 **Prefer a variable rebind to a literal.** A hand-typed value in Figma matches
 the repo today and drifts the next time either side moves — that is how the

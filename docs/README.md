@@ -17,6 +17,7 @@ files and the Figma foundations pages are all renderings of what is here.
 | [Foundations](foundations/) | designers, engineers | Grid, spacing, radius, typography, colour |
 | [Content](content/) | writers, designers, PMs, engineers | Voice, casing, errors, states, numbers, terminology |
 | [Components](components/) | engineers, designers | One page per component, **generated** from the component folder |
+| [Patterns](patterns/) | engineers, designers, PMs | Whole screens, and the definition of done a screen ships against |
 | [Contributing](contributing/) | contributors | How to add a component, and what "done" means |
 | [Releases](releases/) | everyone | How Picasso versions and what each category means |
 

@@ -2,9 +2,10 @@
 
 Integrated Research's design system.
 
-**The repo is the source of truth.** Figma is a consumer — it receives tokens and
-is reconciled to match the code. This reverses the convention that governed the
-earlier Picasso Figma work, and it applies to tokens and component APIs alike.
+**The repo is the source of truth for tokens.** Figma is a consumer of them — it
+receives tokens and is reconciled to match the code. Component *behaviour* —
+which variants and states exist — flows the other way, Figma → code. See
+[Direction of truth](docs/README.md#direction-of-truth).
 
 ## Packages
 
@@ -87,6 +88,7 @@ there.
 | [Get started](docs/get-started/) | Separate paths for designers and engineers |
 | [Foundations](docs/foundations/) | Grid, spacing, radius, typography, colour |
 | [Content](docs/content/) | Voice, casing, errors, states, numbers, terminology |
+| [Patterns](docs/patterns/) | Whole screens, and the definition of done a screen ships against |
 | [Contributing](docs/contributing/) | How to add a component, and what "done" means |
 | [Releases](docs/releases/) | How Picasso versions |
 | [`AGENTS.md`](AGENTS.md) | The rules, for agents and humans writing code here |
@@ -136,5 +138,6 @@ settings.
 
 ## Status
 
-Tokens are migrated and verified. Components land one PR at a time — see the
-dependency order in `AGENTS.md`.
+`v2.0.0`. Tokens are migrated and verified, and 60 components are built — the
+full list is the [Components](docs/components/) section. What is still to come
+is listed at the end of `AGENTS.md` §10.

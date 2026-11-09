@@ -166,6 +166,72 @@ const search = (query: string, kind: string | undefined, limit: number): Hit[] =
   return hits.sort((a, b) => b.rank - a.rank || a.label.localeCompare(b.label)).slice(0, limit);
 };
 
+/* ---- telemetry --------------------------------------------------------- */
+/* One structured line per request, to stdout, which Vercel keeps as a runtime
+ * log and a drain can parse. There is no store and no counter here on purpose:
+ * the question this answers — is the design system actually being used, and
+ * what are people looking for — is answered by reading the logs, and anything
+ * more needs a decision about where IR's analytics live.
+ *
+ * `initialize` is the useful one for reach: it carries the client's own name,
+ * so it says how many editors and which, where a tool call only says someone
+ * is out there. Tool arguments are logged because the queries that find
+ * nothing are the most valuable thing here — they are the components Picasso
+ * does not have yet. They are truncated, and nothing else about the caller is
+ * recorded: no identity, no IP, no headers.
+ *
+ * It must never throw. A logging failure that takes down a tool call would be
+ * the telemetry making the thing it measures worse. */
+const clip = (v: unknown, max = 80) => {
+  const s = typeof v === "string" ? v : JSON.stringify(v) ?? "";
+  return s.length > max ? `${s.slice(0, max)}…` : s;
+};
+
+const logEvent = (event: {
+  type: string;
+  method?: string;
+  parameters?: unknown;
+  status?: string;
+  duration?: number;
+  error?: unknown;
+  severity?: string;
+}) => {
+  try {
+    const line: Record<string, unknown> = {
+      at: "picasso-mcp",
+      v: catalogue.version,
+    };
+
+    if (event.type === "ERROR") {
+      line.kind = "error";
+      line.severity = event.severity;
+      line.error = clip(event.error instanceof Error ? event.error.message : event.error, 200);
+    } else if (event.type === "REQUEST_COMPLETED") {
+      const params = (event.parameters ?? {}) as Record<string, unknown>;
+      line.kind = event.method;
+      line.status = event.status;
+      line.ms = event.duration;
+
+      if (event.method === "initialize") {
+        const info = (params.clientInfo ?? {}) as Record<string, unknown>;
+        line.client = clip(info.name, 40);
+        line.clientVersion = clip(info.version, 20);
+      } else if (event.method === "tools/call") {
+        line.tool = clip(params.name, 40);
+        const args = (params.arguments ?? {}) as Record<string, unknown>;
+        line.arg = clip(args.query ?? args.name ?? args.path ?? args.family ?? "", 80);
+      }
+    } else {
+      return; // REQUEST_RECEIVED — the completion carries everything it does
+    }
+
+    console.log(JSON.stringify(line));
+    console.log("RAWDEBUG " + JSON.stringify({ m: event.method, p: event.parameters, r: (event as never as {result?:unknown}).result }).slice(0, 600));
+  } catch {
+    /* Telemetry is never worth a failed request. */
+  }
+};
+
 /* ---- tools ------------------------------------------------------------- */
 
 const handler = createMcpHandler(
@@ -334,6 +400,7 @@ const handler = createMcpHandler(
   },
   {
     serverInfo: { name: "picasso", version: catalogue.version },
+    onEvent: logEvent,
     instructions:
       "Picasso is Integrated Research's design system: the @ir/ui component library, the @ir/tokens " +
       "colour and type tokens, and the rules for using them. When you are writing or reviewing IR " +

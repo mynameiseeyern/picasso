@@ -7,9 +7,11 @@ Rules for any agent or human writing code here. Violations are caught by
 
 ## 1. Direction of truth
 
-**This repo is the source of truth for the design system.** Figma is a consumer:
-it receives tokens and is reconciled to match the code. Do not "fix" a value here
-to match Figma without checking which side is actually right.
+**This repo is the source of truth for tokens.** Figma is a consumer of them: it
+receives tokens and is reconciled to match the code. Component *behaviour* —
+which variants and states exist — flows Figma → code: build what Figma draws.
+Do not "fix" a value on either side without checking which side is actually
+right.
 
 ---
 
@@ -205,12 +207,15 @@ Build in dependency order. Button is nested in Alert, Toast, Dialog, Drawer,
 Table toolbar and Sidebar — doing it late means rebuilding everything twice.
 
 ```
-tokens/theme → Button · Input · Label · Separator · Badge · Skeleton
-  → Checkbox · Radio · Switch · Select · Textarea · Field · Tooltip · Popover
+tokens/theme → Button · Input · Field · Separator · Badge · Skeleton
+  → Checkbox · Radio · Switch · Select · Textarea · Tooltip · Popover
   → DropdownMenu · Dialog · Drawer · Toast · Tabs · Accordion · Card
-  → Table · Sidebar · Calendar · Command
-  → product-specific (KPI Tile · Log viewer · Metrics)
+  → Table · Sidebar · Calendar · KPI Tile · charts
+  → still to build: Command · Log viewer · Metrics
 ```
+
+Everything above the last line is built. A label is `FieldLabel`, not a
+component of its own.
 
 ---
 
